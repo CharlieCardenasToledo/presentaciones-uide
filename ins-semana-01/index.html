@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LTI_05A_INS · Semana 1: Ingeniería del Software</title>
+    <script>
+      // El modo público se distingue en la pestaña del navegador.
+      if (new URLSearchParams(location.search).get("mode") === "audience") {
+        document.title = "LTI_05A_INS · Semana 1: Ingeniería del Software" + " (pantalla del público)";
+      }
+    </script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { height: 100%; background: #0a0a0a; overflow: hidden; }
+      hyperframes-slideshow { display: block; position: relative; width: 100vw; height: 100vh; }
+      hyperframes-player { position: absolute; inset: 0; }
+    </style>
+    <script src="../vendor/hyperframes-player.global.js"></script>
+    <script src="../vendor/hyperframes-slideshow.global.js"></script>
+  </head>
+  <body>
+    <hyperframes-slideshow tabindex="0" notes-storage-key="ins-semana-01">
+      <hyperframes-player interactive src="composition/index.html"></hyperframes-player>
+      <script type="application/hyperframes-slideshow+json">
+{
+  "slides": [
+    {
+      "sceneId": "portada",
+      "startTime": 0,
+      "endTime": 5.6,
+      "notes": "Abrir con una pregunta: ¿qué diferencia hay entre un programa que ustedes escribieron para un trabajo y una aplicación que usan todos los días? Anotar dos o tres respuestas. No definir nada todavía: la clase empieza por el caso del script."
+    },
+    {
+      "sceneId": "caso",
+      "startTime": 5.6,
+      "endTime": 15.6,
+      "notes": "Dejar el caso a la vista y preguntar antes de avanzar: ¿qué le falta a este script para ser el servicio oficial? Anotar respuestas en la pizarra. Luego revelar: hoy lo usan 30 personas que conocen al autor; como servicio serían 1 200 estudiantes y todos los docentes, sin conocerlo. Cada punto representa unas 10 personas. Cerrar con las dos preguntas de responsabilidad: si el autor se gradúa, nadie lo mantiene; si calcula mal un promedio, ¿quién responde? Es el caso de la exploración del material de la semana.",
+      "fragments": [
+        8,
+        9.6,
+        11.2,
+        12.8,
+        14.4
+      ]
+    },
+    {
+      "sceneId": "faltantes",
+      "startTime": 15.6,
+      "endTime": 24,
+      "notes": "Resolver la pregunta anterior. Cada bloque que cae sobre el código es algo que el script personal no tiene: documentación para quien instala y usa, pruebas que demuestren el cálculo, un responsable, control de acceso a las notas, capacidad para muchos usuarios y un plan para cambios de reglamento. La idea a fijar: el código es la base, no el producto.",
+      "fragments": [
+        18,
+        19.6,
+        21.2,
+        22.8
+      ]
+    },
+    {
+      "sceneId": "definicion",
+      "startTime": 24,
+      "endTime": 30.6,
+      "notes": "Leer la definición de Sommerville y subrayar la expresión todos los aspectos. Mostrar el ciclo completo y señalar que escribir código es solo una parte. IEEE añade tres adjetivos: sistemático, disciplinado y cuantificable.",
+      "fragments": [
+        26.2,
+        27.8,
+        29.4
+      ]
+    },
+    {
+      "sceneId": "tabla",
+      "startTime": 30.6,
+      "endTime": 38.7,
+      "notes": "Es la Tabla 1 del material de la semana. Revelar de a dos filas y pedir que la clase la relacione con el script del inicio: ¿en qué fila estaba? Insistir en la última: la calidad deja de ser que ejecute la tarea.",
+      "fragments": [
+        33,
+        34.5,
+        36,
+        37.5
+      ]
+    },
+    {
+      "sceneId": "genericos",
+      "startTime": 38.7,
+      "endTime": 45.900000000000006,
+      "notes": "Preguntar primero quién define la especificación en cada caso. En un producto genérico la define la organización que desarrolla. En uno personalizado la define la organización que compra. Esta diferencia es la base del contraste entre proyecto y producto que se usa más adelante.",
+      "fragments": [
+        41.1,
+        42.9,
+        44.7
+      ]
+    },
+    {
+      "sceneId": "atributos",
+      "startTime": 45.900000000000006,
+      "endTime": 56.50000000000001,
+      "notes": "Revelar un atributo por clic. Para cada uno, pedir antes un ejemplo de falla y comparar con el que aparece. Es la Tabla 2 del material de la semana. Subrayar que el conjunto de atributos depende de la aplicación: un banco debe ser seguro, un juego debe responder rápido.",
+      "fragments": [
+        48.10000000000001,
+        49.900000000000006,
+        51.70000000000001,
+        53.50000000000001,
+        55.30000000000001
+      ]
+    },
+    {
+      "sceneId": "proceso",
+      "startTime": 56.50000000000001,
+      "endTime": 66.10000000000001,
+      "notes": "Cuatro actividades fundamentales sin importar el modelo de desarrollo. Pedir que ubiquen en cuál de las cuatro estaba cada elemento del servicio de la lámina anterior. Es la Tabla 3. El lazo de regreso explica por qué el sistema sigue siendo útil después de entregarlo.",
+      "fragments": [
+        58.900000000000006,
+        60.400000000000006,
+        61.900000000000006,
+        63.400000000000006,
+        64.9
+      ]
+    },
+    {
+      "sceneId": "clasificar",
+      "startTime": 66.10000000000001,
+      "endTime": 74.30000000000001,
+      "notes": "Ejemplo resuelto del material de la semana. Antes de avanzar, preguntar qué atributo describe el requisito. Luego revelar atributo, falla observable y dónde se comprueba. Cerrar con el costo: si se ignora el mantenimiento, el costo aparece en la evolución, donde se concentra la mayoría de los costos de muchos sistemas.",
+      "fragments": [
+        68.30000000000001,
+        69.9,
+        71.50000000000001,
+        73.10000000000001
+      ]
+    },
+    {
+      "sceneId": "nube",
+      "startTime": 74.30000000000001,
+      "endTime": 83.10000000000001,
+      "notes": "Tres cambios que transformaron el trabajo del desarrollador. En la nube, subrayar los tres niveles y DevOps. En IA, subrayar que los componentes inteligentes crean problemas y riesgos nuevos. En producto, la organización decide qué construir, así que cambia quién fija los requisitos.",
+      "fragments": [
+        76.50000000000001,
+        78.30000000000001,
+        80.10000000000001,
+        81.90000000000002
+      ]
+    },
+    {
+      "sceneId": "pcodigo",
+      "startTime": 83.10000000000001,
+      "endTime": 90.10000000000001,
+      "notes": "Evaluar un paradigma es preguntar qué problema resuelve y qué costo introduce. La programación estructurada responde al salto goto: lectura secuencial y unidades que hacen una sola cosa. La orientada a objetos responde a las variables globales: los datos viajan con sus operaciones y quedan protegidos. Es la primera parte de la Tabla 4.",
+      "fragments": [
+        85.30000000000001,
+        87.10000000000001,
+        88.9
+      ]
+    },
+    {
+      "sceneId": "pproceso",
+      "startTime": 90.10000000000001,
+      "endTime": 98.9,
+      "notes": "Comparar cómo absorbe cada proceso un cambio de requisito. En el dirigido por un plan la iteración ocurre dentro de las actividades y exige producir y aprobar documentos. En el ágil ocurre a través de las actividades, en ciclos cortos. Cerrar con la regla: ninguno es mejor en todos los casos. Es la segunda parte de la Tabla 4.",
+      "fragments": [
+        92.30000000000001,
+        94.10000000000001,
+        95.9,
+        97.70000000000002
+      ]
+    },
+    {
+      "sceneId": "proyecto",
+      "startTime": 98.9,
+      "endTime": 108.9,
+      "notes": "Ejemplo resuelto del material de la semana. Pedir el veredicto antes de ver las respuestas. Los tres criterios: quién define la especificación, quién usa el resultado y quién sostiene el sistema. El veredicto se argumenta con ellos, no con una preferencia. El riesgo final: si el consultorio vendiera el sistema a otros, habría que evaluarlo de nuevo.",
+      "fragments": [
+        101.30000000000001,
+        102.9,
+        104.50000000000001,
+        106.10000000000001,
+        107.70000000000002
+      ]
+    },
+    {
+      "sceneId": "etica",
+      "startTime": 108.9,
+      "endTime": 115.5,
+      "notes": "El software no es neutral: intervienen valores y juicios humanos. Hay comportamientos que la ley no acota y que dependen de la responsabilidad profesional: confidencialidad, competencia, propiedad intelectual y mal uso de computadoras. Pedir un ejemplo de cada uno.",
+      "fragments": [
+        111.10000000000001,
+        112.7,
+        114.30000000000001
+      ]
+    },
+    {
+      "sceneId": "codigo",
+      "startTime": 115.5,
+      "endTime": 122.7,
+      "notes": "Los ocho principios del Código de Ética y Práctica Profesional de la Ingeniería de Software, de ACM e IEEE-CS: público, cliente y empleador, producto, juicio, gestión, profesión, colegas y uno mismo. Es la Tabla 5. El interés público se ubica por encima de otros intereses.",
+      "fragments": [
+        117.9,
+        119.7,
+        121.5
+      ]
+    },
+    {
+      "sceneId": "iaresp",
+      "startTime": 122.7,
+      "endTime": 130.9,
+      "notes": "La creciente capacidad de decisión de los sistemas autónomos obliga a considerar los valores incorporados en ellos. Tres exigencias: privacidad, equidad y transparencia. Un sistema que decide sobre personas sin que nadie pueda explicar su decisión incumple el principio de transparencia.",
+      "fragments": [
+        124.9,
+        126.5,
+        128.1,
+        129.70000000000002
+      ]
+    },
+    {
+      "sceneId": "analisis",
+      "startTime": 130.9,
+      "endTime": 142.8,
+      "notes": "Ejemplo resuelto del material de la semana: un banco regional usa un modelo de IA para aprobar microcréditos. Los cinco pasos: principios en tensión, daño posible, afectados, responsable y acción. No se trata de opinar si algo está bien o mal, sino de sustentar la postura con los principios del código y las exigencias de uso responsable de la IA.",
+      "fragments": [
+        133.1,
+        134.79999999999998,
+        136.5,
+        138.2,
+        139.9,
+        141.6
+      ]
+    },
+    {
+      "sceneId": "stakeholders",
+      "startTime": 142.8,
+      "endTime": 149.8,
+      "notes": "Un stakeholder es cualquiera que se beneficia, directa o indirectamente, del sistema. Se agrupan en cinco constituencias. Además hay externos que no encajan en ellas, como reguladores y proveedores. Se identifican desde la concepción del proyecto, con preguntas libres de contexto y la técnica de bola de nieve.",
+      "fragments": [
+        145,
+        146.8,
+        148.6
+      ]
+    },
+    {
+      "sceneId": "influencia",
+      "startTime": 149.8,
+      "endTime": 159.60000000000002,
+      "notes": "Es la Tabla 6 del material de la semana. Cada cuadrante tiene una estrategia: alta influencia y alto interés, gestionar de cerca; alta influencia y bajo interés, mantener satisfecho; baja influencia y alto interés, mantener informado; baja y baja, monitorear. Preguntar antes de cada revelado dónde ubicarían al stakeholder.",
+      "fragments": [
+        152,
+        153.6,
+        155.2,
+        156.8,
+        158.4
+      ]
+    },
+    {
+      "sceneId": "vision",
+      "startTime": 159.60000000000002,
+      "endTime": 168.60000000000002,
+      "notes": "La visión responde tres preguntas: qué es el producto y en qué se diferencia, quiénes lo usan y por qué deberían usarlo. La plantilla de Geoffrey Moore la estructura en seis partes, que muestra la Tabla 7. Se completa con el ejemplo de Reserva Ya. Las nuevas funciones se evalúan contra esta visión para evitar que el producto se desvíe.",
+      "fragments": [
+        162.00000000000003,
+        163.80000000000004,
+        165.60000000000002,
+        167.40000000000003
+      ]
+    },
+    {
+      "sceneId": "practica",
+      "startTime": 168.60000000000002,
+      "endTime": 175.00000000000003,
+      "notes": "Quince minutos en parejas. Cada pareja hace el descubrimiento inicial de una plataforma de venta en línea para una asociación de productores agrícolas de Loja. Recorrer las mesas. Errores esperados: ubicar a todos en la misma constituencia, olvidar a los externos como reguladores y proveedores, y redactar una visión que no dice en qué se diferencia de la alternativa."
+    },
+    {
+      "sceneId": "actividades",
+      "startTime": 175.00000000000003,
+      "endTime": 180.20000000000002,
+      "notes": "Las consignas completas, las plantillas y las rúbricas están en Canvas. GA-1.1 vale 1 punto, PE-1.1 vale 2 y TA-1.1 vale 2. El Módulo 1 del curso ASU Inclusive Mindset se hace aparte, no tiene calificación propia y su resultado se incorpora a la nota de TA-1.1."
+    },
+    {
+      "sceneId": "cierre",
+      "startTime": 180.20000000000002,
+      "endTime": 187.4,
+      "notes": "Cerrar volviendo al script del inicio: ahora saben decir qué le faltaba. Tarea: la recuperación sin apuntes del material de la semana (ocho preguntas) y el Módulo 1 de ASU. Próxima semana: requisitos funcionales y no funcionales, y técnicas de elicitación. Fuentes: Sommerville (2011), capítulo 1; Pressman y Maxim (2020); código de ética de ACM e IEEE-CS."
+    }
+  ],
+  "slideSequences": []
+}
+    </script>
+    </hyperframes-slideshow>
+  </body>
+</html>

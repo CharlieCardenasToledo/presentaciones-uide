@@ -1,0 +1,1381 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Semana 1 · Enfoque de bases de datos</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      :root {
+        /* Colores tomados del logotipo UIDE: vino #910048 y dorado #E8A920. Sin degradados. */
+        --paper: #ffffff; --ink: #1f1a1d; --muted: #5a5257; --wine: #910048; --wine-deep: #6d0036; --gold: #e8a920;
+        --teal: #0c6b62; --teal-soft: #e3f2f0; --amber: #7a5200; --amber-soft: #fcefc9; --card: #ffffff; --line: #e2dcdf; --tint: #f6f1f3;
+      }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--paper); }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; font-family: system-ui, sans-serif; color: var(--ink); }
+      .slide { position: absolute; inset: 0; }
+      .frame { position: absolute; inset: 0; display: none; opacity: 0; background: var(--paper); transform-origin: 0 0; isolation: isolate; }
+      .dark .frame { background: var(--wine); color: #fff; }
+      .frame > :not(.logo) { position: absolute; }
+      .logo { position: absolute; top: 44px; right: 96px; height: 92px; width: auto; }
+      .dark .logo { top: 0; right: 96px; height: 150px; padding: 26px 30px 22px; background: #fff; border-radius: 0 0 18px 18px; box-sizing: border-box; }
+      .ov { left: 0; top: 0; pointer-events: none; overflow: visible; }
+      .ov path, .mlsvg path { fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; }
+
+      .w { display: inline-block; overflow: hidden; vertical-align: top; padding: 0.18em 0 0.14em; margin: -0.18em 0 -0.14em; }
+      .wi { display: inline-block; }
+      .ch { white-space: pre; }
+      .ttl { left: 120px; top: 96px; width: 1380px; font-family: ui-serif, serif; font-weight: 700; font-size: 64px; line-height: 1.1; letter-spacing: -0.01em; }
+      .ttl.long { font-size: 58px; width: 1600px; }
+      .ttl.xl { font-size: 92px; line-height: 1.08; }
+      .dark .ttl { color: #fff; }
+      .course { font-size: 36px; font-weight: 600; color: var(--gold); }
+      .lead { font-size: 46px; line-height: 1.25; color: var(--muted); }
+      .dark .lead { color: #fff; }
+      .byline { font-size: 32px; color: #f6dfe9; }
+      .punch { font-family: ui-serif, serif; font-size: 60px; font-weight: 700; color: var(--wine); }
+      .punch.soft { color: var(--ink); font-size: 46px; }
+      .punch.good { color: var(--teal); font-size: 54px; }
+      .mono { font-family: ui-monospace, monospace; }
+
+      .sheet { background: var(--tint); border-radius: 8px; overflow: hidden; }
+      .dark .sheet { background: #fff; }
+      .sh { position: relative; padding: 16px 24px; font: 700 36px ui-monospace, monospace; color: #fff; height: 70px; }
+      .sh span { position: absolute; left: 24px; top: 14px; }
+      .sr { position: relative; height: 70px; padding: 14px 24px; font-size: 38px; white-space: nowrap; }
+      .sr + .sr { border-top: 3px solid #fff; }
+      .dark .sr + .sr { border-top-color: var(--tint); }
+      .sr span { }
+      .ph .phnew { position: absolute; left: 24px; top: 14px; opacity: 0; }
+
+      /* ruta */
+      .rl { stroke: var(--wine); stroke-width: 8; }
+      .dot { width: 24px; height: 24px; border-radius: 50%; background: var(--gold); }
+      .node { width: 104px; height: 104px; border-radius: 50%; background: var(--wine); color: #fff; font-size: 52px; font-weight: 800; display: grid; place-items: center; }
+      .nl { width: 340px; text-align: center; font-size: 40px; font-weight: 700; line-height: 1.2; }
+
+      /* caso */
+      .off { font-size: 46px; font-weight: 800; color: var(--wine); }
+      .dsh { height: 0; border-top: 8px dashed var(--amber); }
+      .xm { width: 70px; height: 70px; }
+      .xm::before, .xm::after { content: ""; position: absolute; left: 0; top: 31px; width: 70px; height: 9px; border-radius: 5px; background: #c0392b; }
+      .xm::before { transform: rotate(45deg); } .xm::after { transform: rotate(-45deg); }
+
+      /* versiones */
+      .th { left: 0; top: 300px; width: 1920px; height: 70px; }
+      .th::before { content: ""; position: absolute; left: 120px; width: 1640px; top: 0; height: 70px; background: var(--wine-deep); border-radius: 14px; }
+      .th .cl { color: #fff; font-size: 34px; font-weight: 700; letter-spacing: 0.1em; height: 70px; line-height: 70px; padding-left: 28px; }
+      .tr { left: 0; width: 1920px; height: 86px; }
+      .tr::before { content: ""; position: absolute; left: 120px; width: 1640px; top: 0; height: 86px; background: var(--tint); border-radius: 14px; }
+      .cl { position: absolute; top: 0; height: 86px; line-height: 86px; font-size: 40px; padding-left: 28px; white-space: nowrap; }
+      .cl.b { font-size: 40px; font-weight: 600; }
+      .hb { background: #fbd77a; mix-blend-mode: multiply; border-radius: 12px; }
+      .ld { stroke: var(--amber); stroke-width: 5; }
+      .pt { width: 18px; height: 18px; border-radius: 50%; background: var(--amber); }
+      .co { width: 520px; text-align: center; font-size: 40px; font-weight: 800; color: var(--amber); background: var(--amber-soft); border-radius: 8px; padding: 14px 0; }
+
+      /* marco */
+      .lk { height: 0; border-top: 8px dashed var(--teal); }
+      .qm { width: 60px; height: 60px; border-radius: 50%; background: var(--amber); color: #fff; font-size: 44px; font-weight: 800; display: grid; place-items: center; }
+      .mag { width: 100px; height: 100px; border-radius: 50%; border: 14px solid var(--gold); }
+      .mag::after { content: ""; position: absolute; left: 78px; top: 78px; width: 14px; height: 60px; border-radius: 7px; background: var(--gold); transform: rotate(-45deg); transform-origin: 7px 0; }
+      .chipx { font-size: 40px; font-weight: 800; color: var(--amber); background: var(--amber-soft); border-radius: 8px; padding: 12px 34px; }
+
+      /* causa */
+      .ul { position: relative; display: inline-block; font-weight: 800; color: var(--gold); }
+      .ub { position: absolute; left: 0; bottom: -6px; width: 100%; height: 6px; background: var(--gold); border-radius: 3px; }
+      .isl { width: 300px; height: 300px; border-radius: 50%; background: var(--wine-deep); border: 6px solid var(--gold); color: #fff; font-size: 44px; font-weight: 800; display: grid; place-items: center; }
+
+      iframe.fig { width: 1690px; height: 780px; border: 0; background: transparent; }
+
+      /* definiciones */
+      .sc { width: 380px; height: 76px; border-radius: 6px; background: var(--tint); color: #8a7f85; font-size: 40px; font-weight: 800; line-height: 76px; text-align: center; white-space: pre; }
+      .gl { stroke: var(--gold); stroke-width: 8; }
+      .bp { background: var(--tint); border-radius: 18px; overflow: hidden; }
+      .bh { position: absolute; top: 0; height: 80px; background: var(--wine-deep); color: #fff; font: 700 38px/80px ui-monospace, monospace; padding-left: 28px; }
+      .br { position: absolute; left: 0; width: 1000px; height: 80px; }
+      .br + .br { border-top: 3px solid #fff; }
+      .br .cl { height: 80px; line-height: 80px; font-size: 40px; }
+      .edit .oldn, .edit .newn { position: absolute; left: 28px; }
+      .edit .newn { opacity: 0; font-weight: 800; color: var(--teal); }
+      .usr { width: 120px; height: 120px; border-radius: 50%; background: var(--teal); display: grid; place-items: center; }
+      .ulp { stroke: var(--teal); stroke-width: 6; }
+
+      /* caracteristicas */
+      .qd { left: 120px; top: 300px; width: 1680px; height: 620px; }
+      .qd > * { position: absolute; }
+      .mo { left: 0; top: 30px; width: 320px; height: 300px; transform: scale(1.7); transform-origin: 0 0; }
+      .mo > * { position: absolute; }
+      .tx { left: 700px; top: 40px; width: 1000px; }
+      .tx strong { display: block; font-size: 60px; line-height: 1.12; font-weight: 800; }
+      .tx em { display: block; margin-top: 12px; font-style: normal; font-size: 44px; line-height: 1.2; color: var(--muted); }
+      .ex { display: block; margin-top: 36px; font-size: 40px; line-height: 1.25; font-weight: 600; color: var(--wine); }
+      .cb { width: 94px; height: 48px; background: #e4d6dc; border-radius: 8px; }
+      .fi { background: var(--wine); color: #fff; font: 700 20px/1 ui-monospace, monospace; padding: 10px 14px; border-radius: 12px; white-space: nowrap; }
+      .bk { width: 120px; height: 120px; border-radius: 16px; color: #fff; font-style: normal; font-weight: 800; font-size: 20px; display: grid; place-items: center; }
+      .bk.app { background: var(--wine); } .bk.data { background: var(--teal); width: 110px; }
+      .nc { font-size: 21px; font-weight: 800; color: var(--teal); white-space: nowrap; }
+      .fl { font-size: 21px; font-weight: 800; color: var(--muted); white-space: nowrap; }
+      .ask { font-family: ui-serif, serif; font-style: italic; font-size: 48px; font-weight: 700; color: var(--wine); }
+      .capt { font-size: 44px; font-weight: 600; }
+      .capt b { color: var(--amber); }
+      .wall { width: 0; height: 200px; border-left: 6px dashed var(--amber); }
+      .ext { width: 30px; height: 120px; background: #5fbfb3; border-radius: 8px; }
+      .g4 { width: 64px; height: 54px; background: #e4d6dc; border-radius: 8px; }
+      .fa, .fb { height: 276px; border: 6px solid var(--gold); border-radius: 14px; top: -6px; }
+      .fa { left: -6px; width: 154px; } .fb { left: 146px; width: 160px; border-color: var(--teal); }
+      .hub { left: 110px; top: 100px; width: 100px; height: 100px; background: var(--teal); border-radius: 16px; }
+      .uc { width: 70px; height: 70px; border-radius: 50%; background: var(--wine); }
+      .ml { stroke: var(--teal); stroke-width: 5; }
+      .mlsvg { left: 0; top: 0; }
+      .pu { width: 20px; height: 20px; border-radius: 50%; background: var(--gold); }
+
+      /* catalogo */
+      .pb { width: 640px; height: 160px; background: var(--tint); border-radius: 8px; }
+      .pl { font-size: 40px; font-weight: 800; }
+      .q2 { font-size: 40px; color: var(--muted); }
+      .dc { font-size: 40px; font-weight: 700; color: var(--amber); background: var(--amber-soft); border-radius: 8px; padding: 10px 26px; white-space: nowrap; }
+      .dbms { width: 650px; height: 550px; background: var(--teal-soft); border-radius: 8px; }
+      .dbms > * { position: absolute; }
+      .dt { left: 30px; top: 18px; font-size: 40px; font-weight: 800; color: var(--teal); }
+      .cat { left: 30px; top: 90px; width: 590px; height: 240px; background: var(--teal); border-radius: 16px; color: #fff; font-size: 40px; font-weight: 800; padding: 20px 26px; }
+      .dat { left: 30px; top: 370px; width: 590px; height: 130px; background: #084a44; border-radius: 16px; color: #fff; font-size: 44px; font-weight: 800; display: grid; place-items: center; }
+      .ln { stroke: var(--teal); stroke-width: 6; }
+
+      /* anomalias */
+      .z { top: 330px; width: 520px; height: 700px; }
+      .z > * { position: absolute; }
+      .zl { left: 0; top: 0; font-family: ui-serif, serif; font-size: 48px; font-weight: 800; color: var(--amber); }
+      .zd { left: 0; top: 76px; width: 500px; font-size: 40px; line-height: 1.2; color: var(--muted); }
+      .cp { left: 0; width: 440px; background: var(--amber-soft); color: var(--amber); font: 800 38px/1 ui-monospace, monospace; padding: 24px 24px; border-radius: 8px; white-space: nowrap; }
+      .cnt { width: 110px; height: 110px; border-radius: 50%; background: var(--wine); color: #fff; font-size: 56px; font-weight: 800; display: grid; place-items: center; }
+      .ne { font-size: 170px; font-weight: 800; color: #c0392b; line-height: 1; }
+      .bp1, .bp2 { width: 0; height: 30px; border-left: 6px dashed var(--amber); }
+
+      /* matriz */
+      .mh { left: 0; top: 330px; width: 1920px; height: 70px; }
+      .mh::before { content: ""; position: absolute; left: 120px; width: 1680px; height: 70px; background: var(--wine-deep); border-radius: 14px; }
+      .mh span { position: absolute; top: 0; height: 70px; line-height: 70px; color: #fff; font-size: 34px; font-weight: 700; letter-spacing: 0.1em; }
+      .mr { left: 0; width: 1920px; height: 100px; }
+      .mr::before { content: ""; position: absolute; left: 120px; width: 1680px; height: 100px; background: var(--tint); border-radius: 14px; }
+      .mr span { position: absolute; top: 0; height: 100px; line-height: 100px; font-size: 38px; }
+      .mr .an { left: 140px; top: 20px; height: 60px; line-height: 60px; padding: 0 22px; background: var(--amber-soft); color: var(--amber); font-weight: 800; border-radius: 8px; font-size: 36px; }
+      .mr .ev { left: 560px; }
+      .mr .cq { left: 1150px; font-weight: 800; color: var(--wine); font-size: 36px; }
+      .ar { stroke: var(--wine); stroke-width: 6; }
+
+      /* esquema unificado */
+      .hold, .hnew { }
+      .hnew { opacity: 0; }
+      .sb { width: 1680px; height: 96px; background: var(--wine-deep); color: #fff; border-radius: 18px; font: 700 46px/96px ui-monospace, monospace; padding-left: 36px; }
+      .pg { height: 88px; background: var(--tint); border-radius: 16px; font: 700 42px/88px ui-monospace, monospace; padding-left: 32px; }
+      .sb u, .pg u { text-decoration-thickness: 5px; text-underline-offset: 8px; }
+      .lk { stroke: var(--teal); stroke-width: 6; }
+      path.lk { border: 0; height: auto; }
+      .pd { left: -11px; top: -11px; width: 22px; height: 22px; border-radius: 50%; background: var(--gold); opacity: 0; }
+
+      /* practica */
+      .vl { width: 8px; background: var(--wine); border-radius: 4px; }
+      .vn { width: 64px; height: 64px; border-radius: 50%; background: var(--wine); color: #fff; font-size: 36px; font-weight: 800; display: grid; place-items: center; }
+      .vt { font-size: 44px; font-weight: 600; }
+
+      /* costos */
+      .post { left: 740px; top: 480px; width: 440px; height: 440px; }
+      .stem { position: absolute; left: 200px; top: 0; width: 40px; height: 400px; background: #b9aab1; }
+      .bs { position: absolute; left: 0; top: 400px; width: 440px; height: 40px; border-radius: 10px; background: #b9aab1; }
+      .beam { width: 1000px; height: 20px; background: var(--wine); border-radius: 10px; }
+      .pan { position: absolute; top: 20px; width: 680px; height: 400px; transform-origin: 340px -60px; }
+      .pan.pl { left: -340px; } .pan.pr { left: 660px; }
+      .pan svg { position: absolute; left: 0; top: 0; }
+      .rod { position: absolute; left: 337px; top: -60px; width: 6px; height: 60px; background: #8a7f85; }
+      .tray { position: absolute; left: 0; top: 204px; width: 680px; height: 28px; background: var(--wine-deep); border-radius: 13px; }
+      .w4 { position: absolute; width: 330px; height: 100px; background: var(--amber-soft); color: var(--amber); font-size: 38px; font-weight: 800; line-height: 1.05; display: grid; place-items: center; text-align: center; border-radius: 14px; z-index: 2; }
+      .bw { position: absolute; left: 20px; top: 90px; width: 640px; height: 100px; background: var(--teal); color: #fff; font-size: 42px; font-weight: 800; display: grid; place-items: center; border-radius: 14px; z-index: 2; }
+      .pan.pr .w4 { }
+
+      /* modelos */
+      .sbar { width: 10px; height: 110px; background: var(--wine); border-radius: 5px; }
+      .st { width: 640px; }
+      .st b { display: block; font-family: ui-serif, serif; font-size: 52px; color: #8a7f85; }
+      .st em { display: block; font-style: normal; font-size: 38px; color: var(--muted); margin-top: 6px; }
+      .g { width: 980px; height: 640px; }
+      .tth { height: 70px; border-radius: 14px; color: #fff; font: 800 40px/70px ui-monospace, monospace; padding-left: 28px; }
+      .fld { width: 290px; height: 64px; border-radius: 8px; background: var(--tint); color: var(--ink); font-size: 38px; font-weight: 700; display: grid; place-items: center; }
+      .drw { width: 900px; height: 64px; background: var(--tint); border-radius: 8px; }
+      .drw span { position: absolute; top: 0; width: 300px; padding-left: 20px; font: 600 34px/64px ui-monospace, monospace; white-space: nowrap; }
+      .by { text-align: center; font-size: 36px; color: var(--muted); }
+      .hx { width: 280px; height: 64px; background: #e4d6dc; border-radius: 8px; color: var(--muted); font: 700 36px/64px ui-monospace, monospace; text-align: center; }
+      .pgbar { height: 56px; background: var(--teal-soft); color: var(--teal); font-size: 38px; font-weight: 800; line-height: 56px; text-align: center; border-radius: 14px; }
+      .mcap { font-size: 42px; font-weight: 700; line-height: 1.2; color: var(--wine); }
+      .g > * { position: absolute; }
+      .ent { height: 110px; border-radius: 16px; color: #fff; font-size: 40px; font-weight: 800; display: grid; place-items: center; }
+      .ent.rel { width: 150px; height: 130px; background: var(--gold); color: var(--ink); font-size: 34px; border-radius: 0; clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); }
+      .ent.pill { height: 64px; background: var(--tint); color: var(--ink); font-size: 38px; border-radius: 8px; }
+      .rl2 { stroke: var(--wine); stroke-width: 6; }
+      .tb { background: var(--tint); border-radius: 18px; overflow: hidden; }
+      .tbh { color: #fff; font: 800 40px/1 ui-monospace, monospace; padding: 16px 26px; }
+      .tbr { font: 600 36px/1 ui-monospace, monospace; padding: 16px 26px; border-top: 3px solid #fff; }
+      .pg2 { width: 200px; height: 120px; background: #e4d6dc; border-radius: 12px; color: var(--muted); font: 700 34px/120px ui-monospace, monospace; text-align: center; }
+      .cap { font-size: 44px; font-weight: 800; color: var(--wine); }
+
+      /* esquema y estado */
+      .schl { font-size: 36px; font-weight: 800; letter-spacing: 0.14em; color: var(--muted); }
+      .sch { width: 1680px; height: 110px; background: var(--wine-deep); color: #fff; border-radius: 18px; font: 700 52px/110px ui-monospace, monospace; padding-left: 40px; }
+      .cnt2 { font-size: 40px; font-weight: 800; color: var(--teal); }
+      .sw { position: relative; display: inline-block; width: 220px; height: 50px; vertical-align: bottom; }
+      .sw span { position: absolute; left: 0; top: 0; }
+      .cnt2 .n3 { opacity: 0; }
+      .sth, .sr2, .nr { left: 0; width: 1920px; height: 80px; }
+      .sth .cl { height: 70px; line-height: 70px; font-size: 34px; font-weight: 700; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; }
+      .sr2::before, .nr::before { content: ""; position: absolute; left: 120px; width: 1680px; height: 80px; background: var(--tint); border-radius: 14px; }
+      .nr::before { background: var(--teal-soft); }
+      .sr2 .cl, .nr .cl { height: 80px; line-height: 80px; }
+
+      /* evolucion */
+      .trk { left: 0; top: 0; width: 3600px; height: 1080px; }
+      .trk > * { position: absolute; }
+      .trl { height: 8px; background: var(--wine); border-radius: 4px; }
+      .nd { top: 300px; width: 540px; height: 600px; text-align: center; }
+      .nd > * { position: absolute; left: 0; width: 540px; }
+      .yr { top: 0; font-family: ui-serif, serif; font-size: 100px; font-weight: 800; color: var(--wine); font-variant-numeric: tabular-nums; }
+      .gl2 { left: 190px; top: 180px; width: 160px; height: 160px; border-radius: 50%; background: var(--wine); display: grid; place-items: center; }
+      .nd .gl2 { width: 160px; }
+      .nm { top: 380px; font-size: 48px; font-weight: 800; }
+      .ds { top: 450px; font-size: 38px; color: var(--muted); }
+
+      /* decision */
+      .sit { width: 520px; height: 190px; background: var(--tint); border-radius: 8px; padding: 22px 28px; }
+      .sit strong { display: block; font-size: 40px; line-height: 1.12; font-weight: 800; padding-left: 70px; }
+      .bd { position: absolute; left: 24px; top: 22px; width: 52px; height: 52px; border-radius: 50%; background: var(--wine); color: #fff; font-size: 32px; font-weight: 800; display: grid; place-items: center; }
+      .rs { position: absolute; left: 28px; bottom: 18px; font-style: normal; font-size: 38px; font-weight: 800; color: var(--amber); }
+      .rs.good { color: var(--teal); }
+      .bin { background: var(--teal-soft); border-radius: 8px; }
+      .bin.am { background: var(--amber-soft); }
+      .bin span { position: absolute; left: 30px; top: 14px; font-size: 44px; font-weight: 800; }
+
+      /* actividades */
+      .tk { width: 760px; height: 520px; background: var(--tint); border-radius: 8px; }
+      .tk > * { position: absolute; }
+      .tg { left: 50px; top: 40px; font-size: 44px; font-weight: 800; color: var(--wine); }
+      .tt { left: 50px; top: 120px; width: 660px; font-family: ui-serif, serif; font-size: 56px; font-weight: 700; line-height: 1.1; }
+      .td { left: 50px; top: 270px; width: 660px; font-size: 40px; color: var(--muted); line-height: 1.2; }
+      .tp { left: 520px; top: 480px; width: 180px; text-align: center; font-size: 38px; font-weight: 700; color: var(--muted); }
+      .ringsvg { left: 520px; top: 310px; }
+      .rg { fill: none; stroke: var(--wine); stroke-width: 14; stroke-linecap: round; stroke-dasharray: 1; }
+      .pn { left: 520px; top: 352px; width: 180px; text-align: center; font-size: 84px; font-weight: 800; color: var(--wine); line-height: 1; }
+      .src { font-size: 40px; color: var(--muted); }
+
+      /* cierre */
+      .phc { width: 380px; height: 100px; background: #fff; color: var(--ink); border-radius: 18px; font: 800 48px/100px ui-monospace, monospace; text-align: center; }
+      .ne2 { width: 160px; text-align: center; font-size: 150px; font-weight: 800; color: var(--gold); line-height: 1; }
+</style>
+  </head>
+  <body>
+    <script type="application/hyperframes-slideshow+json">
+{
+  "slides": [
+    {
+      "sceneId": "portada",
+      "startTime": 0,
+      "endTime": 5.6,
+      "notes": "Abrir con una pregunta a la clase: ¿en cuántos lugares está guardado hoy su número de teléfono dentro de la universidad? Anotar dos o tres respuestas en la pizarra. No definir nada todavía: la clase empieza por el problema."
+    },
+    {
+      "sceneId": "caso",
+      "startTime": 5.6,
+      "endTime": 14.6,
+      "notes": "Revelar las oficinas una por una y preguntar qué datos del estudiante necesita cada una. La última línea es la clave: nadie coordinó. Pedir que abran la Tabla 1 del material de la semana.",
+      "fragments": [
+        7.8,
+        9.2,
+        10.6,
+        12,
+        13.399999999999999
+      ]
+    },
+    {
+      "sceneId": "versiones",
+      "startTime": 14.6,
+      "endTime": 22.7,
+      "notes": "Dejar la tabla sola un minuto y pedir que busquen diferencias antes de avanzar. Luego revelar: primero la cédula (leerla dígito a dígito), después el nombre, al final el teléfono. Preguntar: ¿a cuál número llamarían?",
+      "fragments": [
+        17,
+        18.5,
+        20,
+        21.5
+      ]
+    },
+    {
+      "sceneId": "marco",
+      "startTime": 22.7,
+      "endTime": 30.1,
+      "notes": "Plantear la consulta como un trámite real: Marco pide un certificado y Tesorería debe confirmar que no adeuda libros. Dejar que la clase descubra que la ausencia de fila no prueba nada. Aún no usar el término aislamiento de datos.",
+      "fragments": [
+        25.7,
+        27.3,
+        28.9
+      ]
+    },
+    {
+      "sceneId": "causa",
+      "startTime": 30.1,
+      "endTime": 35.7,
+      "notes": "Diapositiva de transición. Aquí se pone el primer nombre técnico: procesamiento de archivos. Cada aplicación mantiene archivos propios, con una estructura que solo ella conoce."
+    },
+    {
+      "sceneId": "unificar",
+      "startTime": 35.7,
+      "endTime": 39.900000000000006,
+      "notes": "Figura interactiva. Al entrar se ven los tres archivadores, cada uno con su ficha de Ana Rivas: tres copias y dos teléfonos distintos. Preguntar qué pasaría si Ana cambia de número. Al avanzar, las tres fichas se juntan en una sola dentro del armario de la base de datos. Señalar la gaveta superior: es el catálogo, que se explica más adelante. También se puede hacer clic sobre la figura para repetir el movimiento.",
+      "fragments": [
+        37.7,
+        38.7
+      ]
+    },
+    {
+      "sceneId": "definiciones",
+      "startTime": 39.900000000000006,
+      "endTime": 49.900000000000006,
+      "notes": "Leer la definición y subrayar tres ideas: datos relacionados, coherencia lógica y propósito definido. Revelar las cuatro funciones una por una con un ejemplo del instituto para cada una. DBMS: Database Management System. Fuente: Elmasri y Navathe (2016), sección 1.1.",
+      "fragments": [
+        42.300000000000004,
+        43.900000000000006,
+        45.50000000000001,
+        47.10000000000001,
+        48.7
+      ]
+    },
+    {
+      "sceneId": "caracteristicas",
+      "startTime": 49.900000000000006,
+      "endTime": 60.50000000000001,
+      "notes": "Revelar una característica por clic. En la segunda, aclarar que el libro la llama también independencia entre programas y datos, y que aplica en la mayoría de los casos. Conectar cada una con un fallo del instituto.",
+      "fragments": [
+        52.10000000000001,
+        53.900000000000006,
+        55.70000000000001,
+        57.50000000000001,
+        59.30000000000001
+      ]
+    },
+    {
+      "sceneId": "catalogo",
+      "startTime": 60.50000000000001,
+      "endTime": 66.30000000000001,
+      "notes": "Comparar los dos lados. A la izquierda, cambiar un campo obliga a tocar cada programa. A la derecha, la descripción está una sola vez, en el catálogo, y se llama metadatos. Preguntar: ¿qué pasa si el instituto agrega un segundo teléfono?",
+      "fragments": [
+        62.900000000000006,
+        65.10000000000001
+      ]
+    },
+    {
+      "sceneId": "autodescriptivo",
+      "startTime": 66.30000000000001,
+      "endTime": 71.50000000000001,
+      "notes": "Figura interactiva en tres pasos. Al entrar: llega una consulta sobre Ana a la terminal, que representa al programa. Primer avance: se abre la gaveta superior, la del catálogo, y sale la ficha que describe la tabla ESTUDIANTE, con una casilla por campo; queda a la vista en el atril. Segundo avance: recién entonces se abre la gaveta de datos con la ficha de Ana. Idea a fijar: el programa no trae la definición de los datos; el DBMS la lee de su catálogo. Preguntar qué habría que cambiar si se agrega un segundo teléfono: solo la ficha del catálogo. Un clic sobre la figura también avanza un paso.",
+      "fragments": [
+        68.30000000000001,
+        69.30000000000001,
+        70.30000000000001
+      ]
+    },
+    {
+      "sceneId": "anomalias",
+      "startTime": 71.50000000000001,
+      "endTime": 79.70000000000002,
+      "notes": "Ahora sí los nombres técnicos de lo que encontraron. Redundancia y sus tres consecuencias: duplicación de esfuerzo, desperdicio de espacio e inconsistencia. Aislamiento de datos es el nombre que usa el curso; Elmasri describe la situación sin nombrarla. No confundir con el aislamiento entre programas y datos, que es una ventaja.",
+      "fragments": [
+        73.70000000000002,
+        75.30000000000001,
+        76.90000000000002,
+        78.50000000000001
+      ]
+    },
+    {
+      "sceneId": "matriz",
+      "startTime": 79.70000000000002,
+      "endTime": 87.60000000000002,
+      "notes": "Es el formato que entregan en PE-1.1. Revelar fila por fila y pedir que la clase proponga la consecuencia antes de mostrarla. Regla: la consecuencia nombra una oficina y un efecto, no una opinión. Es la Tabla 3 del material de la semana.",
+      "fragments": [
+        81.90000000000002,
+        83.40000000000002,
+        84.90000000000002,
+        86.40000000000002
+      ]
+    },
+    {
+      "sceneId": "esquema-unificado",
+      "startTime": 87.60000000000002,
+      "endTime": 95.40000000000002,
+      "notes": "Paso 5 del ejemplo resuelto. Un esquema describe la estructura: nombre de la tabla y sus campos. Los pagos y los préstamos ya no repiten los datos del estudiante: solo guardan la cédula para relacionarse. Cerrar con el contraste: de tres ediciones a una.",
+      "fragments": [
+        90.60000000000002,
+        92.40000000000002,
+        94.20000000000002
+      ]
+    },
+    {
+      "sceneId": "practica",
+      "startTime": 95.40000000000002,
+      "endTime": 101.80000000000003,
+      "notes": "Quince minutos en parejas con la Tabla 4 del material de la semana (archivos de la ferretería). Recorrer las mesas. Errores esperados: marcar a Pinturas Andinas como inconsistente, cuando solo es redundante, y olvidar que un campo vacío también es un valor distinto. Cerrar comparando con la comprobación del material de la semana."
+    },
+    {
+      "sceneId": "costos",
+      "startTime": 101.80000000000003,
+      "endTime": 112.60000000000002,
+      "notes": "Un DBMS exige inversión inicial y añade sobrecarga por seguridad, concurrencia y recuperación. Revelar las cuatro circunstancias de Elmasri (sección 1.8) y pedir un ejemplo de cada una.",
+      "fragments": [
+        104.20000000000003,
+        106.00000000000003,
+        107.80000000000003,
+        109.60000000000004,
+        111.40000000000003
+      ]
+    },
+    {
+      "sceneId": "modelos",
+      "startTime": 112.60000000000002,
+      "endTime": 120.80000000000003,
+      "notes": "El catálogo necesita un vocabulario: eso es el modelo de datos. Tres categorías según el tipo de conceptos. El modelo entidad-relación se estudia desde la semana 3; el relacional es el que usarán para implementar.",
+      "fragments": [
+        114.80000000000003,
+        116.40000000000002,
+        118.00000000000003,
+        119.60000000000002
+      ]
+    },
+    {
+      "sceneId": "esquema-estado",
+      "startTime": 120.80000000000003,
+      "endTime": 127.60000000000002,
+      "notes": "Preguntar antes de avanzar: si se matricula un estudiante nuevo, ¿qué cambia? Revelar la fila nueva y después la conclusión. El esquema se define en el diseño y no se espera que cambie con frecuencia.",
+      "fragments": [
+        123.20000000000003,
+        124.80000000000003,
+        126.40000000000003
+      ]
+    },
+    {
+      "sceneId": "evolucion",
+      "startTime": 127.60000000000002,
+      "endTime": 138.50000000000003,
+      "notes": "No memorizar fechas: la idea es que cada etapa responde a una necesidad que la anterior no cubría, y que varias conviven hoy. Conectar con TA-1.1, que pide argumentar la transición de archivos a bases de datos. Es la Tabla 5 del material de la semana.",
+      "fragments": [
+        129.8,
+        131.3,
+        132.8,
+        134.3,
+        135.8,
+        137.3
+      ]
+    },
+    {
+      "sceneId": "decision",
+      "startTime": 138.50000000000003,
+      "endTime": 146.60000000000002,
+      "notes": "Votación a mano alzada antes de cada revelado. A: cooperativa con cuatro agencias, conviene DBMS. B: sensor embebido, no conviene. C: lista personal, no hace falta. Pedir que justifiquen con un criterio técnico por su nombre.",
+      "fragments": [
+        140.90000000000003,
+        142.40000000000003,
+        143.90000000000003,
+        145.40000000000003
+      ]
+    },
+    {
+      "sceneId": "actividades",
+      "startTime": 146.60000000000002,
+      "endTime": 151.8,
+      "notes": "Las consignas completas, las plantillas y las rúbricas están en Canvas. PE-1.1 usa los mismos cinco pasos de la práctica de hoy sobre el caso ILE. TA-1.1 es un ensayo individual. Cada una vale 2 puntos."
+    },
+    {
+      "sceneId": "cierre",
+      "startTime": 151.8,
+      "endTime": 159,
+      "notes": "Cerrar volviendo a la pregunta inicial sobre el número de teléfono. Tarea para casa: la recuperación sin apuntes del material de la semana (siete preguntas). Próxima semana: esquemas y arquitectura de tres esquemas. Fuente: Elmasri y Navathe (2016), capítulo 1 y sección 2.1; ASU IFT 200, Module 1."
+    }
+  ],
+  "slideSequences": []
+}
+    </script>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="159" data-width="1920" data-height="1080">
+
+      <section id="portada" class="clip slide dark" data-start="0" data-duration="5.6" data-track-index="0" data-label="Portada" data-frags="0" data-enter="2.8" data-step="1">
+        <div class="frame" id="portada-frame" style="display:block">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <p class="course" style="left:120px;top:240px">CC05A_IFT200 · Semana 1</p>
+      <h1 class="ttl xl" style="top:300px;width:1000px">Guardar el mismo dato en varios archivos tiene un costo</h1>
+      <p class="lead" style="left:120px;top:770px;width:1000px">Enfoque de bases de datos, modelos de datos, esquemas y DBMS</p>
+      <p class="byline" style="left:120px;top:940px">Estructura, modelado, almacenamiento de BDD · Charlie Cárdenas Toledo</p>
+      <div class="sheet " data-layout-allow-overlap style="left:1070px;top:250px;width:500px"><div class="sh" data-layout-allow-overlap style="background:var(--wine-deep)">Matriculas.xlsx</div><div class="sr mono " data-layout-allow-overlap>1104567890</div><div class="sr  " data-layout-allow-overlap>Ana Lucía Rivas Vega</div><div class="sr  " data-layout-allow-overlap>0991234567</div></div><div class="sheet " data-layout-allow-overlap style="left:1190px;top:380px;width:500px"><div class="sh" data-layout-allow-overlap style="background:var(--teal)">Pagos.xlsx</div><div class="sr mono " data-layout-allow-overlap>1104567890</div><div class="sr  " data-layout-allow-overlap>Ana L. Rivas</div><div class="sr  " data-layout-allow-overlap>0991234567</div></div><div class="sheet " data-layout-allow-overlap style="left:1310px;top:510px;width:500px"><div class="sh" data-layout-allow-overlap style="background:var(--amber)">Prestamos.xlsx</div><div class="sr mono " data-layout-allow-overlap>1104567809</div><div class="sr  " data-layout-allow-overlap>Ana Rivas Vega</div><div class="sr  " data-layout-allow-overlap>0987654321</div></div>
+        </div>
+      </section>
+
+      <section id="caso" class="clip slide" data-start="5.6" data-duration="9" data-track-index="0" data-label="El caso del instituto" data-frags="4" data-enter="2.2" data-step="1.4">
+        <div class="frame" id="caso-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Un instituto guarda a sus estudiantes en tres archivos distintos</h1>
+      <p class="off" style="left:120px;top:350px">Secretaría</p><p class="off" style="left:710px;top:350px">Tesorería</p><p class="off" style="left:1300px;top:350px">Biblioteca</p>
+      <div class="sheet cs" data-layout-allow-overlap style="left:120px;top:430px;width:500px"><div class="sh" data-layout-allow-overlap style="background:var(--wine-deep)">Matriculas.xlsx</div><div class="sr mono " data-layout-allow-overlap>1104567890</div><div class="sr  " data-layout-allow-overlap>Ana Lucía Rivas Vega</div><div class="sr  " data-layout-allow-overlap>0991234567</div></div><div class="sheet cs" data-layout-allow-overlap style="left:710px;top:430px;width:500px"><div class="sh" data-layout-allow-overlap style="background:var(--teal)">Pagos.xlsx</div><div class="sr mono " data-layout-allow-overlap>1104567890</div><div class="sr  " data-layout-allow-overlap>Ana L. Rivas</div><div class="sr  " data-layout-allow-overlap>0991234567</div></div><div class="sheet cs" data-layout-allow-overlap style="left:1300px;top:430px;width:500px"><div class="sh" data-layout-allow-overlap style="background:var(--amber)">Prestamos.xlsx</div><div class="sr mono " data-layout-allow-overlap>1104567809</div><div class="sr  " data-layout-allow-overlap>Ana Rivas Vega</div><div class="sr  " data-layout-allow-overlap>0987654321</div></div>
+      <div class="dsh" style="left:630px;top:566px;width:70px"></div>
+      <div class="dsh" style="left:1220px;top:566px;width:70px"></div>
+      <div class="xm" style="left:630px;top:535px"></div>
+      <div class="xm" style="left:1220px;top:535px"></div>
+      <p class="punch" style="left:120px;top:860px;width:1680px">Cada oficina creó su archivo sin consultar a las otras.</p>
+        </div>
+      </section>
+
+      <section id="versiones" class="clip slide" data-start="14.6" data-duration="8.1" data-track-index="0" data-label="Tres versiones de Ana" data-frags="3" data-enter="2.4" data-step="1.5">
+        <div class="frame" id="versiones-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">La misma estudiante tiene tres versiones de sus datos</h1>
+      <div class="th"><span class="cl " style="left:120px;width:400px">ARCHIVO</span><span class="cl " style="left:520px;width:340px">CÉDULA</span><span class="cl " style="left:860px;width:540px">NOMBRE</span><span class="cl " style="left:1400px;width:360px">TELÉFONO</span></div>
+      <div class="tr" style="top:380px"><span class="cl b" style="left:120px;width:400px">Matriculas.xlsx</span><span class="cl mono" style="left:520px;width:340px">1104567890</span><span class="cl " style="left:860px;width:540px">Ana Lucía Rivas Vega</span><span class="cl mono" style="left:1400px;width:360px">0991234567</span></div><div class="tr" style="top:470px"><span class="cl b" style="left:120px;width:400px">Pagos.xlsx</span><span class="cl mono" style="left:520px;width:340px">1104567890</span><span class="cl " style="left:860px;width:540px">Ana L. Rivas</span><span class="cl mono" style="left:1400px;width:360px">0991234567</span></div><div class="tr" style="top:560px"><span class="cl b" style="left:120px;width:400px">Prestamos.xlsx</span><span class="cl mono" style="left:520px;width:340px">1104567809</span><span class="cl " style="left:860px;width:540px">Ana Rivas Vega</span><span class="cl mono" style="left:1400px;width:360px">0987654321</span></div>
+      <i class="hb" data-k="1" style="left:520px;top:560px;width:340px;height:86px"></i>
+      <i class="hb" data-k="2" style="left:860px;top:380px;width:540px;height:86px"></i><i class="hb" data-k="2" style="left:860px;top:470px;width:540px;height:86px"></i><i class="hb" data-k="2" style="left:860px;top:560px;width:540px;height:86px"></i>
+      <i class="hb" data-k="3" style="left:1400px;top:560px;width:360px;height:86px"></i>
+      <svg class="ov" viewBox="0 0 1920 1080" width="1920" height="1080"><path class="ld" data-k="1" d="M380 740L690 648" pathLength="1"/><path class="ld" data-k="2" d="M960 740L1130 648" pathLength="1"/><path class="ld" data-k="3" d="M1540 740L1580 648" pathLength="1"/></svg>
+      <i class="pt" data-k="1" style="left:681px;top:637px"></i><i class="pt" data-k="2" style="left:1121px;top:637px"></i><i class="pt" data-k="3" style="left:1571px;top:637px"></i>
+      <p class="co" data-k="1" style="left:120px;top:740px">Dígitos invertidos</p>
+      <p class="co" data-k="2" style="left:700px;top:740px">Tres formas del nombre</p>
+      <p class="co" data-k="3" style="left:1280px;top:740px">Teléfonos distintos</p>
+      <p class="ask" style="left:120px;top:760px">¿Qué diferencias encuentran entre las tres filas?</p>
+        </div>
+      </section>
+
+      <section id="marco" class="clip slide" data-start="22.7" data-duration="7.4" data-track-index="0" data-label="La consulta imposible" data-frags="2" data-enter="3" data-step="1.6">
+        <div class="frame" id="marco-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Tesorería no puede saber si Marco adeuda libros</h1>
+      <div class="sheet sp" data-layout-allow-overlap style="left:120px;top:330px;width:700px"><div class="sh" data-layout-allow-overlap style="background:var(--teal)">Pagos.xlsx</div><div class="sr mono " data-layout-allow-overlap>1105551234</div><div class="sr  " data-layout-allow-overlap>Marco Paredes</div><div class="sr  " data-layout-allow-overlap>Certificado pendiente</div></div>
+      <div class="sheet sq" data-layout-allow-overlap style="left:1000px;top:330px;width:800px"><div class="sh" data-layout-allow-overlap style="background:var(--amber)">Prestamos.xlsx</div><div class="sr mono pr" data-layout-allow-overlap>1104567890 · Ana Rivas Vega</div><div class="sr  pr" data-layout-allow-overlap>1103336780 · Luis Ortega</div><div class="sr  pr" data-layout-allow-overlap>1102224455 · Carla Mena</div><div class="sr  pr" data-layout-allow-overlap>1105559999 · Pedro Salinas</div></div>
+      <div class="lk lk1" style="left:830px;top:428px;width:80px"></div>
+      <div class="lk lk2" style="left:910px;top:428px;width:80px"></div>
+      <div class="qm" style="left:880px;top:405px">?</div>
+      <div class="mag" style="left:1650px;top:385px"></div>
+      <p class="none chipx" style="left:1180px;top:725px">Sin coincidencias</p>
+      <p class="punch p1" style="left:120px;top:800px;width:1680px">¿No debe libros o no está registrado?</p>
+      <p class="punch p2 soft" style="left:120px;top:910px;width:1680px">Los datos existen, pero no se pueden relacionar.</p>
+      <p class="ask" style="left:120px;top:815px">¿Qué le responderían a Marco?</p>
+        </div>
+      </section>
+
+      <section id="causa" class="clip slide dark" data-start="30.1" data-duration="5.6" data-track-index="0" data-label="La causa" data-frags="0" data-enter="2.8" data-step="1">
+        <div class="frame" id="causa-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl xl" style="top:250px;width:1000px">Cada oficina definió y guardó sus propios datos</h1>
+      <p class="lead" style="left:120px;top:730px;width:1050px">Ese modo de trabajo se llama <span class="ul">procesamiento de archivos<i class="ub"></i></span>.</p>
+      <div class="isl" data-dx="80" data-dy="240" style="left:1230px;top:150px">Secretaría</div>
+      <div class="isl" data-dx="-190" data-dy="-20" style="left:1500px;top:410px">Tesorería</div>
+      <div class="isl" data-dx="100" data-dy="-260" style="left:1210px;top:650px">Biblioteca</div>
+        </div>
+      </section>
+
+      <section id="unificar" class="clip slide" data-start="35.7" data-duration="4.2" data-track-index="0" data-label="Tres fichas, una ficha" data-frags="1" data-enter="2" data-step="1">
+        <div class="frame" id="unificar-frame" style="display:block">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Tres fichas de Ana. Debería existir una.</h1>
+      <iframe class="fig" data-fig="1" style="left:115px;top:215px" src="figuras/archivos-vs-bd/archivos-vs-bd.html?embed" title="Tres archivadores con una ficha cada uno y un armario único de base de datos" loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="definiciones" class="clip slide" data-start="39.900000000000006" data-duration="10" data-track-index="0" data-label="Base de datos y DBMS" data-frags="4" data-enter="2.4" data-step="1.6">
+        <div class="frame" id="definiciones-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Una base de datos es una colección de datos relacionados</h1>
+      <div class="sc" style="left:120px;top:270px">1  Definir</div><div class="sc" style="left:520px;top:270px">2  Construir</div><div class="sc" style="left:920px;top:270px">3  Manipular</div><div class="sc" style="left:1320px;top:270px">4  Compartir</div>
+      <svg class="cyl" style="left:160px;top:430px" width="300" height="340" viewBox="0 0 300 340">
+        <rect x="0" y="50" width="300" height="240" fill="#910048"/><ellipse cx="150" cy="290" rx="150" ry="50" fill="#910048"/><ellipse cx="150" cy="50" rx="150" ry="50" fill="#6d0036"/>
+        <path class="gl" d="M0 150Q150 220 300 150" pathLength="1"/><path class="gl" d="M0 230Q150 300 300 230" pathLength="1"/>
+      </svg>
+      <div class="bp" style="left:640px;top:430px;width:1000px;height:320px">
+        <div class="bh" style="left:0px;width:330px">cédula</div><div class="bh" style="left:330px;width:340px">nombre</div><div class="bh" style="left:670px;width:330px">carrera</div>
+        <div class="br" style="top:80px"><span class="cl mono" style="left:0px;width:330px">1104567890</span><span class="cl " style="left:330px;width:340px">Ana Rivas</span><span class="cl " style="left:670px;width:330px">Sistemas</span></div><div class="br" style="top:160px"><span class="cl mono" style="left:0px;width:330px">1105551234</span><span class="cl " style="left:330px;width:340px">Marco Paredes</span><span class="cl edit" style="left:670px;width:330px"><span class="oldn">Software</span><span class="newn">Sistemas</span></span></div><div class="br" style="top:240px"><span class="cl mono" style="left:0px;width:330px">1102224455</span><span class="cl " style="left:330px;width:340px">Carla Mena</span><span class="cl " style="left:670px;width:330px">Redes</span></div>
+      </div>
+      <div class="usr" style="left:740px;top:880px"><svg viewBox="0 0 100 100" width="76" height="76"><circle cx="50" cy="34" r="18" fill="#fff"/><path d="M16 90c0-24 14-36 34-36s34 12 34 36z" fill="#fff"/></svg></div><div class="usr" style="left:1080px;top:880px"><svg viewBox="0 0 100 100" width="76" height="76"><circle cx="50" cy="34" r="18" fill="#fff"/><path d="M16 90c0-24 14-36 34-36s34 12 34 36z" fill="#fff"/></svg></div><div class="usr" style="left:1420px;top:880px"><svg viewBox="0 0 100 100" width="76" height="76"><circle cx="50" cy="34" r="18" fill="#fff"/><path d="M16 90c0-24 14-36 34-36s34 12 34 36z" fill="#fff"/></svg></div>
+      <svg class="ov" viewBox="0 0 1920 1080" width="1920" height="1080"><path class="ulp" d="M800 880V752" pathLength="1"/><path class="ulp" d="M1140 880V752" pathLength="1"/><path class="ulp" d="M1480 880V752" pathLength="1"/></svg>
+        </div>
+      </section>
+
+      <section id="caracteristicas" class="clip slide" data-start="49.900000000000006" data-duration="10.6" data-track-index="0" data-label="Cuatro características" data-frags="4" data-enter="2.2" data-step="1.8">
+        <div class="frame" id="caracteristicas-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Cuatro características lo separan del procesamiento de archivos</h1>
+      <div class="qd"><div class="mo"><i class="cb" style="left:0px;top:0px"></i><i class="cb" style="left:104px;top:0px"></i><i class="cb" style="left:208px;top:0px"></i><i class="cb" style="left:0px;top:58px"></i><i class="cb" style="left:104px;top:58px"></i><i class="cb" style="left:208px;top:58px"></i><i class="cb" style="left:0px;top:116px"></i><i class="cb" style="left:104px;top:116px"></i><i class="cb" style="left:208px;top:116px"></i><div class="fi" style="left:0;top:200px">cédula: texto(10)</div></div><div class="tx"><strong>Autodescriptivo</strong><em>Guarda los datos y también su descripción</em><span class="ex">En el instituto: la tabla ESTUDIANTE guarda la cédula y además dice que es un texto de 10 caracteres.</span></div></div>
+      <div class="qd"><div class="mo"><i class="bk app" style="left:0;top:80px">Programa</i><i class="wall" style="left:146px;top:40px"></i><i class="bk data" style="left:170px;top:80px">Datos</i><i class="ext" style="left:290px;top:80px"></i><p class="nc" style="left:0;top:215px">sin cambios</p><p class="nc" style="left:170px;top:215px">+ correo</p></div><div class="tx"><strong>Aislamiento entre programas y datos</strong><em>La estructura cambia sin reescribir los programas</em><span class="ex">En el instituto: se agrega la columna correo y el programa de Tesorería sigue funcionando igual.</span></div></div>
+      <div class="qd"><div class="mo"><i class="g4" style="left:0px;top:0px"></i><i class="g4" style="left:76px;top:0px"></i><i class="g4" style="left:152px;top:0px"></i><i class="g4" style="left:228px;top:0px"></i><i class="g4" style="left:0px;top:66px"></i><i class="g4" style="left:76px;top:66px"></i><i class="g4" style="left:152px;top:66px"></i><i class="g4" style="left:228px;top:66px"></i><i class="g4" style="left:0px;top:132px"></i><i class="g4" style="left:76px;top:132px"></i><i class="g4" style="left:152px;top:132px"></i><i class="g4" style="left:228px;top:132px"></i><i class="g4" style="left:0px;top:198px"></i><i class="g4" style="left:76px;top:198px"></i><i class="g4" style="left:152px;top:198px"></i><i class="g4" style="left:228px;top:198px"></i><i class="fa"></i><i class="fb"></i><p class="fl" style="left:0;top:272px">Tesorería</p><p class="fl" style="left:160px;top:272px">Biblioteca</p></div><div class="tx"><strong>Múltiples vistas</strong><em>Cada grupo ve solo la parte que necesita</em><span class="ex">En el instituto: Tesorería ve los pagos y Biblioteca ve los préstamos, de la misma base.</span></div></div>
+      <div class="qd"><div class="mo"><svg class="mlsvg" viewBox="0 0 320 300" width="320" height="300"><path class="ml" d="M45 45L125 125" pathLength="1"/><path class="ml" d="M275 45L195 125" pathLength="1"/><path class="ml" d="M160 255L160 175" pathLength="1"/></svg><i class="hub"></i><i class="uc" style="left:10px;top:10px"></i><i class="uc" style="left:240px;top:10px"></i><i class="uc" style="left:125px;top:230px"></i><i class="pu" data-tx="80" data-ty="80" style="left:35px;top:35px"></i><i class="pu" data-tx="-80" data-ty="80" style="left:265px;top:35px"></i><i class="pu" data-tx="0" data-ty="-80" style="left:150px;top:255px"></i></div><div class="tx"><strong>Compartición multiusuario</strong><em>Controla el acceso simultáneo a los datos</em><span class="ex">En el instituto: tres oficinas consultan y actualizan a la vez sin pisarse.</span></div></div>
+        </div>
+      </section>
+
+      <section id="catalogo" class="clip slide" data-start="60.50000000000001" data-duration="5.8" data-track-index="0" data-label="El catálogo" data-frags="1" data-enter="2.4" data-step="2.2">
+        <div class="frame" id="catalogo-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">En un DBMS la definición de los datos vive en el catálogo</h1>
+      <div class="pb" style="left:120px;top:380px"></div><p class="pl" style="left:150px;top:395px">Programa de Secretaría</p><p class="q2" style="left:150px;top:462px">consulta el catálogo</p><div class="pb" style="left:120px;top:570px"></div><p class="pl" style="left:150px;top:585px">Programa de Tesorería</p><p class="q2" style="left:150px;top:652px">consulta el catálogo</p><div class="pb" style="left:120px;top:760px"></div><p class="pl" style="left:150px;top:775px">Programa de Biblioteca</p><p class="q2" style="left:150px;top:842px">consulta el catálogo</p>
+      <div class="dbms" style="left:1150px;top:380px"><span class="dt">DBMS</span><div class="cat"><span>Catálogo: metadatos</span></div><div class="dat">Datos</div></div>
+      <span class="dc" data-layout-allow-overlap data-keep="1" data-dx="1050" data-dy="135" style="left:150px;top:455px">cédula</span><span class="dc" data-layout-allow-overlap data-keep="1" data-dx="1060" data-dy="135" style="left:380px;top:455px">nombre</span><span class="dc" data-layout-allow-overlap data-keep="0" data-dx="1050" data-dy="-55" style="left:150px;top:645px">cédula</span><span class="dc" data-layout-allow-overlap data-keep="0" data-dx="1060" data-dy="-55" style="left:380px;top:645px">nombre</span><span class="dc" data-layout-allow-overlap data-keep="0" data-dx="1050" data-dy="-245" style="left:150px;top:835px">cédula</span><span class="dc" data-layout-allow-overlap data-keep="0" data-dx="1060" data-dy="-245" style="left:380px;top:835px">nombre</span>
+      <svg class="ov" viewBox="0 0 1920 1080" width="1920" height="1080"><path class="ln" d="M770 460C1000 460 1000 590 1180 590" pathLength="1"/><path class="ln" d="M770 650C1000 650 1000 590 1180 590" pathLength="1"/><path class="ln" d="M770 840C1000 840 1000 590 1180 590" pathLength="1"/></svg>
+        </div>
+      </section>
+
+      <section id="autodescriptivo" class="clip slide" data-start="66.30000000000001" data-duration="5.2" data-track-index="0" data-label="El DBMS consulta su catálogo" data-frags="2" data-enter="2" data-step="1">
+        <div class="frame" id="autodescriptivo-frame" style="display:block">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">El DBMS lee primero la descripción</h1>
+      <iframe class="fig" data-fig="2" style="left:115px;top:215px" src="figuras/dbms-catalogo/dbms-catalogo.html?embed" title="Un armario rotulado DBMS con una terminal encima: primero se abre la gaveta del catálogo y después la de datos" loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="anomalias" class="clip slide" data-start="71.50000000000001" data-duration="8.200000000000001" data-track-index="0" data-label="Tres anomalías" data-frags="3" data-enter="2.2" data-step="1.6">
+        <div class="frame" id="anomalias-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Tres anomalías aparecen cuando el mismo dato vive en varios archivos</h1>
+      <div class="z" style="left:120px">
+        <p class="zl">Redundancia</p><p class="zd">El mismo dato guardado varias veces</p>
+        <div class="cp cp1" style="top:230px">Ana · 0991234567</div><div class="cp cp2" style="top:340px">Ana · 0991234567</div><div class="cp cp2" style="top:450px">Ana · 0991234567</div>
+        <div class="cnt" style="left:455px;top:310px">×3</div>
+      </div>
+      <div class="z" style="left:700px">
+        <p class="zl">Inconsistencia</p><p class="zd">Las copias dejan de coincidir</p>
+        <div class="cp ph1" style="top:250px;width:340px">0991234567</div><div class="cp ph2" style="top:440px;width:340px">0987654321</div>
+        <div class="ne" style="left:380px;top:300px">≠</div>
+      </div>
+      <div class="z" style="left:1280px">
+        <p class="zl">Aislamiento de datos</p><p class="zd">Los datos existen, pero no se relacionan</p>
+        <div class="cp bl1" style="top:240px;width:340px">Pagos</div><div class="cp bl2" style="top:470px;width:340px">Préstamos</div>
+        <i class="bp1" style="left:168px;top:335px"></i><i class="bp2" style="left:168px;top:420px"></i>
+        <div class="qm" style="left:138px;top:362px">?</div>
+      </div>
+        </div>
+      </section>
+
+      <section id="matriz" class="clip slide" data-start="79.70000000000002" data-duration="7.9" data-track-index="0" data-label="Matriz de diagnóstico" data-frags="3" data-enter="2.2" data-step="1.5">
+        <div class="frame" id="matriz-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl long">Un diagnóstico nombra la anomalía, muestra la evidencia y declara la consecuencia</h1>
+      <div class="mh"><span style="left:140px">ANOMALÍA</span><span style="left:560px">EVIDENCIA</span><span style="left:1150px">CONSECUENCIA</span></div>
+      <div class="mr" style="top:420px"><span class="an">Redundancia</span><span class="ev">Ana está en tres archivos</span><span class="cq">Tres ediciones por cada cambio</span></div><div class="mr" style="top:550px"><span class="an">Inconsistencia</span><span class="ev">Dos teléfonos distintos</span><span class="cq">Nadie sabe cuál es el vigente</span></div><div class="mr" style="top:680px"><span class="an">Aislamiento de datos</span><span class="ev">Préstamos en otro archivo</span><span class="cq">No se sabe si adeuda libros</span></div>
+      <svg class="ov" viewBox="0 0 1920 1080" width="1920" height="1080"><path class="ar" d="M1060 470H1115M1099 454L1117 470L1099 486" pathLength="1"/><path class="ar" d="M1060 600H1115M1099 584L1117 600L1099 616" pathLength="1"/><path class="ar" d="M1060 730H1115M1099 714L1117 730L1099 746" pathLength="1"/></svg>
+        </div>
+      </section>
+
+      <section id="esquema-unificado" class="clip slide" data-start="87.60000000000002" data-duration="7.8" data-track-index="0" data-label="Esquema unificado" data-frags="2" data-enter="3" data-step="1.8">
+        <div class="frame" id="esquema-unificado-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">La solución es guardar cada dato una sola vez</h1>
+      <div class="sheet us" data-layout-allow-overlap style="left:120px;top:280px;width:520px"><div class="sh" style="background:var(--wine-deep)"><span class="hold">Matriculas.xlsx</span><span class="hnew">ESTUDIANTE</span></div><div class="sr mono">1104567890</div><div class="sr">Ana Lucía Rivas Vega</div><div class="sr ph"><span class="phold">0991234567</span><span class="phnew">0998765432</span></div></div>
+      <div class="sheet us" data-layout-allow-overlap style="left:700px;top:280px;width:520px"><div class="sh" data-layout-allow-overlap style="background:var(--teal)">Pagos.xlsx</div><div class="sr mono " data-layout-allow-overlap>1104567890</div><div class="sr  " data-layout-allow-overlap>Ana L. Rivas</div><div class="sr  " data-layout-allow-overlap>0991234567</div></div>
+      <div class="sheet us" data-layout-allow-overlap style="left:1280px;top:280px;width:520px"><div class="sh" data-layout-allow-overlap style="background:var(--amber)">Prestamos.xlsx</div><div class="sr mono " data-layout-allow-overlap>1104567809</div><div class="sr  " data-layout-allow-overlap>Ana Rivas Vega</div><div class="sr  " data-layout-allow-overlap>0987654321</div></div>
+      <div class="sb" style="left:120px;top:660px">ESTUDIANTE(<u>cédula</u>, nombre, carrera, correo, teléfono)</div>
+      <div class="pg" style="left:120px;top:840px;width:780px">PAGO(…, <u>cédula</u>)</div>
+      <div class="pg" style="left:1020px;top:840px;width:780px">PRÉSTAMO(…, <u>cédula</u>)</div>
+      <svg class="ov" viewBox="0 0 1920 1080" width="1920" height="1080"><path class="lk" d="M540 756C540 800 300 790 300 840" pathLength="1"/><path class="lk" d="M540 756C540 800 1400 780 1400 840" pathLength="1"/></svg>
+      <i class="pd"></i><i class="pd"></i>
+      <p class="punch good" style="left:120px;top:938px;width:1680px">Un cambio de teléfono: una sola edición.</p>
+        </div>
+      </section>
+
+      <section id="practica" class="clip slide" data-start="95.40000000000002" data-duration="6.4" data-track-index="0" data-label="Práctica guiada" data-frags="0" data-enter="3.2" data-step="1">
+        <div class="frame" id="practica-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Ahora diagnostiquen ustedes los archivos de la ferretería</h1>
+      <p class="lead" style="left:120px;top:270px;width:1500px">Trabajen en parejas con los archivos de la ferretería.</p>
+      <div class="vl" style="left:230px;top:412px;height:540px"></div>
+      <div class="vn" style="left:202px;top:380px">1</div><p class="vt" style="left:320px;top:389px">Identificar qué proveedores están repetidos</p><div class="vn" style="left:202px;top:515px">2</div><p class="vt" style="left:320px;top:524px">Comparar las copias campo por campo</p><div class="vn" style="left:202px;top:650px">3</div><p class="vt" style="left:320px;top:659px">Plantear una consulta que cruce dos áreas</p><div class="vn" style="left:202px;top:785px">4</div><p class="vt" style="left:320px;top:794px">Redactar la consecuencia de cada anomalía</p><div class="vn" style="left:202px;top:920px">5</div><p class="vt" style="left:320px;top:929px">Escribir el esquema unificado del proveedor</p>
+        </div>
+      </section>
+
+      <section id="costos" class="clip slide" data-start="101.80000000000003" data-duration="10.799999999999999" data-track-index="0" data-label="Cuándo no conviene" data-frags="4" data-enter="2.4" data-step="1.8">
+        <div class="frame" id="costos-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Un DBMS también tiene costos y no siempre conviene</h1>
+      <div class="post"><i class="stem"></i><i class="bs"></i></div>
+      <div class="beam" style="left:460px;top:470px">
+        <div class="pan pl"><i class="rod"></i><svg width="680" height="200" viewBox="0 0 680 200"><path d="M340 0L26 186M340 0L654 186" fill="none" stroke="#8a7f85" stroke-width="5"/></svg><div class="bw">Beneficios: datos compartidos</div><i class="tray"></i></div>
+        <div class="pan pr"><i class="rod"></i><svg width="680" height="200" viewBox="0 0 680 200"><path d="M340 0L26 186M340 0L654 186" fill="none" stroke="#8a7f85" stroke-width="5"/></svg><div class="w4" style="left:175px;top:96px">Aplicación simple</div><div class="w4" style="left:175px;top:96px">Tiempo real estricto</div><div class="w4" style="left:175px;top:96px">Sistema embebido</div><div class="w4" style="left:175px;top:96px">Un solo usuario</div><i class="tray"></i></div>
+      </div>
+      <p class="capt" style="left:120px;top:945px;width:1680px"><b>Aplicación simple:</b> está bien definida y no va a cambiar.</p><p class="capt" style="left:120px;top:945px;width:1680px"><b>Tiempo real estricto:</b> la sobrecarga impediría cumplir los plazos.</p><p class="capt" style="left:120px;top:945px;width:1680px"><b>Sistema embebido:</b> hay muy poco almacenamiento disponible.</p><p class="capt" style="left:120px;top:945px;width:1680px"><b>Un solo usuario:</b> no hace falta el acceso multiusuario.</p>
+        </div>
+      </section>
+
+      <section id="modelos" class="clip slide" data-start="112.60000000000002" data-duration="8.200000000000001" data-track-index="0" data-label="Modelos de datos" data-frags="3" data-enter="2.2" data-step="1.6">
+        <div class="frame" id="modelos-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Un modelo de datos es el vocabulario para describir la estructura</h1>
+      <i class="sbar" style="left:100px;top:380px"></i>
+      <p class="st" style="left:130px;top:380px"><b>Conceptual</b><em>Entidades, atributos y relaciones</em></p>
+      <p class="st" style="left:130px;top:550px"><b>Representacional</b><em>Tablas y registros: modelo relacional</em></p>
+      <p class="st" style="left:130px;top:720px"><b>Físico</b><em>Cómo se almacenan los datos en disco</em></p>
+      <div class="g" style="left:820px;top:300px">
+        <div class="ent etit" style="left:40px;top:60px;width:300px;background:var(--wine)">ESTUDIANTE</div>
+        <div class="tth etit2" style="left:40px;top:60px;width:900px;background:var(--wine)">ESTUDIANTE</div>
+        <div class="tth etit3" style="left:40px;top:60px;width:900px;background:var(--teal)">Archivo en disco</div>
+        <div class="fld" style="left:40px;top:210px">cédula</div><div class="fld" style="left:40px;top:300px">nombre</div><div class="fld" style="left:40px;top:390px">carrera</div>
+        <div class="drw dr" style="left:40px;top:232px"><span style="left:0">1104567890</span><span style="left:300px">Ana Rivas</span><span style="left:600px">Sistemas</span></div>
+        <div class="drw dr" style="left:40px;top:306px"><span style="left:0">1105551234</span><span style="left:300px">Marco Paredes</span><span style="left:600px">Software</span></div>
+        <p class="by" style="left:40px;top:244px;width:300px">10 bytes</p><p class="by" style="left:340px;top:244px;width:300px">20 bytes</p><p class="by" style="left:640px;top:244px;width:300px">10 bytes</p>
+        <i class="hx" style="left:40px;top:318px">0x1A04</i><i class="hx" style="left:340px;top:318px">0x1A18</i><i class="hx" style="left:640px;top:318px">0x1A2C</i>
+        <div class="pgbar" style="left:40px;top:398px;width:900px">página 12 del disco</div>
+        <p class="mcap" style="left:40px;top:500px;width:940px">Conceptual: qué datos existen y qué atributos tiene cada uno.</p>
+        <p class="mcap" style="left:40px;top:500px;width:940px">Representacional: los mismos atributos organizados como columnas de una tabla.</p>
+        <p class="mcap" style="left:40px;top:500px;width:940px">Físico: los mismos campos guardados como bytes en las páginas del disco.</p>
+      </div>
+        </div>
+      </section>
+
+      <section id="esquema-estado" class="clip slide" data-start="120.80000000000003" data-duration="6.8" data-track-index="0" data-label="Esquema y estado" data-frags="2" data-enter="2.4" data-step="1.6">
+        <div class="frame" id="esquema-estado-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">El esquema permanece y el estado cambia con cada operación</h1>
+      <p class="schl" style="left:120px;top:262px">ESQUEMA</p>
+      <div class="sch" style="left:120px;top:312px">ESTUDIANTE(cédula, nombre, carrera)</div>
+      <p class="cnt2" style="left:120px;top:440px">ESTADO · <span class="sw"><span class="n2">2 filas</span><span class="n3">3 filas</span></span></p>
+      <div class="sth" style="top:500px"><span class="cl mono" style="left:120px;width:480px">cédula</span><span class="cl " style="left:620px;width:640px">nombre</span><span class="cl " style="left:1280px;width:520px">carrera</span></div>
+      <div class="sr2" style="top:580px"><span class="cl mono" style="left:120px;width:480px">1104567890</span><span class="cl " style="left:620px;width:640px">Ana Rivas</span><span class="cl " style="left:1280px;width:520px">Sistemas</span></div>
+      <div class="sr2" style="top:670px"><span class="cl mono" style="left:120px;width:480px">1105551234</span><span class="cl " style="left:620px;width:640px">Marco Paredes</span><span class="cl " style="left:1280px;width:520px">Software</span></div>
+      <div class="nr" style="top:760px"><span class="cl mono" style="left:120px;width:480px">1106667788</span><span class="cl " style="left:620px;width:640px">Luis Ortega</span><span class="cl " style="left:1280px;width:520px">Software</span></div>
+      <p class="punch" style="left:120px;top:900px;width:1680px">Cambió el estado. El esquema sigue igual.</p>
+        </div>
+      </section>
+
+      <section id="evolucion" class="clip slide" data-start="127.60000000000002" data-duration="10.899999999999999" data-track-index="0" data-label="Evolución de los sistemas" data-frags="5" data-enter="2.2" data-step="1.5">
+        <div class="frame" id="evolucion-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl long">Cada generación de sistemas respondió a una necesidad que la anterior no cubría</h1>
+      <div class="trk"><i class="trl" style="left:400px;top:556px;width:2160px"></i>
+        <div class="nd" style="left:130px"><p class="yr" data-y="1960">1960</p><div class="gl2"><svg viewBox="0 0 100 100" width="100" height="100"><g stroke="#fff" stroke-width="5" fill="none"><path d="M50 22V50M50 50L24 76M50 50L76 76"/></g><g fill="#fff"><circle cx="50" cy="20" r="10"/><circle cx="24" cy="78" r="10"/><circle cx="76" cy="78" r="10"/></g></svg></div><p class="nm">Jerárquicos y de red</p><p class="ds">Grandes volúmenes de registros</p></div><div class="nd" style="left:670px"><p class="yr" data-y="1970">1970</p><div class="gl2"><svg viewBox="0 0 100 100" width="100" height="100"><g fill="#fff"><rect x="12" y="14" width="24" height="20" rx="3"/><rect x="40" y="14" width="24" height="20" rx="3"/><rect x="68" y="14" width="20" height="20" rx="3"/><rect x="12" y="40" width="24" height="20" rx="3"/><rect x="40" y="40" width="24" height="20" rx="3"/><rect x="68" y="40" width="20" height="20" rx="3"/><rect x="12" y="66" width="24" height="20" rx="3"/><rect x="40" y="66" width="24" height="20" rx="3"/><rect x="68" y="66" width="20" height="20" rx="3"/></g></svg></div><p class="nm">Relacionales</p><p class="ds">Abstracción de datos</p></div><div class="nd" style="left:1210px"><p class="yr" data-y="1980">1980</p><div class="gl2"><svg viewBox="0 0 100 100" width="100" height="100"><g stroke="#fff" stroke-width="6" fill="none" stroke-linejoin="round"><path d="M50 12L86 32V68L50 88L14 68V32Z"/><path d="M14 32L50 52L86 32M50 52V88"/></g></svg></div><p class="nm">Orientados a objetos</p><p class="ds">Objetos complejos</p></div><div class="nd" style="left:1750px"><p class="yr" data-y="1990">1990</p><div class="gl2"><svg viewBox="0 0 100 100" width="100" height="100"><g stroke="#fff" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M34 28L12 50L34 72M66 28L88 50L66 72M56 22L44 78"/></g></svg></div><p class="nm">Intercambio con XML</p><p class="ds">Datos en la Web</p></div><div class="nd" style="left:2290px"><p class="yr" data-y="2000">2000</p><div class="gl2"><svg viewBox="0 0 100 100" width="100" height="100"><g stroke="#fff" stroke-width="4"><path d="M50 50L18 24M50 50L84 22M50 50L16 74M50 50L86 78M50 50L50 12M50 50L50 90"/></g><g fill="#fff"><circle cx="50" cy="50" r="12"/><circle cx="18" cy="24" r="8"/><circle cx="84" cy="22" r="8"/><circle cx="16" cy="74" r="8"/><circle cx="86" cy="78" r="8"/><circle cx="50" cy="12" r="7"/><circle cx="50" cy="90" r="7"/></g></svg></div><p class="nm">Big data y NoSQL</p><p class="ds">Redes sociales y buscadores</p></div>
+      </div>
+        </div>
+      </section>
+
+      <section id="decision" class="clip slide" data-start="138.50000000000003" data-duration="8.1" data-track-index="0" data-label="Tres situaciones" data-frags="3" data-enter="2.4" data-step="1.5">
+        <div class="frame" id="decision-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Tres situaciones, una decisión: DBMS o solución a medida</h1>
+      <div class="sit" data-dx="60" data-dy="435" data-bin="0" style="left:120px;top:300px"><span class="bd">A</span><strong>Cooperativa con cuatro agencias</strong><em class="rs good">DBMS: datos compartidos</em></div><div class="sit" data-dx="170" data-dy="445" data-bin="1" style="left:700px;top:300px"><span class="bd">B</span><strong>Sensor con memoria limitada</strong><em class="rs ">A medida: embebido</em></div><div class="sit" data-dx="10" data-dy="445" data-bin="1" style="left:1280px;top:300px"><span class="bd">C</span><strong>Lista personal de libros</strong><em class="rs ">A medida: un solo usuario</em></div>
+      <p class="ask" style="left:120px;top:540px">Voten: ¿DBMS o solución a medida?</p>
+      <div class="bin" style="left:120px;top:640px;width:640px;height:360px"><span style="color:var(--teal)">DBMS</span></div>
+      <div class="bin am" style="left:880px;top:640px;width:920px;height:360px"><span style="color:var(--amber)">Solución a medida</span></div>
+        </div>
+      </section>
+
+      <section id="actividades" class="clip slide" data-start="146.60000000000002" data-duration="5.2" data-track-index="0" data-label="Actividades de la semana" data-frags="0" data-enter="2.6" data-step="1">
+        <div class="frame" id="actividades-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Esta semana entregan dos actividades de 2 puntos cada una</h1>
+      <div class="tk" style="left:120px;top:300px"><p class="tg">PE-1.1</p><p class="tt">Diagnóstico de sistemas</p><p class="td">Caso ILE: matriz de anomalías y esquema unificado</p><p class="tp">puntos</p>
+          <svg class="ringsvg" width="180" height="180" viewBox="0 0 180 180"><circle class="rg" cx="90" cy="90" r="76" transform="rotate(-90 90 90)" pathLength="1"/></svg><p class="pn">2</p></div><div class="tk" style="left:1040px;top:300px"><p class="tg">TA-1.1</p><p class="tt">Ensayo del valor del dato</p><p class="td">De los archivos a las bases de datos</p><p class="tp">puntos</p>
+          <svg class="ringsvg" width="180" height="180" viewBox="0 0 180 180"><circle class="rg" cx="90" cy="90" r="76" transform="rotate(-90 90 90)" pathLength="1"/></svg><p class="pn">2</p></div>
+      <p class="src" style="left:120px;top:880px">Consigna, plantilla y rúbrica en Canvas</p>
+        </div>
+      </section>
+
+      <section id="cierre" class="clip slide dark" data-start="151.8" data-duration="7.2" data-track-index="0" data-label="Cierre" data-frags="0" data-enter="3.6" data-step="1">
+        <div class="frame" id="cierre-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <div class="phc ph1c" data-layout-allow-overlap style="left:770px;top:230px">0991234567</div>
+      <div class="phc ph2c" data-layout-allow-overlap style="left:770px;top:230px">0987654321</div>
+      <div class="ne2" style="left:880px;top:200px">≠</div>
+      <h1 class="ttl xl" style="top:450px;width:1560px;font-size:82px">Si el mismo dato vive en dos lugares, tarde o temprano deja de coincidir</h1>
+      <p class="lead" style="left:120px;top:780px;width:1500px">Próxima semana: esquemas y arquitectura de tres esquemas</p>
+      <p class="byline" style="left:120px;top:900px">Fuente: Elmasri y Navathe (2016), capítulo 1 y sección 2.1 · ASU IFT 200, Module 1</p>
+        </div>
+      </section>
+    </div>
+    <script>
+      // Con el motor de HyperFrames (check, Studio, snapshot) el registro ya existe y la línea de
+      // tiempo contiene todas las animaciones. Al presentar, el reproductor solo mueve la línea
+      // "main" (el destino) y esta página reproduce las animaciones en tiempo real hasta alcanzarlo.
+      const engineHosted = Object.prototype.hasOwnProperty.call(window, "__timelines");
+      window.__timelines = window.__timelines || {};
+
+      const EXIT = 0.5;
+      const tl = gsap.timeline({ paused: true });
+      tl.to({}, { duration: 159 }, 0);
+      const real = engineHosted ? tl : gsap.timeline({ paused: true });
+
+      const VW = 1920, VH = 1080;
+      const cam = (s, cx, cy) => {
+        let x = VW / 2 - cx * s, y = VH / 2 - cy * s;
+        if (s >= 1) { x = Math.min(0, Math.max(VW - VW * s, x)); y = Math.min(0, Math.max(VH - VH * s, y)); }
+        return { scale: s, x, y };
+      };
+      const overview = cam(1, VW / 2, VH / 2);
+
+// Escenas de la presentación: cada diapositiva es una animación propia que se construye
+// por pasos. Este archivo se incrusta en index.html (lo hace build.mjs).
+// Disponibles: gsap, real (línea de tiempo de contenido), cam, overview.
+
+function splitWords(el) {
+  if (el._w) return el._w;
+  const words = el.textContent.trim().split(" ");
+  el.textContent = "";
+  el._w = words.map((w, i) => {
+    const o = document.createElement("span"); o.className = "w";
+    const n = document.createElement("span"); n.className = "wi"; n.textContent = w;
+    o.appendChild(n); el.appendChild(o);
+    if (i < words.length - 1) el.appendChild(document.createTextNode(" "));
+    return n;
+  });
+  return el._w;
+}
+function splitChars(el) {
+  const out = [];
+  const walk = (node) => {
+    Array.from(node.childNodes).forEach((ch) => {
+      if (ch.nodeType === 3) {
+        const frag = document.createDocumentFragment();
+        for (const t of ch.textContent) {
+          const s = document.createElement("span"); s.className = "ch"; s.textContent = t;
+          frag.appendChild(s); out.push(s);
+        }
+        ch.replaceWith(frag);
+      } else if (ch.nodeType === 1) walk(ch);
+    });
+  };
+  walk(el);
+  return out;
+}
+
+const EXP = "expo.out", P4 = "power4.out", IO = "power2.inOut";
+const words = (el, at, stag = 0.06, d = 0.75) =>
+  real.fromTo(splitWords(el), { yPercent: 120 }, { yPercent: 0, duration: d, ease: P4, stagger: stag }, at);
+const rise = (t, at, y = 40, d = 0.7) => real.fromTo(t, { opacity: 0, y }, { opacity: 1, y: 0, duration: d, ease: EXP }, at);
+const pop = (t, at, d = 0.6, s0 = 0.5) => real.fromTo(t, { opacity: 0, scale: s0 }, { opacity: 1, scale: 1, duration: d, ease: "back.out(1.8)" }, at);
+const slide = (t, at, x, d = 0.8) => real.fromTo(t, { opacity: 0, x }, { opacity: 1, x: 0, duration: d, ease: EXP }, at);
+const grow = (t, at, d = 0.7) => real.fromTo(t, { scaleX: 0, transformOrigin: "0 50%" }, { scaleX: 1, duration: d, ease: "power3.inOut" }, at);
+const growY = (t, at, d = 0.7) => real.fromTo(t, { scaleY: 0, transformOrigin: "50% 0" }, { scaleY: 1, duration: d, ease: "power3.inOut" }, at);
+const draw = (t, at, d = 0.8, ease = IO) => real.fromTo(t, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease }, at);
+const fadeIn = (t, at, d = 0.5) => real.fromTo(t, { opacity: 0 }, { opacity: 1, duration: d, ease: "power2.out" }, at);
+const flash = (t, at, color = "rgba(232,169,32,0.5)", off = "rgba(232,169,32,0)") => {
+  real.fromTo(t, { backgroundColor: off }, { backgroundColor: color, duration: 0.3, immediateRender: false }, at);
+  real.to(t, { backgroundColor: off, duration: 0.6 }, at + 0.7);
+};
+// Mueve un elemento a lo largo de un trazo SVG.
+function along(el, path, at, d, ease = IO) {
+  const len = path.getTotalLength();
+  const o = { p: 0 };
+  real.fromTo(o, { p: 0 }, { p: 1, duration: d, ease, onUpdate: () => {
+    const pt = path.getPointAtLength(o.p * len);
+    gsap.set(el, { x: pt.x, y: pt.y });
+  } }, at);
+}
+
+const SCENES = {};
+
+SCENES.portada = (c) => {
+  const { st, q, qa } = c;
+  rise(q(".course"), st + 0.2, 30);
+  words(q(".ttl"), st + 0.3, 0.07, 0.8);
+  rise(q(".lead"), st + 1.2, 40);
+  rise(q(".byline"), st + 1.5, 30);
+  qa(".sheet").forEach((el, i) =>
+    real.fromTo(el, { opacity: 0, y: 900, rotation: 14 }, { opacity: 1, y: 0, rotation: 0, duration: 1.2, ease: EXP }, st + 0.4 + i * 0.25));
+};
+
+SCENES.ruta = (c) => {
+  const { st, q, qa } = c;
+  words(q(".ttl"), st + 0.2);
+  const T0 = st + 0.6, D = 1.6;
+  draw(q(".rl"), T0, D, "none");
+  real.fromTo(q(".dot"), { x: 0, opacity: 0 }, { x: 1440, opacity: 1, duration: D, ease: "none" }, T0);
+  real.to(q(".dot"), { opacity: 0, duration: 0.3 }, T0 + D);
+  qa(".node").forEach((n, i) => pop(n, T0 + (D * i) / 4 - 0.15, 0.55));
+  qa(".nl").forEach((n, i) => rise(n, T0 + (D * i) / 4 + 0.05, i % 2 ? 36 : -36, 0.7));
+};
+
+SCENES.caso = (c) => {
+  const { st, q, qa, h } = c;
+  words(q(".ttl"), st + 0.2);
+  const sh = qa(".cs"), of = qa(".off");
+  for (let k = 1; k <= 3; k++) {
+    const at = h(k) - c.step;
+    rise(of[k - 1], at, -30, 0.6);
+    real.fromTo(sh[k - 1], { opacity: 0, y: -260 }, { opacity: 1, y: 0, duration: 0.95, ease: "bounce.out" }, at + 0.1);
+    real.fromTo(sh[k - 1].querySelectorAll(".sr"), { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.4, stagger: 0.1, ease: "power2.out" }, at + 0.55);
+  }
+  const at = h(4) - c.step;
+  grow(qa(".dsh"), at, 0.5);
+  pop(qa(".xm"), at + 0.4, 0.5, 0.2);
+  words(q(".punch"), at + 0.4, 0.05, 0.6);
+};
+
+SCENES.versiones = (c) => {
+  const { st, q, qa, h } = c;
+  words(q(".ttl"), st + 0.2);
+  real.fromTo(q(".th"), { opacity: 0, y: -30 }, { opacity: 1, y: 0, duration: 0.6, ease: EXP }, st + 0.6);
+  qa(".tr").forEach((r, i) => real.fromTo(r, { opacity: 0, x: -260 }, { opacity: 1, x: 0, duration: 0.8, ease: EXP }, st + 0.9 + i * 0.18));
+  const look = { 1: [640, 640, 1.35], 2: [1050, 640, 1.3] };
+  rise(q(".ask"), st + 1.9, 20, 0.5);
+  for (let k = 1; k <= 3; k++) {
+    const at = h(k) - c.step, sel = '[data-k="' + k + '"]';
+    if (k === 1) real.to(q(".ask"), { opacity: 0, y: -20, duration: 0.3 }, at);
+    real.fromTo(qa(".hb" + sel), { scaleX: 0, transformOrigin: "0 50%" }, { scaleX: 1, duration: 0.6, stagger: 0.12, ease: "power3.out" }, at + 0.3);
+    draw(q(".ld" + sel), at + 0.45, 0.5);
+    pop(q(".pt" + sel), at + 0.9, 0.3);
+    rise(q(".co" + sel), at + 0.6, 30, 0.5);
+    if (k < 3) c.cam(look[k][0], look[k][1], look[k][2], at, 0.8);
+    else c.cam(960, 540, 1, at + 0.1, 0.8);
+  }
+};
+
+SCENES.marco = (c) => {
+  const { st, q, qa, h } = c;
+  words(q(".ttl"), st + 0.2);
+  rise(q(".sp"), st + 0.4, 60);
+  rise(q(".sq"), st + 0.6, 60);
+  grow(qa(".lk"), st + 0.9, 0.5);
+  const mag = q(".mag");
+  real.fromTo(mag, { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(2)" }, st + 1.0);
+  real.to(mag, { y: 210, duration: 1.1, ease: "steps(3)" }, st + 1.4);
+  qa(".pr").forEach((r, i) => flash(r, st + 1.4 + i * 0.37, "rgba(232,169,32,0.35)"));
+  pop(q(".none"), st + 2.4, 0.5);
+  rise(q(".ask"), st + 2.4, 20, 0.5);
+  let at = h(1) - c.step;
+  real.to(q(".ask"), { opacity: 0, y: -20, duration: 0.3 }, at);
+  words(q(".p1"), at + 0.4, 0.06, 0.7);
+  at = h(2) - c.step;
+  real.to(q(".lk1"), { x: -34, duration: 0.5, ease: P4 }, at);
+  real.to(q(".lk2"), { x: 34, duration: 0.5, ease: P4 }, at);
+  pop(q(".qm"), at + 0.25, 0.4);
+  words(q(".p2"), at + 0.35, 0.04, 0.6);
+};
+
+SCENES.causa = (c) => {
+  const { st, q, qa } = c;
+  words(q(".ttl"), st + 0.3, 0.07, 0.9);
+  rise(q(".lead"), st + 1.4, 30);
+  grow(q(".ub"), st + 2.1, 0.6);
+  qa(".isl").forEach((el, i) =>
+    real.fromTo(el, { opacity: 0, x: Number(el.dataset.dx), y: Number(el.dataset.dy), scale: 0.4 },
+      { opacity: 1, x: 0, y: 0, scale: 1, duration: 1.5, ease: EXP }, st + 0.4 + i * 0.2));
+};
+
+SCENES.unificar = SCENES.autodescriptivo = (c) => {
+  words(c.q(".ttl"), c.st + 0.2);
+  real.fromTo(c.q("iframe"), { opacity: 0, scale: 0.92, y: 50 }, { opacity: 1, scale: 1, y: 0, duration: 1, ease: P4 }, c.st + 0.5);
+};
+
+SCENES.definiciones = (c) => {
+  const { st, q, qa, h } = c;
+  words(q(".ttl"), st + 0.2);
+  qa(".sc").forEach((el, i) => rise(el, st + 0.7 + i * 0.1, 20, 0.5));
+  real.fromTo(q(".cyl"), { opacity: 0, y: 120, scale: 0.8 }, { opacity: 1, y: 0, scale: 1, duration: 1, ease: EXP }, st + 0.6);
+  draw(qa(".cyl .gl"), st + 1.0, 0.8);
+  const on = (i, at) => real.to(qa(".sc")[i], { backgroundColor: "#910048", color: "#ffffff", duration: 0.35 }, at);
+  let at = h(1) - c.step;
+  real.fromTo(q(".bp"), { opacity: 0, scale: 0.9, transformOrigin: "0 50%" }, { opacity: 1, scale: 1, duration: 0.7, ease: P4 }, at);
+  real.fromTo(qa(".bh"), { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.4, stagger: 0.12 }, at + 0.3);
+  on(0, at + 0.4);
+  at = h(2) - c.step;
+  qa(".br").forEach((r, i) => real.fromTo(r, { opacity: 0, x: -420, scale: 0.6 }, { opacity: 1, x: 0, scale: 1, duration: 0.6, ease: P4 }, at + 0.1 + i * 0.22));
+  on(1, at + 0.2);
+  at = h(3) - c.step;
+  real.fromTo(q(".oldn"), { opacity: 1, y: 0 }, { opacity: 0, y: -30, duration: 0.3 }, at + 0.3);
+  real.fromTo(q(".newn"), { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.4, ease: P4 }, at + 0.45);
+  flash(q(".edit"), at + 0.3);
+  on(2, at + 0.2);
+  at = h(4) - c.step;
+  qa(".usr").forEach((u, i) => pop(u, at + 0.1 + i * 0.15, 0.5));
+  qa(".ulp").forEach((l) => draw(l, at + 0.3, 0.6));
+  on(3, at + 0.3);
+};
+
+SCENES.caracteristicas = (c) => {
+  const { st, q, qa, h } = c;
+  words(q(".ttl"), st + 0.2);
+  const Q = qa(".qd");
+  for (let k = 1; k <= 4; k++) {
+    const at = h(k) - c.step, d = Q[k - 1];
+    if (k > 1) real.to(Q[k - 2], { opacity: 0, duration: 0.3 }, at);
+    real.fromTo(d, { opacity: 0 }, { opacity: 1, duration: 0.3 }, at + 0.3);
+    real.fromTo(d.querySelectorAll(".tx > *"), { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.25, ease: EXP }, at + 0.5);
+    if (k === 1) {
+      real.fromTo(d.querySelectorAll(".cb"), { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.4, stagger: 0.05, ease: "back.out(2)" }, at + 0.4);
+      real.fromTo(d.querySelector(".fi"), { opacity: 0, y: 70 }, { opacity: 1, y: 0, duration: 0.7, ease: EXP }, at + 1.0);
+    }
+    if (k === 2) {
+      pop(d.querySelectorAll(".bk"), at + 0.4, 0.5);
+      growY(d.querySelector(".wall"), at + 0.6, 0.4);
+      real.fromTo(d.querySelector(".ext"), { opacity: 0, scaleX: 0, transformOrigin: "0 50%" }, { opacity: 1, scaleX: 1, duration: 0.5, ease: P4 }, at + 1.0);
+      real.to(d.querySelector(".data"), { backgroundColor: "#0a8a7d", duration: 0.3 }, at + 1.0);
+      const nc = d.querySelectorAll(".nc");
+      rise(nc[1], at + 1.1, 12, 0.4);
+      rise(nc[0], at + 1.4, 12, 0.4);
+    }
+    if (k === 3) {
+      real.fromTo(d.querySelectorAll(".g4"), { opacity: 0, scale: 0.3 }, { opacity: 1, scale: 1, duration: 0.35, stagger: 0.02, ease: "back.out(2)" }, at + 0.4);
+      real.fromTo(d.querySelector(".fa"), { opacity: 0, scale: 1.2 }, { opacity: 1, scale: 1, duration: 0.5, ease: P4 }, at + 1.0);
+      real.fromTo(d.querySelector(".fb"), { opacity: 0, scale: 1.2 }, { opacity: 1, scale: 1, duration: 0.5, ease: P4 }, at + 1.2);
+      const fl = d.querySelectorAll(".fl");
+      rise(fl[0], at + 1.1, 12, 0.4);
+      rise(fl[1], at + 1.3, 12, 0.4);
+    }
+    if (k === 4) {
+      pop(d.querySelector(".hub"), at + 0.4, 0.5);
+      pop(d.querySelectorAll(".uc"), at + 0.55, 0.45);
+      d.querySelectorAll(".ml").forEach((l) => draw(l, at + 0.8, 0.4));
+      d.querySelectorAll(".pu").forEach((p) => {
+        const tx = Number(p.dataset.tx), ty = Number(p.dataset.ty);
+        real.fromTo(p, { x: 0, y: 0, opacity: 0 }, { x: tx, y: ty, opacity: 1, duration: 0.45, ease: "power1.in" }, at + 1.2);
+        real.to(p, { opacity: 0, duration: 0.1 }, at + 1.65);
+      });
+    }
+  }
+};
+
+SCENES.catalogo = (c) => {
+  const { st, q, qa, h } = c;
+  words(q(".ttl"), st + 0.2);
+  qa(".pb").forEach((b, i) => slide(b, st + 0.6 + i * 0.15, -200, 0.8));
+  qa(".pl").forEach((b, i) => rise(b, st + 0.9 + i * 0.15, 20, 0.5));
+  qa(".dc").forEach((b, i) => pop(b, st + 1.2 + i * 0.07, 0.4));
+  real.fromTo(q(".dbms"), { opacity: 0, x: 200 }, { opacity: 1, x: 0, duration: 0.9, ease: EXP }, st + 0.9);
+  const at = h(1) - c.step;
+  qa(".dc").forEach((b) => {
+    const dx = Number(b.dataset.dx), dy = Number(b.dataset.dy), keep = b.dataset.keep === "1";
+    real.to(b, { x: dx, y: dy, duration: 0.9, ease: IO }, at + 0.1);
+    if (!keep) real.to(b, { opacity: 0, scale: 0.8, duration: 0.3 }, at + 0.95);
+  });
+  qa(".ln").forEach((l, i) => draw(l, at + 0.9 + i * 0.1, 0.6));
+  qa(".q2").forEach((l, i) => rise(l, at + 1.0 + i * 0.1, 10, 0.4));
+};
+
+SCENES.anomalias = (c) => {
+  const { st, q, qa, h } = c;
+  words(q(".ttl"), st + 0.2);
+  const Z = qa(".z");
+  let at = h(1) - c.step, z = Z[0];
+  words(z.querySelector(".zl"), at, 0.05, 0.6);
+  rise(z.querySelector(".zd"), at + 0.3, 20, 0.5);
+  real.fromTo(z.querySelector(".cp1"), { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: 0.5, ease: EXP }, at + 0.35);
+  real.fromTo(z.querySelectorAll(".cp2"), { opacity: 0, y: -110 }, { opacity: 1, y: 0, duration: 0.55, ease: P4, stagger: 0.18 }, at + 0.7);
+  pop(z.querySelector(".cnt"), at + 1.0 - 0.3, 0.4);
+  at = h(2) - c.step; z = Z[1];
+  words(z.querySelector(".zl"), at, 0.05, 0.6);
+  rise(z.querySelector(".zd"), at + 0.3, 20, 0.5);
+  slide(z.querySelector(".ph1"), at + 0.35, -120, 0.6);
+  slide(z.querySelector(".ph2"), at + 0.45, 120, 0.6);
+  real.fromTo(z.querySelector(".ne"), { opacity: 0, scale: 2.4, rotation: -12 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.35, ease: P4 }, at + 0.8);
+  real.to(z.querySelector(".ph1"), { keyframes: { x: [-10, 10, -6, 0] }, duration: 0.4 }, at + 1.0);
+  real.to(z.querySelector(".ph2"), { keyframes: { x: [10, -10, 6, 0] }, duration: 0.4 }, at + 1.0);
+  at = h(3) - c.step; z = Z[2];
+  words(z.querySelector(".zl"), at, 0.05, 0.6);
+  rise(z.querySelector(".zd"), at + 0.3, 20, 0.5);
+  rise(z.querySelector(".bl1"), at + 0.35, -40, 0.5);
+  rise(z.querySelector(".bl2"), at + 0.45, 40, 0.5);
+  real.fromTo(z.querySelectorAll(".bp1, .bp2"), { scaleY: 0, transformOrigin: "50% 50%" }, { scaleY: 1, duration: 0.3 }, at + 0.7);
+  real.to(z.querySelector(".bp1"), { y: -14, duration: 0.4, ease: P4 }, at + 0.95);
+  real.to(z.querySelector(".bp2"), { y: 14, duration: 0.4, ease: P4 }, at + 0.95);
+  pop(z.querySelector(".qm"), at + 0.9, 0.4);
+};
+
+SCENES.matriz = (c) => {
+  const { st, q, qa, h } = c;
+  words(q(".ttl"), st + 0.2);
+  real.fromTo(q(".mh"), { opacity: 0, y: -30 }, { opacity: 1, y: 0, duration: 0.6, ease: EXP }, st + 0.6);
+  qa(".mr").forEach((r, i) => {
+    const at = h(i + 1) - c.step;
+    real.fromTo(r, { opacity: 0, x: -200 }, { opacity: 1, x: 0, duration: 0.7, ease: EXP }, at);
+    pop(r.querySelector(".an"), at + 0.25, 0.4);
+    rise(r.querySelector(".ev"), at + 0.4, 20, 0.5);
+    draw(qa(".ar")[i], at + 0.55, 0.4);
+    rise(r.querySelector(".cq"), at + 0.7, 20, 0.5);
+  });
+};
+
+SCENES["esquema-unificado"] = (c) => {
+  const { st, q, qa, h } = c;
+  words(q(".ttl"), st + 0.2);
+  const S = qa(".us");
+  S.forEach((s, i) => rise(s, st + 0.4 + i * 0.1, -60, 0.6));
+  real.to(S[0], { x: 580, duration: 0.8, ease: IO }, st + 1.0);
+  real.to(S[1], { x: 0, duration: 0.8, ease: IO }, st + 1.0);
+  real.to(S[2], { x: -580, duration: 0.8, ease: IO }, st + 1.0);
+  real.to([S[1], S[2]], { opacity: 0, scale: 0.9, duration: 0.4 }, st + 1.7);
+  real.to(S[0], { scale: 1.22, transformOrigin: "50% 0%", duration: 0.7, ease: IO }, st + 1.8);
+  real.fromTo(q(".hold"), { opacity: 1 }, { opacity: 0, duration: 0.3 }, st + 1.8);
+  real.fromTo(q(".hnew"), { opacity: 0 }, { opacity: 1, duration: 0.3 }, st + 1.9);
+  const bar = q(".sb");
+  const ch = splitChars(bar);
+  real.fromTo(bar, { opacity: 0 }, { opacity: 1, duration: 0.2 }, st + 1.9);
+  real.fromTo(ch, { opacity: 0 }, { opacity: 1, duration: 0.01, stagger: 0.014, ease: "none" }, st + 2.0);
+  let at = h(1) - c.step;
+  qa(".pg").forEach((b, i) => rise(b, at + 0.5 + i * 0.1, 40, 0.5));
+  qa(".lk").forEach((l) => draw(l, at, 0.8));
+  at = h(2) - c.step;
+  words(q(".punch"), at + 0.2, 0.05, 0.6);
+  flash(q(".ph"), at, "rgba(232,169,32,0.6)");
+  real.fromTo(q(".phold"), { opacity: 1, y: 0 }, { opacity: 0, y: -26, duration: 0.3 }, at + 0.25);
+  real.fromTo(q(".phnew"), { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.4, ease: P4 }, at + 0.35);
+  qa(".pd").forEach((d, i) => {
+    along(d, qa(".lk")[i], at + 0.5, 0.5);
+    real.fromTo(d, { opacity: 0 }, { opacity: 1, duration: 0.05 }, at + 0.5);
+    real.to(d, { opacity: 0, duration: 0.1 }, at + 0.95);
+  });
+};
+
+SCENES.practica = (c) => {
+  const { st, q, qa } = c;
+  words(q(".ttl"), st + 0.2);
+  rise(q(".lead"), st + 0.8, 20, 0.6);
+  growY(q(".vl"), st + 1.0, 1.4);
+  qa(".vn").forEach((n, i) => pop(n, st + 1.0 + (1.4 * i) / 4, 0.45));
+  qa(".vt").forEach((n, i) => slide(n, st + 1.1 + (1.4 * i) / 4, 60, 0.6));
+};
+
+SCENES.costos = (c) => {
+  const { st, q, qa, h } = c;
+  words(q(".ttl"), st + 0.2);
+  real.fromTo(q(".post"), { scaleY: 0, transformOrigin: "50% 100%" }, { scaleY: 1, duration: 0.7, ease: P4 }, st + 0.4);
+  real.fromTo(q(".beam"), { opacity: 0, scaleX: 0.2 }, { opacity: 1, scaleX: 1, duration: 0.7, ease: P4 }, st + 0.9);
+  qa(".pan").forEach((p) => rise(p, st + 1.3, -30, 0.6));
+  pop(q(".bw"), st + 1.5, 0.5);
+  const ws = qa(".w4"), cp = qa(".capt"), beam = q(".beam"), pans = qa(".pan");
+  // Cada situación se pesa sola: la anterior se retira antes de entrar la siguiente.
+  for (let k = 1; k <= 4; k++) {
+    const at = h(k) - c.step;
+    let drop = at + 0.2;
+    if (k > 1) {
+      real.to(ws[k - 2], { opacity: 0, y: -60, duration: 0.3 }, at);
+      real.to(cp[k - 2], { opacity: 0, duration: 0.3 }, at);
+      real.to(beam, { rotation: 0, duration: 0.5, ease: IO }, at);
+      real.to(pans, { rotation: 0, duration: 0.5, ease: IO }, at);
+      drop = at + 0.5;
+    }
+    real.fromTo(ws[k - 1], { opacity: 0, y: -380 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.in" }, drop);
+    real.to(beam, { rotation: 10, duration: 0.7, ease: "elastic.out(1, 0.6)" }, drop + 0.5);
+    real.to(pans, { rotation: -10, duration: 0.7, ease: "elastic.out(1, 0.6)" }, drop + 0.5);
+    rise(cp[k - 1], drop + 0.5, 20, 0.5);
+  }
+};
+
+SCENES.modelos = (c) => {
+  const { st, q, qa, h } = c;
+  words(q(".ttl"), st + 0.2);
+  qa(".st").forEach((s, i) => rise(s, st + 0.6 + i * 0.15, 30, 0.6));
+  real.fromTo(q(".sbar"), { scaleY: 0, transformOrigin: "50% 0" }, { scaleY: 1, duration: 0.6, ease: P4 }, st + 0.8);
+  const f = qa(".fld"), cap = qa(".mcap"), dr = qa(".dr"), by = qa(".by"), hx = qa(".hx");
+  const L2 = [[0, -60], [300, -150], [600, -240]], L3 = [[0, -40], [300, -130], [600, -220]];
+  const mark = (k, at) => {
+    real.to(q(".sbar"), { y: (k - 1) * 170, duration: 0.6, ease: IO }, at);
+    qa(".st").forEach((s, i) => real.to(s.querySelector("b"), { color: i === k - 1 ? "#910048" : "#8a7f85", duration: 0.3 }, at + 0.1));
+  };
+  // Paso 1: la entidad y sus atributos.
+  let at = h(1) - c.step; mark(1, at);
+  pop(q(".etit"), at + 0.2, 0.5);
+  real.fromTo(f, { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.5, stagger: 0.12, ease: "back.out(1.8)" }, at + 0.5);
+  rise(cap[0], at + 1.0, 20, 0.5);
+  // Paso 2: los mismos atributos se vuelven columnas de una tabla.
+  at = h(2) - c.step; mark(2, at);
+  real.to(cap[0], { opacity: 0, duration: 0.3 }, at);
+  real.to(q(".etit"), { opacity: 0, duration: 0.3 }, at);
+  real.fromTo(q(".etit2"), { opacity: 0, scaleX: 0.33, transformOrigin: "0 50%" }, { opacity: 1, scaleX: 1, duration: 0.6, ease: P4 }, at + 0.2);
+  f.forEach((el, i) => real.to(el, { x: L2[i][0], y: L2[i][1], backgroundColor: "#e4d6dc", borderRadius: "8px", duration: 0.7, ease: IO }, at + 0.3 + i * 0.1));
+  real.fromTo(dr, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.2, ease: EXP }, at + 0.9);
+  rise(cap[1], at + 0.9, 20, 0.5);
+  // Paso 3: los mismos campos como bytes en el disco.
+  at = h(3) - c.step; mark(3, at);
+  real.to(cap[1], { opacity: 0, duration: 0.3 }, at);
+  real.to(dr, { opacity: 0, duration: 0.3 }, at);
+  real.to(q(".etit2"), { opacity: 0, duration: 0.3 }, at);
+  real.fromTo(q(".etit3"), { opacity: 0 }, { opacity: 1, duration: 0.4 }, at + 0.2);
+  f.forEach((el, i) => real.to(el, { x: L3[i][0], y: L3[i][1], backgroundColor: "#0c6b62", color: "#ffffff", borderRadius: "8px", duration: 0.7, ease: IO }, at + 0.3 + i * 0.1));
+  real.fromTo(by, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, stagger: 0.1 }, at + 0.9);
+  real.fromTo(hx, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, stagger: 0.1 }, at + 1.0);
+  grow(q(".pgbar"), at + 1.1, 0.4);
+  rise(cap[2], at + 1.0, 20, 0.5);
+};
+
+SCENES["esquema-estado"] = (c) => {
+  const { st, q, qa, h } = c;
+  words(q(".ttl"), st + 0.2);
+  grow(q(".sch"), st + 0.6, 0.8);
+  rise(q(".schl"), st + 0.8, 20, 0.5);
+  real.fromTo(q(".sth"), { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.5, ease: EXP }, st + 1.2);
+  qa(".sr2").forEach((r, i) => slide(r, st + 1.4 + i * 0.2, -200, 0.7));
+  rise(q(".cnt2"), st + 1.8, 20, 0.5);
+  let at = h(1) - c.step;
+  real.fromTo(q(".nr"), { opacity: 0, x: 500 }, { opacity: 1, x: 0, duration: 0.8, ease: EXP }, at + 0.1);
+  flash(q(".nr"), at + 0.6, "rgba(12,107,98,0.25)", "rgba(12,107,98,0)");
+  real.fromTo(q(".n2"), { opacity: 1, y: 0 }, { opacity: 0, y: -24, duration: 0.3 }, at + 0.7);
+  real.fromTo(q(".n3"), { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.4, ease: P4 }, at + 0.8);
+  at = h(2) - c.step;
+  real.fromTo(q(".sch"), { boxShadow: "0 0 0 0 rgba(232,169,32,0)" }, { boxShadow: "0 0 0 14px rgba(232,169,32,0.55)", duration: 0.4, immediateRender: false }, at);
+  real.to(q(".sch"), { boxShadow: "0 0 0 0 rgba(232,169,32,0)", duration: 0.6 }, at + 0.5);
+  words(q(".punch"), at + 0.3, 0.05, 0.6);
+};
+
+SCENES.evolucion = (c) => {
+  const { st, q, qa, h } = c;
+  words(q(".ttl"), st + 0.2);
+  grow(q(".trl"), st + 0.7, 1.0);
+  const trk = q(".trk");
+  qa(".nd").forEach((n, i) => {
+    const at = h(i + 1) - c.step;
+    pop(n.querySelector(".gl2"), at + 0.15, 0.55);
+    rise(n.querySelector(".yr"), at + 0.1, 24, 0.5);
+    rise(n.querySelector(".nm"), at + 0.4, 24, 0.5);
+    rise(n.querySelector(".ds"), at + 0.55, 20, 0.5);
+    const pan = Math.max(0, 400 + i * 540 - 1400);
+    if (pan > 0) real.to(trk, { x: -pan, duration: 0.9, ease: IO }, at);
+  });
+};
+
+SCENES.decision = (c) => {
+  const { st, q, qa, h } = c;
+  words(q(".ttl"), st + 0.2);
+  qa(".sit").forEach((s, i) => rise(s, st + 0.6 + i * 0.15, -60, 0.7));
+  qa(".bin").forEach((b, i) => rise(b, st + 1.2 + i * 0.15, 60, 0.7));
+  rise(q(".ask"), st + 1.9, 20, 0.5);
+  const S = qa(".sit");
+  for (let k = 1; k <= 3; k++) {
+    const at = h(k) - c.step, s = S[k - 1];
+    if (k === 1) real.to(q(".ask"), { opacity: 0, y: -20, duration: 0.3 }, at);
+    rise(s.querySelector(".rs"), at, 16, 0.4);
+    real.to(s, { scale: 1.06, duration: 0.2 }, at + 0.1);
+    real.to(s, { x: Number(s.dataset.dx), y: Number(s.dataset.dy), scale: 0.8, duration: 0.7, ease: IO }, at + 0.35);
+    flash(qa(".bin")[Number(s.dataset.bin)], at + 1.0 - 0.1, "rgba(232,169,32,0.25)", "rgba(232,169,32,0)");
+  }
+};
+
+SCENES.actividades = (c) => {
+  const { st, q, qa } = c;
+  words(q(".ttl"), st + 0.2);
+  qa(".tk").forEach((t, i) =>
+    real.fromTo(t, { opacity: 0, x: i ? 700 : -700, rotation: i ? 6 : -6 }, { opacity: 1, x: 0, rotation: 0, duration: 1.0, ease: EXP }, st + 0.4 + i * 0.2));
+  qa(".rg").forEach((r, i) => draw(r, st + 1.1 + i * 0.15, 0.8));
+  qa(".pn").forEach((p, i) => {
+    const o = { v: 0 };
+    real.fromTo(o, { v: 0 }, { v: 2, duration: 0.8, ease: "power1.out", onUpdate: () => { p.textContent = String(Math.round(o.v)); } }, st + 1.1 + i * 0.15);
+  });
+  rise(q(".src"), st + 1.8, 20, 0.5);
+};
+
+SCENES.cierre = (c) => {
+  const { st, q } = c;
+  const a = q(".ph1c"), b = q(".ph2c");
+  real.fromTo(a, { opacity: 0, x: 220 }, { opacity: 1, x: 0, duration: 0.7, ease: EXP }, st + 0.3);
+  real.fromTo(b, { opacity: 0, x: -220 }, { opacity: 1, x: 0, duration: 0.7, ease: EXP }, st + 0.3);
+  real.to(a, { x: -250, duration: 0.9, ease: IO }, st + 1.0);
+  real.to(b, { x: 250, duration: 0.9, ease: IO }, st + 1.0);
+  real.fromTo(q(".ne2"), { opacity: 0, scale: 0.2 }, { opacity: 1, scale: 1, duration: 0.6, ease: "back.out(2)" }, st + 1.6);
+  words(q(".ttl"), st + 1.9, 0.05, 0.7);
+  rise(q(".lead"), st + 2.7, 30, 0.7);
+  rise(q(".byline"), st + 3.0, 20, 0.6);
+};
+
+
+      const figSyncs = [];
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      const skips = [];
+
+      slides.forEach((slide, index) => {
+        const start = Number(slide.dataset.start);
+        const end = start + Number(slide.dataset.duration);
+        const n = Number(slide.dataset.frags);
+        const en = Number(slide.dataset.enter);
+        const step = Number(slide.dataset.step);
+        const frame = slide.querySelector(".frame");
+        const isDark = slide.classList.contains("dark");
+        const hold = (k) => start + en + k * step;
+        let camCur = overview;
+
+        // Transición: la diapositiva saliente se acerca y se disuelve; la entrante se aleja hasta su plano.
+        const s0 = isDark ? 1.35 : index % 2 ? 1.1 : 0.92;
+        const hasFig = !!frame.querySelector("iframe");
+        if (!hasFig) real.set(frame, { display: "block" }, start);
+        real.fromTo(frame, { opacity: 0, transformOrigin: "0 0", ...cam(s0, VW / 2, VH / 2) },
+          { opacity: 1, ...overview, duration: isDark ? 1.4 : 0.9, ease: "expo.out" }, start);
+        if (index < slides.length - 1) {
+          real.fromTo(frame, { opacity: 1, ...overview }, { opacity: 0, ...cam(1.14, VW / 2, VH / 2), duration: EXIT, ease: "power2.in", immediateRender: false }, end - EXIT);
+          if (!hasFig) real.set(frame, { display: "none" }, end);
+          skips.push([hold(n) + 0.05, end - EXIT]);
+        }
+
+        const ctx = {
+          s: slide, st: start, en, n, step, h: hold,
+          q: (sel) => slide.querySelector(sel),
+          qa: (sel) => Array.from(slide.querySelectorAll(sel)),
+          cam: (cx, cy, s, at, d) => {
+            const to = cam(s, cx, cy);
+            real.fromTo(frame, { ...camCur, transformOrigin: "0 0" }, { ...to, duration: d, ease: "power2.inOut", immediateRender: false }, at);
+            camCur = to;
+          },
+        };
+        if (SCENES[slide.id]) SCENES[slide.id](ctx);
+
+        slide.querySelectorAll("iframe[data-fig]").forEach((el) => {
+          // La figura corre en su propio documento: en vivo anima sola hacia el estado pedido;
+          // con el motor (check, Studio) sigue la línea de tiempo cuadro a cuadro.
+          const steps = Number(el.dataset.fig);
+          let sent = -1;
+          const wanted = () => {
+            const t = tl.time();
+            let u = 0;
+            for (let k = 1; k <= steps; k++) u += Math.min(1, Math.max(0, (t - (hold(k) - 0.6)) / 0.6));
+            return engineHosted ? u / steps : Math.round(u) / steps;
+          };
+          const send = (force) => {
+            const value = wanted();
+            if (!el.contentWindow || (!force && value === sent)) return;
+            sent = value;
+            el.contentWindow.postMessage({ type: "fig", mode: engineHosted ? "set" : "go", value }, "*");
+          };
+          figSyncs.push(send);
+          el.addEventListener("load", () => send(true));
+        });
+      });
+
+      tl.eventCallback("onUpdate", () => figSyncs.forEach((sync) => sync()));
+
+      if (!engineHosted) {
+        // En vivo: "main" marca el destino (lo mueve el reproductor) y "real" lo persigue en tiempo
+        // real, así cada avance reproduce la animación en lugar de saltar. Retroceder es inmediato.
+        // Sin suavizado de retardo: el avance sigue el reloj real aunque el equipo vaya justo.
+        gsap.ticker.lagSmoothing(0);
+        let shown = tl.time(), lastT = gsap.ticker.time;
+        real.time(shown, false);
+        window.__deckState = () => ({ target: tl.time(), shown });
+        gsap.ticker.add((now) => {
+          const dt = Math.min(1, now - lastT);
+          lastT = now;
+          figSyncs.forEach((sync) => sync());
+          const target = tl.time();
+          if (target === shown) return;
+          if (target < shown || target - shown > 14) shown = target;
+          else {
+            shown = Math.min(target, shown + dt * 1.5);
+            for (const [a, b] of skips) if (shown > a && shown < b) shown = Math.min(target, b);
+          }
+          real.time(shown, false);
+        });
+      }
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

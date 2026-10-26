@@ -1,0 +1,1548 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Semana 1 · Ingeniería de software hoy</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      :root {
+        /* Colores tomados del logotipo UIDE: vino #910048 y dorado #E8A920. Sin degradados. */
+        --paper: #ffffff; --ink: #1f1a1d; --muted: #5a5257; --wine: #910048; --wine-deep: #6d0036; --gold: #e8a920;
+        --teal: #0c6b62; --teal-soft: #e3f2f0; --amber: #7a5200; --amber-soft: #fcefc9; --card: #ffffff; --line: #e2dcdf; --tint: #f6f1f3;
+      }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--paper); }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; font-family: system-ui, sans-serif; color: var(--ink); }
+      .slide { position: absolute; inset: 0; }
+      .frame { position: absolute; inset: 0; display: none; opacity: 0; background: var(--paper); transform-origin: 0 0; isolation: isolate; }
+      .dark .frame { background: var(--wine); color: #fff; }
+      .frame > :not(.logo) { position: absolute; }
+      .logo { position: absolute; top: 44px; right: 96px; height: 92px; width: auto; }
+      .dark .logo { top: 0; right: 96px; height: 150px; padding: 26px 30px 22px; background: #fff; border-radius: 0 0 18px 18px; box-sizing: border-box; }
+      .ov { left: 0; top: 0; pointer-events: none; overflow: visible; }
+      .ov path, .mlsvg path { fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; }
+
+      .w { display: inline-block; overflow: hidden; vertical-align: top; padding: 0.18em 0 0.14em; margin: -0.18em 0 -0.14em; }
+      .wi { display: inline-block; }
+      .ch { white-space: pre; }
+      .ttl { left: 120px; top: 96px; width: 1380px; font-family: ui-serif, serif; font-weight: 700; font-size: 64px; line-height: 1.1; letter-spacing: -0.01em; }
+      .ttl.long { font-size: 58px; width: 1600px; }
+      .ttl.xl { font-size: 92px; line-height: 1.08; }
+      .dark .ttl { color: #fff; }
+      .course { font-size: 36px; font-weight: 600; color: var(--gold); }
+      .lead { font-size: 46px; line-height: 1.25; color: var(--muted); }
+      .dark .lead { color: #fff; }
+      .byline { font-size: 32px; color: #f6dfe9; }
+      .punch { font-family: ui-serif, serif; font-size: 60px; font-weight: 700; color: var(--wine); }
+      .punch.soft { color: var(--ink); font-size: 46px; }
+      .punch.good { color: var(--teal); font-size: 54px; }
+      .mono { font-family: ui-monospace, monospace; }
+
+      .sheet { background: var(--tint); border-radius: 8px; overflow: hidden; }
+      .dark .sheet { background: #fff; }
+      .sh { position: relative; padding: 16px 24px; font: 700 36px ui-monospace, monospace; color: #fff; height: 70px; }
+      .sh span { position: absolute; left: 24px; top: 14px; }
+      .sr { position: relative; height: 70px; padding: 14px 24px; font-size: 38px; white-space: nowrap; }
+      .sr + .sr { border-top: 3px solid #fff; }
+      .dark .sr + .sr { border-top-color: var(--tint); }
+      .sr span { }
+      .ph .phnew { position: absolute; left: 24px; top: 14px; opacity: 0; }
+
+      /* ruta */
+      .rl { stroke: var(--wine); stroke-width: 8; }
+      .dot { width: 24px; height: 24px; border-radius: 50%; background: var(--gold); }
+      .node { width: 104px; height: 104px; border-radius: 50%; background: var(--wine); color: #fff; font-size: 52px; font-weight: 800; display: grid; place-items: center; }
+      .nl { width: 340px; text-align: center; font-size: 40px; font-weight: 700; line-height: 1.2; }
+
+      /* caso */
+      .off { font-size: 46px; font-weight: 800; color: var(--wine); }
+      .dsh { height: 0; border-top: 8px dashed var(--amber); }
+      .xm { width: 70px; height: 70px; }
+      .xm::before, .xm::after { content: ""; position: absolute; left: 0; top: 31px; width: 70px; height: 9px; border-radius: 5px; background: #c0392b; }
+      .xm::before { transform: rotate(45deg); } .xm::after { transform: rotate(-45deg); }
+
+      /* versiones */
+      .th { left: 0; top: 300px; width: 1920px; height: 70px; }
+      .th::before { content: ""; position: absolute; left: 120px; width: 1640px; top: 0; height: 70px; background: var(--wine-deep); border-radius: 14px; }
+      .th .cl { color: #fff; font-size: 34px; font-weight: 700; letter-spacing: 0.1em; height: 70px; line-height: 70px; padding-left: 28px; }
+      .tr { left: 0; width: 1920px; height: 86px; }
+      .tr::before { content: ""; position: absolute; left: 120px; width: 1640px; top: 0; height: 86px; background: var(--tint); border-radius: 14px; }
+      .cl { position: absolute; top: 0; height: 86px; line-height: 86px; font-size: 40px; padding-left: 28px; white-space: nowrap; }
+      .cl.b { font-size: 40px; font-weight: 600; }
+      .hb { background: #fbd77a; mix-blend-mode: multiply; border-radius: 12px; }
+      .ld { stroke: var(--amber); stroke-width: 5; }
+      .pt { width: 18px; height: 18px; border-radius: 50%; background: var(--amber); }
+      .co { width: 520px; text-align: center; font-size: 40px; font-weight: 800; color: var(--amber); background: var(--amber-soft); border-radius: 8px; padding: 14px 0; }
+
+      /* marco */
+      .lk { height: 0; border-top: 8px dashed var(--teal); }
+      .qm { width: 60px; height: 60px; border-radius: 50%; background: var(--amber); color: #fff; font-size: 44px; font-weight: 800; display: grid; place-items: center; }
+      .mag { width: 100px; height: 100px; border-radius: 50%; border: 14px solid var(--gold); }
+      .mag::after { content: ""; position: absolute; left: 78px; top: 78px; width: 14px; height: 60px; border-radius: 7px; background: var(--gold); transform: rotate(-45deg); transform-origin: 7px 0; }
+      .chipx { font-size: 40px; font-weight: 800; color: var(--amber); background: var(--amber-soft); border-radius: 8px; padding: 12px 34px; }
+
+      /* causa */
+      .ul { position: relative; display: inline-block; font-weight: 800; color: var(--gold); }
+      .ub { position: absolute; left: 0; bottom: -6px; width: 100%; height: 6px; background: var(--gold); border-radius: 3px; }
+      .isl { width: 300px; height: 300px; border-radius: 50%; background: var(--wine-deep); border: 6px solid var(--gold); color: #fff; font-size: 44px; font-weight: 800; display: grid; place-items: center; }
+
+      iframe.fig { width: 1690px; height: 780px; border: 0; background: transparent; }
+
+      /* definiciones */
+      .sc { width: 380px; height: 76px; border-radius: 6px; background: var(--tint); color: #8a7f85; font-size: 40px; font-weight: 800; line-height: 76px; text-align: center; white-space: pre; }
+      .gl { stroke: var(--gold); stroke-width: 8; }
+      .bp { background: var(--tint); border-radius: 18px; overflow: hidden; }
+      .bh { position: absolute; top: 0; height: 80px; background: var(--wine-deep); color: #fff; font: 700 38px/80px ui-monospace, monospace; padding-left: 28px; }
+      .br { position: absolute; left: 0; width: 1000px; height: 80px; }
+      .br + .br { border-top: 3px solid #fff; }
+      .br .cl { height: 80px; line-height: 80px; font-size: 40px; }
+      .edit .oldn, .edit .newn { position: absolute; left: 28px; }
+      .edit .newn { opacity: 0; font-weight: 800; color: var(--teal); }
+      .usr { width: 120px; height: 120px; border-radius: 50%; background: var(--teal); display: grid; place-items: center; }
+      .ulp { stroke: var(--teal); stroke-width: 6; }
+
+      /* caracteristicas */
+      .qd { left: 120px; top: 300px; width: 1680px; height: 620px; }
+      .qd > * { position: absolute; }
+      .mo { left: 0; top: 30px; width: 320px; height: 300px; transform: scale(1.7); transform-origin: 0 0; }
+      .mo > * { position: absolute; }
+      .tx { left: 700px; top: 40px; width: 1000px; }
+      .tx strong { display: block; font-size: 60px; line-height: 1.12; font-weight: 800; }
+      .tx em { display: block; margin-top: 12px; font-style: normal; font-size: 44px; line-height: 1.2; color: var(--muted); }
+      .ex { display: block; margin-top: 36px; font-size: 40px; line-height: 1.25; font-weight: 600; color: var(--wine); }
+      .cb { width: 94px; height: 48px; background: #e4d6dc; border-radius: 8px; }
+      .fi { background: var(--wine); color: #fff; font: 700 20px/1 ui-monospace, monospace; padding: 10px 14px; border-radius: 12px; white-space: nowrap; }
+      .bk { width: 120px; height: 120px; border-radius: 16px; color: #fff; font-style: normal; font-weight: 800; font-size: 20px; display: grid; place-items: center; }
+      .bk.app { background: var(--wine); } .bk.data { background: var(--teal); width: 110px; }
+      .nc { font-size: 21px; font-weight: 800; color: var(--teal); white-space: nowrap; }
+      .fl { font-size: 21px; font-weight: 800; color: var(--muted); white-space: nowrap; }
+      .ask { font-family: ui-serif, serif; font-style: italic; font-size: 48px; font-weight: 700; color: var(--wine); }
+      .capt { font-size: 44px; font-weight: 600; }
+      .capt b { color: var(--amber); }
+      .wall { width: 0; height: 200px; border-left: 6px dashed var(--amber); }
+      .ext { width: 30px; height: 120px; background: #5fbfb3; border-radius: 8px; }
+      .g4 { width: 64px; height: 54px; background: #e4d6dc; border-radius: 8px; }
+      .fa, .fb { height: 276px; border: 6px solid var(--gold); border-radius: 14px; top: -6px; }
+      .fa { left: -6px; width: 154px; } .fb { left: 146px; width: 160px; border-color: var(--teal); }
+      .hub { left: 110px; top: 100px; width: 100px; height: 100px; background: var(--teal); border-radius: 16px; }
+      .uc { width: 70px; height: 70px; border-radius: 50%; background: var(--wine); }
+      .ml { stroke: var(--teal); stroke-width: 5; }
+      .mlsvg { left: 0; top: 0; }
+      .pu { width: 20px; height: 20px; border-radius: 50%; background: var(--gold); }
+
+      /* catalogo */
+      .pb { width: 640px; height: 160px; background: var(--tint); border-radius: 8px; }
+      .pl { font-size: 40px; font-weight: 800; }
+      .q2 { font-size: 40px; color: var(--muted); }
+      .dc { font-size: 40px; font-weight: 700; color: var(--amber); background: var(--amber-soft); border-radius: 8px; padding: 10px 26px; white-space: nowrap; }
+      .dbms { width: 650px; height: 550px; background: var(--teal-soft); border-radius: 8px; }
+      .dbms > * { position: absolute; }
+      .dt { left: 30px; top: 18px; font-size: 40px; font-weight: 800; color: var(--teal); }
+      .cat { left: 30px; top: 90px; width: 590px; height: 240px; background: var(--teal); border-radius: 16px; color: #fff; font-size: 40px; font-weight: 800; padding: 20px 26px; }
+      .dat { left: 30px; top: 370px; width: 590px; height: 130px; background: #084a44; border-radius: 16px; color: #fff; font-size: 44px; font-weight: 800; display: grid; place-items: center; }
+      .ln { stroke: var(--teal); stroke-width: 6; }
+
+      /* anomalias */
+      .z { top: 330px; width: 520px; height: 700px; }
+      .z > * { position: absolute; }
+      .zl { left: 0; top: 0; font-family: ui-serif, serif; font-size: 48px; font-weight: 800; color: var(--amber); }
+      .zd { left: 0; top: 76px; width: 500px; font-size: 40px; line-height: 1.2; color: var(--muted); }
+      .cp { left: 0; width: 440px; background: var(--amber-soft); color: var(--amber); font: 800 38px/1 ui-monospace, monospace; padding: 24px 24px; border-radius: 8px; white-space: nowrap; }
+      .cnt { width: 110px; height: 110px; border-radius: 50%; background: var(--wine); color: #fff; font-size: 56px; font-weight: 800; display: grid; place-items: center; }
+      .ne { font-size: 170px; font-weight: 800; color: #c0392b; line-height: 1; }
+      .bp1, .bp2 { width: 0; height: 30px; border-left: 6px dashed var(--amber); }
+
+      /* matriz */
+      .mh { left: 0; top: 330px; width: 1920px; height: 70px; }
+      .mh::before { content: ""; position: absolute; left: 120px; width: 1680px; height: 70px; background: var(--wine-deep); border-radius: 14px; }
+      .mh span { position: absolute; top: 0; height: 70px; line-height: 70px; color: #fff; font-size: 34px; font-weight: 700; letter-spacing: 0.1em; }
+      .mr { left: 0; width: 1920px; height: 100px; }
+      .mr::before { content: ""; position: absolute; left: 120px; width: 1680px; height: 100px; background: var(--tint); border-radius: 14px; }
+      .mr span { position: absolute; top: 0; height: 100px; line-height: 100px; font-size: 38px; }
+      .mr .an { left: 140px; top: 20px; height: 60px; line-height: 60px; padding: 0 22px; background: var(--amber-soft); color: var(--amber); font-weight: 800; border-radius: 8px; font-size: 36px; }
+      .mr .ev { left: 560px; }
+      .mr .cq { left: 1150px; font-weight: 800; color: var(--wine); font-size: 36px; }
+      .ar { stroke: var(--wine); stroke-width: 6; }
+
+      /* esquema unificado */
+      .hold, .hnew { }
+      .hnew { opacity: 0; }
+      .sb { width: 1680px; height: 96px; background: var(--wine-deep); color: #fff; border-radius: 18px; font: 700 46px/96px ui-monospace, monospace; padding-left: 36px; }
+      .pg { height: 88px; background: var(--tint); border-radius: 16px; font: 700 42px/88px ui-monospace, monospace; padding-left: 32px; }
+      .sb u, .pg u { text-decoration-thickness: 5px; text-underline-offset: 8px; }
+      .lk { stroke: var(--teal); stroke-width: 6; }
+      path.lk { border: 0; height: auto; }
+      .pd { left: -11px; top: -11px; width: 22px; height: 22px; border-radius: 50%; background: var(--gold); opacity: 0; }
+
+      /* practica */
+      .vl { width: 8px; background: var(--wine); border-radius: 4px; }
+      .vn { width: 64px; height: 64px; border-radius: 50%; background: var(--wine); color: #fff; font-size: 36px; font-weight: 800; display: grid; place-items: center; }
+      .vt { font-size: 44px; font-weight: 600; }
+
+      /* costos */
+      .post { left: 740px; top: 480px; width: 440px; height: 440px; }
+      .stem { position: absolute; left: 200px; top: 0; width: 40px; height: 400px; background: #b9aab1; }
+      .bs { position: absolute; left: 0; top: 400px; width: 440px; height: 40px; border-radius: 10px; background: #b9aab1; }
+      .beam { width: 1000px; height: 20px; background: var(--wine); border-radius: 10px; }
+      .pan { position: absolute; top: 20px; width: 680px; height: 400px; transform-origin: 340px -60px; }
+      .pan.pl { left: -340px; } .pan.pr { left: 660px; }
+      .pan svg { position: absolute; left: 0; top: 0; }
+      .rod { position: absolute; left: 337px; top: -60px; width: 6px; height: 60px; background: #8a7f85; }
+      .tray { position: absolute; left: 0; top: 204px; width: 680px; height: 28px; background: var(--wine-deep); border-radius: 13px; }
+      .w4 { position: absolute; width: 330px; height: 100px; background: var(--amber-soft); color: var(--amber); font-size: 38px; font-weight: 800; line-height: 1.05; display: grid; place-items: center; text-align: center; border-radius: 14px; z-index: 2; }
+      .bw { position: absolute; left: 20px; top: 90px; width: 640px; height: 100px; background: var(--teal); color: #fff; font-size: 42px; font-weight: 800; display: grid; place-items: center; border-radius: 14px; z-index: 2; }
+      .pan.pr .w4 { }
+
+      /* modelos */
+      .sbar { width: 10px; height: 110px; background: var(--wine); border-radius: 5px; }
+      .st { width: 640px; }
+      .st b { display: block; font-family: ui-serif, serif; font-size: 52px; color: #8a7f85; }
+      .st em { display: block; font-style: normal; font-size: 38px; color: var(--muted); margin-top: 6px; }
+      .g { width: 980px; height: 640px; }
+      .tth { height: 70px; border-radius: 14px; color: #fff; font: 800 40px/70px ui-monospace, monospace; padding-left: 28px; }
+      .fld { width: 290px; height: 64px; border-radius: 8px; background: var(--tint); color: var(--ink); font-size: 38px; font-weight: 700; display: grid; place-items: center; }
+      .drw { width: 900px; height: 64px; background: var(--tint); border-radius: 8px; }
+      .drw span { position: absolute; top: 0; width: 300px; padding-left: 20px; font: 600 34px/64px ui-monospace, monospace; white-space: nowrap; }
+      .by { text-align: center; font-size: 36px; color: var(--muted); }
+      .hx { width: 280px; height: 64px; background: #e4d6dc; border-radius: 8px; color: var(--muted); font: 700 36px/64px ui-monospace, monospace; text-align: center; }
+      .pgbar { height: 56px; background: var(--teal-soft); color: var(--teal); font-size: 38px; font-weight: 800; line-height: 56px; text-align: center; border-radius: 14px; }
+      .mcap { font-size: 42px; font-weight: 700; line-height: 1.2; color: var(--wine); }
+      .g > * { position: absolute; }
+      .ent { height: 110px; border-radius: 16px; color: #fff; font-size: 40px; font-weight: 800; display: grid; place-items: center; }
+      .ent.rel { width: 150px; height: 130px; background: var(--gold); color: var(--ink); font-size: 34px; border-radius: 0; clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); }
+      .ent.pill { height: 64px; background: var(--tint); color: var(--ink); font-size: 38px; border-radius: 8px; }
+      .rl2 { stroke: var(--wine); stroke-width: 6; }
+      .tb { background: var(--tint); border-radius: 18px; overflow: hidden; }
+      .tbh { color: #fff; font: 800 40px/1 ui-monospace, monospace; padding: 16px 26px; }
+      .tbr { font: 600 36px/1 ui-monospace, monospace; padding: 16px 26px; border-top: 3px solid #fff; }
+      .pg2 { width: 200px; height: 120px; background: #e4d6dc; border-radius: 12px; color: var(--muted); font: 700 34px/120px ui-monospace, monospace; text-align: center; }
+      .cap { font-size: 44px; font-weight: 800; color: var(--wine); }
+
+      /* esquema y estado */
+      .schl { font-size: 36px; font-weight: 800; letter-spacing: 0.14em; color: var(--muted); }
+      .sch { width: 1680px; height: 110px; background: var(--wine-deep); color: #fff; border-radius: 18px; font: 700 52px/110px ui-monospace, monospace; padding-left: 40px; }
+      .cnt2 { font-size: 40px; font-weight: 800; color: var(--teal); }
+      .sw { position: relative; display: inline-block; width: 220px; height: 50px; vertical-align: bottom; }
+      .sw span { position: absolute; left: 0; top: 0; }
+      .cnt2 .n3 { opacity: 0; }
+      .sth, .sr2, .nr { left: 0; width: 1920px; height: 80px; }
+      .sth .cl { height: 70px; line-height: 70px; font-size: 34px; font-weight: 700; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; }
+      .sr2::before, .nr::before { content: ""; position: absolute; left: 120px; width: 1680px; height: 80px; background: var(--tint); border-radius: 14px; }
+      .nr::before { background: var(--teal-soft); }
+      .sr2 .cl, .nr .cl { height: 80px; line-height: 80px; }
+
+      /* evolucion */
+      .trk { left: 0; top: 0; width: 3600px; height: 1080px; }
+      .trk > * { position: absolute; }
+      .trl { height: 8px; background: var(--wine); border-radius: 4px; }
+      .nd { top: 300px; width: 540px; height: 600px; text-align: center; }
+      .nd > * { position: absolute; left: 0; width: 540px; }
+      .yr { top: 0; font-family: ui-serif, serif; font-size: 100px; font-weight: 800; color: var(--wine); font-variant-numeric: tabular-nums; }
+      .gl2 { left: 190px; top: 180px; width: 160px; height: 160px; border-radius: 50%; background: var(--wine); display: grid; place-items: center; }
+      .nd .gl2 { width: 160px; }
+      .nm { top: 380px; font-size: 48px; font-weight: 800; }
+      .ds { top: 450px; font-size: 38px; color: var(--muted); }
+
+      /* decision */
+      .sit { width: 520px; height: 190px; background: var(--tint); border-radius: 8px; padding: 22px 28px; }
+      .sit strong { display: block; font-size: 40px; line-height: 1.12; font-weight: 800; padding-left: 70px; }
+      .bd { position: absolute; left: 24px; top: 22px; width: 52px; height: 52px; border-radius: 50%; background: var(--wine); color: #fff; font-size: 32px; font-weight: 800; display: grid; place-items: center; }
+      .rs { position: absolute; left: 28px; bottom: 18px; font-style: normal; font-size: 38px; font-weight: 800; color: var(--amber); }
+      .rs.good { color: var(--teal); }
+      .bin { background: var(--teal-soft); border-radius: 8px; }
+      .bin.am { background: var(--amber-soft); }
+      .bin span { position: absolute; left: 30px; top: 14px; font-size: 44px; font-weight: 800; }
+
+      /* actividades */
+      .tk { width: 760px; height: 520px; background: var(--tint); border-radius: 8px; }
+      .tk > * { position: absolute; }
+      .tg { left: 50px; top: 40px; font-size: 44px; font-weight: 800; color: var(--wine); }
+      .tt { left: 50px; top: 120px; width: 660px; font-family: ui-serif, serif; font-size: 56px; font-weight: 700; line-height: 1.1; }
+      .td { left: 50px; top: 270px; width: 660px; font-size: 40px; color: var(--muted); line-height: 1.2; }
+      .tp { left: 520px; top: 480px; width: 180px; text-align: center; font-size: 38px; font-weight: 700; color: var(--muted); }
+      .ringsvg { left: 520px; top: 310px; }
+      .rg { fill: none; stroke: var(--wine); stroke-width: 14; stroke-linecap: round; stroke-dasharray: 1; }
+      .pn { left: 520px; top: 352px; width: 180px; text-align: center; font-size: 84px; font-weight: 800; color: var(--wine); line-height: 1; }
+      .src { font-size: 40px; color: var(--muted); }
+
+      /* cierre */
+      .phc { width: 380px; height: 100px; background: #fff; color: var(--ink); border-radius: 18px; font: 800 48px/100px ui-monospace, monospace; text-align: center; }
+      .ne2 { width: 160px; text-align: center; font-size: 150px; font-weight: 800; color: var(--gold); line-height: 1; }
+
+      /* ── Ingeniería de software: escenas propias ── */
+      .x-q { font-size: 40px; font-weight: 700; color: var(--amber); line-height: 1.2; }
+      .x-cap { font-size: 44px; font-weight: 600; line-height: 1.25; }
+      .x-dot { width: 30px; height: 30px; border-radius: 50%; background: #b9aab1; }
+      .x-dot.now { background: var(--teal); }
+      .x-lb { font-size: 44px; font-weight: 800; color: var(--wine); }
+      .x-blk { width: 900px; height: 70px; background: var(--tint); border-radius: 8px; font-size: 40px; font-weight: 700; line-height: 70px; padding-left: 28px; }
+      .x-blk.base { background: var(--wine-deep); color: #fff; }
+      .x-sm { font-size: 44px; color: var(--muted); }
+      .x-seg { width: 330px; height: 110px; color: #fff; font-size: 40px; font-weight: 800; display: grid; place-items: center; border-radius: 8px; }
+      .x-cod { width: 220px; height: 56px; background: var(--gold); color: var(--ink); font-size: 38px; font-weight: 800; display: grid; place-items: center; border-radius: 8px; }
+      .x-br { stroke: var(--wine); stroke-width: 6; }
+      .xc { position: absolute; top: 0; height: 90px; line-height: 90px; font-size: 38px; padding-left: 24px; white-space: nowrap; }
+      .xc.a { font-weight: 700; } .xc.b { color: var(--muted); } .xc.c { font-weight: 800; color: var(--wine); }
+      .x-th { left: 0; top: 300px; width: 1920px; height: 70px; }
+      .x-th::before { content: ""; position: absolute; left: 120px; width: 1680px; height: 70px; background: var(--wine-deep); border-radius: 8px; }
+      .x-th .xc { color: #fff; font-size: 34px; font-weight: 700; letter-spacing: 0.08em; height: 70px; line-height: 70px; }
+      .x-tr { left: 0; width: 1920px; height: 90px; }
+      .x-tr::before { content: ""; position: absolute; left: 120px; width: 1680px; height: 90px; background: var(--tint); border-radius: 8px; }
+      .x-ln { font-size: 46px; font-weight: 800; color: var(--wine); }
+      .x-nd { width: 380px; height: 110px; background: var(--tint); border-radius: 8px; font-size: 38px; font-weight: 800; display: grid; place-items: center; text-align: center; line-height: 1.1; padding: 0 14px; }
+      .x-nd.hl { background: var(--wine-deep); color: #fff; }
+      .x-gl { width: 270px; text-align: center; font-size: 38px; line-height: 1.15; color: var(--muted); }
+      .x-ar { stroke: var(--wine); stroke-width: 6; }
+      .x-at { left: 120px; top: 300px; width: 1680px; height: 620px; }
+      .x-at > * { position: absolute; }
+      .x-mo { left: 0; top: 30px; width: 560px; height: 520px; }
+      .x-mo > * { position: absolute; }
+      .x-tx { left: 700px; top: 40px; width: 1000px; }
+      .x-tx strong { display: block; font-size: 60px; line-height: 1.12; font-weight: 800; }
+      .x-tx em { display: block; margin-top: 16px; font-style: normal; font-size: 44px; line-height: 1.2; color: var(--muted); }
+      .x-tx span { display: block; margin-top: 36px; font-size: 40px; line-height: 1.25; font-weight: 600; color: var(--wine); }
+      .x-bl { width: 120px; height: 90px; background: #e4d6dc; border-radius: 8px; }
+      .x-chip { background: var(--amber-soft); color: var(--amber); font-size: 38px; font-weight: 800; padding: 10px 24px; border-radius: 8px; white-space: nowrap; }
+      .x-acc { width: 230px; height: 170px; background: var(--tint); border-radius: 8px; font-size: 36px; font-weight: 700; display: grid; place-items: center; text-align: center; padding: 0 12px; line-height: 1.1; }
+      .x-coin { width: 46px; height: 46px; border-radius: 50%; background: var(--gold); }
+      .x-neg { font-size: 44px; font-weight: 800; color: #c0392b; }
+      .x-zero { font-size: 40px; font-weight: 800; color: var(--muted); }
+      .x-sw circle { fill: none; stroke: var(--wine); stroke-width: 18; stroke-linecap: round; stroke-dasharray: 1; }
+      .x-swt { width: 300px; text-align: center; font: 800 84px/1 ui-monospace, monospace; color: var(--wine); }
+      .x-us { width: 150px; height: 150px; border-radius: 50%; background: var(--teal); display: grid; place-items: center; }
+      .x-bub { width: 70px; height: 70px; border-radius: 50%; background: var(--amber); color: #fff; font-size: 48px; font-weight: 800; display: grid; place-items: center; }
+      .x-exp { stroke: #c0392b; stroke-width: 6; }
+      .x-pc { width: 330px; height: 230px; background: var(--tint); border-radius: 8px; padding: 22px 24px; }
+      .x-pc strong { display: block; font-size: 44px; font-weight: 800; color: var(--wine); }
+      .x-pc em { display: block; margin-top: 10px; font-style: normal; font-size: 36px; line-height: 1.15; color: var(--muted); }
+      .x-hd { font-size: 34px; font-weight: 700; letter-spacing: 0.08em; color: var(--muted); }
+      .x-cd { width: 375px; height: 370px; background: var(--tint); border-radius: 8px; padding: 24px 26px; font-size: 38px; line-height: 1.2; }
+      .x-cd.big { display: grid; place-items: center; text-align: center; font-family: ui-serif, serif; font-size: 46px; font-weight: 800; color: var(--wine); }
+      .x-ly { width: 520px; height: 80px; border-radius: 8px; color: #fff; font-size: 38px; font-weight: 800; display: grid; place-items: center; }
+      .x-sys { width: 440px; height: 300px; border: 6px solid var(--wine); border-radius: 8px; }
+      .x-cmp { width: 170px; height: 70px; background: var(--tint); font-size: 36px; font-weight: 700; display: grid; place-items: center; border-radius: 8px; }
+      .x-ai { width: 150px; height: 90px; background: var(--gold); color: var(--ink); font-size: 56px; font-weight: 800; display: grid; place-items: center; border-radius: 8px; }
+      .x-bx2 { width: 520px; height: 110px; background: var(--tint); font-size: 38px; font-weight: 700; display: grid; place-items: center; text-align: center; border-radius: 8px; padding: 0 16px; line-height: 1.1; }
+      .x-pb { width: 150px; height: 64px; background: var(--tint); border-radius: 8px; font-size: 34px; font-weight: 700; display: grid; place-items: center; }
+      .x-sp { stroke: var(--amber); stroke-width: 4; }
+      .x-ts { stroke: var(--teal); stroke-width: 5; }
+      .x-rd { stroke: #c0392b; stroke-width: 5; }
+      .x-gb { width: 330px; height: 90px; background: #f3d3cf; color: #8b2b22; font-size: 38px; font-weight: 800; display: grid; place-items: center; border-radius: 8px; }
+      .x-fn { width: 220px; height: 70px; background: var(--tint); font-size: 36px; font-weight: 700; display: grid; place-items: center; border-radius: 8px; }
+      .x-ob { width: 250px; height: 210px; border: 6px solid var(--teal); border-radius: 8px; background: var(--teal-soft); text-align: center; padding-top: 34px; font-size: 36px; line-height: 1.5; }
+      .x-ob b { display: block; color: var(--teal); }
+      .x-ph { width: 300px; height: 100px; background: var(--tint); border-radius: 8px; font-size: 38px; font-weight: 800; display: grid; place-items: center; }
+      .x-doc { width: 54px; height: 76px; background: #fff; border: 4px solid #b9aab1; border-radius: 4px; }
+      .x-chg { background: #c0392b; color: #fff; font-size: 38px; font-weight: 800; padding: 10px 24px; border-radius: 8px; white-space: nowrap; }
+      .x-rb { stroke: #c0392b; stroke-width: 6; }
+      .x-rl { font-size: 38px; font-weight: 700; color: #c0392b; }
+      .x-cy { width: 120px; height: 120px; border-radius: 50%; background: var(--teal-soft); border: 6px solid var(--teal); color: var(--teal); font-size: 64px; font-weight: 800; display: grid; place-items: center; }
+      .x-rule { font-size: 40px; font-weight: 600; }
+      .x-cr { width: 1680px; height: 130px; background: var(--tint); border-radius: 8px; }
+      .x-cr strong { position: absolute; left: 30px; top: 0; width: 760px; line-height: 130px; font-size: 42px; font-weight: 800; }
+      .x-cr span { position: absolute; left: 820px; top: 0; width: 830px; height: 130px; display: flex; align-items: center; font-size: 40px; line-height: 1.15; color: var(--wine); font-weight: 600; }
+      .x-vd { font-family: ui-serif, serif; font-size: 80px; font-weight: 800; color: var(--wine); }
+      .x-rk { font-size: 42px; font-weight: 700; color: var(--teal); }
+      .x-fence { width: 780px; height: 470px; border: 6px solid var(--wine); border-radius: 8px; }
+      .x-fi { font-family: ui-serif, serif; font-size: 54px; font-weight: 800; }
+      .x-fe { font-size: 40px; color: var(--muted); }
+      .x-rc { width: 780px; height: 90px; background: var(--teal-soft); color: var(--teal); font-size: 44px; font-weight: 800; line-height: 90px; padding-left: 30px; border-radius: 8px; }
+      .x-cc { width: 300px; height: 300px; border-radius: 50%; background: var(--wine); color: #fff; font-family: ui-serif, serif; font-size: 52px; font-weight: 800; display: grid; place-items: center; text-align: center; line-height: 1.1; padding: 0 30px; }
+      .x-sat { width: 380px; height: 76px; background: var(--tint); font-size: 36px; font-weight: 800; display: grid; place-items: center; border-radius: 8px; }
+      .x-sl { stroke: var(--wine); stroke-width: 4; }
+      .x-bx { width: 520px; height: 300px; background: #1f1a1d; color: #fff; font-size: 170px; font-weight: 800; display: grid; place-items: center; border-radius: 8px; }
+      .x-ia { font-size: 40px; font-weight: 700; width: 300px; line-height: 1.15; }
+      .x-lk { font-size: 38px; font-weight: 800; color: var(--amber); background: var(--amber-soft); padding: 8px 20px; border-radius: 8px; }
+      .x-fill { width: 140px; border-radius: 8px 8px 0 0; }
+      .x-bl2 { font-size: 34px; font-weight: 700; text-align: center; width: 220px; line-height: 1.1; }
+      .x-st { border: 5px solid #c0392b; color: #c0392b; font-size: 40px; font-weight: 800; padding: 8px 24px; border-radius: 8px; }
+      .x-pr { width: 540px; height: 170px; background: var(--tint); border-radius: 8px; padding: 18px 28px; }
+      .x-pr strong { display: block; font-size: 48px; color: var(--wine); font-weight: 800; }
+      .x-pr em { display: block; margin-top: 8px; font-style: normal; font-size: 38px; line-height: 1.15; color: var(--muted); }
+      .x-sp2 { font-size: 44px; font-weight: 700; color: #8a7f85; }
+      .x-sp2 b { display: inline-grid; place-items: center; width: 60px; height: 60px; border-radius: 50%; background: #e4d6dc; color: var(--ink); font-size: 34px; margin-right: 22px; }
+      .x-rs p { font-size: 44px; line-height: 1.25; margin-top: 24px; }
+      .x-pair { display: flex; align-items: center; gap: 30px; }
+      .x-pair span { font-size: 54px; font-weight: 800; padding: 16px 34px; border-radius: 8px; background: var(--wine); color: #fff; }
+      .x-pair i { font-style: normal; font-size: 40px; color: var(--muted); }
+      .x-chip2 { background: var(--teal-soft); color: var(--teal); font-weight: 800; padding: 14px 28px; border-radius: 8px; display: inline-block; width: fit-content; }
+      .x-rs p.x-chip2 { display: block; }
+      .x-hub { width: 320px; height: 320px; border-radius: 50%; background: var(--wine); color: #fff; font-family: ui-serif, serif; font-size: 46px; font-weight: 800; display: grid; place-items: center; text-align: center; line-height: 1.1; padding: 0 28px; }
+      .x-co { width: 440px; height: 96px; background: var(--tint); font-size: 38px; font-weight: 800; display: grid; place-items: center; text-align: center; line-height: 1.1; padding: 0 16px; border-radius: 8px; }
+      .x-ext { width: 520px; height: 90px; border: 5px dashed var(--amber); color: var(--amber); font-size: 38px; font-weight: 800; display: grid; place-items: center; border-radius: 8px; }
+      .x-q4 { width: 620px; height: 300px; border-radius: 8px; }
+      .x-q4 b { position: absolute; left: 24px; top: 16px; font-size: 42px; font-weight: 800; }
+      .x-it { width: 560px; height: 110px; background: #fff; border-radius: 8px; font-size: 38px; font-weight: 700; display: grid; place-items: center; text-align: center; line-height: 1.1; padding: 0 14px; }
+      .x-ax { font-size: 40px; font-weight: 700; color: var(--muted); }
+      .x-vl { position: absolute; left: 0; top: 0; font-size: 34px; font-weight: 800; letter-spacing: 0.08em; color: var(--wine); width: 420px; line-height: 90px; }
+      .x-vt { position: absolute; left: 430px; top: 0; font-size: 40px; line-height: 90px; width: 1250px; white-space: nowrap; }
+      .x-vr { width: 1680px; height: 90px; }
+      .x-tk { width: 540px; height: 580px; background: var(--tint); border-radius: 8px; }
+      .x-tk .tg { left: 36px; top: 32px; font-size: 44px; font-weight: 800; color: var(--wine); }
+      .x-tk .tt { left: 36px; top: 100px; width: 470px; font-family: ui-serif, serif; font-size: 50px; font-weight: 700; line-height: 1.1; }
+      .x-tk .td { left: 36px; top: 250px; width: 470px; font-size: 38px; color: var(--muted); line-height: 1.2; }
+      .x-tk .tp { left: 36px; top: 510px; width: 300px; text-align: left; font-size: 38px; font-weight: 700; color: var(--muted); }
+      .x-tk .ringsvg { left: 330px; top: 385px; }
+      .x-tk .pn { left: 330px; top: 427px; }
+      .x-sum { display: flex; gap: 22px; align-items: center; }
+      .x-sc { background: #fff; color: var(--ink); font-size: 46px; font-weight: 800; padding: 14px 30px; border-radius: 8px; white-space: nowrap; }
+      .x-pl { font-style: normal; color: var(--gold); font-size: 60px; font-weight: 800; }
+      .x-eq { font-family: ui-serif, serif; font-size: 60px; font-weight: 800; color: var(--gold); }
+      .x-tk > * { position: absolute; }
+</style>
+  </head>
+  <body>
+    <script type="application/hyperframes-slideshow+json">
+{
+  "slides": [
+    {
+      "sceneId": "portada",
+      "startTime": 0,
+      "endTime": 5.6,
+      "notes": "Abrir con una pregunta: ¿qué diferencia hay entre un programa que ustedes escribieron para un trabajo y una aplicación que usan todos los días? Anotar dos o tres respuestas. No definir nada todavía: la clase empieza por el caso del script."
+    },
+    {
+      "sceneId": "caso",
+      "startTime": 5.6,
+      "endTime": 15.6,
+      "notes": "Dejar el caso a la vista y preguntar antes de avanzar: ¿qué le falta a este script para ser el servicio oficial? Anotar respuestas en la pizarra. Luego revelar: hoy lo usan 30 personas que conocen al autor; como servicio serían 1 200 estudiantes y todos los docentes, sin conocerlo. Cada punto representa unas 10 personas. Cerrar con las dos preguntas de responsabilidad: si el autor se gradúa, nadie lo mantiene; si calcula mal un promedio, ¿quién responde? Es el caso de la exploración del material de la semana.",
+      "fragments": [
+        8,
+        9.6,
+        11.2,
+        12.8,
+        14.4
+      ]
+    },
+    {
+      "sceneId": "faltantes",
+      "startTime": 15.6,
+      "endTime": 24,
+      "notes": "Resolver la pregunta anterior. Cada bloque que cae sobre el código es algo que el script personal no tiene: documentación para quien instala y usa, pruebas que demuestren el cálculo, un responsable, control de acceso a las notas, capacidad para muchos usuarios y un plan para cambios de reglamento. La idea a fijar: el código es la base, no el producto.",
+      "fragments": [
+        18,
+        19.6,
+        21.2,
+        22.8
+      ]
+    },
+    {
+      "sceneId": "definicion",
+      "startTime": 24,
+      "endTime": 30.6,
+      "notes": "Leer la definición de Sommerville y subrayar la expresión todos los aspectos. Mostrar el ciclo completo y señalar que escribir código es solo una parte. IEEE añade tres adjetivos: sistemático, disciplinado y cuantificable.",
+      "fragments": [
+        26.2,
+        27.8,
+        29.4
+      ]
+    },
+    {
+      "sceneId": "tabla",
+      "startTime": 30.6,
+      "endTime": 38.7,
+      "notes": "Es la Tabla 1 del material de la semana. Revelar de a dos filas y pedir que la clase la relacione con el script del inicio: ¿en qué fila estaba? Insistir en la última: la calidad deja de ser que ejecute la tarea.",
+      "fragments": [
+        33,
+        34.5,
+        36,
+        37.5
+      ]
+    },
+    {
+      "sceneId": "genericos",
+      "startTime": 38.7,
+      "endTime": 45.900000000000006,
+      "notes": "Preguntar primero quién define la especificación en cada caso. En un producto genérico la define la organización que desarrolla. En uno personalizado la define la organización que compra. Esta diferencia es la base del contraste entre proyecto y producto que se usa más adelante.",
+      "fragments": [
+        41.1,
+        42.9,
+        44.7
+      ]
+    },
+    {
+      "sceneId": "atributos",
+      "startTime": 45.900000000000006,
+      "endTime": 56.50000000000001,
+      "notes": "Revelar un atributo por clic. Para cada uno, pedir antes un ejemplo de falla y comparar con el que aparece. Es la Tabla 2 del material de la semana. Subrayar que el conjunto de atributos depende de la aplicación: un banco debe ser seguro, un juego debe responder rápido.",
+      "fragments": [
+        48.10000000000001,
+        49.900000000000006,
+        51.70000000000001,
+        53.50000000000001,
+        55.30000000000001
+      ]
+    },
+    {
+      "sceneId": "proceso",
+      "startTime": 56.50000000000001,
+      "endTime": 66.10000000000001,
+      "notes": "Cuatro actividades fundamentales sin importar el modelo de desarrollo. Pedir que ubiquen en cuál de las cuatro estaba cada elemento del servicio de la lámina anterior. Es la Tabla 3. El lazo de regreso explica por qué el sistema sigue siendo útil después de entregarlo.",
+      "fragments": [
+        58.900000000000006,
+        60.400000000000006,
+        61.900000000000006,
+        63.400000000000006,
+        64.9
+      ]
+    },
+    {
+      "sceneId": "clasificar",
+      "startTime": 66.10000000000001,
+      "endTime": 74.30000000000001,
+      "notes": "Ejemplo resuelto del material de la semana. Antes de avanzar, preguntar qué atributo describe el requisito. Luego revelar atributo, falla observable y dónde se comprueba. Cerrar con el costo: si se ignora el mantenimiento, el costo aparece en la evolución, donde se concentra la mayoría de los costos de muchos sistemas.",
+      "fragments": [
+        68.30000000000001,
+        69.9,
+        71.50000000000001,
+        73.10000000000001
+      ]
+    },
+    {
+      "sceneId": "nube",
+      "startTime": 74.30000000000001,
+      "endTime": 83.10000000000001,
+      "notes": "Tres cambios que transformaron el trabajo del desarrollador. En la nube, subrayar los tres niveles y DevOps. En IA, subrayar que los componentes inteligentes crean problemas y riesgos nuevos. En producto, la organización decide qué construir, así que cambia quién fija los requisitos.",
+      "fragments": [
+        76.50000000000001,
+        78.30000000000001,
+        80.10000000000001,
+        81.90000000000002
+      ]
+    },
+    {
+      "sceneId": "pcodigo",
+      "startTime": 83.10000000000001,
+      "endTime": 90.10000000000001,
+      "notes": "Evaluar un paradigma es preguntar qué problema resuelve y qué costo introduce. La programación estructurada responde al salto goto: lectura secuencial y unidades que hacen una sola cosa. La orientada a objetos responde a las variables globales: los datos viajan con sus operaciones y quedan protegidos. Es la primera parte de la Tabla 4.",
+      "fragments": [
+        85.30000000000001,
+        87.10000000000001,
+        88.9
+      ]
+    },
+    {
+      "sceneId": "pproceso",
+      "startTime": 90.10000000000001,
+      "endTime": 98.9,
+      "notes": "Comparar cómo absorbe cada proceso un cambio de requisito. En el dirigido por un plan la iteración ocurre dentro de las actividades y exige producir y aprobar documentos. En el ágil ocurre a través de las actividades, en ciclos cortos. Cerrar con la regla: ninguno es mejor en todos los casos. Es la segunda parte de la Tabla 4.",
+      "fragments": [
+        92.30000000000001,
+        94.10000000000001,
+        95.9,
+        97.70000000000002
+      ]
+    },
+    {
+      "sceneId": "proyecto",
+      "startTime": 98.9,
+      "endTime": 108.9,
+      "notes": "Ejemplo resuelto del material de la semana. Pedir el veredicto antes de ver las respuestas. Los tres criterios: quién define la especificación, quién usa el resultado y quién sostiene el sistema. El veredicto se argumenta con ellos, no con una preferencia. El riesgo final: si el consultorio vendiera el sistema a otros, habría que evaluarlo de nuevo.",
+      "fragments": [
+        101.30000000000001,
+        102.9,
+        104.50000000000001,
+        106.10000000000001,
+        107.70000000000002
+      ]
+    },
+    {
+      "sceneId": "etica",
+      "startTime": 108.9,
+      "endTime": 115.5,
+      "notes": "El software no es neutral: intervienen valores y juicios humanos. Hay comportamientos que la ley no acota y que dependen de la responsabilidad profesional: confidencialidad, competencia, propiedad intelectual y mal uso de computadoras. Pedir un ejemplo de cada uno.",
+      "fragments": [
+        111.10000000000001,
+        112.7,
+        114.30000000000001
+      ]
+    },
+    {
+      "sceneId": "codigo",
+      "startTime": 115.5,
+      "endTime": 122.7,
+      "notes": "Los ocho principios del Código de Ética y Práctica Profesional de la Ingeniería de Software, de ACM e IEEE-CS: público, cliente y empleador, producto, juicio, gestión, profesión, colegas y uno mismo. Es la Tabla 5. El interés público se ubica por encima de otros intereses.",
+      "fragments": [
+        117.9,
+        119.7,
+        121.5
+      ]
+    },
+    {
+      "sceneId": "iaresp",
+      "startTime": 122.7,
+      "endTime": 130.9,
+      "notes": "La creciente capacidad de decisión de los sistemas autónomos obliga a considerar los valores incorporados en ellos. Tres exigencias: privacidad, equidad y transparencia. Un sistema que decide sobre personas sin que nadie pueda explicar su decisión incumple el principio de transparencia.",
+      "fragments": [
+        124.9,
+        126.5,
+        128.1,
+        129.70000000000002
+      ]
+    },
+    {
+      "sceneId": "analisis",
+      "startTime": 130.9,
+      "endTime": 142.8,
+      "notes": "Ejemplo resuelto del material de la semana: un banco regional usa un modelo de IA para aprobar microcréditos. Los cinco pasos: principios en tensión, daño posible, afectados, responsable y acción. No se trata de opinar si algo está bien o mal, sino de sustentar la postura con los principios del código y las exigencias de uso responsable de la IA.",
+      "fragments": [
+        133.1,
+        134.79999999999998,
+        136.5,
+        138.2,
+        139.9,
+        141.6
+      ]
+    },
+    {
+      "sceneId": "stakeholders",
+      "startTime": 142.8,
+      "endTime": 149.8,
+      "notes": "Un stakeholder es cualquiera que se beneficia, directa o indirectamente, del sistema. Se agrupan en cinco constituencias. Además hay externos que no encajan en ellas, como reguladores y proveedores. Se identifican desde la concepción del proyecto, con preguntas libres de contexto y la técnica de bola de nieve.",
+      "fragments": [
+        145,
+        146.8,
+        148.6
+      ]
+    },
+    {
+      "sceneId": "influencia",
+      "startTime": 149.8,
+      "endTime": 159.60000000000002,
+      "notes": "Es la Tabla 6 del material de la semana. Cada cuadrante tiene una estrategia: alta influencia y alto interés, gestionar de cerca; alta influencia y bajo interés, mantener satisfecho; baja influencia y alto interés, mantener informado; baja y baja, monitorear. Preguntar antes de cada revelado dónde ubicarían al stakeholder.",
+      "fragments": [
+        152,
+        153.6,
+        155.2,
+        156.8,
+        158.4
+      ]
+    },
+    {
+      "sceneId": "vision",
+      "startTime": 159.60000000000002,
+      "endTime": 168.60000000000002,
+      "notes": "La visión responde tres preguntas: qué es el producto y en qué se diferencia, quiénes lo usan y por qué deberían usarlo. La plantilla de Geoffrey Moore la estructura en seis partes, que muestra la Tabla 7. Se completa con el ejemplo de Reserva Ya. Las nuevas funciones se evalúan contra esta visión para evitar que el producto se desvíe.",
+      "fragments": [
+        162.00000000000003,
+        163.80000000000004,
+        165.60000000000002,
+        167.40000000000003
+      ]
+    },
+    {
+      "sceneId": "practica",
+      "startTime": 168.60000000000002,
+      "endTime": 175.00000000000003,
+      "notes": "Quince minutos en parejas. Cada pareja hace el descubrimiento inicial de una plataforma de venta en línea para una asociación de productores agrícolas de Loja. Recorrer las mesas. Errores esperados: ubicar a todos en la misma constituencia, olvidar a los externos como reguladores y proveedores, y redactar una visión que no dice en qué se diferencia de la alternativa."
+    },
+    {
+      "sceneId": "actividades",
+      "startTime": 175.00000000000003,
+      "endTime": 180.20000000000002,
+      "notes": "Las consignas completas, las plantillas y las rúbricas están en Canvas. GA-1.1 vale 1 punto, PE-1.1 vale 2 y TA-1.1 vale 2. El Módulo 1 del curso ASU Inclusive Mindset se hace aparte, no tiene calificación propia y su resultado se incorpora a la nota de TA-1.1."
+    },
+    {
+      "sceneId": "cierre",
+      "startTime": 180.20000000000002,
+      "endTime": 187.4,
+      "notes": "Cerrar volviendo al script del inicio: ahora saben decir qué le faltaba. Tarea: la recuperación sin apuntes del material de la semana (ocho preguntas) y el Módulo 1 de ASU. Próxima semana: requisitos funcionales y no funcionales, y técnicas de elicitación. Fuentes: Sommerville (2011), capítulo 1; Pressman y Maxim (2020); código de ética de ACM e IEEE-CS."
+    }
+  ],
+  "slideSequences": []
+}
+    </script>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="187.4" data-width="1920" data-height="1080">
+
+      <section id="portada" class="clip slide dark" data-start="0" data-duration="5.6" data-track-index="0" data-label="Portada" data-frags="0" data-enter="2.8" data-step="1">
+        <div class="frame" id="portada-frame" style="display:block">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <p class="course" style="left:120px;top:240px">LTI_05A_INS · Semana 1</p>
+      <h1 class="ttl xl" style="top:300px;width:1000px;font-size:86px">Un programa resuelve un problema. Un producto tiene que sostenerse.</h1>
+      <p class="lead" style="left:120px;top:790px;width:1000px">Ingeniería de software hoy, ética y descubrimiento inicial del proyecto</p>
+      <p class="byline" style="left:120px;top:950px">Ingeniería del Software · Charlie Cárdenas Toledo</p>
+      <div class="sheet " data-layout-allow-overlap style="left:1070px;top:250px;width:500px"><div class="sh" data-layout-allow-overlap style="background:var(--wine-deep)">promedios.py</div><div class="sr mono " data-layout-allow-overlap>def promedio(notas):</div><div class="sr  " data-layout-allow-overlap>  return media(notas)</div><div class="sr  " data-layout-allow-overlap># lo usan 30</div></div>
+      <div class="sheet " data-layout-allow-overlap style="left:1190px;top:380px;width:500px"><div class="sh" data-layout-allow-overlap style="background:var(--teal)">Manual de usuario</div><div class="sr mono " data-layout-allow-overlap>Instalación</div><div class="sr  " data-layout-allow-overlap>Uso del servicio</div><div class="sr  " data-layout-allow-overlap>Preguntas frecuentes</div></div>
+      <div class="sheet " data-layout-allow-overlap style="left:1310px;top:510px;width:500px"><div class="sh" data-layout-allow-overlap style="background:var(--amber)">Pruebas</div><div class="sr mono " data-layout-allow-overlap>Promedio correcto</div><div class="sr  " data-layout-allow-overlap>Carga: 1 200 usuarios</div><div class="sr  " data-layout-allow-overlap>Acceso a las notas</div></div>
+        </div>
+      </section>
+
+      <section id="caso" class="clip slide" data-start="5.6" data-duration="10" data-track-index="0" data-label="De un script a un servicio" data-frags="4" data-enter="2.4" data-step="1.6">
+        <div class="frame" id="caso-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Un script de fin de semana pasa a ser el servicio de toda la carrera</h1>
+      <div class="sheet x-script" data-layout-allow-overlap style="left:120px;top:330px;width:440px"><div class="sh" data-layout-allow-overlap style="background:var(--wine-deep)">promedios.py</div><div class="sr mono " data-layout-allow-overlap>def promedio(notas):</div><div class="sr  " data-layout-allow-overlap>  return media(notas)</div></div>
+      <p class="x-q q1" style="left:120px;top:640px;width:460px">Si el autor se gradúa, nadie sabe corregirlo.</p>
+      <p class="x-q q2" style="left:120px;top:800px;width:460px">Si calcula mal un promedio, ¿quién responde?</p>
+      <i class="x-dot now" style="left:700px;top:330px"></i><i class="x-dot now" style="left:756px;top:330px"></i><i class="x-dot now" style="left:812px;top:330px"></i><i class="x-dot" style="left:868px;top:330px"></i><i class="x-dot" style="left:924px;top:330px"></i><i class="x-dot" style="left:980px;top:330px"></i><i class="x-dot" style="left:1036px;top:330px"></i><i class="x-dot" style="left:1092px;top:330px"></i><i class="x-dot" style="left:1148px;top:330px"></i><i class="x-dot" style="left:1204px;top:330px"></i><i class="x-dot" style="left:1260px;top:330px"></i><i class="x-dot" style="left:1316px;top:330px"></i><i class="x-dot" style="left:1372px;top:330px"></i><i class="x-dot" style="left:1428px;top:330px"></i><i class="x-dot" style="left:1484px;top:330px"></i><i class="x-dot" style="left:700px;top:386px"></i><i class="x-dot" style="left:756px;top:386px"></i><i class="x-dot" style="left:812px;top:386px"></i><i class="x-dot" style="left:868px;top:386px"></i><i class="x-dot" style="left:924px;top:386px"></i><i class="x-dot" style="left:980px;top:386px"></i><i class="x-dot" style="left:1036px;top:386px"></i><i class="x-dot" style="left:1092px;top:386px"></i><i class="x-dot" style="left:1148px;top:386px"></i><i class="x-dot" style="left:1204px;top:386px"></i><i class="x-dot" style="left:1260px;top:386px"></i><i class="x-dot" style="left:1316px;top:386px"></i><i class="x-dot" style="left:1372px;top:386px"></i><i class="x-dot" style="left:1428px;top:386px"></i><i class="x-dot" style="left:1484px;top:386px"></i><i class="x-dot" style="left:700px;top:442px"></i><i class="x-dot" style="left:756px;top:442px"></i><i class="x-dot" style="left:812px;top:442px"></i><i class="x-dot" style="left:868px;top:442px"></i><i class="x-dot" style="left:924px;top:442px"></i><i class="x-dot" style="left:980px;top:442px"></i><i class="x-dot" style="left:1036px;top:442px"></i><i class="x-dot" style="left:1092px;top:442px"></i><i class="x-dot" style="left:1148px;top:442px"></i><i class="x-dot" style="left:1204px;top:442px"></i><i class="x-dot" style="left:1260px;top:442px"></i><i class="x-dot" style="left:1316px;top:442px"></i><i class="x-dot" style="left:1372px;top:442px"></i><i class="x-dot" style="left:1428px;top:442px"></i><i class="x-dot" style="left:1484px;top:442px"></i><i class="x-dot" style="left:700px;top:498px"></i><i class="x-dot" style="left:756px;top:498px"></i><i class="x-dot" style="left:812px;top:498px"></i><i class="x-dot" style="left:868px;top:498px"></i><i class="x-dot" style="left:924px;top:498px"></i><i class="x-dot" style="left:980px;top:498px"></i><i class="x-dot" style="left:1036px;top:498px"></i><i class="x-dot" style="left:1092px;top:498px"></i><i class="x-dot" style="left:1148px;top:498px"></i><i class="x-dot" style="left:1204px;top:498px"></i><i class="x-dot" style="left:1260px;top:498px"></i><i class="x-dot" style="left:1316px;top:498px"></i><i class="x-dot" style="left:1372px;top:498px"></i><i class="x-dot" style="left:1428px;top:498px"></i><i class="x-dot" style="left:1484px;top:498px"></i><i class="x-dot" style="left:700px;top:554px"></i><i class="x-dot" style="left:756px;top:554px"></i><i class="x-dot" style="left:812px;top:554px"></i><i class="x-dot" style="left:868px;top:554px"></i><i class="x-dot" style="left:924px;top:554px"></i><i class="x-dot" style="left:980px;top:554px"></i><i class="x-dot" style="left:1036px;top:554px"></i><i class="x-dot" style="left:1092px;top:554px"></i><i class="x-dot" style="left:1148px;top:554px"></i><i class="x-dot" style="left:1204px;top:554px"></i><i class="x-dot" style="left:1260px;top:554px"></i><i class="x-dot" style="left:1316px;top:554px"></i><i class="x-dot" style="left:1372px;top:554px"></i><i class="x-dot" style="left:1428px;top:554px"></i><i class="x-dot" style="left:1484px;top:554px"></i><i class="x-dot" style="left:700px;top:610px"></i><i class="x-dot" style="left:756px;top:610px"></i><i class="x-dot" style="left:812px;top:610px"></i><i class="x-dot" style="left:868px;top:610px"></i><i class="x-dot" style="left:924px;top:610px"></i><i class="x-dot" style="left:980px;top:610px"></i><i class="x-dot" style="left:1036px;top:610px"></i><i class="x-dot" style="left:1092px;top:610px"></i><i class="x-dot" style="left:1148px;top:610px"></i><i class="x-dot" style="left:1204px;top:610px"></i><i class="x-dot" style="left:1260px;top:610px"></i><i class="x-dot" style="left:1316px;top:610px"></i><i class="x-dot" style="left:1372px;top:610px"></i><i class="x-dot" style="left:1428px;top:610px"></i><i class="x-dot" style="left:1484px;top:610px"></i><i class="x-dot" style="left:700px;top:666px"></i><i class="x-dot" style="left:756px;top:666px"></i><i class="x-dot" style="left:812px;top:666px"></i><i class="x-dot" style="left:868px;top:666px"></i><i class="x-dot" style="left:924px;top:666px"></i><i class="x-dot" style="left:980px;top:666px"></i><i class="x-dot" style="left:1036px;top:666px"></i><i class="x-dot" style="left:1092px;top:666px"></i><i class="x-dot" style="left:1148px;top:666px"></i><i class="x-dot" style="left:1204px;top:666px"></i><i class="x-dot" style="left:1260px;top:666px"></i><i class="x-dot" style="left:1316px;top:666px"></i><i class="x-dot" style="left:1372px;top:666px"></i><i class="x-dot" style="left:1428px;top:666px"></i><i class="x-dot" style="left:1484px;top:666px"></i><i class="x-dot" style="left:700px;top:722px"></i><i class="x-dot" style="left:756px;top:722px"></i><i class="x-dot" style="left:812px;top:722px"></i><i class="x-dot" style="left:868px;top:722px"></i><i class="x-dot" style="left:924px;top:722px"></i><i class="x-dot" style="left:980px;top:722px"></i><i class="x-dot" style="left:1036px;top:722px"></i><i class="x-dot" style="left:1092px;top:722px"></i><i class="x-dot" style="left:1148px;top:722px"></i><i class="x-dot" style="left:1204px;top:722px"></i><i class="x-dot" style="left:1260px;top:722px"></i><i class="x-dot" style="left:1316px;top:722px"></i><i class="x-dot" style="left:1372px;top:722px"></i><i class="x-dot" style="left:1428px;top:722px"></i><i class="x-dot" style="left:1484px;top:722px"></i>
+      <p class="x-cap c1" style="left:700px;top:810px;width:1100px">Hoy: unas 30 personas que conocen a su autor.</p>
+      <p class="x-cap c2" style="left:700px;top:810px;width:1100px">Como servicio: 1 200 estudiantes y todos los docentes, sin conocer al autor.</p>
+      <p class="ask" style="left:120px;top:960px">¿Qué le falta a este script para ser el servicio oficial?</p>
+        </div>
+      </section>
+
+      <section id="faltantes" class="clip slide" data-start="15.6" data-duration="8.4" data-track-index="0" data-label="Más que código" data-frags="3" data-enter="2.4" data-step="1.6">
+        <div class="frame" id="faltantes-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Un servicio oficial es mucho más que el código</h1>
+      <p class="x-lb" style="left:120px;top:710px">Script personal</p>
+      <div class="sheet x-mini" data-layout-allow-overlap style="left:120px;top:780px;width:460px"><div class="sh" data-layout-allow-overlap style="background:var(--wine-deep)">promedios.py</div><div class="sr mono " data-layout-allow-overlap>def promedio(notas):</div><div class="sr  " data-layout-allow-overlap>  return media(notas)</div></div>
+      <p class="x-lb" style="left:700px;top:300px">Servicio oficial</p>
+      <div class="x-blk base" style="left:700px;top:860px">Código</div><div class="x-blk" style="left:700px;top:782px">Documentación de instalación y uso</div><div class="x-blk" style="left:700px;top:704px">Pruebas que demuestran el cálculo</div><div class="x-blk" style="left:700px;top:626px">Un responsable que lo mantiene</div><div class="x-blk" style="left:700px;top:548px">Control de acceso a las notas</div><div class="x-blk" style="left:700px;top:470px">Capacidad para 1 200 usuarios a la vez</div><div class="x-blk" style="left:700px;top:392px">Un plan para cambios de reglamento</div>
+      <p class="ask" style="left:120px;top:420px;width:520px">¿Qué más necesita, además del código?</p>
+        </div>
+      </section>
+
+      <section id="definicion" class="clip slide" data-start="24" data-duration="6.6000000000000005" data-track-index="0" data-label="Ingeniería de software" data-frags="2" data-enter="2.2" data-step="1.6">
+        <div class="frame" id="definicion-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">La ingeniería de software cubre todo el ciclo, no solo el código</h1>
+      <p class="lead" style="left:120px;top:270px;width:1560px;color:var(--ink)">Disciplina que se interesa por todos los aspectos de la producción de software, desde la especificación hasta el mantenimiento.</p>
+      <p class="x-sm" style="left:120px;top:440px">Para el IEEE: un enfoque sistemático, disciplinado y cuantificable.</p>
+      <div class="x-seg" style="left:120px;top:560px;background:var(--wine)">Especificación</div><div class="x-seg" style="left:460px;top:560px;background:var(--wine-deep)">Desarrollo</div><div class="x-seg" style="left:800px;top:560px;background:var(--teal)">Validación</div><div class="x-seg" style="left:1140px;top:560px;background:#0a8a7d">Operación</div><div class="x-seg" style="left:1480px;top:560px;background:var(--amber)">Mantenimiento</div>
+      <div class="x-cod" style="left:500px;top:700px">código</div>
+      <p class="x-lb cd" style="left:760px;top:700px;width:900px;font-size:44px">El código es solo una parte.</p>
+      <svg class="ov" viewBox="0 0 1920 1080" width="1920" height="1080"><path class="x-br" d="M120 830V860H1800V830" pathLength="1"/></svg>
+      <p class="x-lb br" style="left:120px;top:880px;width:1680px;text-align:center;font-family:ui-serif,serif;font-size:56px">Ingeniería de software</p>
+        </div>
+      </section>
+
+      <section id="tabla" class="clip slide" data-start="30.6" data-duration="8.1" data-track-index="0" data-label="Programa y producto" data-frags="3" data-enter="2.4" data-step="1.5">
+        <div class="frame" id="tabla-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Un producto profesional es otra cosa que un programa personal</h1>
+      <div class="x-th"><span class="xc " style="left:120px;width:340px">ASPECTO</span><span class="xc " style="left:480px;width:620px">PROGRAMA PERSONAL</span><span class="xc " style="left:1120px;width:680px">PRODUCTO PROFESIONAL</span></div>
+      <div class="x-tr" style="top:380px"><span class="xc a" style="left:120px;width:340px">Usuarios</span><span class="xc b" style="left:480px;width:620px">Uno mismo o su entorno</span><span class="xc c" style="left:1120px;width:680px">Terceros y un mercado abierto</span></div><div class="x-tr" style="top:476px"><span class="xc a" style="left:120px;width:340px">Alcance</span><span class="xc b" style="left:480px;width:620px">Un programa</span><span class="xc c" style="left:1120px;width:680px">Programas, datos y documentos</span></div><div class="x-tr" style="top:572px"><span class="xc a" style="left:120px;width:340px">Trabajo</span><span class="xc b" style="left:480px;width:620px">Individual e informal</span><span class="xc c" style="left:1120px;width:680px">Equipos con control de versiones</span></div><div class="x-tr" style="top:668px"><span class="xc a" style="left:120px;width:340px">Proceso</span><span class="xc b" style="left:480px;width:620px">Sin especificación ni plan</span><span class="xc c" style="left:1120px;width:680px">Especifica, valida y evoluciona</span></div><div class="x-tr" style="top:764px"><span class="xc a" style="left:120px;width:340px">Cambios</span><span class="xc b" style="left:480px;width:620px">Nadie más lo modificará</span><span class="xc c" style="left:1120px;width:680px">Otros ingenieros lo adaptan</span></div><div class="x-tr" style="top:860px"><span class="xc a" style="left:120px;width:340px">Calidad</span><span class="xc b" style="left:480px;width:620px">Que ejecute la tarea</span><span class="xc c" style="left:1120px;width:680px">Confiable, seguro, eficiente</span></div>
+        </div>
+      </section>
+
+      <section id="genericos" class="clip slide" data-start="38.7" data-duration="7.2" data-track-index="0" data-label="Genérico y personalizado" data-frags="2" data-enter="2.4" data-step="1.8">
+        <div class="frame" id="genericos-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Quien define la especificación cambia la forma de trabajar</h1>
+      <p class="x-ln l1" style="left:120px;top:290px">Producto genérico</p>
+      <div class="x-nd g1 hl" style="left:120px;top:370px">Organización que desarrolla</div><div class="x-nd g1" style="left:770px;top:370px">Producto</div><div class="x-nd g1" style="left:1420px;top:370px">Mercado abierto</div>
+      <p class="x-gl g1" style="left:500px;top:445px">decide qué construir</p>
+      <p class="x-gl g1" style="left:1150px;top:445px">lo usan muchos</p>
+      <p class="x-ln l2" style="left:120px;top:590px">Producto personalizado</p>
+      <div class="x-nd g2 hl" style="left:120px;top:670px">Organización que compra</div><div class="x-nd g2" style="left:770px;top:670px">Equipo desarrollador</div><div class="x-nd g2" style="left:1420px;top:670px">Sistema a medida</div>
+      <p class="x-gl g2" style="left:500px;top:745px">define y controla la especificación</p>
+      <p class="x-gl g2" style="left:1150px;top:745px">la sigue</p>
+      <svg class="ov" viewBox="0 0 1920 1080" width="1920" height="1080"><path class="x-ar" data-l="1" d="M500 425H764M748 409L770 425L748 441" pathLength="1"/><path class="x-ar" data-l="1" d="M1150 425H1414M1398 409L1420 425L1398 441" pathLength="1"/><path class="x-ar" data-l="2" d="M500 725H764M748 709L770 725L748 741" pathLength="1"/><path class="x-ar" data-l="2" d="M1150 725H1414M1398 709L1420 725L1398 741" pathLength="1"/></svg>
+      <p class="ask" style="left:120px;top:940px">¿Quién define la especificación en cada caso?</p>
+        </div>
+      </section>
+
+      <section id="atributos" class="clip slide" data-start="45.900000000000006" data-duration="10.6" data-track-index="0" data-label="Atributos de calidad" data-frags="4" data-enter="2.2" data-step="1.8">
+        <div class="frame" id="atributos-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Cuatro atributos esenciales definen el buen software</h1>
+      <div class="x-at"><div class="x-mo"><i class="x-bl" style="left:0px;top:70px"></i><i class="x-bl" style="left:140px;top:70px"></i><i class="x-bl" style="left:280px;top:70px"></i><i class="x-bl" style="left:420px;top:70px"></i><i class="x-bl" style="left:0px;top:180px"></i><i class="x-bl" style="left:140px;top:180px"></i><i class="x-bl" style="left:280px;top:180px"></i><i class="x-bl" style="left:420px;top:180px"></i><i class="x-bl" style="left:0px;top:290px"></i><i class="x-bl" style="left:140px;top:290px"></i><i class="x-bl" style="left:280px;top:290px"></i><i class="x-bl" style="left:420px;top:290px"></i><div class="x-chip" style="left:0;top:0">Cambio de reglamento</div></div><div class="x-tx"><strong>Mantenimiento</strong><em>Poder evolucionar con las necesidades cambiantes.</em><span>Sin él: un cambio de reglamento obliga a reescribir medio sistema.</span></div></div>
+      <div class="x-at"><div class="x-mo"><div class="x-acc" style="left:0;top:140px">Cuenta del socio</div><div class="x-acc" style="left:330px;top:140px">Cuenta de la cooperativa</div><i class="x-coin" style="left:92px;top:200px"></i><div class="xm" style="left:245px;top:180px"></div><p class="x-neg" style="left:30px;top:340px">− $50</p><p class="x-zero" style="left:330px;top:340px">$0 acreditado</p></div><div class="x-tx"><strong>Confiabilidad y seguridad</strong><em>No causar daño al fallar y resistir accesos indebidos.</em><span>Sin él: un fallo deja un pago descontado y no acreditado.</span></div></div>
+      <div class="x-at"><div class="x-mo"><svg class="mlsvg x-sw" viewBox="0 0 300 300" width="300" height="300" style="left:130px;top:20px"><circle cx="150" cy="150" r="120" pathLength="1" transform="rotate(-90 150 150)"/></svg><p class="x-swt" style="left:130px;top:140px">1:00</p><p class="x-lb" style="left:60px;top:370px;font-size:42px">500 socios a la vez</p></div><div class="x-tx"><strong>Eficiencia</strong><em>No desperdiciar memoria ni tiempo de procesador.</em><span>Sin él: la consulta tarda un minuto cuando hay muchos usuarios.</span></div></div>
+      <div class="x-at"><div class="x-mo"><div class="x-us" style="left:0;top:150px"><svg viewBox="0 0 100 100" width="76" height="76"><circle cx="50" cy="34" r="18" fill="#fff"/><path d="M16 90c0-24 14-36 34-36s34 12 34 36z" fill="#fff"/></svg></div><div class="x-bub" style="left:120px;top:100px">?</div><svg class="mlsvg" viewBox="0 0 560 520" width="560" height="520" style="left:0;top:0"><path class="x-exp" d="M240 225H520M500 205L522 225L500 245" pathLength="1"/></svg><p class="x-lb" style="left:380px;top:262px;font-size:40px">abandona</p></div><div class="x-tx"><strong>Aceptabilidad</strong><em>Ser comprensible, utilizable y compatible.</em><span>Sin él: los usuarios abandonan el sistema porque no lo entienden.</span></div></div>
+        </div>
+      </section>
+
+      <section id="proceso" class="clip slide" data-start="56.50000000000001" data-duration="9.6" data-track-index="0" data-label="Proceso de software" data-frags="4" data-enter="2.4" data-step="1.5">
+        <div class="frame" id="proceso-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">El proceso tiene cuatro actividades, y la última vuelve a la primera</h1>
+      <div class="x-pc" style="left:120px;top:380px"><strong>Especificación</strong><em>¿Qué debe hacer y con qué límites?</em></div><div class="x-pc" style="left:570px;top:380px"><strong>Desarrollo</strong><em>¿Cómo se construye lo especificado?</em></div><div class="x-pc" style="left:1020px;top:380px"><strong>Validación</strong><em>¿Se construyó lo correcto y bien?</em></div><div class="x-pc" style="left:1470px;top:380px"><strong>Evolución</strong><em>¿Cómo sigue siendo útil después?</em></div>
+      <svg class="ov" viewBox="0 0 1920 1080" width="1920" height="1080"><path class="x-ar" data-i="0" d="M455 490H559M543 474L565 490L543 506" pathLength="1"/><path class="x-ar" data-i="1" d="M905 490H1009M993 474L1015 490L993 506" pathLength="1"/><path class="x-ar" data-i="2" d="M1355 490H1459M1443 474L1465 490L1443 506" pathLength="1"/><path class="x-ar lp" d="M1635 600V700H285V610M270 626L285 606L300 626" pathLength="1"/></svg>
+      <p class="x-lb lpl" style="left:480px;top:725px;width:960px;text-align:center">El sistema sigue siendo útil después de entregarlo</p>
+        </div>
+      </section>
+
+      <section id="clasificar" class="clip slide" data-start="66.10000000000001" data-duration="8.200000000000001" data-track-index="0" data-label="Clasificar un requisito" data-frags="3" data-enter="2.2" data-step="1.6">
+        <div class="frame" id="clasificar-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Clasificar un requisito de calidad en cuatro pasos</h1>
+      <p class="x-sm" style="left:120px;top:262px;font-size:40px">Caso: una aplicación para reservar turnos en un centro de salud.</p>
+      <p class="x-hd" style="left:120px;top:340px">REQUISITO</p><p class="x-hd" style="left:555px;top:340px">ATRIBUTO</p><p class="x-hd" style="left:990px;top:340px">FALLA OBSERVABLE</p><p class="x-hd" style="left:1425px;top:340px">SE COMPRUEBA EN</p>
+      <div class="x-cd c0" style="left:120px;top:395px">Cuando el centro cambie su horario de atención, un desarrollador nuevo debe poder actualizarlo en un día.</div><div class="x-cd c1 big" style="left:555px;top:395px">Mantenimiento</div><div class="x-cd c2" style="left:990px;top:395px">Cambiar el horario toma semanas y el centro atiende con información desactualizada.</div><div class="x-cd c3" style="left:1425px;top:395px">Validación: una persona ajena al código hace el cambio y se mide el tiempo.</div>
+      <svg class="ov" viewBox="0 0 1920 1080" width="1920" height="1080"><path class="x-ar" data-i="0" d="M500 560H544M528 544L550 560L528 576" pathLength="1"/><path class="x-ar" data-i="1" d="M935 560H979M963 544L985 560L963 576" pathLength="1"/><path class="x-ar" data-i="2" d="M1370 560H1414M1398 544L1420 560L1398 576" pathLength="1"/></svg>
+      <p class="ask" style="left:120px;top:800px">¿Qué atributo describe este requisito?</p>
+      <p class="punch pp" style="left:120px;top:800px;width:1680px;font-size:54px">Si se ignora, el costo aparece en la evolución.</p>
+        </div>
+      </section>
+
+      <section id="nube" class="clip slide" data-start="74.30000000000001" data-duration="8.8" data-track-index="0" data-label="Nube, IA y producto" data-frags="3" data-enter="2.2" data-step="1.8">
+        <div class="frame" id="nube-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Tres cambios transformaron el trabajo de quien desarrolla</h1>
+      <div class="x-at"><div class="x-mo"><div class="x-ly" style="left:0;top:60px;background:var(--wine)">Software como servicio</div><div class="x-ly" style="left:0;top:160px;background:var(--teal)">Plataforma</div><div class="x-ly" style="left:0;top:260px;background:var(--wine-deep)">Infraestructura</div><div class="x-chip" style="left:0;top:380px">Desarrollo ⇄ Operación</div></div><div class="x-tx"><strong>La nube</strong><em>Servidores remotos que se alquilan: infraestructura, plataforma y software como servicio.</em><span>DevOps: el mismo equipo desarrolla y da soporte operativo.</span></div></div>
+      <div class="x-at"><div class="x-mo"><div class="x-sys" style="left:0;top:60px"></div><div class="x-cmp" style="left:30px;top:100px">Datos</div><div class="x-cmp" style="left:230px;top:100px">Reglas</div><div class="x-cmp" style="left:30px;top:200px">Interfaz</div><div class="x-ai" style="left:270px;top:195px">IA</div><div class="x-chip" style="left:0;top:420px">Riesgos nuevos</div></div><div class="x-tx"><strong>La inteligencia artificial</strong><em>Se vuelve un componente clave: adapta el producto, pero crea problemas y riesgos nuevos.</em><span>Nace la ingeniería de software inteligente.</span></div></div>
+      <div class="x-at"><div class="x-mo"><div class="x-bx2" style="left:0;top:20px">Oportunidad que la organización identifica</div><div class="x-bx2" style="left:0;top:200px">La organización decide qué construir</div><div class="x-bx2" style="left:0;top:380px">Producto para un mercado</div><svg class="mlsvg" viewBox="0 0 560 520" width="560" height="520" style="left:0;top:0"><path class="x-ar" d="M260 125V195M244 179L260 197L276 179M260 305V375M244 359L260 377L276 359" pathLength="1"/></svg></div><div class="x-tx"><strong>El enfoque de producto</strong><em>La organización identifica una oportunidad y decide qué construir.</em><span>Cambia quién fija los requisitos.</span></div></div>
+        </div>
+      </section>
+
+      <section id="pcodigo" class="clip slide" data-start="83.10000000000001" data-duration="7.000000000000001" data-track-index="0" data-label="Paradigmas de código" data-frags="2" data-enter="2.2" data-step="1.8">
+        <div class="frame" id="pcodigo-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Cada paradigma de código resuelve un problema concreto</h1>
+      <p class="x-ln" style="left:120px;top:290px;font-size:44px">Programación estructurada</p>
+      <p class="x-ln" style="left:1000px;top:290px;font-size:44px">Programación orientada a objetos</p>
+      <div class="x-pb" data-dx="240" data-dy="-20" style="left:140px;top:400px">paso 1</div><div class="x-pb" data-dx="-140" data-dy="120" style="left:520px;top:370px">paso 2</div><div class="x-pb" data-dx="-320" data-dy="80" style="left:700px;top:520px">paso 3</div><div class="x-pb" data-dx="180" data-dy="100" style="left:200px;top:610px">paso 4</div><div class="x-pb" data-dx="-180" data-dy="120" style="left:560px;top:700px">paso 5</div><div class="x-pb" data-dx="50" data-dy="130" style="left:330px;top:800px">paso 6</div>
+      <svg class="ov" viewBox="0 0 1920 1080" width="1920" height="1080"><path class="x-sp" d="M215 432L775 552" pathLength="1"/><path class="x-sp" d="M595 402L275 642" pathLength="1"/><path class="x-sp" d="M775 552L635 732" pathLength="1"/><path class="x-sp" d="M215 432L635 732" pathLength="1"/><path class="x-sp" d="M275 642L405 832" pathLength="1"/><path class="x-sp" d="M595 402L405 832" pathLength="1"/><path class="x-sp" d="M635 732L595 402" pathLength="1"/><path class="x-ts" d="M455 444V484M441 468L455 486L469 468" pathLength="1"/><path class="x-ts" d="M455 554V594M441 578L455 596L469 578" pathLength="1"/><path class="x-ts" d="M455 664V704M441 688L455 706L469 688" pathLength="1"/><path class="x-ts" d="M455 774V814M441 798L455 816L469 798" pathLength="1"/><path class="x-ts" d="M455 884V924M441 908L455 926L469 908" pathLength="1"/><path class="x-rd" d="M1130 500L1370 700" pathLength="1"/><path class="x-rd" d="M1610 500L1370 700" pathLength="1"/><path class="x-rd" d="M1130 850L1370 700" pathLength="1"/><path class="x-rd" d="M1610 850L1370 700" pathLength="1"/></svg>
+      <p class="x-sm sq" style="left:620px;top:560px;width:300px;font-size:38px">Se lee en secuencia: cada unidad hace una sola cosa.</p>
+      <div class="x-gb" style="left:1210px;top:660px">Variables globales</div>
+      <div class="x-fn" style="left:1020px;top:430px">función</div><div class="x-fn" style="left:1500px;top:430px">función</div><div class="x-fn" style="left:1020px;top:800px">función</div><div class="x-fn" style="left:1500px;top:800px">función</div>
+      <div class="x-ob" style="left:990px;top:520px"><b>Datos</b>Operaciones</div><div class="x-ob" style="left:1270px;top:520px"><b>Datos</b>Operaciones</div><div class="x-ob" style="left:1550px;top:520px"><b>Datos</b>Operaciones</div>
+      <p class="x-sm oo" style="left:1000px;top:800px;width:800px;font-size:40px">Cada objeto protege sus datos y los usa con sus operaciones.</p>
+        </div>
+      </section>
+
+      <section id="pproceso" class="clip slide" data-start="90.10000000000001" data-duration="8.8" data-track-index="0" data-label="Paradigmas de proceso" data-frags="3" data-enter="2.2" data-step="1.8">
+        <div class="frame" id="pproceso-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">El mismo cambio cuesta distinto según el proceso</h1>
+      <p class="x-ln l1" style="left:120px;top:270px;font-size:44px">Dirigido por un plan</p>
+      <div class="x-ph" style="left:120px;top:330px">Especificación</div><div class="x-ph" style="left:520px;top:330px">Diseño</div><div class="x-ph" style="left:920px;top:330px">Construcción</div><div class="x-ph" style="left:1320px;top:330px">Validación</div>
+      <i class="x-doc" style="left:434px;top:342px"></i><i class="x-doc" style="left:834px;top:342px"></i><i class="x-doc" style="left:1234px;top:342px"></i>
+      <div class="x-chg c1" style="left:1010px;top:470px">Cambio de requisito</div>
+      <svg class="ov" viewBox="0 0 1920 1080" width="1920" height="1080"><path class="x-rb" d="M1470 440V520H270V446M256 462L270 444L284 462" pathLength="1"/></svg>
+      <p class="x-rl rl1" style="left:300px;top:540px">Volver atrás exige producir y aprobar documentos</p>
+      <p class="x-ln l2" style="left:120px;top:610px;font-size:44px">Ágil</p>
+      <div class="x-cy" style="left:140px;top:670px">↻</div><div class="x-cy" style="left:430px;top:670px">↻</div><div class="x-cy" style="left:720px;top:670px">↻</div><div class="x-cy" style="left:1010px;top:670px">↻</div><div class="x-cy" style="left:1300px;top:670px">↻</div><div class="x-cy" style="left:1590px;top:670px">↻</div>
+      <div class="x-chg c2" style="left:970px;top:600px">Cambio de requisito</div>
+      <p class="x-rl al" style="left:120px;top:810px;color:var(--teal)">El cambio afecta solo al siguiente ciclo</p>
+      <p class="x-rule r1" style="left:120px;top:880px">Sistemas críticos: un proceso muy estructurado.</p>
+      <p class="x-rule r2" style="left:120px;top:935px">Requisitos que cambian rápido: un proceso flexible.</p>
+      <p class="x-rule r3" style="left:120px;top:990px">Por lo general se busca un equilibrio entre ambos.</p>
+        </div>
+      </section>
+
+      <section id="proyecto" class="clip slide" data-start="98.9" data-duration="10" data-track-index="0" data-label="Proyecto o producto" data-frags="4" data-enter="2.4" data-step="1.6">
+        <div class="frame" id="proyecto-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Tres criterios deciden si un trabajo es proyecto o producto</h1>
+      <p class="x-sm" style="left:120px;top:262px;font-size:40px">Caso: un consultorio médico necesita un sistema de citas.</p>
+      <div class="x-cr" style="left:120px;top:350px"><strong>¿Quién define la especificación?</strong><span>El consultorio, que sabe cómo atiende.</span></div><div class="x-cr" style="left:120px;top:500px"><strong>¿Quién usa el resultado?</strong><span>Una recepcionista y cuatro médicos que se conocen.</span></div><div class="x-cr" style="left:120px;top:650px"><strong>¿Quién sostiene el sistema?</strong><span>El consultorio lo opera; el desarrollador lo entrega.</span></div>
+      <p class="ask" style="left:120px;top:850px">Antes de ver las respuestas: ¿proyecto o producto?</p>
+      <p class="x-vd" style="left:120px;top:835px">Veredicto: proyecto</p>
+      <p class="x-rk" style="left:120px;top:960px">Si lo vendiera a otros consultorios, pasaría a ser un producto.</p>
+        </div>
+      </section>
+
+      <section id="etica" class="clip slide" data-start="108.9" data-duration="6.6000000000000005" data-track-index="0" data-label="Ética profesional" data-frags="2" data-enter="2.2" data-step="1.6">
+        <div class="frame" id="etica-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">El software no es neutral: quien lo desarrolla responde por él</h1>
+      <div class="x-fence" style="left:120px;top:330px"></div>
+      <p class="x-fi" style="left:170px;top:380px">Lo que la ley acota</p>
+      <p class="x-fe" style="left:170px;top:470px;width:680px">Marco social y legal en el que se desarrolla el software.</p>
+      <p class="x-ln tl" style="left:1000px;top:285px;color:var(--teal)">Responsabilidad profesional</p>
+      <div class="x-rc" style="left:1000px;top:360px">Confidencialidad</div><div class="x-rc" style="left:1000px;top:470px">Competencia</div><div class="x-rc" style="left:1000px;top:580px">Derechos de propiedad intelectual</div><div class="x-rc" style="left:1000px;top:690px">Mal uso de computadoras</div>
+      <p class="punch pnc" style="left:120px;top:860px;width:1680px;font-size:50px">La confidencialidad se respeta aunque no se haya firmado un acuerdo.</p>
+        </div>
+      </section>
+
+      <section id="codigo" class="clip slide" data-start="115.5" data-duration="7.2" data-track-index="0" data-label="Código de ética ACM/IEEE" data-frags="2" data-enter="2.4" data-step="1.8">
+        <div class="frame" id="codigo-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">El código de ética de ACM e IEEE tiene ocho principios y uno va primero</h1>
+      <svg class="ov" viewBox="0 0 1920 1080" width="1920" height="1080"><path class="x-sl" d="M960 610L960 365" pathLength="1"/><path class="x-sl" d="M960 610L1460 457" pathLength="1"/><path class="x-sl" d="M960 610L1584 665" pathLength="1"/><path class="x-sl" d="M960 610L1238 831" pathLength="1"/><path class="x-sl" d="M960 610L682 831" pathLength="1"/><path class="x-sl" d="M960 610L336 665" pathLength="1"/><path class="x-sl" d="M960 610L460 457" pathLength="1"/></svg>
+      <div class="x-sat" style="left:770px;top:327px">Cliente y empleador</div><div class="x-sat" style="left:1270px;top:419px">Producto</div><div class="x-sat" style="left:1394px;top:627px">Juicio</div><div class="x-sat" style="left:1048px;top:793px">Gestión</div><div class="x-sat" style="left:492px;top:793px">Profesión</div><div class="x-sat" style="left:146px;top:627px">Colegas</div><div class="x-sat" style="left:270px;top:419px">Uno mismo</div>
+      <div class="x-cc" style="left:810px;top:460px">Interés público</div>
+      <p class="x-lb cap2" style="left:120px;top:960px;width:1680px;text-align:center;font-family:ui-serif,serif;font-size:50px">El interés público se ubica por encima de otros intereses.</p>
+        </div>
+      </section>
+
+      <section id="iaresp" class="clip slide" data-start="122.7" data-duration="8.200000000000001" data-track-index="0" data-label="IA responsable" data-frags="3" data-enter="2.2" data-step="1.6">
+        <div class="frame" id="iaresp-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">La IA añade tres exigencias: privacidad, equidad y transparencia</h1>
+      <p class="x-ia" style="left:120px;top:470px">Datos de personas</p>
+      <p class="x-ia" style="left:1000px;top:470px">Decisión</p>
+      <svg class="ov" viewBox="0 0 1920 1080" width="1920" height="1080"><path class="x-ar"  d="M120 590H424M408 574L430 590L408 606" pathLength="1"/><path class="x-ar"  d="M960 590H1264M1248 574L1270 590L1248 606" pathLength="1"/></svg>
+      <div class="x-bx" style="left:440px;top:420px">?</div>
+      <p class="x-lk" style="left:120px;top:620px">datos sensibles</p>
+      <div class="x-fill ok" style="left:1400px;top:420px;height:240px;background:var(--teal);"></div>
+      <div class="x-fill no" style="left:1620px;top:420px;height:240px;background:var(--amber)"></div>
+      <p class="x-bl2 b1" style="left:1360px;top:680px">Zonas urbanas<br>80 %</p>
+      <p class="x-bl2 b2" style="left:1580px;top:680px">Zonas rurales<br>40 %</p>
+      <p class="x-st" style="left:420px;top:735px;width:560px;text-align:center;white-space:nowrap">Nadie puede explicarlo</p>
+      <div class="x-pr" style="left:120px;top:850px"><strong>Privacidad</strong><em>¿Qué datos de las personas usa?</em></div><div class="x-pr" style="left:690px;top:850px"><strong>Equidad</strong><em>¿Decide igual para todos los grupos?</em></div><div class="x-pr" style="left:1260px;top:850px"><strong>Transparencia</strong><em>¿Alguien puede explicar la decisión?</em></div>
+        </div>
+      </section>
+
+      <section id="analisis" class="clip slide" data-start="130.9" data-duration="11.899999999999999" data-track-index="0" data-label="Analizar un caso ético" data-frags="5" data-enter="2.2" data-step="1.7">
+        <div class="frame" id="analisis-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Cinco pasos para analizar un caso ético</h1>
+      <p class="x-sm" style="left:120px;top:250px;width:1680px;font-size:40px;line-height:1.25">Caso: un banco regional usa un modelo de IA para aprobar microcréditos. Rechaza más solicitudes rurales y nadie puede explicar por qué.</p>
+      <p class="x-sp2" style="left:120px;top:420px"><b>1</b>Principios en tensión</p><p class="x-sp2" style="left:120px;top:530px"><b>2</b>Daño posible</p><p class="x-sp2" style="left:120px;top:640px"><b>3</b>Afectados</p><p class="x-sp2" style="left:120px;top:750px"><b>4</b>Responsable</p><p class="x-sp2" style="left:120px;top:860px"><b>5</b>Acción</p>
+      <div class="x-rs r1" style="left:760px;top:430px;width:1040px"><div class="x-pair"><span class="pa">Transparencia</span><i>choca con</i><span class="pb2">Público</span></div><p>El criterio no se puede explicar y el modelo afecta a personas con menos acceso al crédito.</p></div>
+      <div class="x-rs r2" style="left:760px;top:430px;width:1040px"><p>Se excluye de forma sistemática a los solicitantes rurales y no pueden apelar la decisión.</p><p style="color:var(--amber);font-weight:800">Se afecta la equidad.</p></div>
+      <div class="x-rs r3" style="left:760px;top:430px;width:1040px"><p class="x-chip2">Solicitantes rurales</p><p class="x-chip2">El banco, que arriesga su reputación</p><p class="x-chip2">Comunidades que dependen del crédito</p></div>
+      <div class="x-rs r4" style="left:760px;top:430px;width:1040px"><p>El banco, mediante un cargo designado como responsable del modelo.</p><p>El equipo técnico, que debe advertir el problema en lugar de callarlo.</p></div>
+      <div class="x-rs r5" style="left:760px;top:430px;width:1040px"><p>Auditar el modelo con datos de ambos grupos.</p><p>Documentar el criterio de decisión.</p><p>Mantener revisión humana de los rechazos.</p></div>
+        </div>
+      </section>
+
+      <section id="stakeholders" class="clip slide" data-start="142.8" data-duration="7.000000000000001" data-track-index="0" data-label="Mapa de stakeholders" data-frags="2" data-enter="2.2" data-step="1.8">
+        <div class="frame" id="stakeholders-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Quienes se ven afectados por el sistema son más que sus usuarios</h1>
+      <svg class="ov" viewBox="0 0 1920 1080" width="1920" height="1080"><path class="x-sl" d="M960 610L960 375" pathLength="1"/><path class="x-sl" d="M960 610L1550 537" pathLength="1"/><path class="x-sl" d="M960 610L1324 800" pathLength="1"/><path class="x-sl" d="M960 610L596 800" pathLength="1"/><path class="x-sl" d="M960 610L370 537" pathLength="1"/></svg>
+      <div class="x-co" style="left:740px;top:327px">Gerentes senior o product owners</div><div class="x-co" style="left:1330px;top:489px">Gerentes de proyecto</div><div class="x-co" style="left:1104px;top:752px">Profesionales técnicos</div><div class="x-co" style="left:376px;top:752px">Clientes</div><div class="x-co" style="left:150px;top:489px">Usuarios finales</div>
+      <div class="x-hub" style="left:800px;top:450px">Reserva de canchas del municipio</div>
+      <div class="x-ext e1" style="left:120px;top:930px">Contraloría y auditoría</div>
+      <div class="x-ext e2" style="left:680px;top:930px">Proveedor de internet</div>
+      <p class="x-sm el" style="left:1240px;top:925px;width:560px;font-size:38px;line-height:1.15">Externos: no encajan en las cinco constituencias</p>
+        </div>
+      </section>
+
+      <section id="influencia" class="clip slide" data-start="149.8" data-duration="9.8" data-track-index="0" data-label="Matriz de influencia e interés" data-frags="4" data-enter="2.2" data-step="1.6">
+        <div class="frame" id="influencia-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">La matriz decide cuánta atención recibe cada stakeholder</h1>
+      <p class="x-ax" style="left:120px;top:290px">Influencia</p>
+      <p class="x-ax" style="left:120px;top:420px;font-weight:500">alta</p>
+      <p class="x-ax" style="left:120px;top:720px;font-weight:500">baja</p>
+      <div class="x-q4 q-tl" style="left:520px;top:290px;background:var(--amber-soft)"><b style="color:var(--amber)">Mantener satisfecho</b></div>
+      <div class="x-q4 q-tr" style="left:1160px;top:290px;background:#f4d9e4"><b style="color:var(--wine)">Gestionar de cerca</b></div>
+      <div class="x-q4 q-bl" style="left:520px;top:600px;background:var(--tint)"><b style="color:var(--muted)">Monitorear</b></div>
+      <div class="x-q4 q-br" style="left:1160px;top:600px;background:var(--teal-soft)"><b style="color:var(--teal)">Mantener informado</b></div>
+      <div class="x-it i1" style="left:1190px;top:360px">Alcalde y dirección de deportes</div>
+      <div class="x-it i2" style="left:550px;top:360px">Contraloría y auditoría</div>
+      <div class="x-it i3" style="left:1190px;top:670px">Ciudadanos y clubes deportivos</div>
+      <div class="x-it i4" style="left:550px;top:670px">Proveedor de internet del municipio</div>
+      <p class="x-ax" style="left:520px;top:925px;font-weight:500">Interés bajo</p>
+      <p class="x-ax" style="left:1500px;top:925px;font-weight:500">Interés alto</p>
+        </div>
+      </section>
+
+      <section id="vision" class="clip slide" data-start="159.60000000000002" data-duration="9" data-track-index="0" data-label="Visión de producto" data-frags="3" data-enter="2.4" data-step="1.8">
+        <div class="frame" id="vision-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Una visión de producto se escribe en seis partes</h1>
+      <div class="x-vr r0" style="left:120px;top:320px"><span class="x-vl">PARA</span><span class="x-vt">ciudadanos y clubes del municipio</span></div><div class="x-vr r1" style="left:120px;top:420px"><span class="x-vl">QUE</span><span class="x-vt">necesitan reservar canchas sin hacer filas</span></div><div class="x-vr r2" style="left:120px;top:520px"><span class="x-vl">EL PRODUCTO ES UN</span><span class="x-vt">servicio web llamado Reserva Ya</span></div><div class="x-vr r3" style="left:120px;top:620px"><span class="x-vl">QUE</span><span class="x-vt">muestra horarios disponibles y confirma al instante</span></div><div class="x-vr r4" style="left:120px;top:720px"><span class="x-vl">A DIFERENCIA DE</span><span class="x-vt">la lista en papel de la dirección de deportes</span></div><div class="x-vr r5" style="left:120px;top:820px"><span class="x-vl">NUESTRO PRODUCTO</span><span class="x-vt">evita reservas duplicadas y deja un registro auditable</span></div>
+        </div>
+      </section>
+
+      <section id="practica" class="clip slide" data-start="168.60000000000002" data-duration="6.4" data-track-index="0" data-label="Práctica guiada" data-frags="0" data-enter="3.2" data-step="1">
+        <div class="frame" id="practica-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Ahora hagan el descubrimiento de una plataforma de productores de Loja</h1>
+      <p class="lead" style="left:120px;top:270px;width:1600px">Una asociación quiere vender en línea. Trabajen en parejas.</p>
+      <div class="vl" style="left:230px;top:412px;height:540px"></div>
+      <div class="vn" style="left:202px;top:380px">1</div><p class="vt" style="left:320px;top:389px">Lista al menos ocho stakeholders y ubícalos en las cinco constituencias</p><div class="vn" style="left:202px;top:515px">2</div><p class="vt" style="left:320px;top:524px">Clasifica cada uno por influencia e interés</p><div class="vn" style="left:202px;top:650px">3</div><p class="vt" style="left:320px;top:659px">Identifica un conflicto entre dos y cómo se negociaría</p><div class="vn" style="left:202px;top:785px">4</div><p class="vt" style="left:320px;top:794px">Redacta la visión con los seis elementos de la plantilla</p><div class="vn" style="left:202px;top:920px">5</div><p class="vt" style="left:320px;top:929px">Revisa que responda qué es, quiénes lo usan y por qué</p>
+        </div>
+      </section>
+
+      <section id="actividades" class="clip slide" data-start="175.00000000000003" data-duration="5.2" data-track-index="0" data-label="Actividades de la semana" data-frags="0" data-enter="2.6" data-step="1">
+        <div class="frame" id="actividades-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Esta semana entregan tres actividades</h1>
+      <div class="x-tk" style="left:120px;top:300px"><p class="tg">GA-1.1</p><p class="tt">Análisis ético de IA</p><p class="td">Un caso con el código de ética y los principios de IA responsable</p><p class="tp">punto</p>
+          <svg class="ringsvg" width="180" height="180" viewBox="0 0 180 180"><circle class="rg" cx="90" cy="90" r="76" transform="rotate(-90 90 90)" pathLength="1"/></svg><p class="pn" data-n="1">1</p></div><div class="x-tk" style="left:690px;top:300px"><p class="tg">PE-1.1</p><p class="tt">Mapa de stakeholders</p><p class="td">Influencia, interés y un conflicto negociado</p><p class="tp">puntos</p>
+          <svg class="ringsvg" width="180" height="180" viewBox="0 0 180 180"><circle class="rg" cx="90" cy="90" r="76" transform="rotate(-90 90 90)" pathLength="1"/></svg><p class="pn" data-n="2">2</p></div><div class="x-tk" style="left:1260px;top:300px"><p class="tg">TA-1.1</p><p class="tt">Visión del producto</p><p class="td">Plantilla de Moore y el Módulo 1 de ASU Inclusive Mindset</p><p class="tp">puntos</p>
+          <svg class="ringsvg" width="180" height="180" viewBox="0 0 180 180"><circle class="rg" cx="90" cy="90" r="76" transform="rotate(-90 90 90)" pathLength="1"/></svg><p class="pn" data-n="2">2</p></div>
+      <p class="src" style="left:120px;top:880px;width:1680px">Consigna, plantilla y rúbrica en Canvas.</p>
+        </div>
+      </section>
+
+      <section id="cierre" class="clip slide dark" data-start="180.20000000000002" data-duration="7.2" data-track-index="0" data-label="Cierre" data-frags="0" data-enter="3.6" data-step="1">
+        <div class="frame" id="cierre-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <div class="x-sum" style="left:120px;top:230px"><span class="x-sc">Código</span><i class="x-pl">+</i><span class="x-sc">Documentación</span><i class="x-pl">+</i><span class="x-sc">Pruebas</span><i class="x-pl">+</i><span class="x-sc">Responsabilidad</span></div>
+      <p class="x-eq" style="left:120px;top:330px">= un producto profesional</p>
+      <h1 class="ttl xl" style="top:470px;width:1560px;font-size:80px">Un producto es más que código, y quien lo construye responde por lo que provoca</h1>
+      <p class="lead" style="left:120px;top:800px;width:1560px">Próxima semana: requisitos funcionales y no funcionales, y técnicas de elicitación</p>
+      <p class="byline" style="left:120px;top:960px">Fuentes: Sommerville (2011), capítulo 1 · Pressman y Maxim (2020) · Código de ética de ACM e IEEE-CS</p>
+        </div>
+      </section>
+    </div>
+    <script>
+      // Con el motor de HyperFrames (check, Studio, snapshot) el registro ya existe y la línea de
+      // tiempo contiene todas las animaciones. Al presentar, el reproductor solo mueve la línea
+      // "main" (el destino) y esta página reproduce las animaciones en tiempo real hasta alcanzarlo.
+      const engineHosted = Object.prototype.hasOwnProperty.call(window, "__timelines");
+      window.__timelines = window.__timelines || {};
+
+      const EXIT = 0.5;
+      const tl = gsap.timeline({ paused: true });
+      tl.to({}, { duration: 187.4 }, 0);
+      const real = engineHosted ? tl : gsap.timeline({ paused: true });
+
+      const VW = 1920, VH = 1080;
+      const cam = (s, cx, cy) => {
+        let x = VW / 2 - cx * s, y = VH / 2 - cy * s;
+        if (s >= 1) { x = Math.min(0, Math.max(VW - VW * s, x)); y = Math.min(0, Math.max(VH - VH * s, y)); }
+        return { scale: s, x, y };
+      };
+      const overview = cam(1, VW / 2, VH / 2);
+
+// Escenas de la presentación: cada diapositiva es una animación propia que se construye
+// por pasos. Este archivo se incrusta en index.html (lo hace build.mjs).
+// Disponibles: gsap, real (línea de tiempo de contenido), cam, overview.
+
+function splitWords(el) {
+  if (el._w) return el._w;
+  const words = el.textContent.trim().split(" ");
+  el.textContent = "";
+  el._w = words.map((w, i) => {
+    const o = document.createElement("span"); o.className = "w";
+    const n = document.createElement("span"); n.className = "wi"; n.textContent = w;
+    o.appendChild(n); el.appendChild(o);
+    if (i < words.length - 1) el.appendChild(document.createTextNode(" "));
+    return n;
+  });
+  return el._w;
+}
+function splitChars(el) {
+  const out = [];
+  const walk = (node) => {
+    Array.from(node.childNodes).forEach((ch) => {
+      if (ch.nodeType === 3) {
+        const frag = document.createDocumentFragment();
+        for (const t of ch.textContent) {
+          const s = document.createElement("span"); s.className = "ch"; s.textContent = t;
+          frag.appendChild(s); out.push(s);
+        }
+        ch.replaceWith(frag);
+      } else if (ch.nodeType === 1) walk(ch);
+    });
+  };
+  walk(el);
+  return out;
+}
+
+const EXP = "expo.out", P4 = "power4.out", IO = "power2.inOut";
+const words = (el, at, stag = 0.06, d = 0.75) =>
+  real.fromTo(splitWords(el), { yPercent: 120 }, { yPercent: 0, duration: d, ease: P4, stagger: stag }, at);
+const rise = (t, at, y = 40, d = 0.7) => real.fromTo(t, { opacity: 0, y }, { opacity: 1, y: 0, duration: d, ease: EXP }, at);
+const pop = (t, at, d = 0.6, s0 = 0.5) => real.fromTo(t, { opacity: 0, scale: s0 }, { opacity: 1, scale: 1, duration: d, ease: "back.out(1.8)" }, at);
+const slide = (t, at, x, d = 0.8) => real.fromTo(t, { opacity: 0, x }, { opacity: 1, x: 0, duration: d, ease: EXP }, at);
+const grow = (t, at, d = 0.7) => real.fromTo(t, { scaleX: 0, transformOrigin: "0 50%" }, { scaleX: 1, duration: d, ease: "power3.inOut" }, at);
+const growY = (t, at, d = 0.7) => real.fromTo(t, { scaleY: 0, transformOrigin: "50% 0" }, { scaleY: 1, duration: d, ease: "power3.inOut" }, at);
+const draw = (t, at, d = 0.8, ease = IO) => real.fromTo(t, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease }, at);
+const fadeIn = (t, at, d = 0.5) => real.fromTo(t, { opacity: 0 }, { opacity: 1, duration: d, ease: "power2.out" }, at);
+const flash = (t, at, color = "rgba(232,169,32,0.5)", off = "rgba(232,169,32,0)") => {
+  real.fromTo(t, { backgroundColor: off }, { backgroundColor: color, duration: 0.3, immediateRender: false }, at);
+  real.to(t, { backgroundColor: off, duration: 0.6 }, at + 0.7);
+};
+// Mueve un elemento a lo largo de un trazo SVG.
+function along(el, path, at, d, ease = IO) {
+  const len = path.getTotalLength();
+  const o = { p: 0 };
+  real.fromTo(o, { p: 0 }, { p: 1, duration: d, ease, onUpdate: () => {
+    const pt = path.getPointAtLength(o.p * len);
+    gsap.set(el, { x: pt.x, y: pt.y });
+  } }, at);
+}
+
+const SCENES = {};
+
+// ── Escenas de Ingeniería de software ─────────────────────────────────────
+
+SCENES.portada = (c) => {
+  const { st, q, qa } = c;
+  rise(q(".course"), st + 0.2, 30);
+  words(q(".ttl"), st + 0.3, 0.07, 0.8);
+  rise(q(".lead"), st + 1.3, 40);
+  rise(q(".byline"), st + 1.6, 30);
+  qa(".sheet").forEach((el, i) =>
+    real.fromTo(el, { opacity: 0, y: 900, rotation: 14 }, { opacity: 1, y: 0, rotation: 0, duration: 1.2, ease: EXP }, st + 0.4 + i * 0.25));
+};
+
+SCENES.caso = (c) => {
+  const { st, q, qa, h } = c;
+  words(q(".ttl"), st + 0.2);
+  real.fromTo(q(".x-script"), { opacity: 0, y: -260 }, { opacity: 1, y: 0, duration: 0.95, ease: "bounce.out" }, st + 0.5);
+  rise(q(".ask"), st + 1.8, 20, 0.5);
+  const dots = qa(".x-dot");
+  let at = h(1) - c.step;
+  real.to(q(".ask"), { opacity: 0, y: -20, duration: 0.3 }, at);
+  pop(dots.slice(0, 3), at + 0.3, 0.5);
+  rise(q(".c1"), at + 0.5, 16, 0.5);
+  at = h(2) - c.step;
+  real.to(q(".c1"), { opacity: 0, duration: 0.3 }, at);
+  real.fromTo(dots.slice(3), { opacity: 0, scale: 0.3 }, { opacity: 1, scale: 1, duration: 0.3, stagger: 0.007, ease: "back.out(2)" }, at + 0.2);
+  rise(q(".c2"), at + 0.8, 16, 0.5);
+  at = h(3) - c.step;
+  real.to(q(".x-script"), { opacity: 0.35, duration: 0.5 }, at + 0.2);
+  rise(q(".q1"), at + 0.4, 20, 0.6);
+  at = h(4) - c.step;
+  rise(q(".q2"), at + 0.4, 20, 0.6);
+};
+
+SCENES.faltantes = (c) => {
+  const { st, q, qa, h } = c;
+  words(q(".ttl"), st + 0.2);
+  rise(q(".x-mini"), st + 0.5, 50, 0.7);
+  rise(qa(".x-lb"), st + 0.8, 20, 0.5);
+  const B = qa(".x-blk");
+  real.fromTo(B[0], { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.6, ease: EXP }, st + 1.0);
+  rise(q(".ask"), st + 1.8, 20, 0.5);
+  for (let k = 1; k <= 3; k++) {
+    const at = h(k) - c.step;
+    if (k === 1) real.to(q(".ask"), { opacity: 0, y: -20, duration: 0.3 }, at);
+    [B[2 * k - 1], B[2 * k]].forEach((b, i) =>
+      real.fromTo(b, { opacity: 0, y: -320 }, { opacity: 1, y: 0, duration: 0.6, ease: "bounce.out" }, at + 0.3 + i * 0.5));
+  }
+};
+
+SCENES.definicion = (c) => {
+  const { st, q, qa, h } = c;
+  words(q(".ttl"), st + 0.2);
+  rise(q(".lead"), st + 0.7, 30, 0.7);
+  rise(q(".x-sm"), st + 1.3, 20, 0.6);
+  let at = h(1) - c.step;
+  real.fromTo(qa(".x-seg"), { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.5, stagger: 0.18, ease: "back.out(1.8)" }, at + 0.1);
+  at = h(2) - c.step;
+  pop(q(".x-cod"), at + 0.2, 0.5);
+  rise(q(".cd"), at + 0.5, 16, 0.5);
+  draw(q(".x-br"), at + 0.7, 0.7);
+  rise(q(".br"), at + 1.1, 20, 0.5);
+};
+
+SCENES.tabla = (c) => {
+  const { st, q, qa, h } = c;
+  words(q(".ttl"), st + 0.2);
+  real.fromTo(q(".x-th"), { opacity: 0, y: -30 }, { opacity: 1, y: 0, duration: 0.6, ease: EXP }, st + 0.8);
+  const R = qa(".x-tr");
+  for (let k = 1; k <= 3; k++) {
+    const at = h(k) - c.step;
+    [R[2 * k - 2], R[2 * k - 1]].forEach((r, i) => real.fromTo(r, { opacity: 0, x: -240 }, { opacity: 1, x: 0, duration: 0.8, ease: EXP }, at + 0.1 + i * 0.25));
+  }
+};
+
+SCENES.genericos = (c) => {
+  const { st, q, qa, h } = c;
+  words(q(".ttl"), st + 0.2);
+  rise(q(".ask"), st + 1.6, 20, 0.5);
+  for (let k = 1; k <= 2; k++) {
+    const at = h(k) - c.step, g = ".g" + k;
+    if (k === 1) real.to(q(".ask"), { opacity: 0, y: -20, duration: 0.3 }, at);
+    rise(q(".l" + k), at + 0.1, 24, 0.5);
+    pop(qa(".x-nd" + g), at + 0.3, 0.5);
+    qa('.x-ar[data-l="' + k + '"]').forEach((a, i) => draw(a, at + 0.7 + i * 0.3, 0.4));
+    rise(qa(".x-gl" + g), at + 0.9, 12, 0.5);
+  }
+};
+
+SCENES.atributos = (c) => {
+  const { st, q, qa, h } = c;
+  words(q(".ttl"), st + 0.2);
+  const A = qa(".x-at");
+  for (let k = 1; k <= 4; k++) {
+    const at = h(k) - c.step, d = A[k - 1];
+    if (k > 1) real.to(A[k - 2], { opacity: 0, duration: 0.3 }, at);
+    real.fromTo(d, { opacity: 0 }, { opacity: 1, duration: 0.3 }, at + 0.3);
+    real.fromTo(d.querySelectorAll(".x-tx > *"), { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.25, ease: EXP }, at + 0.5);
+    if (k === 1) {
+      const bl = d.querySelectorAll(".x-bl");
+      real.fromTo(bl, { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.35, stagger: 0.03, ease: "back.out(2)" }, at + 0.4);
+      real.fromTo(d.querySelector(".x-chip"), { opacity: 0, y: -80 }, { opacity: 1, y: 0, duration: 0.5, ease: "bounce.out" }, at + 0.9);
+      real.to(bl, { backgroundColor: "#e9b44c", duration: 0.25, stagger: 0.05 }, at + 1.2);
+    }
+    if (k === 2) {
+      pop(d.querySelectorAll(".x-acc"), at + 0.4, 0.5);
+      const coin = d.querySelector(".x-coin");
+      real.fromTo(coin, { opacity: 0, x: 0 }, { opacity: 1, x: 0, duration: 0.2 }, at + 0.8);
+      real.to(coin, { x: 150, duration: 0.5, ease: "power1.in" }, at + 1.0);
+      pop(d.querySelector(".xm"), at + 1.5, 0.3, 0.2);
+      real.to(coin, { opacity: 0, duration: 0.15 }, at + 1.5);
+      rise(d.querySelector(".x-neg"), at + 1.4, 16, 0.4);
+      rise(d.querySelector(".x-zero"), at + 1.5, 16, 0.4);
+    }
+    if (k === 3) {
+      draw(d.querySelector(".x-sw circle"), at + 0.5, 1.1, "none");
+      rise(d.querySelector(".x-swt"), at + 0.5, 16, 0.5);
+      rise(d.querySelector(".x-lb"), at + 1.2, 16, 0.5);
+    }
+    if (k === 4) {
+      const us = d.querySelector(".x-us");
+      pop(us, at + 0.4, 0.5);
+      pop(d.querySelector(".x-bub"), at + 0.8, 0.4);
+      draw(d.querySelector(".x-exp"), at + 1.1, 0.5);
+      real.to(us, { x: 200, opacity: 0.25, duration: 0.5, ease: IO }, at + 1.1);
+      rise(d.querySelector(".x-lb"), at + 1.4, 12, 0.4);
+    }
+  }
+};
+
+SCENES.proceso = (c) => {
+  const { st, q, qa, h } = c;
+  words(q(".ttl"), st + 0.2);
+  const P = qa(".x-pc"), Ar = qa('.x-ar[data-i]');
+  for (let k = 1; k <= 4; k++) {
+    const at = h(k) - c.step;
+    if (k > 1) draw(Ar[k - 2], at, 0.4);
+    real.fromTo(P[k - 1], { opacity: 0, y: 60, scale: 0.8 }, { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: P4 }, at + (k > 1 ? 0.3 : 0));
+  }
+  const at = h(4) - c.step;
+  draw(q(".lp"), at + 0.7, 0.7);
+  rise(q(".lpl"), at + 1.1, 16, 0.5);
+};
+
+SCENES.clasificar = (c) => {
+  const { st, q, qa, h } = c;
+  words(q(".ttl"), st + 0.2);
+  rise(q(".x-sm"), st + 0.6, 16, 0.5);
+  qa(".x-hd").forEach((e, i) => rise(e, st + 0.8 + i * 0.05, 12, 0.4));
+  rise(q(".c0"), st + 1.0, 30, 0.6);
+  rise(q(".ask"), st + 1.7, 20, 0.5);
+  const cards = [q(".c1"), q(".c2"), q(".c3")], Ar = qa(".x-ar");
+  for (let k = 1; k <= 3; k++) {
+    const at = h(k) - c.step;
+    if (k === 1) real.to(q(".ask"), { opacity: 0, y: -20, duration: 0.3 }, at);
+    draw(Ar[k - 1], at + 0.1, 0.4);
+    real.fromTo(cards[k - 1], { opacity: 0, x: -60 }, { opacity: 1, x: 0, duration: 0.7, ease: EXP }, at + 0.4);
+    if (k === 3) words(q(".pp"), at + 0.9, 0.05, 0.6);
+  }
+};
+
+SCENES.nube = (c) => {
+  const { st, q, qa, h } = c;
+  words(q(".ttl"), st + 0.2);
+  const A = qa(".x-at");
+  for (let k = 1; k <= 3; k++) {
+    const at = h(k) - c.step, d = A[k - 1];
+    if (k > 1) real.to(A[k - 2], { opacity: 0, duration: 0.3 }, at);
+    real.fromTo(d, { opacity: 0 }, { opacity: 1, duration: 0.3 }, at + 0.3);
+    real.fromTo(d.querySelectorAll(".x-tx > *"), { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.25, ease: EXP }, at + 0.5);
+    if (k === 1) {
+      const L = d.querySelectorAll(".x-ly");
+      real.fromTo([L[2], L[1], L[0]], { opacity: 0, y: 80 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.25, ease: P4 }, at + 0.4);
+      rise(d.querySelector(".x-chip"), at + 1.3, 20, 0.4);
+    }
+    if (k === 2) {
+      real.fromTo(d.querySelector(".x-sys"), { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.5, ease: P4 }, at + 0.4);
+      pop(d.querySelectorAll(".x-cmp"), at + 0.6, 0.4);
+      real.fromTo(d.querySelector(".x-ai"), { opacity: 0, x: 400 }, { opacity: 1, x: 0, duration: 0.7, ease: EXP }, at + 0.9);
+      rise(d.querySelector(".x-chip"), at + 1.5, 20, 0.4);
+    }
+    if (k === 3) {
+      const B = d.querySelectorAll(".x-bx2");
+      B.forEach((b, i) => rise(b, at + 0.4 + i * 0.3, 30, 0.5));
+      d.querySelectorAll(".x-ar").forEach((a, i) => draw(a, at + 0.7 + i * 0.3, 0.4));
+    }
+  }
+};
+
+SCENES.pcodigo = (c) => {
+  const { st, q, qa, h } = c;
+  words(q(".ttl"), st + 0.2);
+  rise(qa(".x-ln"), st + 0.7, 20, 0.5);
+  const B = qa(".x-pb");
+  real.fromTo(B, { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.4, stagger: 0.1, ease: "back.out(2)" }, st + 1.0);
+  // 1: lectura secuencial frente a saltos goto
+  let at = h(1) - c.step;
+  qa(".x-sp").forEach((p, i) => draw(p, at + 0.1 + i * 0.07, 0.35));
+  qa(".x-sp").forEach((p) => real.to(p, { opacity: 0, duration: 0.3 }, at + 0.95));
+  B.forEach((b, i) => real.to(b, { x: Number(b.dataset.dx), y: Number(b.dataset.dy), duration: 0.7, ease: IO }, at + 1.0 + i * 0.04));
+  qa(".x-ts").forEach((p, i) => draw(p, at + 1.4 + i * 0.07, 0.25));
+  rise(q(".sq"), at + 1.4, 16, 0.4);
+  // 2: variables globales frente a objetos
+  at = h(2) - c.step;
+  pop(q(".x-gb"), at + 0.1, 0.4);
+  pop(qa(".x-fn"), at + 0.2, 0.4);
+  qa(".x-rd").forEach((p, i) => draw(p, at + 0.4 + i * 0.07, 0.3));
+  const gone = [q(".x-gb"), ...qa(".x-fn"), ...qa(".x-rd")];
+  real.to(gone, { opacity: 0, duration: 0.3 }, at + 0.95);
+  pop(qa(".x-ob"), at + 1.1, 0.5);
+  rise(q(".oo"), at + 1.4, 16, 0.4);
+};
+
+SCENES.pproceso = (c) => {
+  const { st, q, qa, h } = c;
+  words(q(".ttl"), st + 0.2);
+  // 1: dirigido por un plan
+  let at = h(1) - c.step;
+  rise(q(".l1"), at, 16, 0.4);
+  real.fromTo(qa(".x-ph"), { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.12, ease: P4 }, at + 0.1);
+  pop(qa(".x-doc"), at + 0.5, 0.3);
+  real.fromTo(q(".c1"), { opacity: 0, y: -150 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.in" }, at + 0.9);
+  draw(q(".x-rb"), at + 1.4, 0.7);
+  rise(q(".rl1"), at + 1.5, 12, 0.4);
+  // 2: ágil
+  at = h(2) - c.step;
+  real.to([q(".c1"), q(".x-rb"), q(".rl1")], { opacity: 0.25, duration: 0.3 }, at);
+  rise(q(".l2"), at, 16, 0.4);
+  const cy = qa(".x-cy");
+  real.fromTo(cy, { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.4, stagger: 0.1, ease: "back.out(2)" }, at + 0.1);
+  real.fromTo(q(".c2"), { opacity: 0, y: -80 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.in" }, at + 0.9);
+  real.to(cy[3], { backgroundColor: "#c0392b", borderColor: "#c0392b", color: "#fff", duration: 0.3 }, at + 1.4);
+  rise(q(".al"), at + 1.5, 12, 0.4);
+  // 3: cuándo conviene cada uno
+  at = h(3) - c.step;
+  qa(".x-rule").forEach((r, i) => rise(r, at + 0.1 + i * 0.3, 16, 0.5));
+};
+
+SCENES.proyecto = (c) => {
+  const { st, q, qa, h } = c;
+  words(q(".ttl"), st + 0.2);
+  rise(q(".x-sm"), st + 0.6, 16, 0.5);
+  const R = qa(".x-cr");
+  real.fromTo(R.map((r) => r.querySelector("strong")), { opacity: 0, x: -60 }, { opacity: 1, x: 0, duration: 0.6, stagger: 0.15, ease: EXP }, st + 0.9);
+  real.fromTo(R, { backgroundColor: "rgba(246,241,243,0)" }, { backgroundColor: "rgba(246,241,243,1)", duration: 0.5, stagger: 0.15 }, st + 0.9);
+  real.fromTo(R.map((r) => r.querySelector("span")), { opacity: 0 }, { opacity: 0, duration: 0.01 }, st);
+  rise(q(".ask"), st + 1.8, 20, 0.5);
+  for (let k = 1; k <= 3; k++) {
+    const at = h(k) - c.step;
+    if (k === 1) real.to(q(".ask"), { opacity: 0, y: -20, duration: 0.3 }, at);
+    real.to(R[k - 1].querySelector("span"), { opacity: 1, duration: 0.5 }, at + 0.3);
+  }
+  const at = h(4) - c.step;
+  real.fromTo(q(".x-vd"), { opacity: 0, scale: 1.6 }, { opacity: 1, scale: 1, duration: 0.4, ease: P4, transformOrigin: "0 50%" }, at + 0.2);
+  rise(q(".x-rk"), at + 0.9, 20, 0.5);
+};
+
+SCENES.etica = (c) => {
+  const { st, q, qa, h } = c;
+  words(q(".ttl"), st + 0.2);
+  let at = h(1) - c.step;
+  real.fromTo(q(".x-fence"), { opacity: 0, scale: 0.9, transformOrigin: "0 0" }, { opacity: 1, scale: 1, duration: 0.7, ease: P4 }, at + 0.1);
+  rise(q(".x-fi"), at + 0.5, 20, 0.5);
+  rise(q(".x-fe"), at + 0.8, 20, 0.5);
+  at = h(2) - c.step;
+  rise(q(".tl"), at + 0.1, 20, 0.5);
+  real.fromTo(qa(".x-rc"), { opacity: 0, y: -80 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.18, ease: "bounce.out" }, at + 0.3);
+  words(q(".pnc"), at + 0.7, 0.025, 0.5);
+};
+
+SCENES.codigo = (c) => {
+  const { st, q, qa, h } = c;
+  words(q(".ttl"), st + 0.2);
+  let at = h(1) - c.step;
+  pop(q(".x-cc"), at + 0.1, 0.6);
+  qa(".x-sl").forEach((p, i) => draw(p, at + 0.5 + i * 0.1, 0.4));
+  real.fromTo(qa(".x-sat"), { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.4, stagger: 0.1, ease: "back.out(2)" }, at + 0.7);
+  at = h(2) - c.step;
+  real.to(q(".x-cc"), { scale: 1.12, duration: 0.3, ease: P4 }, at + 0.1);
+  real.to(q(".x-cc"), { scale: 1, duration: 0.4 }, at + 0.4);
+  words(q(".cap2"), at + 0.3, 0.05, 0.6);
+};
+
+SCENES.iaresp = (c) => {
+  const { st, q, qa, h } = c;
+  words(q(".ttl"), st + 0.2);
+  rise(qa(".x-ia"), st + 0.7, 16, 0.5);
+  qa(".x-ar").forEach((a, i) => draw(a, st + 0.9 + i * 0.2, 0.5));
+  real.fromTo(q(".x-bx"), { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.6, ease: P4 }, st + 0.8);
+  const P = qa(".x-pr");
+  // 1 privacidad
+  let at = h(1) - c.step;
+  rise(P[0], at, 40, 0.6);
+  pop(q(".x-lk"), at + 0.4, 0.5);
+  // 2 equidad
+  at = h(2) - c.step;
+  rise(P[1], at, 40, 0.6);
+  real.fromTo(q(".x-fill.ok"), { scaleY: 0, transformOrigin: "50% 100%" }, { scaleY: 1, duration: 0.6, ease: P4 }, at + 0.4);
+  real.fromTo(q(".x-fill.no"), { scaleY: 0, transformOrigin: "50% 100%" }, { scaleY: 0.5, duration: 0.6, ease: P4 }, at + 0.55);
+  rise(qa(".x-bl2"), at + 1.0, 12, 0.4);
+  // 3 transparencia
+  at = h(3) - c.step;
+  rise(P[2], at, 40, 0.6);
+  real.fromTo(q(".x-st"), { opacity: 0, scale: 2, rotation: -6 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.4, ease: P4 }, at + 0.5);
+};
+
+SCENES.analisis = (c) => {
+  const { st, q, qa, h } = c;
+  words(q(".ttl"), st + 0.2);
+  rise(q(".x-sm"), st + 0.6, 16, 0.5);
+  real.fromTo(qa(".x-sp2"), { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.5, stagger: 0.1, ease: EXP }, st + 0.9);
+  const S = qa(".x-sp2"), Rr = qa(".x-rs");
+  for (let k = 1; k <= 5; k++) {
+    const at = h(k) - c.step;
+    if (k > 1) real.to(Rr[k - 2], { opacity: 0, duration: 0.3 }, at);
+    S.forEach((s, i) => real.to(s, { color: i === k - 1 ? "#910048" : "#8a7f85", duration: 0.3 }, at + 0.1));
+    real.fromTo(Rr[k - 1], { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: EXP }, at + 0.4);
+    if (k === 1) {
+      real.fromTo(Rr[0].querySelector(".pa"), { x: -140 }, { x: 0, duration: 0.5, ease: EXP }, at + 0.4);
+      real.fromTo(Rr[0].querySelector(".pb2"), { x: 140 }, { x: 0, duration: 0.5, ease: EXP }, at + 0.4);
+    }
+    if (k === 3) real.fromTo(Rr[2].querySelectorAll(".x-chip2"), { opacity: 0, x: -60 }, { opacity: 1, x: 0, duration: 0.5, stagger: 0.2, ease: EXP }, at + 0.5);
+    if (k === 4 || k === 5) real.fromTo(Rr[k - 1].querySelectorAll("p"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.25, ease: EXP }, at + 0.5);
+  }
+};
+
+SCENES.stakeholders = (c) => {
+  const { st, q, qa, h } = c;
+  words(q(".ttl"), st + 0.2);
+  let at = h(1) - c.step;
+  pop(q(".x-hub"), at + 0.1, 0.6);
+  qa(".x-sl").forEach((p, i) => draw(p, at + 0.5 + i * 0.12, 0.4));
+  real.fromTo(qa(".x-co"), { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.5, stagger: 0.12, ease: "back.out(1.8)" }, at + 0.7);
+  at = h(2) - c.step;
+  real.fromTo(qa(".x-ext"), { opacity: 0, y: 80 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.2, ease: P4 }, at + 0.2);
+  rise(q(".el"), at + 0.8, 16, 0.5);
+};
+
+SCENES.influencia = (c) => {
+  const { st, q, qa, h } = c;
+  words(q(".ttl"), st + 0.2);
+  rise(qa(".x-ax"), st + 0.6, 12, 0.5);
+  real.fromTo(qa(".x-q4"), { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.5, stagger: 0.12, ease: P4 }, st + 0.8);
+  const I = [q(".i1"), q(".i2"), q(".i3"), q(".i4")];
+  for (let k = 1; k <= 4; k++) {
+    const at = h(k) - c.step;
+    real.fromTo(I[k - 1], { opacity: 0, y: -200 }, { opacity: 1, y: 0, duration: 0.8, ease: "bounce.out" }, at + 0.2);
+    if (k === 3) { /* ciudadanos y clubes comparten cuadrante */ }
+  }
+};
+
+SCENES.vision = (c) => {
+  const { st, q, qa, h } = c;
+  words(q(".ttl"), st + 0.2);
+  for (let k = 1; k <= 3; k++) {
+    const at = h(k) - c.step;
+    [qa(".x-vr")[2 * k - 2], qa(".x-vr")[2 * k - 1]].forEach((r, i) => {
+      const t0 = at + 0.1 + i * 0.7;
+      real.fromTo(r.querySelector(".x-vl"), { opacity: 0, x: -50 }, { opacity: 1, x: 0, duration: 0.5, ease: EXP }, t0);
+      const ch = splitChars(r.querySelector(".x-vt"));
+      real.fromTo(ch, { opacity: 0 }, { opacity: 1, duration: 0.01, stagger: 0.012, ease: "none" }, t0 + 0.2);
+    });
+  }
+};
+
+SCENES.practica = (c) => {
+  const { st, q, qa } = c;
+  words(q(".ttl"), st + 0.2);
+  rise(q(".lead"), st + 0.8, 20, 0.6);
+  growY(q(".vl"), st + 1.0, 1.4);
+  qa(".vn").forEach((n, i) => pop(n, st + 1.0 + (1.4 * i) / 4, 0.45));
+  qa(".vt").forEach((n, i) => slide(n, st + 1.1 + (1.4 * i) / 4, 60, 0.6));
+};
+
+SCENES.actividades = (c) => {
+  const { st, q, qa } = c;
+  words(q(".ttl"), st + 0.2);
+  qa(".x-tk").forEach((t, i) =>
+    real.fromTo(t, { opacity: 0, y: 500, rotation: [-5, 0, 5][i] }, { opacity: 1, y: 0, rotation: 0, duration: 1.0, ease: EXP }, st + 0.4 + i * 0.2));
+  qa(".rg").forEach((r, i) => draw(r, st + 1.2 + i * 0.15, 0.8));
+  qa(".pn").forEach((p, i) => {
+    const n = Number(p.dataset.n), o = { v: 0 };
+    real.fromTo(o, { v: 0 }, { v: n, duration: 0.8, ease: "power1.out", onUpdate: () => { p.textContent = String(Math.round(o.v)); } }, st + 1.2 + i * 0.15);
+  });
+  rise(q(".src"), st + 1.9, 20, 0.5);
+};
+
+SCENES.cierre = (c) => {
+  const { st, q, qa } = c;
+  real.fromTo(qa(".x-sum > *"), { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.18, ease: EXP }, st + 0.3);
+  real.fromTo(q(".x-eq"), { opacity: 0, x: -50 }, { opacity: 1, x: 0, duration: 0.7, ease: EXP }, st + 1.6);
+  words(q(".ttl"), st + 2.0, 0.05, 0.7);
+  rise(q(".lead"), st + 2.8, 30, 0.7);
+  rise(q(".byline"), st + 3.1, 20, 0.5);
+};
+
+
+      const figSyncs = [];
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      const skips = [];
+
+      slides.forEach((slide, index) => {
+        const start = Number(slide.dataset.start);
+        const end = start + Number(slide.dataset.duration);
+        const n = Number(slide.dataset.frags);
+        const en = Number(slide.dataset.enter);
+        const step = Number(slide.dataset.step);
+        const frame = slide.querySelector(".frame");
+        const isDark = slide.classList.contains("dark");
+        const hold = (k) => start + en + k * step;
+        let camCur = overview;
+
+        // Transición: la diapositiva saliente se acerca y se disuelve; la entrante se aleja hasta su plano.
+        const s0 = isDark ? 1.35 : index % 2 ? 1.1 : 0.92;
+        const hasFig = !!frame.querySelector("iframe");
+        if (!hasFig) real.set(frame, { display: "block" }, start);
+        real.fromTo(frame, { opacity: 0, transformOrigin: "0 0", ...cam(s0, VW / 2, VH / 2) },
+          { opacity: 1, ...overview, duration: isDark ? 1.4 : 0.9, ease: "expo.out" }, start);
+        if (index < slides.length - 1) {
+          real.fromTo(frame, { opacity: 1, ...overview }, { opacity: 0, ...cam(1.14, VW / 2, VH / 2), duration: EXIT, ease: "power2.in", immediateRender: false }, end - EXIT);
+          if (!hasFig) real.set(frame, { display: "none" }, end);
+          skips.push([hold(n) + 0.05, end - EXIT]);
+        }
+
+        const ctx = {
+          s: slide, st: start, en, n, step, h: hold,
+          q: (sel) => slide.querySelector(sel),
+          qa: (sel) => Array.from(slide.querySelectorAll(sel)),
+          cam: (cx, cy, s, at, d) => {
+            const to = cam(s, cx, cy);
+            real.fromTo(frame, { ...camCur, transformOrigin: "0 0" }, { ...to, duration: d, ease: "power2.inOut", immediateRender: false }, at);
+            camCur = to;
+          },
+        };
+        if (SCENES[slide.id]) SCENES[slide.id](ctx);
+
+        slide.querySelectorAll("iframe[data-fig]").forEach((el) => {
+          // La figura corre en su propio documento: en vivo anima sola hacia el estado pedido;
+          // con el motor (check, Studio) sigue la línea de tiempo cuadro a cuadro.
+          const steps = Number(el.dataset.fig);
+          let sent = -1;
+          const wanted = () => {
+            const t = tl.time();
+            let u = 0;
+            for (let k = 1; k <= steps; k++) u += Math.min(1, Math.max(0, (t - (hold(k) - 0.6)) / 0.6));
+            return engineHosted ? u / steps : Math.round(u) / steps;
+          };
+          const send = (force) => {
+            const value = wanted();
+            if (!el.contentWindow || (!force && value === sent)) return;
+            sent = value;
+            el.contentWindow.postMessage({ type: "fig", mode: engineHosted ? "set" : "go", value }, "*");
+          };
+          figSyncs.push(send);
+          el.addEventListener("load", () => send(true));
+        });
+      });
+
+      tl.eventCallback("onUpdate", () => figSyncs.forEach((sync) => sync()));
+
+      if (!engineHosted) {
+        // En vivo: "main" marca el destino (lo mueve el reproductor) y "real" lo persigue en tiempo
+        // real, así cada avance reproduce la animación en lugar de saltar. Retroceder es inmediato.
+        // Sin suavizado de retardo: el avance sigue el reloj real aunque el equipo vaya justo.
+        gsap.ticker.lagSmoothing(0);
+        let shown = tl.time(), lastT = gsap.ticker.time;
+        real.time(shown, false);
+        window.__deckState = () => ({ target: tl.time(), shown });
+        gsap.ticker.add((now) => {
+          const dt = Math.min(1, now - lastT);
+          lastT = now;
+          figSyncs.forEach((sync) => sync());
+          const target = tl.time();
+          if (target === shown) return;
+          if (target < shown || target - shown > 14) shown = target;
+          else {
+            shown = Math.min(target, shown + dt * 1.5);
+            for (const [a, b] of skips) if (shown > a && shown < b) shown = Math.min(target, b);
+          }
+          real.time(shown, false);
+        });
+      }
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
