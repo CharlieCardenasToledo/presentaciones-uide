@@ -1,0 +1,894 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Semana 1 · HCI como ciencia de sistemas interactivos</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      :root {
+        /* Colores del logotipo UIDE: vino #910048 y dorado #E8A920. Sin degradados. */
+        --paper: #ffffff; --ink: #1f1a1d; --muted: #5a5257; --wine: #910048; --wine-deep: #6d0036; --gold: #e8a920;
+        --teal: #0c6b62; --teal-soft: #e3f2f0; --amber: #7a5200; --amber-soft: #fcefc9; --tint: #f6f1f3;
+      }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--paper); }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; font-family: system-ui, sans-serif; color: var(--ink); }
+      .slide { position: absolute; inset: 0; }
+      .frame { position: absolute; inset: 0; display: none; opacity: 0; background: var(--paper); transform-origin: 0 0; isolation: isolate; }
+      .dark .frame { background: var(--wine); color: #fff; }
+      .frame > :not(.logo) { position: absolute; }
+      .logo { position: absolute; top: 44px; right: 96px; height: 92px; width: auto; }
+      .dark .logo { top: 0; right: 96px; height: 150px; padding: 26px 30px 22px; background: #fff; border-radius: 0 0 18px 18px; box-sizing: border-box; }
+      .ov { left: 0; top: 0; pointer-events: none; overflow: visible; }
+      .ov path { fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; }
+
+      .w { display: inline-block; overflow: hidden; vertical-align: top; padding: 0.18em 0 0.14em; margin: -0.18em 0 -0.14em; }
+      .wi { display: inline-block; }
+      .ttl { left: 120px; top: 96px; width: 1380px; font-family: ui-serif, serif; font-weight: 700; font-size: 64px; line-height: 1.1; letter-spacing: -0.01em; }
+      .dark .ttl { color: #fff; }
+      .course { font-size: 36px; font-weight: 600; color: var(--gold); }
+      .lead { font-size: 46px; line-height: 1.28; color: var(--muted); }
+      .dark .lead { color: #fff; }
+      .byline { font-size: 32px; color: #f6dfe9; }
+      .ask { font-family: ui-serif, serif; font-style: italic; font-size: 48px; font-weight: 700; color: var(--wine); line-height: 1.2; }
+      .ask.mid { font-size: 64px; line-height: 1.18; width: 1500px !important; }
+      .punch { font-family: ui-serif, serif; font-size: 50px; font-weight: 700; color: var(--wine); line-height: 1.2; }
+      .punch2 { font-family: ui-serif, serif; font-size: 66px; font-weight: 700; color: var(--gold); line-height: 1.15; }
+      .capt { font-size: 42px; line-height: 1.25; font-weight: 600; }
+      .capt b.t { color: var(--teal); } .capt b.a { color: var(--amber); }
+      .src { font-size: 40px; color: var(--muted); }
+
+      .c { position: absolute; top: 0; height: 100%; display: flex; align-items: center; font-size: 40px; line-height: 1.2; }
+      .c.b, .c.term { font-weight: 800; }
+      .c.term { color: var(--wine); }
+      .c.ex2 { color: var(--teal); font-weight: 600; }
+      .c.letter { justify-content: center; font-family: ui-serif, serif; font-size: 64px; font-weight: 700; color: #fff; }
+      .x-tr { background: var(--tint); border-radius: 14px; }
+      .x-tr:has(.letter)::before { content: ""; position: absolute; left: 0; top: 0; width: 110px; height: 100%; background: var(--wine); border-radius: 14px 0 0 14px; }
+      .c.wk { justify-content: center; background: var(--amber-soft); color: var(--amber); font-weight: 800; height: 64px; top: 28px; border-radius: 10px; }
+      .thd { background: var(--wine-deep); border-radius: 14px; color: #fff; }
+      .thd .c { font-weight: 800; }
+
+      .card { background: var(--tint); border-radius: 18px; padding: 30px 34px; overflow: hidden; }
+      .card.dk { background: var(--wine-deep); color: #fff; }
+      .card h3 { font-family: ui-serif, serif; font-size: 50px; line-height: 1.08; font-weight: 700; margin-bottom: 22px; }
+      .card p { font-size: 40px; line-height: 1.22; margin-bottom: 20px; }
+      .card p.ex { color: var(--wine); font-weight: 700; }
+      .card p.q { font-weight: 800; }
+      .card.dk p.ex { color: var(--gold); }
+
+      .chip { height: 96px; padding: 0 36px; border-radius: 48px; background: var(--wine); color: #fff; font-size: 44px; font-weight: 800; display: flex; align-items: center; white-space: nowrap; }
+      .chip.gold { background: var(--amber-soft); color: var(--amber); }
+
+      .band { background: var(--tint); border-radius: 18px; }
+      .x-lat { background: var(--tint); border-radius: 18px; }
+      .c.nb { justify-content: center; background: var(--wine); color: #fff; font-size: 56px; font-weight: 800; border-radius: 18px 0 0 18px; }
+      .c.nm { font-family: ui-serif, serif; font-size: 46px; font-weight: 700; color: var(--wine); }
+      .x-step { background: var(--tint); border-radius: 14px; }
+      .c.nb2 { justify-content: center; background: var(--wine); color: #fff; font-size: 52px; font-weight: 800; border-radius: 14px 0 0 14px; }
+
+      .big { font-family: ui-serif, serif; font-size: 64px; font-weight: 700; color: var(--wine); }
+      .bar { height: 64px; border-radius: 8px; }
+      .bar.tt { background: var(--teal); } .bar.ee { background: var(--wine); }
+      .bl { font-size: 42px; font-weight: 700; line-height: 1.2; white-space: nowrap; }
+
+      .x-pill { height: 84px; border-radius: 42px; background: #fff; color: var(--wine); font-size: 42px; font-weight: 800; display: flex; align-items: center; justify-content: center; white-space: nowrap; }
+      .x-dot { width: 32px; height: 32px; border-radius: 50%; background: var(--gold); }
+
+
+      .hd { font-size: 40px; font-weight: 800; color: var(--wine); }
+      .hd.mut { color: var(--muted); font-weight: 600; }
+      .x-bx { width: 520px; height: 110px; border-radius: 16px; background: var(--tint); font-size: 42px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+      .ov path.x-a { stroke: var(--wine); stroke-width: 8; }
+      .x-lbl { font-size: 42px; font-weight: 800; color: var(--wine); text-align: center; background: #fff; }
+      .x-noise { height: 70px; border-radius: 35px; background: #c0392b; color: #fff; font-size: 40px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+      .x-ctxl { font-size: 40px; font-weight: 800; color: var(--amber); background: #fff; text-align: center; }
+      .cap { font-size: 44px; line-height: 1.2; font-weight: 600; }
+
+      iframe.fig { border: 0; background: transparent; }
+</style>
+  </head>
+  <body>
+    <script type="application/hyperframes-slideshow+json">
+{
+  "slides": [
+    {
+      "sceneId": "portada",
+      "startTime": 0,
+      "endTime": 5.6,
+      "notes": "Abrir con una pregunta, sin definir nada: ¿alguna vez una máquina les cobró dos veces, o los dejó esperando sin saber si había funcionado? Anotar dos o tres respuestas en la pizarra. La clase entera sale de ese tipo de situaciones. Duración orientativa de la sesión: 3 horas (16:00 a 19:00)."
+    },
+    {
+      "sceneId": "caso",
+      "startTime": 5.6,
+      "endTime": 20.2,
+      "notes": "Minuto 0 a 15. Proyectar la figura con el botón Activar sonido: en el paso 1 se oye el pitido limpio y en el paso 4 el mismo pitido queda tapado por el motor y la radio. Antes de avanzar, preguntar: ¿quién ha pagado dos veces en un bus o en un parqueadero? Avanzar un paso a la vez y pedir que predigan lo que viene antes de cada avance. No dar términos todavía: que expliquen con sus palabras qué falló. Al llegar al último paso, la pregunta de cierre es la de la diapositiva siguiente.",
+      "fragments": [
+        8,
+        10.2,
+        12.4,
+        14.600000000000001,
+        16.8,
+        19
+      ]
+    },
+    {
+      "sceneId": "diagnostico",
+      "startTime": 20.2,
+      "endTime": 31.599999999999998,
+      "notes": "Cada estudiante escribe cinco o seis oraciones sobre qué falló, antes de ver la tabla (dos minutos). Luego se revela una columna por vez: lo que Diana hizo, lo que el sistema hizo y lo que Diana percibió. La conclusión que se busca: ninguna pieza se rompió. Si alguien dice que fue culpa de Diana, preguntar qué habría tenido que percibir para no repetir la tarjeta. Esa pregunta abre el concepto de retroalimentación.",
+      "fragments": [
+        22.4,
+        24.4,
+        26.4,
+        28.4,
+        30.4
+      ]
+    },
+    {
+      "sceneId": "definicion",
+      "startTime": 31.599999999999998,
+      "endTime": 39,
+      "notes": "Minuto 15 a 25. Leer la definición de SIGCHI en voz alta y pedir que ubiquen qué parte ya practicaron en UX/UI (diseño, evaluación). Luego mostrar las tres tareas y la última parte: el estudio de los fenómenos que rodean la interacción. Ahí vive la investigación. Fuente: ACM SIGCHI (1992), Curricula for Human-Computer Interaction, capítulo 2.",
+      "fragments": [
+        33.8,
+        35.8,
+        37.8
+      ]
+    },
+    {
+      "sceneId": "aspectos",
+      "startTime": 39,
+      "endTime": 51.4,
+      "notes": "Cada fila es un aspecto del contenido de HCI según SIGCHI, aplicado al torniquete. Pedir que adivinen el ejemplo antes de revelarlo. No hace falta memorizar las letras: lo importante es que un mismo caso se puede estudiar desde cinco ángulos. Fuente: ACM SIGCHI (1992), páginas 14 y 15.",
+      "fragments": [
+        41.2,
+        43,
+        44.800000000000004,
+        46.6,
+        48.400000000000006,
+        50.2
+      ]
+    },
+    {
+      "sceneId": "uxui",
+      "startTime": 51.4,
+      "endTime": 60.8,
+      "notes": "Pregunta que siempre llega: ¿HCI es UX/UI con otro nombre? Dejar que respondan primero. Luego revelar: comparten objeto de estudio, no la manera de trabajar. UX/UI conduce el diseño de un producto completo; HCI, como investigación, formula preguntas acotadas y las responde con modelos y mediciones. Un premio de diseño no dice cuántos usuarios se equivocan. Fuente de la distinción: MacKenzie (2013).",
+      "fragments": [
+        53.6,
+        55.6,
+        57.6,
+        59.6
+      ]
+    },
+    {
+      "sceneId": "bucle",
+      "startTime": 60.8,
+      "endTime": 79.8,
+      "notes": "Minuto 40. Dibujar el bucle en la pizarra mientras se avanza, y antes de cada avance preguntar: ¿qué parte sigue? Seguir el recorrido de la información cuando Diana acerca la tarjeta: el cerebro decide, los respondedores actúan, la entrada cruza la interfaz, el control la capta, el estado cambia, la pantalla presenta la salida y la retroalimentación vuelve a los sentidos. Los puntos t1, t2 y t3 son donde se acumula la latencia. En el último avance aparece el contexto: el ruido del bus no es parte del lector, pero decide si el pitido funciona como retroalimentación. La interfaz es la frontera donde se puede observar y medir. Fuentes: MacKenzie (2013) y ACM SIGCHI (1992).",
+      "fragments": [
+        63.199999999999996,
+        65.39999999999999,
+        67.6,
+        69.8,
+        72,
+        74.19999999999999,
+        76.39999999999999,
+        78.6
+      ]
+    },
+    {
+      "sceneId": "buclevivo",
+      "startTime": 79.8,
+      "endTime": 85.6,
+      "notes": "Ahora el mismo bucle corre solo con el torniquete en bus tranquilo. Con la flecha derecha pasa a bus lleno (la flecha izquierda vuelve a tranquilo); pedir que señalen en qué momento se pierde la retroalimentación. Aquí se ve el contador de pasajes cobrados: pasa de uno a dos. El sistema hizo lo que debía en cada paso; el contexto rompió la retroalimentación.",
+      "fragments": [
+        82.2,
+        84.4
+      ]
+    },
+    {
+      "sceneId": "vocabulario",
+      "startTime": 85.6,
+      "endTime": 98,
+      "notes": "Estos cinco términos son el vocabulario de toda la asignatura. Antes de revelar cada fila, preguntar qué sería eso en el torniquete. Entrada y salida se nombran respecto de la máquina. Retroalimentación es una salida con una función: informar el resultado de la última entrada. Si el pitido no se oye, hubo salida pero no hubo retroalimentación.",
+      "fragments": [
+        87.8,
+        89.6,
+        91.39999999999999,
+        93.2,
+        95,
+        96.8
+      ]
+    },
+    {
+      "sceneId": "cajero",
+      "startTime": 98,
+      "endTime": 110.4,
+      "notes": "Ejemplo resuelto para ver el método completo. Se recorre el bucle fila por fila: entrada, cambio de estado, salida. Antes de revelar cada fila, que predigan el estado siguiente. En el último avance se marcan dos latencias: la de cada tecla (corta, si no responde la persona pulsa dos veces) y la del procesamiento (larga, depende de la red). Por eso el mensaje de espera es retroalimentación indispensable. Después de este ejemplo, cada estudiante lo aplicará a su propio sistema en la PE-1.1.",
+      "fragments": [
+        100.2,
+        102,
+        103.8,
+        105.60000000000001,
+        107.4,
+        109.2
+      ]
+    },
+    {
+      "sceneId": "pendulo",
+      "startTime": 110.4,
+      "endTime": 118,
+      "notes": "Presentar la latencia como el tiempo entre una acción de entrada y su respuesta en pantalla. Mostrar el péndulo con 16,7 ms, luego 75 ms y luego 225 ms. Preguntar: ¿a partir de cuántos milisegundos empiezan a notar el retraso? Aclarar que se mide desde fuera, con una cámara que registra a la vez el movimiento y la pantalla: el registro del propio software no ve lo que la persona ve. Fuente: MacKenzie (2013), páginas 82 a 84.",
+      "fragments": [
+        112.80000000000001,
+        114.80000000000001,
+        116.80000000000001
+      ]
+    },
+    {
+      "sceneId": "suma",
+      "startTime": 118,
+      "endTime": 129.4,
+      "notes": "Responder la pregunta de la diapositiva: la demora no tiene una sola causa, se acumula a lo largo del bucle. t1 es el muestreo de la entrada: los dispositivos se muestrean a tasas fijas y, a 60 Hz, detectar un movimiento puede tomar hasta 16,67 ms. t2 es el software: comunicaciones, red, cálculo. t3 es dibujar la salida: con 10 cuadros por segundo y doble búfer, el mínimo es 100 ms. Son los puntos t1, t2 y t3 de la figura del bucle. Fuente: MacKenzie (2013), páginas 82 y 83.",
+      "fragments": [
+        120.2,
+        122.2,
+        124.2,
+        126.2,
+        128.2
+      ]
+    },
+    {
+      "sceneId": "efecto",
+      "startTime": 129.4,
+      "endTime": 138.8,
+      "notes": "Primero dejar que estimen: ¿qué crece más al pasar de 75 a 225 ms, el tiempo o los errores? Luego revelar los dos grupos. Con 75 ms el tiempo de movimiento aumentó 16 % y los errores 36 %; con 225 ms, 64 % y 214 %. El tiempo crece unas 4 veces y los errores unas 6. Es el primer ejemplo de que medir solo el tiempo no basta. Fuente: MacKenzie y Ware (1993), citado en MacKenzie (2013), página 84.",
+      "fragments": [
+        131.6,
+        133.6,
+        135.6,
+        137.6
+      ]
+    },
+    {
+      "sceneId": "modos",
+      "startTime": 138.8,
+      "endTime": 149,
+      "notes": "Minuto 55. Aquí pasa a las manos de los estudiantes: en la pestaña Probar tú, cada estudiante hace una ronda con 400 ms de retraso y otra con 0 ms, y dicta cuántas llamadas contestó sin querer. Anotar el total del grupo en cada condición en la pizarra: es un primer experimento, con el retraso como variable independiente y los errores como variable dependiente. Cuidado: los 400 ms son un valor de ejemplo, no un dato de una fuente. Fuente de la tecla única de 14 funciones: MacKenzie (2013), página 94.",
+      "fragments": [
+        141.20000000000002,
+        143.4,
+        145.60000000000002,
+        147.8
+      ]
+    },
+    {
+      "sceneId": "metricas",
+      "startTime": 149,
+      "endTime": 160.4,
+      "notes": "Plantear el dilema: la empresa compara el lector actual, que solo pita, con uno nuevo que también vibra. ¿Cómo sabe cuál funciona mejor? Dejar que propongan antes de avanzar. Primero el compromiso entre velocidad y precisión: quien va más rápido se equivoca más, por eso toda medición de velocidad exige medir también la precisión. Luego las tres métricas, siempre con unidad y definición operacional. Ejemplo de apoyo: en una caja de autoservicio, la más rápida puede parecer mejor solo porque registra mal los productos. Fuente: MacKenzie (2013).",
+      "fragments": [
+        151.2,
+        153.2,
+        155.2,
+        157.2,
+        159.2
+      ]
+    },
+    {
+      "sceneId": "errores",
+      "startTime": 160.4,
+      "endTime": 171.8,
+      "notes": "El bucle sirve de mapa para buscar errores: en la entrada, en el estado o en la salida. Para cada columna, primero preguntar dónde ubicarían el error de Diana y luego revelar. El doble cobro reúne los tres: una entrada repetida, un modo que la aceptó y una salida que el ruido tapó. Cierre con la idea de MacKenzie: si un resultado grave depende de que el operador se equivoque de botón, el diseño es defectuoso. El usuario se va a equivocar; el sistema debe preverlo. Esto responde a la pregunta frecuente de si el error es del usuario.",
+      "fragments": [
+        162.6,
+        164.6,
+        166.6,
+        168.6,
+        170.6
+      ]
+    },
+    {
+      "sceneId": "paradigmas",
+      "startTime": 171.8,
+      "endTime": 183.20000000000002,
+      "notes": "Minuto 18:30 de la sesión. Evitar la terminología de Harrison, Tatar y Sengers: factores humanos es que la máquina le quede bien al cuerpo; cognitivismo clásico es la mente como una computadora; el tercero es lo que la tecnología significa para alguien, en su lugar. Caso de los autores: la Fuerza Aérea eligió una voz de mujer para la alarma de la cabina porque los pilotos, todos hombres, la reconocían de inmediato; para un piloto que acababa de discutir con su esposa, esa voz significaba otra cosa. La idea a dejar clara: los tres conviven. Al final, que cada estudiante ubique su sistema de la PE en uno. Fuente: Harrison, Tatar y Sengers (2007).",
+      "fragments": [
+        174,
+        176,
+        178,
+        180,
+        182
+      ]
+    },
+    {
+      "sceneId": "frentes",
+      "startTime": 183.20000000000002,
+      "endTime": 195.60000000000002,
+      "notes": "Cada frente cambia una parte del bucle y se retoma en una semana del curso. Antes de revelar cada fila, preguntar qué parte del bucle creen que cambia. Multimodal: más canales, como el torniquete que pita y vibra. Ubicuo: el contexto deja de ser un marco y se vuelve una entrada. Inteligente: la máquina toma iniciativa y la persona debe conservar el control. Físico y remoto: la distancia suma latencia. Cerebro-computador: la señal neural reemplaza a los respondedores. Este es el trabajo autónomo de la semana: analizar la evolución hacia sistemas multimodales, ubicuos, inteligentes y físicos.",
+      "fragments": [
+        185.4,
+        187.20000000000002,
+        189,
+        190.8,
+        192.6,
+        194.4
+      ]
+    },
+    {
+      "sceneId": "practica",
+      "startTime": 195.60000000000002,
+      "endTime": 205.00000000000003,
+      "notes": "Minuto 17:25 a 18:30. Si nadie observó antes un sistema, salir 15 minutos a observar uno del campus (máquina expendedora, puerta con tarjeta, impresora, ascensor) y grabar en cámara lenta. Mostrar el cálculo de la latencia: 96 cuadros por 1000 entre 240 cuadros por segundo dan 400 ms. Error frecuente al calificar: calcular con 30 cuadros por segundo de reproducción en lugar de los de captura, lo que agranda la latencia cuatro u ocho veces. Otros errores: tablas que listan pantallas en vez de cambios de estado, errores atribuidos al usuario sin ubicarlos en el bucle, métricas sin unidad.",
+      "fragments": [
+        197.8,
+        199.8,
+        201.8,
+        203.8
+      ]
+    },
+    {
+      "sceneId": "situaciones",
+      "startTime": 205.00000000000003,
+      "endTime": 214.40000000000003,
+      "notes": "Transferencia con tres situaciones que no aparecieron antes. Una por avance: que los estudiantes respondan con un concepto de la semana y tomen posición. A: el equipo no hizo HCI como la entiende esta asignatura, porque nadie midió tiempo de tarea ni tasa de error. B: la latencia de medio segundo en un bucle cerrado explica la oscilación, cada corrección llega vieja. C: una entrada ambigua (la palabra listo) activa un modo sin que la persona lo pidió; falla el contexto y falta retroalimentación. Aceptar respuestas distintas si están justificadas con el vocabulario del bucle.",
+      "fragments": [
+        207.20000000000002,
+        209.20000000000002,
+        211.20000000000002,
+        213.20000000000002
+      ]
+    },
+    {
+      "sceneId": "cierre",
+      "startTime": 214.40000000000003,
+      "endTime": 222.40000000000003,
+      "notes": "Minuto 18:50 a 19:00. Presentar la TA-1.1: ficha técnica de dos a tres páginas con la plantilla de Canvas. Define HCI con la definición de SIGCHI y la distingue de UX/UI con un ejemplo propio; describe un sistema actual con el vocabulario del bucle; lo ubica en uno de los tres paradigmas y justifica; elige un frente actual y explica qué cambia en el bucle. Citas en APA. Errores frecuentes: definir HCI como diseño de interfaces, elegir el torniquete o el cajero, nombrar un paradigma sin decir qué queda en el margen. Cerrar con la pregunta final y dejarla sin responder.",
+      "fragments": [
+        216.80000000000004,
+        219.00000000000003,
+        221.20000000000005
+      ]
+    }
+  ],
+  "slideSequences": []
+}
+    </script>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="222.4" data-width="1920" data-height="1080">
+
+      <section id="portada" class="clip slide dark" data-start="0" data-duration="5.6" data-track-index="0" data-label="Portada" data-frags="0" data-enter="2.8" data-step="1" data-composition-id="portada" data-width="1920" data-height="1080">
+        <div class="frame" id="portada-frame" style="display:block">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <p class="course" style="left:120px;top:240px">LTI_05U_IHC · Semana 1</p>
+      <h1 class="ttl xl" style="top:300px;width:800px;font-size:88px">Nada se rompió y aun así falló</h1>
+      <p class="lead" style="left:120px;top:620px;width:760px">HCI como ciencia de sistemas interactivos</p>
+      <p class="byline" style="left:120px;top:950px">Interacción Hombre Computadora · Charlie Cárdenas Toledo</p>
+      <svg class="ov" viewBox="0 0 1920 1080" width="1920" height="1080"><path class="x-loop" pathLength="1" d="M1400 330A300 230 0 0 1 1400 790A300 230 0 0 1 1400 330" style="stroke:#e8a920;stroke-width:8"/></svg>
+      <i class="x-dot" style="left:-16px;top:-16px"></i>
+      <div class="x-pill" style="left:1180px;top:288px;width:440px">Entrada</div>
+      <div class="x-pill" style="left:1520px;top:518px;width:360px">Estado</div>
+      <div class="x-pill" style="left:1180px;top:748px;width:440px">Salida</div>
+      <div class="x-pill" style="left:880px;top:518px;width:440px">Retroalimentación</div>
+        </div>
+      </section>
+
+      <section id="caso" class="clip slide" data-start="5.6" data-duration="14.6" data-track-index="0" data-label="El torniquete de Diana" data-frags="5" data-enter="2.4" data-step="2.2" data-composition-id="caso" data-width="1920" data-height="1080">
+        <div class="frame" id="caso-frame" style="display:block">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <h1 class="ttl ">Un bus lleno y una tarjeta</h1><iframe class="fig" data-fig="5" src="figuras/torniquete-historia/torniquete-historia.html" title="Figura animada" style="left:229px;top:235px;width:1462px;height:780px"></iframe>
+        </div>
+      </section>
+
+      <section id="diagnostico" class="clip slide" data-start="20.2" data-duration="11.399999999999999" data-track-index="0" data-label="¿Qué falló?" data-frags="4" data-enter="2.2" data-step="2" data-composition-id="diagnostico" data-width="1920" data-height="1080">
+        <div class="frame" id="diagnostico-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl ">Ordena lo que pasó: tres columnas</h1>
+      <div class="card " data-k="1" style="left:120px;top:290px;width:540px;height:440px"><h3>Diana hizo</h3><p>Acercó la tarjeta.</p><p>Empujó antes de que terminara la validación.</p><p>Volvió a acercar la tarjeta.</p></div>
+      <div class="card " data-k="2" style="left:690px;top:290px;width:540px;height:440px"><h3>El sistema hizo</h3><p>Validó el pago.</p><p>Cobró, pitó y encendió la luz.</p><p>Cobró otra vez.</p></div>
+      <div class="card dk" data-k="3" style="left:1260px;top:290px;width:540px;height:440px"><h3>Diana percibió</h3><p>Ni pitido ni luz.</p><p>El brazo no giró: creyó que falló.</p><p>Un viaje, un pasaje.</p></div>
+      <p class="ask mid" style="left:120px;top:430px;width:1680px" data-out="1">Antes de dar términos: ¿dónde está la pieza rota?</p>
+      <p class="punch" data-k="4"  style="left:120px;top:790px;width:1680px">Ninguna pieza se rompió. Falló el encuentro entre lo que el sistema hizo y lo que ella percibió.</p>
+        </div>
+      </section>
+
+      <section id="definicion" class="clip slide" data-start="31.599999999999998" data-duration="7.4" data-track-index="0" data-label="Qué estudia HCI" data-frags="2" data-enter="2.2" data-step="2" data-composition-id="definicion" data-width="1920" data-height="1080">
+        <div class="frame" id="definicion-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl ">Qué estudia HCI</h1>
+      <p class="lead" style="left:120px;top:290px;width:1600px">Según ACM SIGCHI (1992), la interacción humano-computador se ocupa del diseño, la evaluación y la implementación de sistemas de cómputo interactivos para uso humano, y del estudio de los fenómenos principales que los rodean.</p>
+      <div class="chip pp" data-k="1" style="left:120px;top:690px">Diseño</div>
+      <div class="chip pp" data-k="1" data-d="0.25" style="left:420px;top:690px">Evaluación</div>
+      <div class="chip pp" data-k="1" data-d="0.5" style="left:810px;top:690px">Implementación</div>
+      <div class="chip gold pp" data-k="2" style="left:120px;top:810px">Y el estudio de los fenómenos que rodean la interacción</div>
+      <p class="ask " style="left:120px;top:960px;width:1680px" data-out="1">¿Qué parte de esta definición ya practicaste en UX/UI?</p>
+      <p class="ask" data-k="2" style="left:120px;top:960px;width:1680px;color:var(--ink)">Ahí vive la investigación: preguntas acotadas y mediciones.</p>
+        </div>
+      </section>
+
+      <section id="aspectos" class="clip slide" data-start="39" data-duration="12.399999999999999" data-track-index="0" data-label="Cinco aspectos de HCI" data-frags="5" data-enter="2.2" data-step="1.8" data-composition-id="aspectos" data-width="1920" data-height="1080">
+        <div class="frame" id="aspectos-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl ">Cinco ángulos para mirar un mismo caso</h1>
+      <p class="ask mid" style="left:120px;top:430px;width:1680px" data-out="1">¿Desde cuántos ángulos puedes estudiar el torniquete?</p>
+      <div class="x-tr " data-k="1" style="left:120px;top:290px;width:1680px;height:120px"><div class="c letter" style="left:0px;width:110px">N</div><div class="c b" style="left:140px;width:640px">Naturaleza de HCI</div><div class="c " style="left:800px;width:860px">El pago como diálogo entre la pasajera y el lector</div></div><div class="x-tr " data-k="2" style="left:120px;top:430px;width:1680px;height:120px"><div class="c letter" style="left:0px;width:110px">U</div><div class="c b" style="left:140px;width:640px">Uso y contexto</div><div class="c " style="left:800px;width:860px">Bus lleno, ruido del motor, prisa por pasar</div></div><div class="x-tr " data-k="3" style="left:120px;top:570px;width:1680px;height:120px"><div class="c letter" style="left:0px;width:110px">H</div><div class="c b" style="left:140px;width:640px">Características humanas</div><div class="c " style="left:800px;width:860px">Oído enmascarado y luz fuera de la vista</div></div><div class="x-tr " data-k="4" style="left:120px;top:710px;width:1680px;height:120px"><div class="c letter" style="left:0px;width:110px">C</div><div class="c b" style="left:140px;width:640px">Sistema e interfaz</div><div class="c " style="left:800px;width:860px">Lector, pitido, luz y mecanismo del brazo</div></div><div class="x-tr " data-k="5" style="left:120px;top:850px;width:1680px;height:120px"><div class="c letter" style="left:0px;width:110px">D</div><div class="c b" style="left:140px;width:640px">Proceso de desarrollo</div><div class="c " style="left:800px;width:860px">Cómo se diseñó, construyó y probó el lector</div></div>
+        </div>
+      </section>
+
+      <section id="uxui" class="clip slide" data-start="51.4" data-duration="9.399999999999999" data-track-index="0" data-label="HCI frente a UX/UI" data-frags="3" data-enter="2.2" data-step="2" data-composition-id="uxui" data-width="1920" data-height="1080">
+        <div class="frame" id="uxui-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl ">Mismo objeto de estudio, otra pregunta</h1>
+      <div class="card " data-k="1" style="left:120px;top:290px;width:800px;height:440px"><h3>UX/UI</h3><p>Conduce el diseño de un producto completo.</p><p class="ex">Rediseñar el lector del bus.</p></div>
+      <div class="card dk" data-k="2" style="left:1000px;top:290px;width:800px;height:440px"><h3>HCI como investigación</h3><p>Formula una pregunta acotada y la responde con modelos y mediciones.</p><p class="ex">Medir cuánta demora hace que la gente pase la tarjeta dos veces.</p></div>
+      <p class="ask mid" style="left:120px;top:430px;width:1680px" data-out="1">¿HCI es UX/UI con otro nombre?</p>
+      <p class="punch" data-k="3"  style="left:120px;top:790px;width:1680px">Los resultados de HCI alimentan después el diseño.</p>
+        </div>
+      </section>
+
+      <section id="bucle" class="clip slide" data-start="60.8" data-duration="19" data-track-index="0" data-label="El bucle cerrado" data-frags="7" data-enter="2.4" data-step="2.2" data-composition-id="bucle" data-width="1920" data-height="1080">
+        <div class="frame" id="bucle-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl ">El sistema interactivo es un bucle cerrado</h1>
+      <svg class="ov" viewBox="0 0 1920 1080" width="1920" height="1080">
+        <rect class="x-ctx" x="100" y="240" width="1720" height="620" rx="28" fill="none" stroke="#e8a920" stroke-width="6" stroke-dasharray="22 14" opacity="0"/>
+        <line x1="960" y1="290" x2="960" y2="860" stroke="#5a5257" stroke-width="4" stroke-dasharray="12 10"/>
+        <path class="x-a" pathLength="1" d="M400 630L400 710M384 686L400 710L416 686"/><path class="x-a" pathLength="1" d="M660 765L1260 765M1236 781L1260 765L1236 749"/><path class="x-a" pathLength="1" d="M1520 710L1520 630M1536 654L1520 630L1504 654"/><path class="x-a" pathLength="1" d="M1520 520L1520 440M1536 464L1520 440L1504 464"/><path class="x-a" pathLength="1" d="M1260 385L660 385M684 369L660 385L684 401"/><path class="x-a" pathLength="1" d="M400 440L400 520M384 496L400 520L416 496"/>
+      </svg>
+      <p class="hd" style="left:140px;top:272px;width:520px">Persona</p>
+      <p class="hd" style="left:1260px;top:272px;width:520px">Dispositivo y software</p>
+      <p class="hd mut" style="left:860px;top:868px;width:200px;text-align:center">Interfaz</p>
+      <div class="x-bx" style="left:140px;top:520px">Cerebro</div>
+      <div class="x-bx" style="left:140px;top:710px">Respondedores</div>
+      <div class="x-bx" style="left:1260px;top:710px">Controles</div>
+      <div class="x-bx" style="left:1260px;top:520px">Estado interno</div>
+      <div class="x-bx" style="left:1260px;top:330px">Pantallas y altavoz</div>
+      <div class="x-bx" style="left:140px;top:330px">Sentidos</div>
+      <p class="x-lbl" data-s="3" style="left:860px;top:700px;width:200px">Entrada</p>
+      <p class="x-lbl" data-s="6" style="left:660px;top:318px;width:600px">Retroalimentación</p>
+      <p class="x-noise" style="left:810px;top:420px;width:300px">Ruido del bus</p>
+      <p class="x-ctxl" style="left:130px;top:215px;width:220px">Contexto</p>
+      <p class="cap" style="left:120px;top:935px;width:1680px">El cerebro decide pagar: la persona inicia el bucle.</p><p class="cap" style="left:120px;top:935px;width:1680px">Los respondedores ejecutan la decisión: la mano acerca la tarjeta.</p><p class="cap" style="left:120px;top:935px;width:1680px">La entrada cruza la interfaz y el lector capta la tarjeta (t1).</p><p class="cap" style="left:120px;top:935px;width:1680px">El estado cambia: de pago pendiente a pago aceptado (t2).</p><p class="cap" style="left:120px;top:935px;width:1680px">La máquina presenta la salida: pitido y luz verde (t3).</p><p class="cap" style="left:120px;top:935px;width:1680px">La retroalimentación cruza la interfaz, llega a los sentidos y el bucle se cierra.</p><p class="cap" style="left:120px;top:935px;width:1680px">Con el bus lleno, el ruido tapa el pitido y la persona repite.</p>
+      <p class="ask " style="left:120px;top:950px;width:1680px" data-out="1">¿Por dónde pasa la información cuando Diana acerca la tarjeta?</p>
+        </div>
+      </section>
+
+      <section id="buclevivo" class="clip slide" data-start="79.8" data-duration="5.8" data-track-index="0" data-label="El bucle en acción" data-frags="1" data-enter="2.4" data-step="2.2" data-composition-id="buclevivo" data-width="1920" data-height="1080">
+        <div class="frame" id="buclevivo-frame" style="display:block">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <h1 class="ttl ">El mismo bucle, ahora en movimiento</h1><iframe class="fig" data-fig="1" src="figuras/bucle-interaccion/bucle-interaccion.html" title="Figura animada" style="left:335px;top:230px;width:1250px;height:800px"></iframe>
+        </div>
+      </section>
+
+      <section id="vocabulario" class="clip slide" data-start="85.6" data-duration="12.399999999999999" data-track-index="0" data-label="Cinco términos" data-frags="5" data-enter="2.2" data-step="1.8" data-composition-id="vocabulario" data-width="1920" data-height="1080">
+        <div class="frame" id="vocabulario-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl ">Cinco términos para modelar cualquier sistema</h1>
+      <p class="ask mid" style="left:120px;top:430px;width:1680px" data-out="1">Si describieras el torniquete con cinco palabras, ¿cuáles elegirías?</p>
+      <div class="x-tr " data-k="1" style="left:120px;top:280px;width:1680px;height:120px"><div class="c term" style="left:0px;width:500px">Entrada</div><div class="c " style="left:530px;width:720px">Lo que la persona hace y un control capta</div><div class="c ex2" style="left:1280px;width:400px">Acerca la tarjeta</div></div><div class="x-tr " data-k="2" style="left:120px;top:415px;width:1680px;height:120px"><div class="c term" style="left:0px;width:500px">Estado</div><div class="c " style="left:530px;width:720px">La condición interna del sistema en un momento</div><div class="c ex2" style="left:1280px;width:400px">Pago pendiente, pago aceptado</div></div><div class="x-tr " data-k="3" style="left:120px;top:550px;width:1680px;height:120px"><div class="c term" style="left:0px;width:500px">Salida</div><div class="c " style="left:530px;width:720px">Lo que el sistema presenta o mueve</div><div class="c ex2" style="left:1280px;width:400px">Pitido, luz y brazo libre</div></div><div class="x-tr " data-k="4" style="left:120px;top:685px;width:1680px;height:120px"><div class="c term" style="left:0px;width:500px">Retroalimentación</div><div class="c " style="left:530px;width:720px">La salida que dice a la persona qué pasó con su entrada</div><div class="c ex2" style="left:1280px;width:400px">El pitido, si ella lo oye</div></div><div class="x-tr " data-k="5" style="left:120px;top:820px;width:1680px;height:120px"><div class="c term" style="left:0px;width:500px">Latencia</div><div class="c " style="left:530px;width:720px">El tiempo que tarda en llegar esa respuesta</div><div class="c ex2" style="left:1280px;width:400px">Del contacto al pitido</div></div>
+        </div>
+      </section>
+
+      <section id="cajero" class="clip slide" data-start="98" data-duration="12.399999999999999" data-track-index="0" data-label="Ejemplo resuelto: cajero" data-frags="5" data-enter="2.2" data-step="1.8" data-composition-id="cajero" data-width="1920" data-height="1080">
+        <div class="frame" id="cajero-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl ">Modelar un bucle: el cajero automático</h1>
+      <p class="ask mid" style="left:120px;top:600px;width:1680px" data-out="1">Antes de ver la tabla: ¿cuál es la primera entrada del cajero y qué estado cambia?</p>
+      <div class="thd" style="left:120px;top:280px;width:1680px;height:80px"><div class="c" style="left:30px;width:420px">Entrada</div><div class="c" style="left:490px;width:620px">Estado</div><div class="c" style="left:1150px;width:500px">Salida</div></div>
+      <div class="x-tr " data-k="1" style="left:120px;top:375px;width:1680px;height:116px"><div class="c " style="left:30px;width:420px">Inserta la tarjeta</div><div class="c " style="left:490px;width:620px">De esperando tarjeta a esperando PIN</div><div class="c " style="left:1150px;width:500px">La pantalla pide el PIN</div></div><div class="x-tr " data-k="2" style="left:120px;top:505px;width:1680px;height:116px"><div class="c " style="left:30px;width:420px">Digita el PIN</div><div class="c " style="left:490px;width:620px">Sigue en esperando PIN</div><div class="c " style="left:1150px;width:500px">Un asterisco y un pitido por tecla</div></div><div class="x-tr " data-k="3" style="left:120px;top:635px;width:1680px;height:116px"><div class="c " style="left:30px;width:420px">Elige el monto</div><div class="c " style="left:490px;width:620px">De eligiendo monto a procesando</div><div class="c " style="left:1150px;width:500px">Mensaje de espera</div></div><div class="x-tr " data-k="4" style="left:120px;top:765px;width:1680px;height:116px"><div class="c " style="left:30px;width:420px">Ninguna</div><div class="c " style="left:490px;width:620px">De procesando a entregando billetes</div><div class="c " style="left:1150px;width:500px">Ruido del mecanismo y billetes</div></div>
+      <p class="capt" data-k="5" style="left:120px;top:925px;width:1680px"><b class="t">Verde: latencia corta</b>, cada tecla debe responder de inmediato. <b class="a">Amarillo: latencia larga</b>, depende de la red.</p>
+        </div>
+      </section>
+
+      <section id="pendulo" class="clip slide" data-start="110.4" data-duration="7.6000000000000005" data-track-index="0" data-label="Latencia: el péndulo" data-frags="2" data-enter="2.4" data-step="2" data-composition-id="pendulo" data-width="1920" data-height="1080">
+        <div class="frame" id="pendulo-frame" style="display:block">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <h1 class="ttl ">Latencia: lo que ves llega tarde</h1><iframe class="fig" data-fig="2" src="figuras/pendulo-latencia/pendulo-latencia.html" title="Figura animada" style="left:229px;top:235px;width:1462px;height:780px"></iframe>
+        </div>
+      </section>
+
+      <section id="suma" class="clip slide" data-start="118" data-duration="11.399999999999999" data-track-index="0" data-label="La latencia se acumula" data-frags="4" data-enter="2.2" data-step="2" data-composition-id="suma" data-width="1920" data-height="1080">
+        <div class="frame" id="suma-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl ">La demora se suma en tres puntos del bucle</h1>
+      <div class="x-lat" data-k="1" style="left:120px;top:290px;width:1680px;height:156px"><div class="c nb" style="left:0;width:120px">t1</div><div class="c nm" style="left:160px;width:520px">Muestreo de la entrada</div><div class="c" style="left:720px;width:940px">Los dispositivos leen a tasas fijas: a 60 Hz, hasta 16,67 ms para detectar un movimiento.</div></div><div class="x-lat" data-k="2" style="left:120px;top:470px;width:1680px;height:156px"><div class="c nb" style="left:0;width:120px">t2</div><div class="c nm" style="left:160px;width:520px">Procesamiento del software</div><div class="c" style="left:720px;width:940px">Comunicaciones, red, cálculo y aplicación suman su propia demora.</div></div><div class="x-lat" data-k="3" style="left:120px;top:650px;width:1680px;height:156px"><div class="c nb" style="left:0;width:120px">t3</div><div class="c nm" style="left:160px;width:520px">Presentación de la salida</div><div class="c" style="left:720px;width:940px">Con 10 cuadros por segundo y doble búfer, el mínimo es de 100 ms.</div></div>
+      <p class="ask mid" style="left:120px;top:430px;width:1680px" data-out="1">¿Dónde se pierde el tiempo entre tocar y ver?</p>
+      <p class="punch" data-k="4"  style="left:120px;top:870px;width:1680px">Latencia total = t1 + t2 + t3, y se mide desde fuera.</p>
+        </div>
+      </section>
+
+      <section id="efecto" class="clip slide" data-start="129.4" data-duration="9.399999999999999" data-track-index="0" data-label="Efecto de la latencia" data-frags="3" data-enter="2.2" data-step="2" data-composition-id="efecto" data-width="1920" data-height="1080">
+        <div class="frame" id="efecto-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl ">Unos milisegundos cambian el desempeño</h1>
+      <p class="big" data-k="1" style="left:120px;top:335px;width:380px">75 ms</p>
+      <div class="bar tt gr" data-k="1" style="left:520px;top:330px;width:60px"></div><p class="bl" data-k="1" data-d="0.5" style="left:604px;top:333px">+16 % tiempo</p>
+      <div class="bar ee gr" data-k="1" data-d="0.25" style="left:520px;top:420px;width:135px"></div><p class="bl" data-k="1" data-d="0.75" style="left:679px;top:423px">+36 % errores</p>
+      <p class="big" data-k="2" style="left:120px;top:625px;width:380px">225 ms</p>
+      <div class="bar tt gr" data-k="2" style="left:520px;top:620px;width:240px"></div><p class="bl" data-k="2" data-d="0.5" style="left:784px;top:623px">+64 % tiempo</p>
+      <div class="bar ee gr" data-k="2" data-d="0.25" style="left:520px;top:710px;width:800px"></div><p class="bl" data-k="2" data-d="0.75" style="left:1344px;top:713px">+214 % errores</p>
+      <p class="ask mid" style="left:120px;top:400px;width:1680px" data-out="1">¿Qué crece más al pasar de 75 a 225 ms: el tiempo o los errores?</p>
+      <p class="punch" data-k="3"  style="left:120px;top:870px;width:1680px">Los errores crecen mucho más que el tiempo.</p>
+      <p class="src" style="left:120px;top:985px;width:1680px">MacKenzie y Ware (1993), citado en MacKenzie (2013)</p>
+        </div>
+      </section>
+
+      <section id="modos" class="clip slide" data-start="138.8" data-duration="10.2" data-track-index="0" data-label="Modos y retroalimentación" data-frags="3" data-enter="2.4" data-step="2.2" data-composition-id="modos" data-width="1920" data-height="1080">
+        <div class="frame" id="modos-frame" style="display:block">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <h1 class="ttl ">Modos: la misma tecla, otra acción</h1><iframe class="fig" data-fig="3" src="figuras/tecla-modos/tecla-modos.html" title="Figura animada" style="left:229px;top:235px;width:1462px;height:780px"></iframe>
+        </div>
+      </section>
+
+      <section id="metricas" class="clip slide" data-start="149" data-duration="11.399999999999999" data-track-index="0" data-label="Qué medir" data-frags="4" data-enter="2.2" data-step="2" data-composition-id="metricas" data-width="1920" data-height="1080">
+        <div class="frame" id="metricas-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl ">Para comparar dos sistemas hay que medir</h1>
+      <div class="band" data-k="1" style="left:120px;top:285px;width:1680px;height:120px"><div class="c" style="left:40px;width:560px;font-weight:800;color:var(--teal)">Más rápido</div><div class="c" style="left:620px;width:440px"><svg viewBox="0 0 440 40" width="440" height="40"><path d="M0 20H410M386 4L412 20L386 36" fill="none" stroke="#6d0036" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="c" style="left:1100px;width:560px;font-weight:800;color:var(--wine)">más errores</div></div>
+      <div class="card " data-k="2" style="left:120px;top:450px;width:540px;height:480px"><h3>Tiempo de tarea</h3><p>Segundos o milisegundos hasta completar la tarea.</p><p class="ex">De la tarjeta al paso completo.</p></div>
+      <div class="card " data-k="3" style="left:690px;top:450px;width:540px;height:480px"><h3>Tasa de error</h3><p>Intentos fallidos entre intentos totales.</p><p class="ex">Sin paso o con doble cobro.</p></div>
+      <div class="card dk" data-k="4" style="left:1260px;top:450px;width:540px;height:480px"><h3>Latencia</h3><p>Milisegundos de la acción a la respuesta, medidos desde fuera.</p><p class="ex">Del contacto al pitido, en video.</p></div>
+      <p class="ask mid" style="left:120px;top:400px;width:1680px" data-out="1">El lector nuevo también vibra. ¿Cómo sabes que funciona mejor?</p>
+        </div>
+      </section>
+
+      <section id="errores" class="clip slide" data-start="160.4" data-duration="11.399999999999999" data-track-index="0" data-label="El bucle como mapa de errores" data-frags="4" data-enter="2.2" data-step="2" data-composition-id="errores" data-width="1920" data-height="1080">
+        <div class="frame" id="errores-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl ">El bucle es un mapa para buscar errores</h1>
+      <p class="ask mid" style="left:120px;top:430px;width:1680px" data-out="1">¿En qué parte del bucle ubicas el error de Diana?</p>
+      <div class="card " data-k="1" style="left:120px;top:290px;width:540px;height:560px"><h3>Entrada</h3><p>El control equivocado, o el control no capta la acción.</p><p class="ex">Diana repite la tarjeta.</p></div>
+      <div class="card " data-k="2" style="left:690px;top:290px;width:540px;height:560px"><h3>Estado</h3><p>La acción cae en un modo distinto del que la persona cree.</p><p class="ex">En pago aceptado, la tarjeta cuenta como un pasaje nuevo.</p></div>
+      <div class="card dk" data-k="3" style="left:1260px;top:290px;width:540px;height:560px"><h3>Salida</h3><p>La retroalimentación no llega, llega tarde o el contexto bloquea el canal.</p><p class="ex">El ruido tapa el pitido.</p></div>
+      <p class="punch" data-k="4"  style="left:120px;top:885px;width:1680px">Un diseño que depende de que el operador no se equivoque de botón es un diseño defectuoso.</p>
+        </div>
+      </section>
+
+      <section id="paradigmas" class="clip slide" data-start="171.8" data-duration="11.399999999999999" data-track-index="0" data-label="Tres paradigmas" data-frags="4" data-enter="2.2" data-step="2" data-composition-id="paradigmas" data-width="1920" data-height="1080">
+        <div class="frame" id="paradigmas-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl ">Tres maneras de mirar la interacción</h1>
+      <p class="ask mid" style="left:120px;top:430px;width:1680px" data-out="1">¿Se estudia igual una alarma, un menú y un grupo de WhatsApp?</p>
+      <div class="card " data-k="1" style="left:120px;top:285px;width:540px;height:575px"><h3>1. Factores humanos</h3><p>Acoplamiento entre persona y máquina.</p><p class="q">¿Qué falla y cómo lo arreglo?</p><p class="ex">Voz de mujer en la alarma: el piloto la distingue al instante.</p></div>
+      <div class="card " data-k="2" style="left:690px;top:285px;width:540px;height:575px"><h3>2. Cognitivismo clásico</h3><p>Comunicación de información.</p><p class="q">¿Cuánto tarda y cuántos pasos necesita?</p><p class="ex">Contar toques y segundos para pagar con el celular.</p></div>
+      <div class="card dk" data-k="3" style="left:1260px;top:285px;width:540px;height:575px"><h3>3. Situado</h3><p>Interacción situada en el mundo.</p><p class="q">¿Qué significa para quien la usa, en su lugar?</p><p class="ex">La misma voz suena distinta a un piloto que acaba de discutir.</p></div>
+      <p class="punch" data-k="4"  style="left:120px;top:890px;width:1680px">Los tres conviven: el torniquete es ajuste, información y situación.</p>
+        </div>
+      </section>
+
+      <section id="frentes" class="clip slide" data-start="183.20000000000002" data-duration="12.399999999999999" data-track-index="0" data-label="Frentes actuales" data-frags="5" data-enter="2.2" data-step="1.8" data-composition-id="frentes" data-width="1920" data-height="1080">
+        <div class="frame" id="frentes-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl ">Cada frente cambia una parte del bucle</h1>
+      <p class="ask mid" style="left:120px;top:430px;width:1680px" data-out="1">¿Qué parte del bucle cambia si el torniquete te reconociera por la voz?</p>
+      <div class="x-tr " data-k="1" style="left:120px;top:290px;width:1680px;height:120px"><div class="c term" style="left:0px;width:500px">Multimodal</div><div class="c " style="left:530px;width:860px">Más canales de entrada y de salida, combinados</div><div class="c wk" style="left:1410px;width:250px">Semana 6</div></div><div class="x-tr " data-k="2" style="left:120px;top:425px;width:1680px;height:120px"><div class="c term" style="left:0px;width:500px">Ubicuo</div><div class="c " style="left:530px;width:860px">El contexto deja de ser un marco y se vuelve una entrada</div><div class="c wk" style="left:1410px;width:250px">Semana 9</div></div><div class="x-tr " data-k="3" style="left:120px;top:560px;width:1680px;height:120px"><div class="c term" style="left:0px;width:500px">Inteligente</div><div class="c " style="left:530px;width:860px">La máquina toma iniciativa; la persona conserva el control</div><div class="c wk" style="left:1410px;width:250px">Semana 14</div></div><div class="x-tr " data-k="4" style="left:120px;top:695px;width:1680px;height:120px"><div class="c term" style="left:0px;width:500px">Físico y remoto</div><div class="c " style="left:530px;width:860px">La distancia suma latencia y exige conciencia de la situación</div><div class="c wk" style="left:1410px;width:250px">Semana 2</div></div><div class="x-tr " data-k="5" style="left:120px;top:830px;width:1680px;height:120px"><div class="c term" style="left:0px;width:500px">Cerebro-computador</div><div class="c " style="left:530px;width:860px">La señal neural reemplaza a los respondedores</div><div class="c wk" style="left:1410px;width:250px">Semana 15</div></div>
+        </div>
+      </section>
+
+      <section id="practica" class="clip slide" data-start="195.60000000000002" data-duration="9.399999999999999" data-track-index="0" data-label="Tu turno: PE-1.1" data-frags="3" data-enter="2.2" data-step="2" data-composition-id="practica" data-width="1920" data-height="1080">
+        <div class="frame" id="practica-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl ">Tu turno: modela un sistema real (PE-1.1)</h1>
+      <div class="x-step" data-k="1" data-d="0.00" style="left:120px;top:290px;width:920px;height:112px"><div class="c nb2" style="left:0;width:80px">1</div><div class="c" style="left:104px;width:810px">Elige un sistema real, que no sea el cajero ni el torniquete</div></div><div class="x-step" data-k="1" data-d="0.12" style="left:120px;top:420px;width:920px;height:112px"><div class="c nb2" style="left:0;width:80px">2</div><div class="c" style="left:104px;width:810px">Obsérvalo cinco veces y graba una en cámara lenta</div></div><div class="x-step" data-k="1" data-d="0.24" style="left:120px;top:550px;width:920px;height:112px"><div class="c nb2" style="left:0;width:80px">3</div><div class="c" style="left:104px;width:810px">Dibuja el bucle y completa la tabla de entradas, estados y salidas</div></div><div class="x-step" data-k="1" data-d="0.36" style="left:120px;top:680px;width:920px;height:112px"><div class="c nb2" style="left:0;width:80px">4</div><div class="c" style="left:104px;width:810px">Marca latencias y modos, y encuentra tres errores</div></div><div class="x-step" data-k="1" data-d="0.48" style="left:120px;top:810px;width:920px;height:112px"><div class="c nb2" style="left:0;width:80px">5</div><div class="c" style="left:104px;width:810px">Propón tres métricas, cada una con su unidad</div></div>
+      <div class="card dk" data-k="2" style="left:1090px;top:290px;width:710px;height:410px"><h3>Latencia con tu video</h3><p>cuadros × 1000 ÷ cuadros por segundo de captura</p><p class="ex">96 × 1000 ÷ 240 = 400 ms</p></div>
+      <div class="card " data-k="3" style="left:1090px;top:730px;width:710px;height:200px"><p class="ex" style="color:var(--wine)">Usa los cuadros de captura, no los de reproducción.</p></div>
+      <p class="ask " style="left:120px;top:960px;width:1680px" data-k="3">Se arma en clase y se entrega al terminar la sesión.</p>
+        </div>
+      </section>
+
+      <section id="situaciones" class="clip slide" data-start="205.00000000000003" data-duration="9.399999999999999" data-track-index="0" data-label="Tres situaciones nuevas" data-frags="3" data-enter="2.2" data-step="2" data-composition-id="situaciones" data-width="1920" data-height="1080">
+        <div class="frame" id="situaciones-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl ">Tres situaciones que no viste antes</h1>
+      <div class="card " data-k="1" style="left:120px;top:285px;width:540px;height:540px"><h3>A. Cita médica</h3><p>Una app ganó un premio de diseño. Nadie midió cuánto tardan los pacientes ni cuántos se equivocan de fecha.</p><p class="ex">¿Es HCI?</p></div>
+      <div class="card " data-k="2" style="left:690px;top:285px;width:540px;height:540px"><h3>B. Dron remoto</h3><p>El video llega medio segundo tarde. Al acercarse al poste, la operadora corrige y el dron oscila.</p><p class="ex">¿Qué explica la oscilación?</p></div>
+      <div class="card dk" data-k="3" style="left:1260px;top:285px;width:540px;height:540px"><h3>C. Asistente</h3><p>Activa un temporizador con la palabra listo mientras la familia conversa.</p><p class="ex">¿Dónde falla el bucle?</p></div>
+        </div>
+      </section>
+
+      <section id="cierre" class="clip slide dark" data-start="214.40000000000003" data-duration="8" data-track-index="0" data-label="Cierre y TA-1.1" data-frags="2" data-enter="2.4" data-step="2.2" data-composition-id="cierre" data-width="1920" data-height="1080">
+        <div class="frame" id="cierre-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <p class="course" style="left:120px;top:240px">Para entregar</p>
+      <h1 class="ttl" style="top:300px;width:1500px;font-size:72px">TA-1.1: ficha técnica de HCI, sistema interactivo y paradigmas</h1>
+      <p class="lead" data-k="1" style="left:120px;top:560px;width:1500px">Define HCI, describe un sistema con el vocabulario del bucle, ubícalo en un paradigma y analiza un frente actual.</p>
+      <p class="punch2" data-k="2" style="left:120px;top:800px;width:1500px">¿Qué cambiaría en tu sistema si la pantalla tardara medio segundo?</p>
+        </div>
+      </section>
+    </div>
+    <script>
+      // Con el motor de HyperFrames (check, Studio, snapshot) el registro ya existe y la línea de
+      // tiempo contiene todas las animaciones. Al presentar, el reproductor solo mueve la línea
+      // "main" (el destino) y esta página reproduce las animaciones en tiempo real hasta alcanzarlo.
+      const engineHosted = Object.prototype.hasOwnProperty.call(window, "__timelines");
+      window.__timelines = window.__timelines || {};
+
+      // Las figuras incrustadas reenvían las flechas aquí: se les quita el foco y se entrega la tecla
+      // al documento donde el reproductor la escucha, para que las flechas siempre controlen el deck.
+      window.addEventListener("message", (ev) => {
+        const m = ev.data;
+        if (!m || m.type !== "deck-key") return;
+        let w = window;
+        for (;;) {
+          try { if (w.document.activeElement && w.document.activeElement !== w.document.body) w.document.activeElement.blur(); } catch (e) {}
+          if (w === w.parent) break;
+          w = w.parent;
+        }
+        try { w.focus(); w.document.dispatchEvent(new KeyboardEvent("keydown", { key: m.key, bubbles: true, cancelable: true })); } catch (e) {}
+      });
+
+      // El reproductor retrocede de diapositiva en diapositiva. Se reemplaza prev() del controlador para
+      // que teclado, botón y deslizamiento deshagan un avance a la vez: de un avance al anterior y,
+      // desde el primero, al último avance de la diapositiva previa.
+      (function installStepBack() {
+        let w = window, host = null;
+        for (;;) {
+          try { host = w.document.querySelector("hyperframes-slideshow"); } catch (e) {}
+          if (host || w === w.parent) break;
+          w = w.parent;
+        }
+        if (!host) return;
+        const patch = () => {
+          const c = host.controller;
+          if (!c) return false;
+          if (c.__stepBack) return true;
+          c.__stepBack = true;
+          const original = c.prev.bind(c);
+          c.prev = () => {
+            const f = c.frame;
+            if (c.stack.length > 1) return original();
+            if (f.fragmentIndex > 0) c.resumeSlide(f.slideIndex, f.fragmentIndex - 1);
+            else if (f.slideIndex > 0) {
+              const p = f.slideIndex - 1, n = c.show.slides[p].fragments.length;
+              c.resumeSlide(p, n > 0 ? n - 1 : -1);
+            }
+          };
+          return true;
+        };
+        setInterval(patch, 300);
+        patch();
+      })();
+
+      const EXIT = 0.5;
+      const tl = gsap.timeline({ paused: true });
+      tl.to({}, { duration: 222.4 }, 0);
+      const real = engineHosted ? tl : gsap.timeline({ paused: true });
+
+      const VW = 1920, VH = 1080;
+      const cam = (s, cx, cy) => {
+        let x = VW / 2 - cx * s, y = VH / 2 - cy * s;
+        if (s >= 1) { x = Math.min(0, Math.max(VW - VW * s, x)); y = Math.min(0, Math.max(VH - VH * s, y)); }
+        return { scale: s, x, y };
+      };
+      const overview = cam(1, VW / 2, VH / 2);
+
+// Escenas de la presentación de HCI, semana 1. Se incrusta en index.html (lo hace build.mjs).
+// Disponibles: gsap, real (línea de tiempo de contenido), cam, overview.
+// Regla general: cada elemento con data-k="n" aparece en el avance n; data-out="n" lo retira en ese avance.
+
+function splitWords(el) {
+  if (el._w) return el._w;
+  const words = el.textContent.trim().split(" ");
+  el.textContent = "";
+  el._w = words.map((w, i) => {
+    const o = document.createElement("span"); o.className = "w";
+    const n = document.createElement("span"); n.className = "wi"; n.textContent = w;
+    o.appendChild(n); el.appendChild(o);
+    if (i < words.length - 1) el.appendChild(document.createTextNode(" "));
+    return n;
+  });
+  return el._w;
+}
+
+const EXP = "expo.out", P4 = "power4.out", IO = "power2.inOut";
+const words = (el, at, stag = 0.06, d = 0.75) =>
+  real.fromTo(splitWords(el), { yPercent: 120 }, { yPercent: 0, duration: d, ease: P4, stagger: stag }, at);
+const rise = (t, at, y = 40, d = 0.7) => real.fromTo(t, { opacity: 0, y }, { opacity: 1, y: 0, duration: d, ease: EXP }, at);
+const pop = (t, at, d = 0.6, s0 = 0.5) => real.fromTo(t, { opacity: 0, scale: s0 }, { opacity: 1, scale: 1, duration: d, ease: "back.out(1.8)" }, at);
+const slideIn = (t, at, x, d = 0.8) => real.fromTo(t, { opacity: 0, x }, { opacity: 1, x: 0, duration: d, ease: EXP }, at);
+const grow = (t, at, d = 0.8) => real.fromTo(t, { scaleX: 0, transformOrigin: "0 50%" }, { scaleX: 1, duration: d, ease: "power3.inOut" }, at);
+const draw = (t, at, d = 0.8, ease = IO) => real.fromTo(t, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease }, at);
+// Mueve un elemento a lo largo de un trazo SVG.
+function along(el, path, at, d, ease = IO) {
+  const len = path.getTotalLength();
+  const o = { p: 0 };
+  real.fromTo(o, { p: 0 }, { p: 1, duration: d, ease, onUpdate: () => {
+    const pt = path.getPointAtLength(o.p * len);
+    gsap.set(el, { x: pt.x, y: pt.y });
+  } }, at);
+}
+
+const SCENES = {};
+
+// Coreografía por defecto: el título entra palabra por palabra, la pregunta aparece sola y cada
+// elemento con data-k llega en su avance (data-d retrasa dentro del avance; clases pp, sl y gr
+// cambian el modo de entrada).
+function generic(c) {
+  const { st, q, qa, h } = c;
+  const t = q(".ttl");
+  if (t) words(t, st + 0.2);
+  const ask = q(".ask:not([data-k])");
+  if (ask) rise(ask, st + 1.5, 20, 0.5);
+  qa("[data-k]").forEach((el) => {
+    const k = Number(el.dataset.k), d = Number(el.dataset.d || 0);
+    const at = h(k) - c.step + 0.2 + d;
+    if (el.classList.contains("pp")) pop(el, at, 0.55);
+    else if (el.classList.contains("sl")) slideIn(el, at, -140);
+    else if (el.classList.contains("gr")) { real.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 0.01 }, at); grow(el, at, 0.9); }
+    else rise(el, at, 36, 0.65);
+  });
+  qa("[data-out]").forEach((el) => {
+    real.to(el, { opacity: 0, y: -20, duration: 0.3 }, h(Number(el.dataset.out)) - c.step + 0.05);
+  });
+}
+
+// ── Escenas de HCI ────────────────────────────────────────────────────────
+
+SCENES.portada = (c) => {
+  const { st, q, qa } = c;
+  rise(q(".course"), st + 0.2, 30);
+  words(q(".ttl"), st + 0.3, 0.07, 0.8);
+  rise(q(".lead"), st + 1.2, 40);
+  rise(q(".byline"), st + 1.5, 30);
+  draw(q(".x-loop"), st + 0.4, 1.6, "power1.inOut");
+  pop(qa(".x-pill"), st + 0.7, 0.5);
+  const dot = q(".x-dot");
+  real.fromTo(dot, { opacity: 0 }, { opacity: 1, duration: 0.2 }, st + 1.0);
+  along(dot, q(".x-loop"), st + 1.0, 1.7, "power1.inOut");
+};
+
+SCENES.cajero = (c) => {
+  generic(c);
+  const { q, qa, h } = c;
+  const R = qa(".x-tr");
+  const at = h(5) - c.step + 0.2;
+  real.to(R[1], { backgroundColor: "#e3f2f0", duration: 0.4 }, at);
+  real.to(R[2], { backgroundColor: "#fcefc9", duration: 0.4 }, at + 0.3);
+};
+
+SCENES.cierre = (c) => {
+  generic(c);
+};
+
+SCENES.bucle = (c) => {
+  const { st, q, qa, h } = c;
+  words(q(".ttl"), st + 0.2);
+  rise(q(".ask"), st + 1.8, 20, 0.5);
+  const B = qa(".x-bx"), A = qa(".x-a"), caps = qa(".cap");
+  // Cajas en el orden del recorrido: cerebro, respondedores, controles, estado, pantallas, sentidos.
+  const route = [B[0], B[1], B[2], B[3], B[4], B[5]];
+  rise(qa(".hd"), st + 0.6, 20, 0.5);
+  rise(B, st + 0.7, 30, 0.6);
+  const ARR = { 2: [A[0]], 3: [A[1]], 4: [A[2]], 5: [A[3]], 6: [A[4], A[5]] };
+  for (let k = 1; k <= 7; k++) {
+    const at = h(k) - c.step + 0.2;
+    if (k === 1) real.to(q(".ask"), { opacity: 0, y: -20, duration: 0.3 }, at - 0.15);
+    if (k <= 6) {
+      real.to(route[k - 1], { backgroundColor: "#fcefc9", duration: 0.4 }, at);
+      if (k > 1) real.to(route[k - 2], { backgroundColor: "#e3f2f0", duration: 0.4 }, at);
+    }
+    (ARR[k] || []).forEach((a, i) => draw(a, at + 0.1 + i * 0.5, 0.7));
+    if (k === 3) rise(q('.x-lbl[data-s="3"]'), at + 0.5, 12, 0.5);
+    if (k === 6) rise(q('.x-lbl[data-s="6"]'), at + 0.8, 12, 0.5);
+    if (k === 7) {
+      real.to(q(".x-ctx"), { opacity: 1, duration: 0.6 }, at);
+      rise(q(".x-ctxl"), at + 0.2, 12, 0.5);
+      pop(q(".x-noise"), at + 0.6, 0.5);
+      real.to(A[4], { stroke: "#c0392b", duration: 0.4 }, at + 0.8);
+      real.to(route[5], { backgroundColor: "#f1d9d9", duration: 0.4 }, at + 0.8);
+    }
+    rise(caps[k - 1], at + 0.1, 20, 0.5);
+    if (k < 7) real.to(caps[k - 1], { opacity: 0, y: -16, duration: 0.3 }, h(k + 1) - c.step + 0.05);
+  }
+};
+
+
+      const figSyncs = [];
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      const skips = [];
+
+      slides.forEach((slide, index) => {
+        const start = Number(slide.dataset.start);
+        const end = start + Number(slide.dataset.duration);
+        const n = Number(slide.dataset.frags);
+        const en = Number(slide.dataset.enter);
+        const step = Number(slide.dataset.step);
+        const frame = slide.querySelector(".frame");
+        const isDark = slide.classList.contains("dark");
+        const hold = (k) => start + en + k * step;
+        let camCur = overview;
+
+        // Transición: la diapositiva saliente se acerca y se disuelve; la entrante se aleja hasta su plano.
+        const s0 = isDark ? 1.35 : index % 2 ? 1.1 : 0.92;
+        const hasFig = !!frame.querySelector("iframe");
+        if (!hasFig) real.set(frame, { display: "block" }, start);
+        real.fromTo(frame, { opacity: 0, transformOrigin: "0 0", ...cam(s0, VW / 2, VH / 2) },
+          { opacity: 1, ...overview, duration: isDark ? 1.4 : 0.9, ease: "expo.out" }, start);
+        if (index < slides.length - 1) {
+          real.fromTo(frame, { opacity: 1, ...overview }, { opacity: 0, ...cam(1.14, VW / 2, VH / 2), duration: EXIT, ease: "power2.in", immediateRender: false }, end - EXIT);
+          if (!hasFig) real.set(frame, { display: "none" }, end);
+          skips.push([hold(n) + 0.05, end - EXIT]);
+        }
+
+        const ctx = {
+          s: slide, st: start, en, n, step, h: hold,
+          q: (sel) => slide.querySelector(sel),
+          qa: (sel) => Array.from(slide.querySelectorAll(sel)),
+          cam: (cx, cy, s, at, d) => {
+            const to = cam(s, cx, cy);
+            real.fromTo(frame, { ...camCur, transformOrigin: "0 0" }, { ...to, duration: d, ease: "power2.inOut", immediateRender: false }, at);
+            camCur = to;
+          },
+        };
+        (SCENES[slide.id] || generic)(ctx);
+
+        slide.querySelectorAll("iframe[data-fig]").forEach((el) => {
+          // La figura corre en su propio documento: en vivo anima sola hacia el estado pedido;
+          // con el motor (check, Studio) sigue la línea de tiempo cuadro a cuadro.
+          const steps = Number(el.dataset.fig);
+          let sent = -1;
+          const wanted = () => {
+            const t = tl.time();
+            let u = 0;
+            for (let k = 1; k <= steps; k++) u += Math.min(1, Math.max(0, (t - (hold(k) - 0.6)) / 0.6));
+            return engineHosted ? u / steps : Math.round(u) / steps;
+          };
+          const send = (force) => {
+            const value = wanted();
+            if (!el.contentWindow || (!force && value === sent)) return;
+            sent = value;
+            el.contentWindow.postMessage({ type: "fig", mode: engineHosted ? "set" : "go", value }, "*");
+          };
+          figSyncs.push(send);
+          el.addEventListener("load", () => send(true));
+        });
+      });
+
+      tl.eventCallback("onUpdate", () => figSyncs.forEach((sync) => sync()));
+
+      if (!engineHosted) {
+        // En vivo: "main" marca el destino (lo mueve el reproductor) y "real" lo persigue en tiempo
+        // real, así cada avance reproduce la animación en lugar de saltar. Retroceder es inmediato.
+        // Sin suavizado de retardo: el avance sigue el reloj real aunque el equipo vaya justo.
+        gsap.ticker.lagSmoothing(0);
+        let shown = tl.time(), lastT = gsap.ticker.time;
+        real.time(shown, false);
+        window.__deckState = () => ({ target: tl.time(), shown });
+        gsap.ticker.add((now) => {
+          const dt = Math.min(1, now - lastT);
+          lastT = now;
+          figSyncs.forEach((sync) => sync());
+          const target = tl.time();
+          if (target === shown) return;
+          if (target < shown || target - shown > 14) shown = target;
+          else {
+            shown = Math.min(target, shown + dt * 1.5);
+            for (const [a, b] of skips) if (shown > a && shown < b) shown = Math.min(target, b);
+          }
+          real.time(shown, false);
+        });
+      }
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

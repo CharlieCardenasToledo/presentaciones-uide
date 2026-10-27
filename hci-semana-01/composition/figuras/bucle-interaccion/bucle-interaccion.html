@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Bucle de interacción</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; background: #ffffff; color-scheme: light; overflow: hidden; }
+  body { font-family: Arial, Helvetica, sans-serif; color: #1f1d26; display: grid; place-items: center; }
+  #stage { width: 1000px; height: 664px; position: relative; transform-origin: 0 0; flex: none; }
+  svg { position: absolute; left: 0; top: 0; width: 1000px; height: 580px; }
+  .bar { position: absolute; left: 16px; right: 16px; top: 590px; height: 64px; display: flex; align-items: center; gap: 18px; }
+  .say { flex: 1; font-size: 18px; line-height: 1.35; color: #1a237e; min-height: 50px; display: flex; align-items: center; background: #eef0fb; border-radius: 10px; padding: 6px 14px; }
+  .say.lost { color: #910048; background: #f7e6ee; }
+  .ctl { display: flex; gap: 8px; align-items: center; }
+  .seg { display: flex; border: 2px solid #1a237e; border-radius: 22px; overflow: hidden; }
+  .seg button, .ctl > button { font: inherit; font-size: 15px; font-weight: 700; padding: 8px 14px; border: 0; background: #ffffff; color: #1a237e; cursor: pointer; }
+  .seg button.on { background: #1a237e; color: #ffffff; }
+  .seg button.on.noisy { background: #910048; }
+  .ctl > button { border: 2px solid #1a237e; border-radius: 22px; }
+
+  .box rect { fill: #eef0fb; stroke: #1a237e; stroke-width: 1.5; transition: fill .3s, stroke-width .3s; }
+  .box.hot rect { fill: #d6dcff; stroke-width: 3.5; }
+  .box.dim rect { fill: #f4f4f6; stroke: #b9b8c2; }
+  .box.dim text { fill: #9a99a5; }
+  .box .t { font-size: 18px; font-weight: 700; fill: #1f1d26; }
+  .box .s { font-size: 14px; fill: #55545f; }
+  .box .now { font-size: 15px; font-weight: 700; fill: #1a237e; opacity: 0; transition: opacity .3s; }
+  .box .s { transition: opacity .3s; }
+  .box.hot .s { opacity: 0; }
+  .box.hot .now { opacity: 1; }
+  .box.lost .now { fill: #910048; }
+  .clock circle, .clock path { transition: stroke .3s, fill .3s; }
+  .clock.on circle { fill: #1a237e; }
+  .clock.on path { stroke: #ffffff; }
+  .fade { transition: opacity .4s; }
+  .wig { animation: wig .5s ease-in-out infinite alternate; }
+  .wig:nth-child(2) { animation-delay: .15s; } .wig:nth-child(3) { animation-delay: .3s; }
+  @keyframes wig { from { transform: translateY(-3px); } to { transform: translateY(3px); } }
+  @media (prefers-reduced-motion: reduce) { .wig { animation: none; } }
+</style>
+</head>
+<body>
+<div id="stage" role="img" aria-label="Bucle de interacción animado con el caso del torniquete. A la izquierda, la persona con sentidos, cerebro y respondedores; a la derecha, la máquina con controles, estado interno y pantallas; una línea discontinua rotulada interfaz las separa y un marco rotulado contexto rodea todo. Un pulso recorre el bucle: el cerebro decide pagar, los respondedores acercan la tarjeta, la entrada llega a los controles, el estado pasa de pago pendiente a pago aceptado, las pantallas emiten pitido y luz verde, la salida llega a los sentidos y vuelve al cerebro. Los relojes t1, t2 y t3 marcan dónde se acumula la latencia. Con el contexto bus lleno, la salida se pierde en el ruido al cruzar la interfaz, la persona repite la acción y el sistema cobra un segundo pasaje.">
+<svg viewBox="0 0 1000 580" font-family="Arial, Helvetica, sans-serif" id="svg">
+  <defs>
+    <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#3b3a45" /></marker>
+    <marker id="fa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1a237e" /></marker>
+  </defs>
+  <rect x="16" y="16" width="968" height="548" rx="10" fill="none" stroke="#55545f" stroke-width="1.5" stroke-dasharray="7 5" />
+  <text x="36" y="46" font-size="15" font-weight="700" fill="#55545f">CONTEXTO</text>
+  <text id="ctxTag" x="140" y="46" font-size="15" font-weight="700" fill="#1a237e">bus tranquilo</text>
+  <text x="500" y="546" font-size="14" font-style="italic" fill="#55545f" text-anchor="middle"><tspan id="ctxNoise">ruido</tspan> · iluminación · tarea · otras personas · lugar de trabajo</text>
+
+  <text x="215" y="84" font-size="16" font-weight="700" fill="#1a237e" text-anchor="middle">PERSONA</text>
+  <text x="705" y="84" font-size="16" font-weight="700" fill="#1a237e" text-anchor="middle">MÁQUINA: DISPOSITIVO Y SOFTWARE</text>
+
+  <!-- interfaz -->
+  <line x1="460" y1="140" x2="460" y2="445" stroke="#1f1d26" stroke-width="2" stroke-dasharray="8 7" />
+  <text x="460" y="474" font-size="15" font-weight="700" fill="#1f1d26" text-anchor="middle">INTERFAZ</text>
+  <text x="460" y="496" font-size="14" font-style="italic" fill="#55545f" text-anchor="middle">aquí se observa y se mide</text>
+
+  <!-- flechas -->
+  <line x1="215" y1="176" x2="215" y2="226" stroke="#3b3a45" stroke-width="2" marker-end="url(#fl)" />
+  <line x1="215" y1="301" x2="215" y2="351" stroke="#3b3a45" stroke-width="2" marker-end="url(#fl)" />
+  <line x1="705" y1="354" x2="705" y2="304" stroke="#3b3a45" stroke-width="2" marker-end="url(#fl)" />
+  <line x1="705" y1="229" x2="705" y2="179" stroke="#3b3a45" stroke-width="2" marker-end="url(#fl)" />
+  <line x1="350" y1="390" x2="566" y2="390" stroke="#1a237e" stroke-width="3" marker-end="url(#fa)" />
+  <text x="460" y="378" font-size="13" font-weight="700" fill="#1a237e" text-anchor="middle">ENTRADA</text>
+  <line id="outArrow" x1="570" y1="140" x2="354" y2="140" stroke="#1a237e" stroke-width="3" marker-end="url(#fa)" />
+  <text x="460" y="114" font-size="13" font-weight="700" fill="#1a237e" text-anchor="middle">SALIDA</text>
+  <text x="460" y="131" font-size="13" fill="#1a237e" text-anchor="middle">y retroalimentación</text>
+
+  <!-- ruido que tapa la salida -->
+  <g id="noise" class="fade" opacity="0" fill="none" stroke="#910048" stroke-width="3" stroke-linecap="round">
+    <path class="wig" d="M358 152 q8 -8 16 0 t16 0 t16 0 t16 0 t16 0 t16 0" />
+    <path class="wig" d="M358 164 q8 -8 16 0 t16 0 t16 0 t16 0 t16 0 t16 0" />
+    <path class="wig" d="M358 176 q8 -8 16 0 t16 0 t16 0 t16 0 t16 0 t16 0" />
+  </g>
+
+  <!-- relojes de latencia -->
+  <g id="c1" class="clock"><circle cx="731" cy="327" r="9" fill="#ffffff" stroke="#1a237e" stroke-width="2" /><path d="M731 321 v6 h4" fill="none" stroke="#1a237e" stroke-width="2" /></g>
+  <text x="749" y="332" font-size="15" font-weight="700" fill="#1a237e">t1 muestreo de la entrada</text>
+  <g id="c2" class="clock"><circle cx="731" cy="193" r="9" fill="#ffffff" stroke="#1a237e" stroke-width="2" /><path d="M731 187 v6 h4" fill="none" stroke="#1a237e" stroke-width="2" /></g>
+  <text x="749" y="198" font-size="15" font-weight="700" fill="#1a237e">t2 procesamiento</text>
+  <g id="c3" class="clock"><circle cx="731" cy="215" r="9" fill="#ffffff" stroke="#1a237e" stroke-width="2" /><path d="M731 209 v6 h4" fill="none" stroke="#1a237e" stroke-width="2" /></g>
+  <text x="749" y="220" font-size="15" font-weight="700" fill="#1a237e">t3 presentación</text>
+
+  <!-- cajas -->
+  <g id="bSentidos" class="box"><rect x="80" y="104" width="270" height="72" rx="6" /><text class="t" x="215" y="135" text-anchor="middle">Sentidos</text><text class="s" x="215" y="160" text-anchor="middle">vista, oído, tacto</text><text class="now" x="215" y="160" text-anchor="middle"></text></g>
+  <g id="bCerebro" class="box"><rect x="80" y="229" width="270" height="72" rx="6" /><text class="t" x="215" y="260" text-anchor="middle">Cerebro</text><text class="s" x="215" y="285" text-anchor="middle">percepción, cognición, memoria</text><text class="now" x="215" y="285" text-anchor="middle"></text></g>
+  <g id="bRespond" class="box"><rect x="80" y="354" width="270" height="72" rx="6" /><text class="t" x="215" y="385" text-anchor="middle">Respondedores</text><text class="s" x="215" y="410" text-anchor="middle">manos, voz, ojos</text><text class="now" x="215" y="410" text-anchor="middle"></text></g>
+  <g id="bPantallas" class="box"><rect x="570" y="104" width="270" height="72" rx="6" /><text class="t" x="705" y="135" text-anchor="middle">Pantallas y salidas</text><text class="s" x="705" y="160" text-anchor="middle">pantalla, altavoz, vibración</text><text class="now" x="705" y="160" text-anchor="middle"></text></g>
+  <g id="bEstado" class="box"><rect x="570" y="229" width="270" height="72" rx="6" /><text class="t" x="705" y="260" text-anchor="middle">Estado interno</text><text class="s" x="705" y="285" text-anchor="middle">software y lógica de la aplicación</text><text class="now" x="705" y="285" text-anchor="middle"></text></g>
+  <g id="bControles" class="box"><rect x="570" y="354" width="270" height="72" rx="6" /><text class="t" x="705" y="385" text-anchor="middle">Controles</text><text class="s" x="705" y="410" text-anchor="middle">teclas, sensor, lector</text><text class="now" x="705" y="410" text-anchor="middle"></text></g>
+
+  <!-- contador de pasajes -->
+  <g id="fare" class="fade" opacity="0">
+    <rect x="872" y="236" width="96" height="58" rx="8" fill="#ffffff" stroke="#910048" stroke-width="2" />
+    <text x="920" y="256" font-size="12" font-weight="700" fill="#910048" text-anchor="middle">pasajes</text>
+    <text id="fareN" x="920" y="284" font-size="24" font-weight="800" fill="#910048" text-anchor="middle">0</text>
+  </g>
+
+  <!-- pulso -->
+  <circle id="dot" r="9" fill="#1a237e" stroke="#ffffff" stroke-width="3" opacity="0" />
+</svg>
+<div class="bar">
+  <div class="say" id="say" aria-live="polite"></div>
+  <div class="ctl">
+    <div class="seg"><button id="bCalm" class="on" type="button">Bus tranquilo</button><button id="bBusy" class="noisy" type="button">Bus lleno</button></div>
+    <button id="bPause" type="button">Pausa</button>
+  </div>
+</div>
+</div>
+<script>
+/* Dentro de la presentación las flechas del teclado y la rueda de avance las maneja el deck. */
+if (window.parent !== window) {
+  document.documentElement.classList.add("embedded");
+  const KEYMAP = { ArrowRight: "ArrowRight", PageDown: "ArrowRight", " ": "ArrowRight", Enter: "ArrowRight", ArrowLeft: "ArrowLeft", PageUp: "ArrowLeft", Backspace: "ArrowLeft" };
+  addEventListener("keydown", (e) => {
+    const k = KEYMAP[e.key]; if (!k) return;
+    const onCtl = e.target.closest && e.target.closest("button,a,input");
+    if (onCtl && (e.key === " " || e.key === "Enter")) return;
+    e.preventDefault(); e.stopImmediatePropagation();
+    parent.postMessage({ type: "deck-key", key: k }, "*");
+  }, true);
+  addEventListener("click", (e) => {
+    if (!(e.target.closest && e.target.closest("button,a,input,#navi,#ckey"))) e.stopImmediatePropagation();
+  }, true);
+}
+</script>
+<script>
+const $ = (id) => document.getElementById(id);
+// tramos del pulso: puntos de inicio y fin
+const P = {
+  cr: [[215, 301], [215, 354]], entrada: [[350, 390], [570, 390]], ce: [[705, 354], [705, 301]],
+  ep: [[705, 229], [705, 176]], salida: [[570, 140], [350, 140]], salidaPerdida: [[570, 140], [440, 140]], sc: [[215, 176], [215, 229]],
+};
+const BOX = { sentidos: "bSentidos", cerebro: "bCerebro", respond: "bRespond", pantallas: "bPantallas", estado: "bEstado", controles: "bControles" };
+
+// Cada evento: [duración ms, caja que se enciende, texto en la caja, tramo que recorre el pulso, reloj, narración]
+// Ritmo pausado para leer cada caja y la narración.
+const SLOW = 1.6;
+function script(busy) {
+  return scriptRaw(busy).map((e) => [Math.round(e[0] * SLOW), ...e.slice(1)]);
+}
+function scriptRaw(busy) {
+  const a = [
+    [1300, "cerebro", "decide pagar el pasaje", null, null, "El cerebro decide pagar: la persona inicia el bucle."],
+    [1100, "respond", "la mano acerca la tarjeta", "cr", null, "Los respondedores ejecutan la decisión: la mano acerca la tarjeta."],
+    [1300, "controles", "el lector capta la tarjeta", "entrada", "c1", "La entrada cruza la interfaz y llega al control: el lector capta la tarjeta (t1)."],
+    [1500, "estado", "pago pendiente → pago aceptado", "ce", "c2", "El estado interno cambia: de pago pendiente a pago aceptado (t2)."],
+    [1300, "pantallas", "pitido y luz verde", "ep", "c3", "La máquina presenta la salida: pitido y luz verde (t3)."],
+  ];
+  if (!busy) return a.concat([
+    [1500, "sentidos", "oye el pitido, ve la luz", "salida", null, "La retroalimentación cruza la interfaz y llega a los sentidos."],
+    [1700, "cerebro", "el pago se hizo: pasa", "sc", null, "El cerebro interpreta la respuesta: el pago se hizo y pasa. El bucle se cierra."],
+  ]);
+  return a.concat([
+    [1600, "sentidos", "no percibe nada", "salidaPerdida", null, "Con el bus lleno, la salida se pierde en el ruido al cruzar la interfaz: los sentidos no reciben nada.", true],
+    [1500, "cerebro", "sin respuesta: repite", null, null, "Sin retroalimentación, el cerebro concluye que el pago falló y decide repetir.", true],
+    [1100, "respond", "vuelve a acercar la tarjeta", "cr", null, "Los respondedores repiten la acción: vuelve a acercar la tarjeta.", true],
+    [1300, "controles", "el lector capta la tarjeta", "entrada", "c1", "El lector capta una tarjeta nueva, igual que la primera vez (t1).", true],
+    [1700, "estado", "pago aceptado → cobra otro pasaje", "ce", "c2", "En pago aceptado, la tarjeta cuenta como un pasaje nuevo: el estado cobra otra vez (t2).", true, 2],
+    [1900, "pantallas", "pitido y luz verde, otra vez", "ep", "c3", "El sistema hizo lo que debía en cada paso; el contexto rompió la retroalimentación.", true],
+  ]);
+}
+
+let busy = false, paused = false, ev = [], i = 0, t0 = 0, fare = 0, raf = 0;
+const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+function clear() {
+  Object.values(BOX).forEach((id) => { const b = $(id); b.classList.remove("hot", "lost", "dim"); b.querySelector(".now").textContent = ""; });
+  ["c1", "c2", "c3"].forEach((c) => $(c).classList.remove("on"));
+}
+function enter(k) {
+  const [, box, now, , clock, say, lost, setFare] = ev[k];
+  Object.values(BOX).forEach((id) => $(id).classList.remove("hot", "lost"));
+  const b = $(BOX[box]); b.classList.add("hot"); b.querySelector(".now").textContent = now;
+  if (lost) b.classList.add("lost");
+  if (box === "sentidos" && lost) b.classList.add("dim");
+  if (clock) $(clock).classList.add("on");
+  if (k === 0) { ["c1", "c2", "c3"].forEach((c) => $(c).classList.remove("on")); fare = 0; $("fareN").textContent = 0; }
+  if (box === "estado") { fare = setFare || 1; $("fareN").textContent = fare; }
+  $("say").textContent = say; $("say").classList.toggle("lost", !!lost);
+}
+function frame(now) {
+  if (paused) { t0 = now - (t0Pause || 0); raf = requestAnimationFrame(frame); return; }
+  let el = now - t0;
+  while (el > ev[i][0]) { el -= ev[i][0]; t0 += ev[i][0]; i = (i + 1) % ev.length; if (i === 0) { clear(); } enter(i); }
+  const seg = ev[i][3], d = $("dot");
+  if (seg) {
+    const [[x1, y1], [x2, y2]] = P[seg], f = Math.min(1, el / (ev[i][0] * 0.55)), e = f < .5 ? 2 * f * f : 1 - Math.pow(-2 * f + 2, 2) / 2;
+    d.setAttribute("cx", x1 + (x2 - x1) * e); d.setAttribute("cy", y1 + (y2 - y1) * e);
+    d.setAttribute("opacity", seg === "salidaPerdida" ? Math.max(0, 1 - f * 1.1) : f < 1 ? 1 : 0);
+  } else d.setAttribute("opacity", 0);
+  raf = requestAnimationFrame(frame);
+}
+let t0Pause = 0;
+function start() {
+  cancelAnimationFrame(raf); ev = script(busy); i = 0; clear(); enter(0);
+  $("noise").setAttribute("opacity", busy ? 1 : 0);
+  $("fare").setAttribute("opacity", busy ? 1 : 0); $("fareN").textContent = 0;
+  $("ctxTag").textContent = busy ? "bus lleno: motor y radio" : "bus tranquilo";
+  $("ctxTag").setAttribute("fill", busy ? "#910048" : "#1a237e");
+  $("ctxNoise").setAttribute("fill", busy ? "#910048" : "#55545f"); $("ctxNoise").setAttribute("font-weight", busy ? "700" : "400");
+  $("outArrow").setAttribute("opacity", busy ? 0.35 : 1);
+  if (reduced) { showAll(); return; }
+  t0 = performance.now(); raf = requestAnimationFrame(frame);
+}
+// Sin animación: todas las cajas con su texto y la narración completa.
+function showAll() {
+  ev.forEach((_, k) => { const [, box, now] = ev[k]; const b = $(BOX[box]); b.classList.add("hot"); b.querySelector(".now").textContent = now; });
+  ["c1", "c2", "c3"].forEach((c) => $(c).classList.add("on"));
+  if (busy) { $("fareN").textContent = 2; $(BOX.sentidos).classList.add("dim", "lost"); }
+  $("say").textContent = busy ? "Con el bus lleno, la salida se pierde en el ruido: la persona repite y el sistema cobra dos pasajes." : "El bucle completo: decisión, entrada, cambio de estado, salida y percepción.";
+}
+function setBusy(v) { busy = v; $("bCalm").classList.toggle("on", !v); $("bBusy").classList.toggle("on", v); paused = false; $("bPause").textContent = "Pausa"; start(); }
+$("bCalm").addEventListener("click", () => setBusy(false));
+$("bBusy").addEventListener("click", () => setBusy(true));
+$("bPause").addEventListener("click", () => {
+  paused = !paused; $("bPause").textContent = paused ? "Continuar" : "Pausa";
+  if (paused) t0Pause = performance.now() - t0;
+});
+function fit() {
+  const s = Math.min(innerWidth / 1000, innerHeight / 664), st = $("stage");
+  st.style.transform = "scale(" + s + ")"; st.style.marginRight = 1000 * (s - 1) + "px"; st.style.marginBottom = 664 * (s - 1) + "px";
+}
+addEventListener("resize", fit); fit();
+const q = new URLSearchParams(location.search);
+setBusy(q.get("ctx") === "lleno");
+addEventListener("message", (e) => { const m = e.data; if (!m || m.type !== "fig") return; setBusy(Number(m.value) >= 0.5); });
+</script>
+</body>
+</html>

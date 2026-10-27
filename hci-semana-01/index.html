@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LTI_05U_IHC · Semana 1: Interacción Hombre Computadora</title>
+    <script>
+      // El modo público se distingue en la pestaña del navegador.
+      if (new URLSearchParams(location.search).get("mode") === "audience") {
+        document.title = "LTI_05U_IHC · Semana 1: Interacción Hombre Computadora" + " (pantalla del público)";
+      }
+    </script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { height: 100%; background: #0a0a0a; overflow: hidden; }
+      hyperframes-slideshow { display: block; position: relative; width: 100vw; height: 100vh; }
+      hyperframes-player { position: absolute; inset: 0; }
+    </style>
+    <script src="../vendor/hyperframes-player.global.js"></script>
+    <script src="../vendor/hyperframes-slideshow.global.js"></script>
+  </head>
+  <body>
+    <hyperframes-slideshow tabindex="0" notes-storage-key="hci-semana-01">
+      <hyperframes-player interactive src="composition/index.html"></hyperframes-player>
+      <script type="application/hyperframes-slideshow+json">
+{
+  "slides": [
+    {
+      "sceneId": "portada",
+      "startTime": 0,
+      "endTime": 5.6,
+      "notes": "Abrir con una pregunta, sin definir nada: ¿alguna vez una máquina les cobró dos veces, o los dejó esperando sin saber si había funcionado? Anotar dos o tres respuestas en la pizarra. La clase entera sale de ese tipo de situaciones. Duración orientativa de la sesión: 3 horas (16:00 a 19:00)."
+    },
+    {
+      "sceneId": "caso",
+      "startTime": 5.6,
+      "endTime": 20.2,
+      "notes": "Minuto 0 a 15. Proyectar la figura con el botón Activar sonido: en el paso 1 se oye el pitido limpio y en el paso 4 el mismo pitido queda tapado por el motor y la radio. Antes de avanzar, preguntar: ¿quién ha pagado dos veces en un bus o en un parqueadero? Avanzar un paso a la vez y pedir que predigan lo que viene antes de cada avance. No dar términos todavía: que expliquen con sus palabras qué falló. Al llegar al último paso, la pregunta de cierre es la de la diapositiva siguiente.",
+      "fragments": [
+        8,
+        10.2,
+        12.4,
+        14.600000000000001,
+        16.8,
+        19
+      ]
+    },
+    {
+      "sceneId": "diagnostico",
+      "startTime": 20.2,
+      "endTime": 31.599999999999998,
+      "notes": "Cada estudiante escribe cinco o seis oraciones sobre qué falló, antes de ver la tabla (dos minutos). Luego se revela una columna por vez: lo que Diana hizo, lo que el sistema hizo y lo que Diana percibió. La conclusión que se busca: ninguna pieza se rompió. Si alguien dice que fue culpa de Diana, preguntar qué habría tenido que percibir para no repetir la tarjeta. Esa pregunta abre el concepto de retroalimentación.",
+      "fragments": [
+        22.4,
+        24.4,
+        26.4,
+        28.4,
+        30.4
+      ]
+    },
+    {
+      "sceneId": "definicion",
+      "startTime": 31.599999999999998,
+      "endTime": 39,
+      "notes": "Minuto 15 a 25. Leer la definición de SIGCHI en voz alta y pedir que ubiquen qué parte ya practicaron en UX/UI (diseño, evaluación). Luego mostrar las tres tareas y la última parte: el estudio de los fenómenos que rodean la interacción. Ahí vive la investigación. Fuente: ACM SIGCHI (1992), Curricula for Human-Computer Interaction, capítulo 2.",
+      "fragments": [
+        33.8,
+        35.8,
+        37.8
+      ]
+    },
+    {
+      "sceneId": "aspectos",
+      "startTime": 39,
+      "endTime": 51.4,
+      "notes": "Cada fila es un aspecto del contenido de HCI según SIGCHI, aplicado al torniquete. Pedir que adivinen el ejemplo antes de revelarlo. No hace falta memorizar las letras: lo importante es que un mismo caso se puede estudiar desde cinco ángulos. Fuente: ACM SIGCHI (1992), páginas 14 y 15.",
+      "fragments": [
+        41.2,
+        43,
+        44.800000000000004,
+        46.6,
+        48.400000000000006,
+        50.2
+      ]
+    },
+    {
+      "sceneId": "uxui",
+      "startTime": 51.4,
+      "endTime": 60.8,
+      "notes": "Pregunta que siempre llega: ¿HCI es UX/UI con otro nombre? Dejar que respondan primero. Luego revelar: comparten objeto de estudio, no la manera de trabajar. UX/UI conduce el diseño de un producto completo; HCI, como investigación, formula preguntas acotadas y las responde con modelos y mediciones. Un premio de diseño no dice cuántos usuarios se equivocan. Fuente de la distinción: MacKenzie (2013).",
+      "fragments": [
+        53.6,
+        55.6,
+        57.6,
+        59.6
+      ]
+    },
+    {
+      "sceneId": "bucle",
+      "startTime": 60.8,
+      "endTime": 79.8,
+      "notes": "Minuto 40. Dibujar el bucle en la pizarra mientras se avanza, y antes de cada avance preguntar: ¿qué parte sigue? Seguir el recorrido de la información cuando Diana acerca la tarjeta: el cerebro decide, los respondedores actúan, la entrada cruza la interfaz, el control la capta, el estado cambia, la pantalla presenta la salida y la retroalimentación vuelve a los sentidos. Los puntos t1, t2 y t3 son donde se acumula la latencia. En el último avance aparece el contexto: el ruido del bus no es parte del lector, pero decide si el pitido funciona como retroalimentación. La interfaz es la frontera donde se puede observar y medir. Fuentes: MacKenzie (2013) y ACM SIGCHI (1992).",
+      "fragments": [
+        63.199999999999996,
+        65.39999999999999,
+        67.6,
+        69.8,
+        72,
+        74.19999999999999,
+        76.39999999999999,
+        78.6
+      ]
+    },
+    {
+      "sceneId": "buclevivo",
+      "startTime": 79.8,
+      "endTime": 85.6,
+      "notes": "Ahora el mismo bucle corre solo con el torniquete en bus tranquilo. Con la flecha derecha pasa a bus lleno (la flecha izquierda vuelve a tranquilo); pedir que señalen en qué momento se pierde la retroalimentación. Aquí se ve el contador de pasajes cobrados: pasa de uno a dos. El sistema hizo lo que debía en cada paso; el contexto rompió la retroalimentación.",
+      "fragments": [
+        82.2,
+        84.4
+      ]
+    },
+    {
+      "sceneId": "vocabulario",
+      "startTime": 85.6,
+      "endTime": 98,
+      "notes": "Estos cinco términos son el vocabulario de toda la asignatura. Antes de revelar cada fila, preguntar qué sería eso en el torniquete. Entrada y salida se nombran respecto de la máquina. Retroalimentación es una salida con una función: informar el resultado de la última entrada. Si el pitido no se oye, hubo salida pero no hubo retroalimentación.",
+      "fragments": [
+        87.8,
+        89.6,
+        91.39999999999999,
+        93.2,
+        95,
+        96.8
+      ]
+    },
+    {
+      "sceneId": "cajero",
+      "startTime": 98,
+      "endTime": 110.4,
+      "notes": "Ejemplo resuelto para ver el método completo. Se recorre el bucle fila por fila: entrada, cambio de estado, salida. Antes de revelar cada fila, que predigan el estado siguiente. En el último avance se marcan dos latencias: la de cada tecla (corta, si no responde la persona pulsa dos veces) y la del procesamiento (larga, depende de la red). Por eso el mensaje de espera es retroalimentación indispensable. Después de este ejemplo, cada estudiante lo aplicará a su propio sistema en la PE-1.1.",
+      "fragments": [
+        100.2,
+        102,
+        103.8,
+        105.60000000000001,
+        107.4,
+        109.2
+      ]
+    },
+    {
+      "sceneId": "pendulo",
+      "startTime": 110.4,
+      "endTime": 118,
+      "notes": "Presentar la latencia como el tiempo entre una acción de entrada y su respuesta en pantalla. Mostrar el péndulo con 16,7 ms, luego 75 ms y luego 225 ms. Preguntar: ¿a partir de cuántos milisegundos empiezan a notar el retraso? Aclarar que se mide desde fuera, con una cámara que registra a la vez el movimiento y la pantalla: el registro del propio software no ve lo que la persona ve. Fuente: MacKenzie (2013), páginas 82 a 84.",
+      "fragments": [
+        112.80000000000001,
+        114.80000000000001,
+        116.80000000000001
+      ]
+    },
+    {
+      "sceneId": "suma",
+      "startTime": 118,
+      "endTime": 129.4,
+      "notes": "Responder la pregunta de la diapositiva: la demora no tiene una sola causa, se acumula a lo largo del bucle. t1 es el muestreo de la entrada: los dispositivos se muestrean a tasas fijas y, a 60 Hz, detectar un movimiento puede tomar hasta 16,67 ms. t2 es el software: comunicaciones, red, cálculo. t3 es dibujar la salida: con 10 cuadros por segundo y doble búfer, el mínimo es 100 ms. Son los puntos t1, t2 y t3 de la figura del bucle. Fuente: MacKenzie (2013), páginas 82 y 83.",
+      "fragments": [
+        120.2,
+        122.2,
+        124.2,
+        126.2,
+        128.2
+      ]
+    },
+    {
+      "sceneId": "efecto",
+      "startTime": 129.4,
+      "endTime": 138.8,
+      "notes": "Primero dejar que estimen: ¿qué crece más al pasar de 75 a 225 ms, el tiempo o los errores? Luego revelar los dos grupos. Con 75 ms el tiempo de movimiento aumentó 16 % y los errores 36 %; con 225 ms, 64 % y 214 %. El tiempo crece unas 4 veces y los errores unas 6. Es el primer ejemplo de que medir solo el tiempo no basta. Fuente: MacKenzie y Ware (1993), citado en MacKenzie (2013), página 84.",
+      "fragments": [
+        131.6,
+        133.6,
+        135.6,
+        137.6
+      ]
+    },
+    {
+      "sceneId": "modos",
+      "startTime": 138.8,
+      "endTime": 149,
+      "notes": "Minuto 55. Aquí pasa a las manos de los estudiantes: en la pestaña Probar tú, cada estudiante hace una ronda con 400 ms de retraso y otra con 0 ms, y dicta cuántas llamadas contestó sin querer. Anotar el total del grupo en cada condición en la pizarra: es un primer experimento, con el retraso como variable independiente y los errores como variable dependiente. Cuidado: los 400 ms son un valor de ejemplo, no un dato de una fuente. Fuente de la tecla única de 14 funciones: MacKenzie (2013), página 94.",
+      "fragments": [
+        141.20000000000002,
+        143.4,
+        145.60000000000002,
+        147.8
+      ]
+    },
+    {
+      "sceneId": "metricas",
+      "startTime": 149,
+      "endTime": 160.4,
+      "notes": "Plantear el dilema: la empresa compara el lector actual, que solo pita, con uno nuevo que también vibra. ¿Cómo sabe cuál funciona mejor? Dejar que propongan antes de avanzar. Primero el compromiso entre velocidad y precisión: quien va más rápido se equivoca más, por eso toda medición de velocidad exige medir también la precisión. Luego las tres métricas, siempre con unidad y definición operacional. Ejemplo de apoyo: en una caja de autoservicio, la más rápida puede parecer mejor solo porque registra mal los productos. Fuente: MacKenzie (2013).",
+      "fragments": [
+        151.2,
+        153.2,
+        155.2,
+        157.2,
+        159.2
+      ]
+    },
+    {
+      "sceneId": "errores",
+      "startTime": 160.4,
+      "endTime": 171.8,
+      "notes": "El bucle sirve de mapa para buscar errores: en la entrada, en el estado o en la salida. Para cada columna, primero preguntar dónde ubicarían el error de Diana y luego revelar. El doble cobro reúne los tres: una entrada repetida, un modo que la aceptó y una salida que el ruido tapó. Cierre con la idea de MacKenzie: si un resultado grave depende de que el operador se equivoque de botón, el diseño es defectuoso. El usuario se va a equivocar; el sistema debe preverlo. Esto responde a la pregunta frecuente de si el error es del usuario.",
+      "fragments": [
+        162.6,
+        164.6,
+        166.6,
+        168.6,
+        170.6
+      ]
+    },
+    {
+      "sceneId": "paradigmas",
+      "startTime": 171.8,
+      "endTime": 183.20000000000002,
+      "notes": "Minuto 18:30 de la sesión. Evitar la terminología de Harrison, Tatar y Sengers: factores humanos es que la máquina le quede bien al cuerpo; cognitivismo clásico es la mente como una computadora; el tercero es lo que la tecnología significa para alguien, en su lugar. Caso de los autores: la Fuerza Aérea eligió una voz de mujer para la alarma de la cabina porque los pilotos, todos hombres, la reconocían de inmediato; para un piloto que acababa de discutir con su esposa, esa voz significaba otra cosa. La idea a dejar clara: los tres conviven. Al final, que cada estudiante ubique su sistema de la PE en uno. Fuente: Harrison, Tatar y Sengers (2007).",
+      "fragments": [
+        174,
+        176,
+        178,
+        180,
+        182
+      ]
+    },
+    {
+      "sceneId": "frentes",
+      "startTime": 183.20000000000002,
+      "endTime": 195.60000000000002,
+      "notes": "Cada frente cambia una parte del bucle y se retoma en una semana del curso. Antes de revelar cada fila, preguntar qué parte del bucle creen que cambia. Multimodal: más canales, como el torniquete que pita y vibra. Ubicuo: el contexto deja de ser un marco y se vuelve una entrada. Inteligente: la máquina toma iniciativa y la persona debe conservar el control. Físico y remoto: la distancia suma latencia. Cerebro-computador: la señal neural reemplaza a los respondedores. Este es el trabajo autónomo de la semana: analizar la evolución hacia sistemas multimodales, ubicuos, inteligentes y físicos.",
+      "fragments": [
+        185.4,
+        187.20000000000002,
+        189,
+        190.8,
+        192.6,
+        194.4
+      ]
+    },
+    {
+      "sceneId": "practica",
+      "startTime": 195.60000000000002,
+      "endTime": 205.00000000000003,
+      "notes": "Minuto 17:25 a 18:30. Si nadie observó antes un sistema, salir 15 minutos a observar uno del campus (máquina expendedora, puerta con tarjeta, impresora, ascensor) y grabar en cámara lenta. Mostrar el cálculo de la latencia: 96 cuadros por 1000 entre 240 cuadros por segundo dan 400 ms. Error frecuente al calificar: calcular con 30 cuadros por segundo de reproducción en lugar de los de captura, lo que agranda la latencia cuatro u ocho veces. Otros errores: tablas que listan pantallas en vez de cambios de estado, errores atribuidos al usuario sin ubicarlos en el bucle, métricas sin unidad.",
+      "fragments": [
+        197.8,
+        199.8,
+        201.8,
+        203.8
+      ]
+    },
+    {
+      "sceneId": "situaciones",
+      "startTime": 205.00000000000003,
+      "endTime": 214.40000000000003,
+      "notes": "Transferencia con tres situaciones que no aparecieron antes. Una por avance: que los estudiantes respondan con un concepto de la semana y tomen posición. A: el equipo no hizo HCI como la entiende esta asignatura, porque nadie midió tiempo de tarea ni tasa de error. B: la latencia de medio segundo en un bucle cerrado explica la oscilación, cada corrección llega vieja. C: una entrada ambigua (la palabra listo) activa un modo sin que la persona lo pidió; falla el contexto y falta retroalimentación. Aceptar respuestas distintas si están justificadas con el vocabulario del bucle.",
+      "fragments": [
+        207.20000000000002,
+        209.20000000000002,
+        211.20000000000002,
+        213.20000000000002
+      ]
+    },
+    {
+      "sceneId": "cierre",
+      "startTime": 214.40000000000003,
+      "endTime": 222.40000000000003,
+      "notes": "Minuto 18:50 a 19:00. Presentar la TA-1.1: ficha técnica de dos a tres páginas con la plantilla de Canvas. Define HCI con la definición de SIGCHI y la distingue de UX/UI con un ejemplo propio; describe un sistema actual con el vocabulario del bucle; lo ubica en uno de los tres paradigmas y justifica; elige un frente actual y explica qué cambia en el bucle. Citas en APA. Errores frecuentes: definir HCI como diseño de interfaces, elegir el torniquete o el cajero, nombrar un paradigma sin decir qué queda en el margen. Cerrar con la pregunta final y dejarla sin responder.",
+      "fragments": [
+        216.80000000000004,
+        219.00000000000003,
+        221.20000000000005
+      ]
+    }
+  ],
+  "slideSequences": []
+}
+      </script>
+    </hyperframes-slideshow>
+  </body>
+</html>

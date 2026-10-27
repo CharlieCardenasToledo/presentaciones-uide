@@ -8,6 +8,7 @@ Sitio: https://charliecardenastoledo.github.io/presentaciones-uide/
 | --- | --- | --- |
 | CC05A_IFT200 Estructura, modelado y almacenamiento de BD | 1. Enfoque de bases de datos, modelos de datos, esquemas y DBMS | [bd-semana-01](https://charliecardenastoledo.github.io/presentaciones-uide/bd-semana-01/) |
 | LTI_05A_INS Ingeniería del Software | 1. Ingeniería de software hoy, ética y descubrimiento inicial del proyecto | [ins-semana-01](https://charliecardenastoledo.github.io/presentaciones-uide/ins-semana-01/) |
+| LTI_05U_IHC Interacción Hombre Computadora | 1. HCI como ciencia de sistemas interactivos | [hci-semana-01](https://charliecardenastoledo.github.io/presentaciones-uide/hci-semana-01/) |
 
 ## Cómo se usa
 

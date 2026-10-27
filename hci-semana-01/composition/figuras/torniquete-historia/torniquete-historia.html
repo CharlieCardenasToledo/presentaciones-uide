@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>El doble cobro de Diana</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; background: #ffffff; color-scheme: light; overflow: hidden; }
+  body { font-family: system-ui, "Segoe UI", Arial, sans-serif; color: #1f1a1d; cursor: pointer; display: grid; place-items: center; }
+  #stage { width: 1200px; height: 640px; position: relative; transform-origin: 0 0; flex: none; }
+  .top { position: absolute; left: 60px; right: 60px; top: 18px; height: 40px; display: flex; align-items: center; justify-content: space-between; }
+  .status { font-size: 26px; font-weight: 700; color: #910048; }
+  .dots { display: flex; gap: 14px; }
+  .dots span { width: 16px; height: 16px; border-radius: 50%; background: #e2dcdf; transition: background .3s; }
+  .dots span.on { background: #910048; }
+  .panel { position: absolute; left: 60px; top: 70px; width: 1080px; height: 494px; border-radius: 18px; background: #f6f1f3; overflow: hidden; }
+  svg.scene { position: absolute; left: 60px; top: 70px; width: 700px; height: 494px; border-radius: 18px 0 0 18px; }
+  .side { position: absolute; left: 790px; top: 92px; width: 330px; }
+  .quote { font-size: 18px; line-height: 1.45; font-style: italic; color: #3a3438; min-height: 104px; margin-bottom: 14px; background: #f7e6ee; border-radius: 10px; padding: 10px 14px; }
+  .card { background: #ffffff; border: 2px solid #1f1a1d; border-radius: 10px; padding: 10px 14px; margin-bottom: 12px; min-height: 98px; }
+  .card small { display: block; font-size: 14px; font-weight: 800; letter-spacing: .05em; margin-bottom: 4px; }
+  .card.per small { color: #910048; }
+  .card.per { border-color: #910048; }
+  .card p { font-size: 18px; line-height: 1.4; }
+  .count { display: flex; align-items: center; justify-content: space-between; font-size: 18px; font-weight: 700; }
+  .count b { font-size: 34px; color: #910048; transition: transform .25s; }
+  .count b.bump { transform: scale(1.35); }
+  .foot { position: absolute; left: 60px; right: 60px; top: 586px; display: flex; align-items: center; justify-content: space-between; font-size: 19px; color: #5a5257; }
+  .foot .btns { display: flex; gap: 10px; align-items: center; }
+  .foot button { font: inherit; font-size: 17px; font-weight: 700; padding: 8px 16px; border-radius: 22px; border: 2px solid #910048; background: #ffffff; color: #910048; cursor: pointer; }
+  .foot button.on { background: #910048; color: #ffffff; }
+  .foot .hint { font-size: 17px; }
+
+  /* piezas de la escena */
+  svg .tr { transition: transform .6s ease-in-out, opacity .45s; transform-box: view-box; }
+  svg .fade { transition: opacity .45s; }
+  svg.instant .tr, svg.instant .fade, svg.instant #vbar { transition: none !important; }
+  #vbar { transition: width .6s linear; }
+  #city { animation: drive 26s linear infinite; }
+  @keyframes drive { from { transform: translateX(-700px); } to { transform: translateX(0); } }
+  #interior { transform-box: view-box; transform-origin: 350px 494px; animation: sway 3.2s ease-in-out infinite; }
+  #interior.busy { animation-duration: 1.7s; }
+  @keyframes sway { 0%,100% { transform: rotate(-.25deg); } 50% { transform: rotate(.25deg); } }
+  #interior.busy { animation-name: swayBusy; }
+  @keyframes swayBusy { 0%,100% { transform: rotate(-.5deg) translateY(0); } 50% { transform: rotate(.45deg) translateY(1.5px); } }
+  .walk #legF { animation: legA .42s ease-in-out infinite alternate; }
+  .walk #legB { animation: legA .42s ease-in-out infinite alternate-reverse; }
+  @keyframes legA { from { transform: rotate(-20deg); } to { transform: rotate(20deg); } }
+  #legF, #legB { transform-box: view-box; transform-origin: 333px 338px; }
+  .shake { animation: shake .45s ease-in-out 2; }
+  @keyframes shake { 0%,100% { transform: translateX(0); } 30% { transform: translateX(-6px); } 70% { transform: translateX(3px); } }
+  .pulse path { animation: pulse 1.1s ease-out infinite; }
+  .pulse path:nth-child(2) { animation-delay: .18s; } .pulse path:nth-child(3) { animation-delay: .36s; }
+  @keyframes pulse { 0% { opacity: 0; } 30% { opacity: 1; } 100% { opacity: 0; } }
+  .blink { animation: blink 1s steps(2) infinite; }
+  @keyframes blink { 50% { opacity: .35; } }
+  .walk { }
+  @media (prefers-reduced-motion: reduce) {
+    #city, #interior, .walk #legF, .walk #legB, .shake, .pulse path, .blink { animation: none !important; }
+  }
+</style>
+</head>
+<body>
+<div id="stage" role="img" aria-label="Escena en seis pasos dentro de un bus visto de perfil, con el chofer a la izquierda. Paso 1: en un bus tranquilo, Diana acerca la tarjeta, el lector pita, enciende la luz verde, el brazo del torniquete gira y ella pasa. Paso 2: con el bus lleno, el motor y la radio hacen ruido mientras el lector todavía valida. Paso 3: Diana empuja el brazo antes de que termine la validación y no gira. Paso 4: el lector acepta el pago, pita y enciende la luz verde, pero el pitido se pierde en el ruido y la luz está a la altura de la cintura, fuera de su mirada. Paso 5: Diana vuelve a acercar la tarjeta, el sistema cobra un segundo pasaje y el brazo gira. Paso 6: por la noche, el extracto muestra dos pasajes. Un botón activa el sonido de cada paso.">
+  <div class="top"><div class="status" id="status"></div><div class="dots" id="dots"></div></div>
+  <div class="panel"></div>
+
+  <svg class="scene" viewBox="0 0 700 494" id="scene">
+    <defs>
+      <clipPath id="armClip"><rect x="0" y="0" width="402" height="494" /></clipPath>
+      <clipPath id="win">
+        <rect x="172" y="92" width="128" height="106" rx="10" /><rect x="318" y="92" width="128" height="106" rx="10" />
+        <rect x="464" y="92" width="110" height="106" rx="10" /><rect x="592" y="92" width="120" height="106" rx="10" />
+        <polygon points="0,50 56,50 44,292 0,292" />
+      </clipPath>
+    </defs>
+
+    <g id="interior">
+      <!-- pared, techo y piso -->
+      <rect x="-20" y="0" width="740" height="494" fill="#ebe6e8" />
+      <rect x="-20" y="0" width="740" height="38" fill="#dcd5d8" />
+      <rect x="-20" y="232" width="740" height="8" fill="#ded7da" />
+
+      <!-- ciudad por las ventanas: se desplaza hacia la derecha porque el bus avanza hacia la izquierda -->
+      <g clip-path="url(#win)">
+        <rect x="0" y="40" width="720" height="260" fill="#cfe3ef" />
+        <g id="city"></g>
+      </g>
+      <g fill="none" stroke="#8f878c" stroke-width="5">
+        <rect x="172" y="92" width="128" height="106" rx="10" /><rect x="318" y="92" width="128" height="106" rx="10" />
+        <rect x="464" y="92" width="110" height="106" rx="10" /><rect x="592" y="92" width="120" height="106" rx="10" />
+      </g>
+
+      <!-- pasamanos y agarraderas -->
+      <line x1="150" y1="44" x2="720" y2="44" stroke="#e3b52a" stroke-width="6" stroke-linecap="round" />
+      <g id="straps" fill="none" stroke="#8f878c" stroke-width="3"></g>
+
+      <!-- cabina: el frente del bus está a la izquierda -->
+      <polygon points="0,50 56,50 44,292 0,292" fill="none" stroke="#5a5257" stroke-width="6" />
+      <path d="M0 292 L78 292 L84 326 L0 336 Z" fill="#5a5257" />
+      <line x1="62" y1="318" x2="80" y2="296" stroke="#2b2729" stroke-width="5" />
+      <ellipse cx="80" cy="282" rx="6" ry="30" transform="rotate(-24 80 282)" fill="none" stroke="#2b2729" stroke-width="6" />
+      <rect x="128" y="236" width="16" height="132" rx="7" fill="#5a5257" />
+      <rect x="90" y="352" width="54" height="14" rx="6" fill="#5a5257" />
+      <rect x="112" y="366" width="10" height="86" fill="#5a5257" />
+      <g id="driver">
+        <rect x="70" y="350" width="50" height="15" rx="7" fill="#2c2c34" />
+        <rect x="66" y="356" width="15" height="84" rx="7" fill="#2c2c34" />
+        <rect x="56" y="436" width="28" height="13" rx="6" fill="#1d1a1c" />
+        <rect x="94" y="268" width="32" height="90" rx="13" fill="#4f6f9f" />
+        <path d="M100 282 L84 296 L76 290" fill="none" stroke="#4f6f9f" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" />
+        <circle cx="75" cy="290" r="6" fill="#9a6646" />
+        <rect x="104" y="252" width="10" height="18" fill="#9a6646" />
+        <circle cx="108" cy="240" r="18" fill="#9a6646" />
+        <path d="M92 236 Q92 218 110 220 Q128 222 126 242 Q118 230 104 232 Z" fill="#1d1a1c" />
+        <path d="M90 240 l-5 5 l5 1" fill="#9a6646" />
+        <circle cx="98" cy="238" r="2" fill="#1d1a1c" />
+      </g>
+      <rect x="150" y="300" width="18" height="152" rx="4" fill="#cfc7cb" />
+      <rect x="154" y="44" width="10" height="408" fill="#e3b52a" />
+
+      <!-- parlante de la radio sobre el chofer -->
+      <g id="radio">
+        <rect x="176" y="50" width="46" height="30" rx="5" fill="#3a3438" />
+        <circle cx="191" cy="65" r="9" fill="#5a5257" /><circle cx="191" cy="65" r="3" fill="#3a3438" />
+        <rect x="204" y="57" width="12" height="4" rx="2" fill="#8f878c" /><rect x="204" y="66" width="12" height="4" rx="2" fill="#8f878c" />
+      </g>
+
+      <!-- asientos y pasajeros sentados (miran al frente, a la izquierda) -->
+      <g id="seated"></g>
+
+      <!-- pasajeros de pie del bus lleno -->
+      <g id="crowd" class="fade" opacity="0"></g>
+
+      <!-- ruido: radio y motor -->
+      <g id="noise" class="fade" opacity="0">
+        <g class="pulse" fill="none" stroke="#5a5257" stroke-width="4" stroke-linecap="round">
+          <path d="M230 58 q10 8 0 16" /><path d="M240 50 q18 16 0 32" /><path d="M250 42 q26 24 0 48" />
+        </g>
+        <g class="pulse" fill="none" stroke="#5a5257" stroke-width="4" stroke-linecap="round">
+          <path d="M22 470 q40 -16 80 0" /><path d="M10 486 q52 -26 104 0" />
+        </g>
+      </g>
+
+      <!-- Diana: cuerpo (detrás del brazo del torniquete) -->
+      <g id="dBody" class="tr">
+        <g id="dLean" class="tr" style="transform-origin: 330px 452px;"><g transform="translate(-66 -90.4) scale(1.2)">
+          <g id="legB"><rect x="322" y="334" width="16" height="108" rx="7" fill="#2b4370" /><rect x="320" y="436" width="30" height="14" rx="6" fill="#ffffff" stroke="#cfc7cb" stroke-width="2" /></g>
+          <rect x="296" y="268" width="24" height="60" rx="9" fill="#4a4a52" />
+          <g id="legF"><rect x="328" y="334" width="16" height="108" rx="7" fill="#33508a" /><rect x="326" y="436" width="30" height="14" rx="6" fill="#ffffff" stroke="#cfc7cb" stroke-width="2" /></g>
+          <path d="M314 270 Q316 256 332 256 L346 256 Q358 258 358 274 L356 344 L314 344 Z" fill="#910048" />
+          <path d="M347 260 L356 268 L354 330 L346 330 Z" fill="#f4efe9" />
+          <line x1="318" y1="270" x2="330" y2="306" stroke="#3a3a40" stroke-width="5" stroke-linecap="round" />
+          <rect x="331" y="244" width="11" height="16" fill="#b07a55" />
+          <g id="dHead" class="tr" style="transform-origin: 336px 252px;">
+            <circle cx="340" cy="230" r="21" fill="#b07a55" />
+            <path d="M318 234 Q316 206 340 206 Q364 206 361 226 Q348 216 336 220 Q327 228 326 244 Z" fill="#1d1a1c" />
+            <path d="M321 226 Q300 236 304 272 Q313 254 324 240 Z" fill="#1d1a1c" />
+            <circle cx="320" cy="230" r="3.5" fill="#910048" />
+            <circle cx="351" cy="229" r="2.4" fill="#1d1a1c" />
+            <path d="M347 222 q4 -2 8 0" fill="none" stroke="#1d1a1c" stroke-width="2" stroke-linecap="round" />
+            <path d="M360 231 l4 6 l-4 1" fill="#b07a55" stroke="#96613f" stroke-width="1.5" stroke-linejoin="round" />
+            <path d="M351 243 q4 2 8 -1" fill="none" stroke="#7a3b2e" stroke-width="2" stroke-linecap="round" />
+          </g>
+          <!-- no oye: oreja tachada -->
+          <g id="ear" class="fade" opacity="0">
+            <circle cx="382" cy="198" r="15" fill="#ffffff" stroke="#910048" stroke-width="3" />
+            <path d="M378 192 q6 -5 10 1 q2 5 -4 9 q-3 2 -2 5" fill="none" stroke="#910048" stroke-width="3" stroke-linecap="round" />
+            <line x1="371" y1="187" x2="393" y2="209" stroke="#910048" stroke-width="3" />
+          </g>
+          <!-- su mirada va hacia arriba, lejos de la cintura -->
+          <g id="sight" class="fade" opacity="0">
+            <path d="M352 228 L540 112 L556 170 Z" fill="rgba(145,0,72,.10)" stroke="#910048" stroke-width="2" stroke-dasharray="6 6" />
+          </g>
+        </g></g>
+      </g>
+
+      <!-- torniquete: brazos (detrás del poste), poste, buje y lector -->
+      <g id="tsWrap">
+        <g clip-path="url(#armClip)"><g id="tsRot" class="tr" style="transform-origin: 400px 340px;">
+          <rect x="300" y="334" width="100" height="13" rx="6.5" fill="#bdb6ba" stroke="#6b6368" stroke-width="2.5" />
+          <rect x="300" y="334" width="100" height="13" rx="6.5" fill="#bdb6ba" stroke="#6b6368" stroke-width="2.5" transform="rotate(-60 400 340)" />
+          <rect x="300" y="334" width="100" height="13" rx="6.5" fill="#bdb6ba" stroke="#6b6368" stroke-width="2.5" transform="rotate(-120 400 340)" />
+        </g></g>
+        <rect x="400" y="326" width="50" height="126" rx="7" fill="#c9c2c6" stroke="#6b6368" stroke-width="3" />
+        <rect x="408" y="360" width="34" height="20" rx="4" fill="none" stroke="#9b9298" stroke-width="2" />
+        <circle cx="400" cy="340" r="12" fill="#5a5257" />
+      </g>
+      <g id="lock" class="fade" opacity="0">
+        <rect x="413" y="362" width="24" height="20" rx="3" fill="#910048" />
+        <path d="M418 362 v-6 a7 7 0 0 1 14 0 v6" fill="none" stroke="#910048" stroke-width="4" />
+      </g>
+      <g id="reader">
+        <rect x="390" y="292" width="68" height="36" rx="8" fill="#ffffff" stroke="#1f1a1d" stroke-width="3" />
+        <rect x="398" y="300" width="34" height="9" rx="3" fill="#e9e3e6" />
+        <rect id="vbar" x="398" y="300" width="0" height="9" rx="3" fill="#5a5257" />
+        <circle cx="444" cy="310" r="8" fill="#d5d0d2" stroke="#1f1a1d" stroke-width="2" />
+        <circle id="led" cx="444" cy="310" r="8" fill="#2e9d4f" opacity="0" />
+        <circle cx="404" cy="319" r="1.8" fill="#9b9298" /><circle cx="411" cy="319" r="1.8" fill="#9b9298" /><circle cx="418" cy="319" r="1.8" fill="#9b9298" />
+      </g>
+      <g id="beep" class="fade" opacity="0">
+        <g class="pulse" fill="none" stroke="#1f1a1d" stroke-width="3" stroke-linecap="round">
+          <path d="M464 302 q7 7 0 14" /><path d="M472 296 q13 13 0 26" /><path d="M480 290 q19 19 0 38" />
+        </g>
+      </g>
+
+      <!-- Diana: brazo con la tarjeta (sobre el lector) -->
+      <g id="dArm" class="tr">
+        <g transform="translate(-66 -90.4) scale(1.2)"><g id="dArmRot" class="tr" style="transform-origin: 344px 272px;">
+          <path d="M344 272 L366 297 L389 313" fill="none" stroke="#910048" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" />
+          <rect x="384" y="302" width="24" height="10" rx="2" fill="#ffffff" stroke="#6b6368" stroke-width="2" />
+          <circle cx="391" cy="315" r="6" fill="#b07a55" />
+        </g></g>
+      </g>
+
+      <!-- la luz está a la altura de la cintura -->
+      <g id="waistMark" class="fade" opacity="0">
+        <path d="M452 318 L478 352" stroke="#910048" stroke-width="2" />
+        <rect x="462" y="352" width="150" height="28" rx="14" fill="#ffffff" stroke="#910048" stroke-width="2" />
+        <text x="537" y="371" font-size="15" font-weight="700" fill="#910048" text-anchor="middle">luz a la cintura</text>
+      </g>
+    </g>
+
+    <!-- la noche: el extracto -->
+    <g id="night" class="fade" opacity="0">
+      <rect x="0" y="0" width="700" height="494" fill="#1f1a1d" opacity=".86" />
+      <circle cx="610" cy="70" r="30" fill="#f2e7c9" /><circle cx="624" cy="60" r="26" fill="#3a3438" />
+      <rect x="240" y="70" width="220" height="380" rx="28" fill="#ffffff" stroke="#cfc6cb" stroke-width="4" />
+      <rect x="258" y="100" width="184" height="300" rx="8" fill="#f6f1f3" />
+      <text x="350" y="134" font-size="17" font-weight="800" fill="#1f1a1d" text-anchor="middle">Movimientos</text>
+      <text x="350" y="156" font-size="13" fill="#5a5257" text-anchor="middle">tarjeta de transporte</text>
+      <line x1="270" y1="168" x2="430" y2="168" stroke="#cfc6cb" stroke-width="2" />
+      <g font-size="15">
+        <text x="272" y="200" fill="#1f1a1d" font-weight="700">Pasaje bus</text><text x="428" y="200" fill="#910048" font-weight="800" text-anchor="end">−1</text>
+        <text x="272" y="220" fill="#5a5257" font-size="12">hoy 07:42:05</text>
+        <text x="272" y="256" fill="#1f1a1d" font-weight="700">Pasaje bus</text><text x="428" y="256" fill="#910048" font-weight="800" text-anchor="end">−1</text>
+        <text x="272" y="276" fill="#5a5257" font-size="12">hoy 07:42:09</text>
+      </g>
+      <rect x="268" y="296" width="164" height="44" rx="8" fill="#ffffff" stroke="#910048" stroke-width="3" />
+      <text x="350" y="324" font-size="15" font-weight="800" fill="#910048" text-anchor="middle">dos pasajes, un viaje</text>
+      <rect x="320" y="420" width="60" height="8" rx="4" fill="#cfc6cb" />
+    </g>
+  </svg>
+
+  <div class="side">
+    <div class="quote" id="quote"></div>
+    <div class="card sys"><small>LO QUE HIZO EL SISTEMA</small><p id="sys"></p></div>
+    <div class="card per"><small>LO QUE PERCIBIÓ DIANA</small><p id="per"></p></div>
+    <div class="count"><span>Pasajes cobrados</span><b id="count">0</b></div>
+  </div>
+
+  <div class="foot">
+    <span id="step"></span>
+    <span class="hint">Flecha derecha: siguiente paso</span>
+    <span class="btns"><button id="btnReplay" type="button">Repetir paso</button><button id="btnSound" type="button" aria-pressed="false">Activar sonido</button></span>
+  </div>
+</div>
+<script>
+/* Dentro de la presentación las flechas del teclado y la rueda de avance las maneja el deck. */
+if (window.parent !== window) {
+  document.documentElement.classList.add("embedded");
+  const KEYMAP = { ArrowRight: "ArrowRight", PageDown: "ArrowRight", " ": "ArrowRight", Enter: "ArrowRight", ArrowLeft: "ArrowLeft", PageUp: "ArrowLeft", Backspace: "ArrowLeft" };
+  addEventListener("keydown", (e) => {
+    const k = KEYMAP[e.key]; if (!k) return;
+    const onCtl = e.target.closest && e.target.closest("button,a,input");
+    if (onCtl && (e.key === " " || e.key === "Enter")) return;
+    e.preventDefault(); e.stopImmediatePropagation();
+    parent.postMessage({ type: "deck-key", key: k }, "*");
+  }, true);
+  addEventListener("click", (e) => {
+    if (!(e.target.closest && e.target.closest("button,a,input,#navi,#ckey"))) e.stopImmediatePropagation();
+  }, true);
+}
+</script>
+<script>
+// Cada paso sigue una frase del caso de la página 1.1.
+const STEPS = [
+  { status: "así debería funcionar, en un bus tranquilo", quote: "Si el pago se acepta, el lector pita, enciende una luz verde y libera el torniquete.",
+    sys: "Lee la tarjeta, cobra, pita, enciende la luz verde y libera el brazo.", per: "Oye el pitido, ve la luz y pasa.", count: 1 },
+  { status: "un bus lleno: el motor y la radio hacen ruido", quote: "Una mañana con el bus lleno, Diana acerca su tarjeta y no oye nada.",
+    sys: "Lee la tarjeta y empieza a validar el pago. Todavía no cobra.", per: "No oye nada: el ruido llena el bus.", count: 0 },
+  { status: "empuja antes de que termine la validación", quote: "Empuja el torniquete antes de que el lector termine de validar, el brazo no gira…",
+    sys: "Sigue validando: el brazo continúa bloqueado.", per: "Empuja y el brazo no gira. Cree que el pago falló.", count: 0 },
+  { status: "el lector acepta: pita y enciende la luz, pero ella no lo percibe", quote: "…el motor y la radio tapan el pitido; la luz verde está a la altura de la cintura y no la ve.",
+    sys: "Cobra el primer pasaje, pita y enciende la luz verde. Queda en pago aceptado.", per: "No oye el pitido ni ve la luz: está a la cintura, fuera de su mirada.", count: 1 },
+  { status: "vuelve a acercar la tarjeta", quote: "…y ella vuelve a acercar la tarjeta.",
+    sys: "En pago aceptado, la tarjeta cuenta como un pasaje nuevo: cobra otra vez y libera el brazo.", per: "Esta vez el brazo gira y pasa. Cree que pagó una vez.", count: 2 },
+  { status: "por la noche: dos pasajes por un viaje", quote: "Por la noche descubre que le cobraron dos pasajes. Ningún componente se rompió.",
+    sys: "Hizo lo que debía en cada paso.", per: "No percibió las respuestas del sistema y pagó dos veces.", count: 2 },
+];
+const N = STEPS.length - 1;
+const $ = (id) => document.getElementById(id);
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const SVGNS = "http://www.w3.org/2000/svg";
+
+/* ---------- decorado generado (determinista) ---------- */
+let seed = 7;
+const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+(function buildCity() {
+  let s = "";
+  for (const off of [0, 700]) {
+    s += `<path d="M${off - 10} 200 Q${off + 90} 110 ${off + 210} 150 T${off + 450} 130 T${off + 720} 150 L${off + 720} 300 L${off - 10} 300 Z" fill="#9fbf8f" />`;
+    s += `<path d="M${off - 10} 200 Q${off + 140} 150 ${off + 300} 172 T${off + 720} 168 L${off + 720} 300 L${off - 10} 300 Z" fill="#7fa775" />`;
+  }
+  seed = 7;
+  const houses = [];
+  for (let i = 0; i < 26; i++) houses.push({ x: i * 27 + rnd() * 8, w: 18 + rnd() * 10, h: 14 + rnd() * 18, y: 168 + rnd() * 26 });
+  for (const off of [0, 700]) for (const h of houses) {
+    s += `<rect x="${(off + h.x).toFixed(1)}" y="${(h.y).toFixed(1)}" width="${h.w.toFixed(1)}" height="${(h.h + 40).toFixed(1)}" fill="#f3ece4" />`;
+    s += `<path d="M${(off + h.x - 2).toFixed(1)} ${h.y.toFixed(1)} L${(off + h.x + h.w / 2).toFixed(1)} ${(h.y - 8).toFixed(1)} L${(off + h.x + h.w + 2).toFixed(1)} ${h.y.toFixed(1)} Z" fill="#c46a4a" />`;
+  }
+  for (const off of [0, 700]) s += `<rect x="${off + 300}" y="138" width="14" height="40" fill="#f3ece4" /><path d="M${off + 298} 138 L${off + 307} 124 L${off + 316} 138 Z" fill="#c46a4a" />`;
+  $("city").innerHTML = s;
+  $("straps").innerHTML = [204, 268, 470, 516, 562, 608, 654].map((x) => `<path d="M${x} 44 v52" /><circle cx="${x}" cy="104" r="8" />`).join("");
+})();
+
+// Persona de pie, de perfil, mirando a la izquierda (hacia el frente del bus).
+function standing(x, h, shirt, pants, skin, hair, armUp) {
+  const k = 1.2, inner = standingRaw(x, h, shirt, pants, skin, hair, armUp ? (armUp - x) / k + x : 0);
+  return `<g transform="translate(${(x * (1 - k)).toFixed(1)} ${(452 * (1 - k)).toFixed(1)}) scale(${k})">${inner}</g>`;
+}
+function standingRaw(x, h, shirt, pants, skin, hair, armUp) {
+  const hip = 452 - h * 0.46, sh = 452 - h * 0.8, hy = 452 - h * 0.9, r = h * 0.075;
+  let s = `<rect x="${x - 9}" y="${hip}" width="9" height="${446 - hip}" rx="4" fill="${pants}" />`;
+  s += `<rect x="${x + 1}" y="${hip}" width="9" height="${446 - hip}" rx="4" fill="${pants}" />`;
+  s += `<rect x="${x - 17}" y="442" width="20" height="9" rx="4" fill="#3a3438" /><rect x="${x - 7}" y="442" width="20" height="9" rx="4" fill="#3a3438" />`;
+  s += `<rect x="${x - 15}" y="${sh}" width="30" height="${hip - sh + 8}" rx="11" fill="${shirt}" />`;
+  s += `<circle cx="${x - 1}" cy="${hy}" r="${r}" fill="${skin}" />`;
+  s += `<path d="M${x - 1 - r * 0.6} ${hy - r * 0.7} Q${x + r * 0.2} ${hy - r * 1.35} ${x + r * 1.05} ${hy - r * 0.2} L${x + r * 0.7} ${hy + r * 0.6} Q${x + r * 0.1} ${hy - r * 0.4} ${x - 1 - r * 0.6} ${hy - r * 0.7} Z" fill="${hair}" />`;
+  s += `<path d="M${x - 1 - r} ${hy - 1} l-4 4 l4 1" fill="${skin}" />`;
+  if (armUp) s += `<path d="M${x - 4} ${sh + 8} L${(x - 4 + armUp) / 2} ${(sh + 174) / 2}" stroke="${shirt}" stroke-width="9" stroke-linecap="round" /><path d="M${(x - 4 + armUp) / 2} ${(sh + 174) / 2} L${armUp} 168" stroke="${skin}" stroke-width="6" stroke-linecap="round" /><circle cx="${armUp}" cy="164" r="4.5" fill="${skin}" />`;
+  else s += `<path d="M${x - 6} ${sh + 8} L${x - 10} ${hip + 4}" stroke="${shirt}" stroke-width="9" stroke-linecap="round" />`;
+  return s;
+}
+// Pasajero sentado mirando a la izquierda, con su asiento.
+function seated(x, shirt, pants, skin, hair) {
+  const k = 1.15;
+  return `<g transform="translate(${(x * (1 - k)).toFixed(1)} ${(452 * (1 - k)).toFixed(1)}) scale(${k})">${seatedRaw(x, shirt, pants, skin, hair)}</g>`;
+}
+function seatedRaw(x, shirt, pants, skin, hair) {
+  let s = `<rect x="${x + 16}" y="318" width="12" height="96" rx="5" fill="#3e5f96" />`;
+  s += `<rect x="${x - 26}" y="398" width="54" height="13" rx="5" fill="#3e5f96" /><rect x="${x - 4}" y="411" width="8" height="41" fill="#8f878c" />`;
+  s += `<rect x="${x - 10}" y="330" width="26" height="74" rx="10" fill="${shirt}" />`;
+  s += `<rect x="${x - 34}" y="392" width="44" height="14" rx="7" fill="${pants}" /><rect x="${x - 36}" y="398" width="14" height="48" rx="6" fill="${pants}" />`;
+  s += `<rect x="${x - 44}" y="442" width="24" height="9" rx="4" fill="#3a3438" />`;
+  s += `<circle cx="${x + 2}" cy="316" r="15" fill="${skin}" /><path d="M${x - 8} 306 Q${x + 4} 296 ${x + 17} 312 L${x + 14} 322 Q${x + 6} 306 ${x - 8} 306 Z" fill="${hair}" />`;
+  s += `<path d="M${x - 13} 315 l-4 4 l4 1" fill="${skin}" />`;
+  return s;
+}
+$("seated").innerHTML = seated(612, "#3b4a5c", "#2c2c34", "#8a5a3c", "#1d1a1c") + seated(684, "#5d7a4e", "#4a3b30", "#c48d6a", "#3a2a22");
+$("crowd").innerHTML =
+  standing(516, 236, "#8a5a3a", "#2f3540", "#c48d6a", "#2a1f1a", 516) +
+  standing(560, 228, "#5b4636", "#2c2c34", "#e0b896", "#cfcfcf", 0) +
+  standing(606, 240, "#b07a3a", "#2b3550", "#b07a55", "#1d1a1c", 608) +
+  standing(650, 232, "#4f6f9f", "#2c2c34", "#8a5a3c", "#1d1a1c", 654) +
+  standing(694, 238, "#7a4a6a", "#3a2a30", "#c48d6a", "#5a3a2a", 0) +
+  standing(470, 226, "#56705a", "#2f3540", "#a86f4d", "#1d1a1c", 470);
+
+/* ---------- sonido (Web Audio, generado en el navegador) ---------- */
+const snd = { on: false, ctx: null };
+function audioInit() {
+  if (snd.ctx) return;
+  const AC = window.AudioContext || window.webkitAudioContext;
+  if (!AC) return;
+  const c = new AC(); snd.ctx = c;
+  snd.master = c.createGain(); snd.master.gain.value = 0.9; snd.master.connect(c.destination);
+  const len = c.sampleRate * 2;
+  const white = c.createBuffer(1, len, c.sampleRate), brown = c.createBuffer(1, len, c.sampleRate);
+  const w = white.getChannelData(0), b = brown.getChannelData(0);
+  let last = 0, s = 12345;
+  for (let i = 0; i < len; i++) { s = (s * 1103515245 + 12345) & 0x7fffffff; w[i] = s / 0x3fffffff - 1; last = (last + 0.02 * w[i]) / 1.02; b[i] = last * 3.5; }
+  snd.white = white;
+  const loop = (buf) => { const n = c.createBufferSource(); n.buffer = buf; n.loop = true; n.start(); return n; };
+  // motor: ruido grave filtrado y un zumbido bajo
+  snd.eng = c.createGain(); snd.eng.gain.value = 0; snd.eng.connect(snd.master);
+  const lp = c.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 180; loop(brown).connect(lp); lp.connect(snd.eng);
+  const hum = c.createOscillator(); hum.type = "sawtooth"; hum.frequency.value = 46; const hlp = c.createBiquadFilter(); hlp.type = "lowpass"; hlp.frequency.value = 140;
+  const hg = c.createGain(); hg.gain.value = 0.25; hum.connect(hlp); hlp.connect(hg); hg.connect(snd.eng); hum.start();
+  // radio: música, locutor y bullicio en la misma banda que el pitido
+  snd.rad = c.createGain(); snd.rad.gain.value = 0; snd.rad.connect(snd.master);
+  snd.radBus = c.createBiquadFilter(); snd.radBus.type = "bandpass"; snd.radBus.frequency.value = 1300; snd.radBus.Q.value = 0.6; snd.radBus.connect(snd.rad);
+  snd.voice = c.createGain(); snd.voice.gain.value = 0;
+  const vbp = c.createBiquadFilter(); vbp.type = "bandpass"; vbp.frequency.value = 900; vbp.Q.value = 2.5; loop(white).connect(vbp); vbp.connect(snd.voice); snd.voice.connect(snd.rad);
+  snd.hiss = c.createGain(); snd.hiss.gain.value = 0; snd.hiss.connect(snd.master);
+  const hbp = c.createBiquadFilter(); hbp.type = "bandpass"; hbp.frequency.value = 2400; hbp.Q.value = 1.2; loop(white).connect(hbp); hbp.connect(snd.hiss);
+  snd.next = 0; snd.beat = 0;
+  setInterval(radioTick, 100);
+}
+const CHORDS = [[220, 261.6, 329.6], [174.6, 220, 261.6], [261.6, 329.6, 392], [196, 246.9, 293.7]];
+const SYLL = [1, 0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0, 1, 0, 1, 0];
+function radioTick() {
+  const c = snd.ctx; if (!c || !snd.on || snd.rad.gain.value < 0.01) { if (c) snd.next = c.currentTime; return; }
+  if (snd.next < c.currentTime) snd.next = c.currentTime + 0.05;
+  while (snd.next < c.currentTime + 0.3) {
+    const t = snd.next, k = snd.beat, ch = CHORDS[Math.floor(k / 8) % 4];
+    const o = c.createOscillator(), g = c.createGain();
+    o.type = "sawtooth"; o.frequency.value = ch[k % 3] * (k % 4 === 3 ? 2 : 1);
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.35, t + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.2);
+    o.connect(g); g.connect(snd.radBus); o.start(t); o.stop(t + 0.22);
+    if (k % 2 === 0) { const bo = c.createOscillator(), bg = c.createGain(); bo.type = "triangle"; bo.frequency.value = ch[0] / 2;
+      bg.gain.setValueAtTime(0.5, t); bg.gain.exponentialRampToValueAtTime(0.0001, t + 0.24); bo.connect(bg); bg.connect(snd.rad); bo.start(t); bo.stop(t + 0.26); }
+    snd.voice.gain.setTargetAtTime(SYLL[k % 16] ? 0.9 : 0.05, t, 0.03);
+    snd.next += 0.25; snd.beat++;
+  }
+}
+// ambiente de cada paso: calm, busy, night, off
+function ambience(kind) {
+  if (!snd.ctx) return;
+  const t = snd.ctx.currentTime, L = { calm: [0.18, 0, 0], busy: [0.9, 0.42, 0.22], night: [0, 0, 0.015], off: [0, 0, 0] }[kind];
+  snd.eng.gain.setTargetAtTime(L[0], t, 0.4); snd.rad.gain.setTargetAtTime(L[1], t, 0.4); snd.hiss.gain.setTargetAtTime(L[2], t, 0.4);
+}
+function blip(t, f, dur, vol, type) {
+  const c = snd.ctx, o = c.createOscillator(), g = c.createGain();
+  o.type = type || "square"; o.frequency.value = f;
+  g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + 0.005); g.gain.setValueAtTime(vol, t + dur - 0.01); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+  o.connect(g); g.connect(snd.master); o.start(t); o.stop(t + dur + 0.02);
+}
+function burst(t, dur, vol, type, f) {
+  const c = snd.ctx, n = c.createBufferSource(), fl = c.createBiquadFilter(), g = c.createGain();
+  n.buffer = snd.white; fl.type = type; fl.frequency.value = f;
+  g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+  n.connect(fl); fl.connect(g); g.connect(snd.master); n.start(t); n.stop(t + dur + 0.02);
+}
+// El lector siempre pita igual: lo que cambia es el ruido alrededor.
+const SFX = {
+  beep() { const t = snd.ctx.currentTime; blip(t, 2400, 0.09, 0.07); blip(t + 0.15, 2400, 0.09, 0.07); },
+  tap() { burst(snd.ctx.currentTime, 0.04, 0.25, "bandpass", 3000); },
+  clunk() { const c = snd.ctx, t = c.currentTime, o = c.createOscillator(), g = c.createGain();
+    o.type = "sine"; o.frequency.setValueAtTime(130, t); o.frequency.exponentialRampToValueAtTime(48, t + 0.18);
+    g.gain.setValueAtTime(0.9, t); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.22); o.connect(g); g.connect(snd.master); o.start(t); o.stop(t + 0.25);
+    burst(t, 0.09, 0.6, "lowpass", 500); },
+  turn() { const t = snd.ctx.currentTime; for (let i = 0; i < 4; i++) burst(t + i * 0.11, 0.025, 0.35, "highpass", 1800); burst(t + 0.5, 0.08, 0.4, "lowpass", 700); },
+  chime() { const t = snd.ctx.currentTime; blip(t, 988, 0.35, 0.18, "sine"); blip(t + 0.18, 1319, 0.5, 0.15, "sine"); },
+};
+function sfx(name) { if (snd.on && snd.ctx) SFX[name](); }
+
+/* ---------- estado de la escena ---------- */
+const scene = $("scene");
+let armRot = 0;
+const st = {
+  x(v) { $("dBody").style.transform = $("dArm").style.transform = `translateX(${v}px)`; },
+  armPose(p) { $("dArmRot").style.transform = { reach: "rotate(0deg)", near: "rotate(22deg)", down: "rotate(64deg)", up: "rotate(-62deg)" }[p]; },
+  head(p) { $("dHead").style.transform = p === "up" ? "rotate(-14deg)" : "rotate(0deg)"; },
+  lean(on) { $("dLean").style.transform = on ? "translateX(12px) rotate(7deg)" : "none"; },
+  walk(on) { $("dBody").classList.toggle("walk", on); },
+  vbar(f) { $("vbar").setAttribute("width", 34 * f); },
+  led(on, blinking) { $("led").setAttribute("opacity", on ? 1 : 0); $("led").classList.toggle("blink", !!blinking); },
+  show(id, v) { $(id).setAttribute("opacity", v); },
+  count(n, bump) { const b = $("count"); b.textContent = n; if (bump) { b.classList.add("bump"); setTimeout(() => b.classList.remove("bump"), 260); } },
+  turn() { armRot -= 60; $("tsRot").style.transform = `rotate(${armRot}deg)`; },
+  resetArm() { armRot = 0; const r = $("tsRot"); r.style.transition = "none"; r.style.transform = "rotate(0deg)"; void r.getBoundingClientRect(); r.style.transition = ""; },
+  shake() { const w = $("tsWrap"); w.classList.remove("shake"); void w.getBoundingClientRect(); w.classList.add("shake"); },
+  busy(on) { $("interior").classList.toggle("busy", on); },
+};
+function dur(ms) { [$("dBody"), $("dArm")].forEach((e) => (e.style.transitionDuration = ms + "ms")); }
+
+// Cada paso: estado inicial y eventos en el tiempo (ms). En modo instantáneo se aplican todos de una vez.
+const PLAY = [
+  { amb: "calm", init() { st.busy(false); st.show("crowd", 0); st.show("noise", 0); st.show("ear", 0); st.show("sight", 0); st.show("waistMark", 0); st.show("lock", 0); st.show("beep", 0); st.show("night", 0);
+      st.x(0); st.lean(false); st.head("front"); st.armPose("down"); st.vbar(0); st.led(false); st.count(0); st.resetArm(); st.walk(false); },
+    ev: [[250, () => st.armPose("near")], [650, () => { st.armPose("reach"); sfx("tap"); }], [800, () => st.vbar(1)],
+         [1450, () => { st.led(true); st.show("beep", 1); sfx("beep"); st.count(1, true); }],
+         [2300, () => { st.show("beep", 0); st.turn(); sfx("turn"); st.armPose("down"); }],
+         [2500, () => { dur(1700); st.walk(true); st.x(190); }], [4200, () => { st.walk(false); dur(600); }]] },
+  { amb: "busy", init() { st.busy(true); st.show("crowd", 1); st.show("noise", 1); st.show("ear", 0); st.show("sight", 0); st.show("waistMark", 0); st.show("lock", 0); st.show("beep", 0); st.show("night", 0);
+      st.x(0); st.lean(false); st.head("up"); st.armPose("down"); st.vbar(0); st.led(false); st.count(0); st.resetArm(); st.walk(false); },
+    ev: [[300, () => st.armPose("near")], [700, () => { st.armPose("reach"); sfx("tap"); }], [900, () => { $("vbar").style.transitionDuration = "1800ms"; st.vbar(0.45); }],
+         [1500, () => st.show("ear", 1)], [2800, () => ($("vbar").style.transitionDuration = "")]] },
+  { amb: "busy", init() { st.busy(true); st.show("crowd", 1); st.show("noise", 1); st.show("ear", 1); st.show("sight", 0); st.show("waistMark", 0); st.show("lock", 0); st.show("beep", 0); st.show("night", 0);
+      st.x(0); st.lean(false); st.head("up"); st.armPose("reach"); st.vbar(0.45); st.led(false); st.count(0); st.resetArm(); st.walk(false); },
+    ev: [[250, () => { st.armPose("up"); st.head("front"); }], [550, () => { st.lean(true); st.shake(); sfx("clunk"); st.show("lock", 1); }],
+         [900, () => { $("vbar").style.transitionDuration = "1500ms"; st.vbar(0.8); }], [1100, () => st.lean(false)],
+         [1500, () => { st.lean(true); st.shake(); sfx("clunk"); }], [2100, () => st.lean(false)], [2500, () => ($("vbar").style.transitionDuration = "")]] },
+  { amb: "busy", init() { st.busy(true); st.show("crowd", 1); st.show("noise", 1); st.show("ear", 1); st.show("sight", 0); st.show("waistMark", 0); st.show("lock", 0); st.show("beep", 0); st.show("night", 0);
+      st.x(0); st.lean(false); st.head("up"); st.armPose("up"); st.vbar(0.8); st.led(false); st.count(0); st.resetArm(); st.walk(false); },
+    ev: [[300, () => { st.vbar(1); st.show("sight", 1); }], [1000, () => { st.led(true); st.show("beep", 0.3); sfx("beep"); st.count(1, true); }],
+         [1700, () => st.show("waistMark", 1)]] },
+  { amb: "busy", init() { st.busy(true); st.show("crowd", 1); st.show("noise", 1); st.show("ear", 1); st.show("sight", 0); st.show("waistMark", 0); st.show("lock", 0); st.show("beep", 0); st.show("night", 0);
+      st.x(0); st.lean(false); st.head("up"); st.armPose("up"); st.vbar(1); st.led(true); st.count(1); st.resetArm(); st.walk(false); },
+    ev: [[300, () => st.armPose("near")], [700, () => { st.armPose("reach"); sfx("tap"); }],
+         [1100, () => { st.led(true, true); st.show("beep", 0.3); sfx("beep"); st.count(2, true); }],
+         [1900, () => { st.show("beep", 0); st.led(true); st.turn(); sfx("turn"); st.armPose("down"); st.show("ear", 0); st.head("front"); }],
+         [2100, () => { dur(1700); st.walk(true); st.x(190); }], [3800, () => { st.walk(false); dur(600); }]] },
+  { amb: "night", init() { st.busy(false); st.show("crowd", 1); st.show("noise", 0); st.show("ear", 0); st.show("sight", 0); st.show("waistMark", 0); st.show("lock", 0); st.show("beep", 0);
+      st.x(190); st.lean(false); st.head("front"); st.armPose("down"); st.vbar(0); st.led(false); st.count(2); st.walk(false); st.show("night", 0); },
+    ev: [[200, () => st.show("night", 1)], [700, () => sfx("chime")]] },
+];
+
+let step = 0, timers = [];
+const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+function run(i, instant) {
+  timers.forEach(clearTimeout); timers = [];
+  const P = PLAY[i], S = STEPS[i];
+  $("status").textContent = S.status; $("quote").textContent = "\"" + S.quote + "\"";
+  $("sys").textContent = S.sys; $("per").textContent = S.per;
+  $("step").textContent = "Paso " + (i + 1) + " de " + (N + 1);
+  $("dots").querySelectorAll("span").forEach((d, k) => d.classList.toggle("on", k < i));
+  if (snd.on) ambience(P.amb);
+  scene.classList.add("instant"); dur(600); P.init(); void scene.getBoundingClientRect();
+  if (instant || reduced) {
+    const was = snd.on; snd.on = false; P.ev.forEach(([, f]) => f()); snd.on = was;
+    st.walk(false); void scene.getBoundingClientRect(); scene.classList.remove("instant"); return;
+  }
+  scene.classList.remove("instant");
+  for (const [t, f] of P.ev) timers.push(setTimeout(f, t));
+}
+function setStep(v, instant) { step = clamp(Math.round(v), 0, N); run(step, instant); }
+function advance(dir) { setStep(dir > 0 ? (step >= N ? 0 : step + 1) : Math.max(0, step - 1)); }
+
+$("dots").innerHTML = STEPS.slice(1).map(() => "<span></span>").join("");
+$("btnReplay").addEventListener("click", (e) => { e.stopPropagation(); run(step); });
+$("btnSound").addEventListener("click", (e) => {
+  e.stopPropagation();
+  audioInit(); if (!snd.ctx) return;
+  snd.on = !snd.on;
+  const b = $("btnSound"); b.classList.toggle("on", snd.on); b.textContent = snd.on ? "Sonido activado" : "Activar sonido"; b.setAttribute("aria-pressed", snd.on);
+  if (snd.on) { snd.ctx.resume(); ambience(PLAY[step].amb); run(step); } else { ambience("off"); setTimeout(() => snd.ctx && !snd.on && snd.ctx.suspend(), 600); }
+});
+function fit() {
+  const s = Math.min(innerWidth / 1200, innerHeight / 640), el = $("stage");
+  el.style.transform = "scale(" + s + ")"; el.style.marginRight = 1200 * (s - 1) + "px"; el.style.marginBottom = 640 * (s - 1) + "px";
+}
+window.__fig = { set(v) { setStep(Number(v) * N, true); }, go(v) { setStep(Number(v) * N); } };
+addEventListener("message", (e) => { const m = e.data; if (!m || m.type !== "fig") return; window.__fig.set(m.value); });
+addEventListener("click", () => advance(1));
+addEventListener("keydown", (e) => { if (e.key === "ArrowRight" || e.key === " " || e.key === "Enter") advance(1); if (e.key === "ArrowLeft") advance(-1); });
+addEventListener("resize", fit);
+fit();
+const pose = new URLSearchParams(location.search).get("u");
+setStep(pose !== null ? Number(pose) * N : 0, pose !== null);
+</script>
+</body>
+</html>
