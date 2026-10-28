@@ -170,239 +170,265 @@
       ]
     },
     {
-      "sceneId": "defbigo",
+      "sceneId": "idea",
       "startTime": 32.599999999999994,
-      "endTime": 44.99999999999999,
-      "notes": "Minuto 20 a 35. Pregunta inicial: una función cuenta operaciones, ¿cómo la acotas con algo más simple? Primero se dibuja f(n) = 3n + 8, que es lo que cuenta un algoritmo. Luego aparece la recta 4n: queda por encima de f desde cierto punto. Ese punto es n0 = 8 (a partir de ahí 3n + 8 es menor o igual que 4n). La constante c escala a g(n) para que quede por encima; el par (c, n0) no es único, sirve cualquiera que cumpla la desigualdad. Conclusión: f(n) = O(n). Por debajo de n0 la tasa puede ser otra y no importa, porque Big-O se analiza para n grande. Fuente: Karumanchi (2017), cap. 1.",
+      "endTime": 44.8,
+      "notes": "Minuto 20 a 26. Esta diapositiva no usa matemática. Explicación sencilla para el docente: Big-O responde una sola pregunta, si los datos se multiplican por 10, cuántas veces más trabajo hace el programa. Hay tres respuestas típicas. Igual: el trabajo no cambia, como abrir el casillero que tiene tu número. Diez veces más: el trabajo crece al ritmo de los datos, como leer una lista de asistencia completa. Cien veces más: el trabajo crece mucho más rápido que los datos, como cuando todos los estudiantes se saludan con todos. Big-O es solo el nombre que se le da a esa forma de crecer. Dejar que adivinen antes de revelar cada tarjeta.",
       "fragments": [
-        34.99999999999999,
-        37.199999999999996,
-        39.39999999999999,
-        41.599999999999994,
-        43.8
+        34.8,
+        37,
+        39.199999999999996,
+        41.4,
+        43.599999999999994
+      ]
+    },
+    {
+      "sceneId": "cotidiano",
+      "startTime": 44.8,
+      "endTime": 56.199999999999996,
+      "notes": "Minuto 26 a 30. Antes de revelar, plantear el juego: pienso un número del 1 al 1000 y solo contesto mayor o menor; ¿cuántas preguntas necesitan? Dejar que prueben. Con la estrategia de preguntar por la mitad bastan 10 preguntas, y con 10 000 números solo 14: por eso O(log n) casi no crece. Resumen de las cuatro filas: O(1) es constante, no importa cuántos datos haya; O(log n) es casi constante, se descarta la mitad en cada paso; O(n) es lineal, hay que mirar todo una vez; O(n²) es cuadrático, cada dato se compara con todos los demás. Si preguntan por qué se llama O: es la letra con la que se escribe el orden de crecimiento, no hace falta más. Frase para decirles: Big-O no mide segundos, mide qué tan mal escala un programa.",
+      "fragments": [
+        47,
+        49,
+        51,
+        53,
+        55
+      ]
+    },
+    {
+      "sceneId": "defbigo",
+      "startTime": 56.199999999999996,
+      "endTime": 68.6,
+      "notes": "Minuto 30 a 40. Ahora la misma idea con un dibujo, sin fórmulas difíciles. La línea verde es el costo real de un programa: 3n + 8 pasos con n datos. Big-O pone un techo sencillo encima: la recta 4n. Al principio, con pocos datos, el costo real puede pasar por encima del techo (por eso se dice desde cierto tamaño); desde n = 8 el techo ya nunca se supera. Esas dos constantes se llaman c (cuántas veces se multiplica la fórmula simple, aquí 4) y n0 (desde qué tamaño vale el techo, aquí 8). Mensaje clave: con muchos datos solo importa la forma, una recta; los números sueltos como el 8 o el 3 no cambian esa forma. Por eso 3n + 8 y 100n se llaman igual: lineal. Si el grupo ya lo entiende con el dibujo, la definición con letras es solo ponerle nombre.",
+      "fragments": [
+        58.599999999999994,
+        60.8,
+        62.99999999999999,
+        65.19999999999999,
+        67.39999999999999
       ]
     },
     {
       "sceneId": "tasas",
-      "startTime": 44.99999999999999,
-      "endTime": 56.39999999999999,
-      "notes": "Minuto 35 a 40. Antes de mostrar la tabla, pedir una estimación: con n = 1 000, ¿cuántas operaciones cuesta una tasa exponencial 2ⁿ? Revelar de tres en tres filas. Las tres primeras casi no crecen, n log n y n² empiezan a pesar, y las dos últimas ya no son prácticas. El orden de menor a mayor crecimiento: constante, logarítmica, lineal, lineal logarítmica, cuadrática, cúbica, exponencial. El logaritmo es en base 2. Fuente: Karumanchi (2017), cap. 1.",
+      "startTime": 68.6,
+      "endTime": 80,
+      "notes": "Minuto 40 a 45. Antes de mostrar la tabla, pedir una estimación: con n = 1 000, ¿cuántas operaciones cuesta una tasa exponencial 2ⁿ? Revelar de tres en tres filas. Las tres primeras casi no crecen, n log n y n² empiezan a pesar, y las dos últimas ya no son prácticas. El orden de menor a mayor crecimiento: constante, logarítmica, lineal, lineal logarítmica, cuadrática, cúbica, exponencial. El logaritmo es en base 2. Fuente: Karumanchi (2017), cap. 1.",
       "fragments": [
-        47.199999999999996,
-        49.199999999999996,
-        51.199999999999996,
-        53.199999999999996,
-        55.199999999999996
+        70.8,
+        72.8,
+        74.8,
+        76.8,
+        78.8
       ]
     },
     {
       "sceneId": "curvas",
-      "startTime": 56.39999999999999,
-      "endTime": 69.99999999999999,
-      "notes": "Minuto 40 a 45. Pregunta: ¿qué curva creen que sale primero de la gráfica? Ir dibujando de la más suave a la más agresiva. Para n pequeño las curvas se parecen, y por eso medir con pocos datos engaña (es el caso de la lista de estudiantes con 30 registros). Para n grande se separan, y esa separación es lo que describe Big-O. La curva cuadrática sale de la gráfica cerca de n igual a 12 y la exponencial antes de n igual a 8.",
+      "startTime": 80,
+      "endTime": 93.6,
+      "notes": "Minuto 45 a 50. Pregunta: ¿qué curva creen que sale primero de la gráfica? Ir dibujando de la más suave a la más agresiva. Para n pequeño las curvas se parecen, y por eso medir con pocos datos engaña (es el caso de la lista de estudiantes con 30 registros). Para n grande se separan, y esa separación es lo que describe Big-O. La curva cuadrática sale de la gráfica cerca de n igual a 12 y la exponencial antes de n igual a 8.",
       "fragments": [
-        58.79999999999999,
-        60.79999999999999,
-        62.79999999999999,
-        64.79999999999998,
-        66.79999999999998,
-        68.79999999999998
+        82.4,
+        84.4,
+        86.4,
+        88.4,
+        90.4,
+        92.4
       ]
     },
     {
       "sceneId": "contar",
-      "startTime": 69.99999999999999,
-      "endTime": 82.19999999999999,
-      "notes": "Minuto 45 a 60. Ejemplo resuelto: sumar los n elementos de un arreglo. Pregunta inicial: ¿cuántas operaciones hace este código con n datos? Contar cada operación simple como una unidad: la asignación inicial cuesta 1; en cada vuelta se compara i con n, se suma y se incrementa i, 3 operaciones por vuelta, 3n en total; la comparación final cuesta 1 y devolver el resultado cuesta 1. Entonces f(n) = 3n + 3. Con c = 4 queda 3n + 3 ≤ 4n, que equivale a 3 ≤ n, y se cumple para todo n ≥ 3. Conclusión: O(n), con c = 4 y n0 = 3. Si alguien cuenta distinto, aceptarlo mientras el término dominante sea 3n: la tasa no cambia.",
+      "startTime": 93.6,
+      "endTime": 105.8,
+      "notes": "Minuto 50 a 65. Ejemplo resuelto: sumar los n elementos de un arreglo. Pregunta inicial: ¿cuántas operaciones hace este código con n datos? Contar cada operación simple como una unidad: la asignación inicial cuesta 1; en cada vuelta se compara i con n, se suma y se incrementa i, 3 operaciones por vuelta, 3n en total; la comparación final cuesta 1 y devolver el resultado cuesta 1. Entonces f(n) = 3n + 3. Con c = 4 queda 3n + 3 ≤ 4n, que equivale a 3 ≤ n, y se cumple para todo n ≥ 3. Conclusión: O(n), con c = 4 y n0 = 3. Si alguien cuenta distinto, aceptarlo mientras el término dominante sea 3n: la tasa no cambia.",
       "fragments": [
-        72.19999999999999,
-        74.39999999999999,
-        76.6,
-        78.79999999999998,
-        80.99999999999999
+        95.8,
+        98,
+        100.2,
+        102.39999999999999,
+        104.6
       ]
     },
     {
       "sceneId": "practicabigo",
-      "startTime": 82.19999999999999,
-      "endTime": 94.39999999999999,
-      "notes": "Minuto 60 a 75. Práctica guiada con f(n) = 5n² + 3n + 20. Dejar tres minutos antes de avanzar para que cada estudiante intente solo, y pedir que anoten qué valor de c eligen. Luego revelar paso por paso: término dominante 5n²; con c = 6 queda 3n + 20 ≤ n²; probar n = 6 (38 contra 36, no se cumple) y n = 7 (41 contra 49, sí se cumple, y se mantiene para valores mayores). Conclusión: O(n²) con c = 6 y n0 = 7. Otros pares también sirven, por ejemplo c = 8 con un n0 menor. Después, pregunta rápida: leer a[0] de un arreglo, ¿qué tasa tiene? O(1). Sugerencia: pausa de 10 minutos al terminar este bloque.",
+      "startTime": 105.8,
+      "endTime": 118,
+      "notes": "Minuto 65 a 80. Práctica guiada con f(n) = 5n² + 3n + 20. Dejar tres minutos antes de avanzar para que cada estudiante intente solo, y pedir que anoten qué valor de c eligen. Luego revelar paso por paso: término dominante 5n²; con c = 6 queda 3n + 20 ≤ n²; probar n = 6 (38 contra 36, no se cumple) y n = 7 (41 contra 49, sí se cumple, y se mantiene para valores mayores). Conclusión: O(n²) con c = 6 y n0 = 7. Otros pares también sirven, por ejemplo c = 8 con un n0 menor. Después, pregunta rápida: leer a[0] de un arreglo, ¿qué tasa tiene? O(1). Sugerencia: pausa de 10 minutos al terminar este bloque.",
       "fragments": [
-        84.39999999999999,
-        86.6,
-        88.8,
-        90.99999999999999,
-        93.19999999999999
+        108,
+        110.2,
+        112.4,
+        114.6,
+        116.8
       ]
     },
     {
       "sceneId": "tda",
-      "startTime": 94.39999999999999,
-      "endTime": 103.79999999999998,
+      "startTime": 118,
+      "endTime": 127.4,
       "notes": "Minuto 90 a 100. Pregunta provocadora: ¿una pila es lo mismo que un arreglo? Dejar que discutan. Luego revelar las dos tarjetas. Estructura de datos: una forma concreta de organizar los datos en la computadora (arreglo, lista enlazada). Tipo de dato abstracto: los datos más sus operaciones, descritos sin fijar cómo se implementan; consta de la declaración de los datos y la declaración de las operaciones. La pila es un TDA con mecanismo LIFO. Fuente: Karumanchi (2017), cap. 1.",
       "fragments": [
-        96.6,
-        98.6,
-        100.6,
-        102.6
+        120.2,
+        122.2,
+        124.2,
+        126.2
       ]
     },
     {
       "sceneId": "contrato",
-      "startTime": 103.79999999999998,
-      "endTime": 115.19999999999999,
+      "startTime": 127.4,
+      "endTime": 138.8,
       "notes": "Minuto 100 a 110. Mostrar el contrato como tabla de operaciones. Pregunta: ¿qué debe cumplirse antes de desapilar? La pila no puede estar vacía: eso es una precondición. La postcondición es lo que queda garantizado después: se quita el tope y el tamaño baja en uno. El costo se expresa con Big-O. Convención de trabajo de este curso (no definición de los libros): cada operación lleva precondición, postcondición y costo. Observar que el contrato no menciona arreglos ni nodos. El costo O(1) es el esperado; depende de la implementación elegida, y eso se verá en la diapositiva siguiente.",
       "fragments": [
-        105.99999999999999,
-        107.99999999999999,
-        109.99999999999999,
-        111.99999999999999,
-        113.99999999999999
+        129.6,
+        131.6,
+        133.6,
+        135.6,
+        137.6
       ]
     },
     {
       "sceneId": "impl",
-      "startTime": 115.19999999999999,
-      "endTime": 127.6,
+      "startTime": 138.8,
+      "endTime": 151.20000000000002,
       "notes": "Minuto 110 a 120. Pregunta: si el contrato no dice cómo se guardan los datos, ¿dónde viven? Respuesta: en la estructura que se elija. La misma pila puede implementarse con un arreglo (apilar escribe en la siguiente celda libre) o con una lista enlazada (apilar crea un nodo y lo enlaza al tope anterior). El TDA es el mismo; cambian la memoria que usa y los costos de cada operación. Esa es la razón de estudiar cómo se guardan arreglos y nodos en memoria, que es lo siguiente.",
       "fragments": [
-        117.6,
-        119.8,
-        122,
-        124.19999999999999,
-        126.39999999999999
+        141.20000000000002,
+        143.4,
+        145.60000000000002,
+        147.8,
+        150.00000000000003
       ]
     },
     {
       "sceneId": "arreglo",
-      "startTime": 127.6,
-      "endTime": 140,
+      "startTime": 151.20000000000002,
+      "endTime": 163.60000000000002,
       "notes": "Minuto 120 a 130. Pregunta con cálculo: el arreglo empieza en la dirección 1000 y cada entero ocupa 4 bytes, ¿dónde está el índice 2? Dejar que lo calculen antes de avanzar. Un arreglo es una secuencia de posiciones de la memoria central, adyacentes, con datos del mismo tipo (Joyanes, 2008). La dirección del elemento i es B + (i − L) × S, con B la base, L el índice inferior y S el tamaño en bytes. Es una sola cuenta, sin recorrer nada: por eso acceder cuesta O(1) y se llama acceso aleatorio. Que los datos estén juntos además favorece la memoria caché.",
       "fragments": [
-        130,
-        132.2,
-        134.4,
-        136.6,
-        138.8
+        153.60000000000002,
+        155.8,
+        158.00000000000003,
+        160.20000000000002,
+        162.40000000000003
       ]
     },
     {
       "sceneId": "lista",
-      "startTime": 140,
-      "endTime": 152.4,
+      "startTime": 163.60000000000002,
+      "endTime": 176.00000000000003,
       "notes": "Minuto 130 a 140. Pregunta: sin fórmula, ¿cómo llegas al tercer dato? Mostrar los mismos datos 12, 7, 31 y 5, ahora en nodos con direcciones dispersas: 1040, 1072, 1096 y 1024. Cada nodo guarda el dato y un enlace al siguiente; el último apunta a null; la cabeza guarda la dirección del primero. Para llegar al tercero hay que seguir los enlaces desde la cabeza: tres saltos, contando la flecha de la cabeza. Con n nodos pueden ser n saltos, y por eso acceder cuesta O(n). Ventaja: la lista crece sin copiar nada; costo: un enlace extra por nodo. Fuente: Joyanes (2008) y Karumanchi (2017).",
       "fragments": [
-        142.4,
-        144.6,
-        146.8,
-        149,
-        151.20000000000002
+        166.00000000000003,
+        168.20000000000002,
+        170.40000000000003,
+        172.60000000000002,
+        174.80000000000004
       ]
     },
     {
       "sceneId": "insertar",
-      "startTime": 152.4,
-      "endTime": 166.8,
+      "startTime": 176.00000000000003,
+      "endTime": 190.40000000000003,
       "notes": "Minuto 140 a 150. Volver al caso inicial: insertar un dato al inicio. Pregunta: ¿cuál de las dos estructuras trabaja menos? Primer avance: el estado inicial, los mismos cuatro datos en cada estructura. Segundo avance: en el arreglo hay que correr los cuatro datos una posición a la derecha, uno por uno desde el último, y recién entonces escribir el 9: 4 desplazamientos y 1 escritura, que con n datos son n. Tercer avance: en la lista se crea un nodo con el 9, su enlace apunta al primero actual y la cabeza apunta al nuevo: 2 cambios de enlace, sin importar cuántos nodos haya. Cuarto: con 200 000 datos son 200 000 pasos contra 2. Esto explica la demora del caso con el que empezó la clase.",
       "fragments": [
-        154.8,
-        157.5,
-        160.20000000000002,
-        162.9,
-        165.60000000000002
+        178.40000000000003,
+        181.10000000000002,
+        183.80000000000004,
+        186.50000000000003,
+        189.20000000000005
       ]
     },
     {
       "sceneId": "costos",
-      "startTime": 166.8,
-      "endTime": 178.20000000000002,
+      "startTime": 190.40000000000003,
+      "endTime": 201.80000000000004,
       "notes": "Minuto 150 a 155. Pedir una predicción por fila antes de revelar: ¿qué estructura gana? Acceder por posición: el arreglo, O(1), porque calcula la dirección; la lista recorre enlaces, O(n). Insertar al inicio y borrar el primero: la lista, O(1), porque cambia dos enlaces o mueve la cabeza; el arreglo desplaza, O(n). Memoria: la lista gasta un enlace por nodo pero pide un nodo por vez; el arreglo no tiene enlaces pero exige un bloque contiguo. Conclusión: ninguna gana en todas las filas; lo que una gana en acceso lo pierde en inserción. Fuente: Karumanchi (2017), cap. 3.",
       "fragments": [
-        169,
-        171,
-        173,
-        175,
-        177
+        192.60000000000002,
+        194.60000000000002,
+        196.60000000000002,
+        198.60000000000002,
+        200.60000000000002
       ]
     },
     {
       "sceneId": "pe",
-      "startTime": 178.20000000000002,
-      "endTime": 188.20000000000002,
+      "startTime": 201.80000000000004,
+      "endTime": 211.80000000000004,
       "notes": "Minuto 150 a 175. Se arma en clase con la plantilla de la actividad en Canvas (45 minutos en total; si el tiempo no alcanza, se termina en la siguiente sesión según indique la actividad). Recomendar colecciones del entorno: pasajes de un recorrido, canciones de una lista, pedidos de una cafetería, de cinco a siete datos. Insistir en dos controles de calidad de la lista de verificación: las direcciones de la lista no son consecutivas y la desigualdad de c y n0 se comprueba con un valor concreto. Recorrer el aula y pedir a cada pareja que calcule en voz alta la dirección de un elemento.",
       "fragments": [
-        180.4,
-        182.6,
-        184.8,
-        187
+        204.00000000000003,
+        206.20000000000002,
+        208.40000000000003,
+        210.60000000000002
       ]
     },
     {
       "sceneId": "elegir",
-      "startTime": 188.20000000000002,
-      "endTime": 201.60000000000002,
+      "startTime": 211.80000000000004,
+      "endTime": 225.20000000000005,
       "notes": "Minuto 175 en adelante (o siguiente sesión). Pregunta abierta: ¿qué es mejor, un arreglo o una lista enlazada? Aceptar respuestas y cerrar con: depende de la operación dominante. Los cuatro pasos: listar las operaciones del caso, estimar cuáles se repiten más, leer su costo en la tabla, revisar restricciones de memoria (si no se sabe cuántos elementos habrá, o un bloque contiguo grande puede no estar disponible, la lista gana puntos). La justificación se escribe con la operación dominante y un inconveniente reconocido. Una frase como la lista es más moderna no sirve; una justificación con costos sí, porque cualquiera puede comprobarla.",
       "fragments": [
-        190.4,
-        192.4,
-        194.4,
-        196.4,
-        198.4,
-        200.4
+        214.00000000000003,
+        216.00000000000003,
+        218.00000000000003,
+        220.00000000000003,
+        222.00000000000003,
+        224.00000000000003
       ]
     },
     {
       "sceneId": "casos",
-      "startTime": 201.60000000000002,
-      "endTime": 212.20000000000002,
+      "startTime": 225.20000000000005,
+      "endTime": 235.80000000000004,
       "notes": "Dos casos para decidir. Pedir la decisión por escrito antes de revelar cada respuesta. Caso A, calificaciones: 40 notas de un parcial, se consulta la posición k casi siempre y casi nunca se agregan notas; arreglo, porque acceder por posición cuesta O(1) y no hay inserciones que obliguen a desplazar; inconveniente: tamaño fijo de antemano y bloque contiguo. Caso B, lista de espera de un consultorio: las urgencias se colocan al inicio y cada pocos minutos se retira el primero; lista enlazada, porque insertar al inicio y borrar el primero cuestan O(1) y en un arreglo serían O(n); inconveniente: un enlace por nodo y acceso a la posición k en O(n), algo que este caso casi no necesita. Verificar que cada elección cite el costo de la operación dominante.",
       "fragments": [
-        203.8,
-        206.20000000000002,
-        208.60000000000002,
-        211
+        227.40000000000003,
+        229.80000000000004,
+        232.20000000000005,
+        234.60000000000002
       ]
     },
     {
       "sceneId": "situaciones",
-      "startTime": 212.20000000000002,
-      "endTime": 222.20000000000002,
+      "startTime": 235.80000000000004,
+      "endTime": 245.80000000000004,
       "notes": "Transferencia con tres situaciones que no aparecieron antes. Una por avance: pedir que respondan con un concepto de la semana y tomen posición. A: la afirmación no es correcta. Big-O no se deduce de dos mediciones, describe cómo crece el costo con n; con cien mil datos el tiempo se multiplicó por diez cuando n se multiplicó por diez, lo que sugiere crecimiento lineal, y los 2 milisegundos de las primeras mediciones pueden ser un costo fijo de arranque. B: el contrato no debe mencionar el arreglo ni el desplazamiento, eso es implementación; debe decir qué datos guarda y qué garantiza cada operación, con su costo esperado. C: sí es buena representación, porque avanzar o retroceder por posición cuesta O(1) y agregar al final no obliga a desplazar; habría que reconsiderarla si se insertaran canciones al inicio con frecuencia.",
       "fragments": [
-        214.4,
-        216.6,
-        218.8,
-        221
+        238.00000000000003,
+        240.20000000000002,
+        242.40000000000003,
+        244.60000000000002
       ]
     },
     {
       "sceneId": "recuperacion",
-      "startTime": 222.20000000000002,
-      "endTime": 232.20000000000002,
+      "startTime": 245.80000000000004,
+      "endTime": 255.80000000000004,
       "notes": "Cierre de contenido. Pedir que cierren cuadernos y pantallas y respondan por escrito, en una o dos oraciones cada una, y contrastar solo al terminar. Respuestas esperadas: 1. O(g(n)) es el conjunto de f(n) para las que existen c y n0 positivos con 0 ≤ f(n) ≤ c · g(n) para todo n ≥ n0. 2. Declaración de los datos y declaración de las operaciones; la estructura de datos es la organización concreta de los datos, y el TDA no fija la implementación. 3. En la lista solo se cambian dos enlaces; en el arreglo hay que desplazar todos los elementos una posición. Recuperar sin apuntes consolida mejor que releer.",
       "fragments": [
-        224.4,
-        226.6,
-        228.8,
-        231
+        248.00000000000003,
+        250.20000000000002,
+        252.40000000000003,
+        254.60000000000002
       ]
     },
     {
       "sceneId": "cierre",
-      "startTime": 232.20000000000002,
-      "endTime": 240.20000000000002,
+      "startTime": 255.80000000000004,
+      "endTime": 263.80000000000007,
       "notes": "Cierre. Presentar la TA-1.1: ficha de una página de un TDA a elegir entre pila, cola o lista, con la plantilla de Canvas. Debe incluir datos, operaciones con precondición, postcondición y costo, la representación elegida (arreglo o nodos) y su justificación con los costos de las operaciones que más se usarían en un caso de su entorno. Errores frecuentes: mencionar arreglos o punteros dentro del contrato, justificar sin citar costos, olvidar un inconveniente de la representación elegida. Cerrar con la pregunta final y dejarla sin responder.",
       "fragments": [
-        234.60000000000002,
-        236.8,
-        239.00000000000003
+        258.20000000000005,
+        260.40000000000003,
+        262.6
       ]
     }
   ],
   "slideSequences": []
 }
     </script>
-    <div id="root" data-composition-id="main" data-start="0" data-duration="240.2" data-width="1920" data-height="1080">
+    <div id="root" data-composition-id="main" data-start="0" data-duration="263.8" data-width="1920" data-height="1080">
 
       <section id="portada" class="clip slide dark" data-start="0" data-duration="6.4" data-track-index="0" data-label="Portada" data-frags="0" data-enter="3.2" data-step="1" data-composition-id="portada" data-width="1920" data-height="1080">
         <div class="frame" id="portada-frame" style="display:block">
@@ -451,12 +477,36 @@
         </div>
       </section>
 
-      <section id="defbigo" class="clip slide" data-start="32.599999999999994" data-duration="12.4" data-track-index="0" data-label="Big-O: cota superior" data-frags="4" data-enter="2.4" data-step="2.2" data-composition-id="defbigo" data-width="1920" data-height="1080">
+      <section id="idea" class="clip slide" data-start="32.599999999999994" data-duration="12.2" data-track-index="0" data-label="Big-O en una idea" data-frags="4" data-enter="2.2" data-step="2.2" data-composition-id="idea" data-width="1920" data-height="1080">
+        <div class="frame" id="idea-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl ">Big-O en una idea</h1>
+      <p class="ask mid" style="left:120px;top:430px;width:1680px" data-out="1">Si los datos se multiplican por 10, ¿cuántas veces más trabaja el programa?</p>
+      <div class="card " data-k="1" style="left:120px;top:290px;width:540px;height:470px"><h3>Igual</h3><p class="num">× 1</p><p>Abrir el casillero con tu número.</p></div>
+      <div class="card " data-k="2" style="left:690px;top:290px;width:540px;height:470px"><h3>10 veces más</h3><p class="num">× 10</p><p>Leer la lista de asistencia completa.</p></div>
+      <div class="card dk" data-k="3" style="left:1260px;top:290px;width:540px;height:470px"><h3>100 veces más</h3><p class="num">× 100</p><p>Todos los estudiantes se saludan entre sí.</p></div>
+      <p class="punch" data-k="4"  style="left:120px;top:850px;width:1680px">Big-O es el nombre de esa forma de crecer.</p>
+        </div>
+      </section>
+
+      <section id="cotidiano" class="clip slide" data-start="44.8" data-duration="11.399999999999999" data-track-index="0" data-label="Cuatro ejemplos cotidianos" data-frags="4" data-enter="2.2" data-step="2" data-composition-id="cotidiano" data-width="1920" data-height="1080">
+        <div class="frame" id="cotidiano-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl ">Cuatro ejemplos de la vida diaria</h1>
+      <p class="ask mid" style="left:120px;top:430px;width:1680px" data-out="1">Pienso un número del 1 al 1000 y solo digo mayor o menor. ¿Cuántas preguntas necesitas?</p>
+      <div class="thd" data-k="1" style="left:120px;top:280px;width:1680px;height:76px"><div class="c" style="left:30px;width:330px">Tasa</div><div class="c" style="left:370px;width:880px">Ejemplo</div><div class="c" style="left:1290px;width:360px">Datos × 10</div></div>
+      <div class="x-tr " data-k="1" style="left:120px;top:364px;width:1680px;height:118px"><div class="c term" style="left:30px;width:330px">O(1)</div><div class="c " style="left:370px;width:880px">Abrir el casillero con tu número</div><div class="c okc" style="left:1290px;width:360px">Igual</div></div><div class="x-tr " data-k="2" style="left:120px;top:494px;width:1680px;height:118px"><div class="c term" style="left:30px;width:330px">O(log n)</div><div class="c " style="left:370px;width:880px">Adivinar el número: 10 preguntas con 1 000 opciones y 14 con 10 000</div><div class="c okc" style="left:1290px;width:360px">Casi igual</div></div><div class="x-tr " data-k="3" style="left:120px;top:624px;width:1680px;height:118px"><div class="c term" style="left:30px;width:330px">O(n)</div><div class="c " style="left:370px;width:880px">Buscar un nombre en una lista sin orden</div><div class="c badc" style="left:1290px;width:360px">10 veces más</div></div><div class="x-tr " data-k="4" style="left:120px;top:754px;width:1680px;height:118px"><div class="c term" style="left:30px;width:330px">O(n²)</div><div class="c " style="left:370px;width:880px">Todos los estudiantes se saludan entre sí</div><div class="c badc" style="left:1290px;width:360px">100 veces más</div></div>
+        </div>
+      </section>
+
+      <section id="defbigo" class="clip slide" data-start="56.199999999999996" data-duration="12.4" data-track-index="0" data-label="Big-O es un techo" data-frags="4" data-enter="2.4" data-step="2.2" data-composition-id="defbigo" data-width="1920" data-height="1080">
         <div class="frame" id="defbigo-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
           
-      <h1 class="ttl ">Big-O: una cota superior para f(n)</h1>
-      <p class="ask mid" style="left:120px;top:430px;width:1680px" data-out="1">Una función cuenta las operaciones. ¿Cómo la acotas con algo más simple?</p>
+      <h1 class="ttl ">Big-O es un techo para el costo</h1>
+      <p class="ask mid" style="left:120px;top:430px;width:1680px" data-out="1">Con muchos datos, ¿hasta dónde puede llegar el costo?</p>
       <svg class="ov" viewBox="0 0 1920 1080" width="1920" height="1080">
         <g class="axes"><line x1="180" y1="880" x2="1030" y2="880" stroke="#5a5257" stroke-width="4"/><line x1="180" y1="880" x2="180" y2="290" stroke="#5a5257" stroke-width="4"/></g>
         <path class="cvf" pathLength="1" d="M180 822L980 474" style="stroke:#0c6b62;stroke-width:9"/>
@@ -465,17 +515,17 @@
         <circle class="n0d" cx="580" cy="648" r="14" fill="#e8a920"/>
       </svg>
       <p class="axl" data-k="1" style="left:560px;top:895px;width:420px">tamaño de la entrada, n</p>
-      <p class="lab" data-k="2" style="left:270px;top:420px;width:420px;color:var(--wine)">c · g(n) = 4n</p>
-      <p class="lab" data-k="1" style="left:700px;top:625px;width:360px;color:var(--teal)">f(n) = 3n + 8</p>
+      <p class="lab" data-k="2" style="left:270px;top:420px;width:420px;color:var(--wine)">techo: 4n</p>
+      <p class="lab" data-k="1" style="left:640px;top:700px;width:420px;color:var(--teal)">costo real: 3n + 8</p>
       <p class="lab" data-k="3" style="left:400px;top:790px;width:170px;color:var(--amber);text-align:right">n0 = 8</p>
-      <p class="capt" data-k="1" style="left:1090px;top:300px;width:710px">f(n) = O(g(n)) si existen constantes positivas c y n0 con f(n) ≤ c · g(n) para todo n ≥ n0</p>
-      <p class="capt2" data-k="2" style="left:1090px;top:560px;width:710px">Se elige g(n) = n y c = 4</p>
-      <p class="capt2" data-k="3" style="left:1090px;top:660px;width:710px">Desde n0 = 8, 3n + 8 ≤ 4n</p>
-      <p class="punch" data-k="4" style="left:1090px;top:790px;width:710px;font-size:56px">f(n) = O(n)<br>con c = 4 y n0 = 8</p>
+      <p class="capt" data-k="1" style="left:1090px;top:300px;width:710px">Desde cierto tamaño, el costo real queda por debajo de una fórmula simple multiplicada por una constante</p>
+      <p class="capt2" data-k="2" style="left:1090px;top:560px;width:710px">Techo: 4n, o sea n por c = 4</p>
+      <p class="capt2" data-k="3" style="left:1090px;top:660px;width:710px">Desde n0 = 8 el techo ya no se supera</p>
+      <p class="punch" data-k="4" style="left:1090px;top:790px;width:710px;font-size:56px">Costo O(n): crece en línea recta</p>
         </div>
       </section>
 
-      <section id="tasas" class="clip slide" data-start="44.99999999999999" data-duration="11.399999999999999" data-track-index="0" data-label="Siete tasas de crecimiento" data-frags="4" data-enter="2.2" data-step="2" data-composition-id="tasas" data-width="1920" data-height="1080">
+      <section id="tasas" class="clip slide" data-start="68.6" data-duration="11.399999999999999" data-track-index="0" data-label="Siete tasas de crecimiento" data-frags="4" data-enter="2.2" data-step="2" data-composition-id="tasas" data-width="1920" data-height="1080">
         <div class="frame" id="tasas-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
           
@@ -487,7 +537,7 @@
         </div>
       </section>
 
-      <section id="curvas" class="clip slide" data-start="56.39999999999999" data-duration="13.6" data-track-index="0" data-label="Las curvas se separan" data-frags="5" data-enter="2.4" data-step="2" data-composition-id="curvas" data-width="1920" data-height="1080">
+      <section id="curvas" class="clip slide" data-start="80" data-duration="13.6" data-track-index="0" data-label="Las curvas se separan" data-frags="5" data-enter="2.4" data-step="2" data-composition-id="curvas" data-width="1920" data-height="1080">
         <div class="frame" id="curvas-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
           
@@ -510,7 +560,7 @@
         </div>
       </section>
 
-      <section id="contar" class="clip slide" data-start="69.99999999999999" data-duration="12.2" data-track-index="0" data-label="Contar operaciones" data-frags="4" data-enter="2.2" data-step="2.2" data-composition-id="contar" data-width="1920" data-height="1080">
+      <section id="contar" class="clip slide" data-start="93.6" data-duration="12.2" data-track-index="0" data-label="Contar operaciones" data-frags="4" data-enter="2.2" data-step="2.2" data-composition-id="contar" data-width="1920" data-height="1080">
         <div class="frame" id="contar-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
           
@@ -528,7 +578,7 @@ devolver suma</div>
         </div>
       </section>
 
-      <section id="practicabigo" class="clip slide" data-start="82.19999999999999" data-duration="12.2" data-track-index="0" data-label="Tu turno: hallar c y n0" data-frags="4" data-enter="2.2" data-step="2.2" data-composition-id="practicabigo" data-width="1920" data-height="1080">
+      <section id="practicabigo" class="clip slide" data-start="105.8" data-duration="12.2" data-track-index="0" data-label="Tu turno: hallar c y n0" data-frags="4" data-enter="2.2" data-step="2.2" data-composition-id="practicabigo" data-width="1920" data-height="1080">
         <div class="frame" id="practicabigo-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
           
@@ -541,7 +591,7 @@ devolver suma</div>
         </div>
       </section>
 
-      <section id="tda" class="clip slide" data-start="94.39999999999999" data-duration="9.399999999999999" data-track-index="0" data-label="Estructura de datos y TDA" data-frags="3" data-enter="2.2" data-step="2" data-composition-id="tda" data-width="1920" data-height="1080">
+      <section id="tda" class="clip slide" data-start="118" data-duration="9.399999999999999" data-track-index="0" data-label="Estructura de datos y TDA" data-frags="3" data-enter="2.2" data-step="2" data-composition-id="tda" data-width="1920" data-height="1080">
         <div class="frame" id="tda-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
           
@@ -553,7 +603,7 @@ devolver suma</div>
         </div>
       </section>
 
-      <section id="contrato" class="clip slide" data-start="103.79999999999998" data-duration="11.399999999999999" data-track-index="0" data-label="El contrato de la pila" data-frags="4" data-enter="2.2" data-step="2" data-composition-id="contrato" data-width="1920" data-height="1080">
+      <section id="contrato" class="clip slide" data-start="127.4" data-duration="11.399999999999999" data-track-index="0" data-label="El contrato de la pila" data-frags="4" data-enter="2.2" data-step="2" data-composition-id="contrato" data-width="1920" data-height="1080">
         <div class="frame" id="contrato-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
           
@@ -565,7 +615,7 @@ devolver suma</div>
         </div>
       </section>
 
-      <section id="impl" class="clip slide" data-start="115.19999999999999" data-duration="12.4" data-track-index="0" data-label="Un contrato, dos estructuras" data-frags="4" data-enter="2.4" data-step="2.2" data-composition-id="impl" data-width="1920" data-height="1080">
+      <section id="impl" class="clip slide" data-start="138.8" data-duration="12.4" data-track-index="0" data-label="Un contrato, dos estructuras" data-frags="4" data-enter="2.4" data-step="2.2" data-composition-id="impl" data-width="1920" data-height="1080">
         <div class="frame" id="impl-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
           
@@ -589,7 +639,7 @@ devolver suma</div>
         </div>
       </section>
 
-      <section id="arreglo" class="clip slide" data-start="127.6" data-duration="12.4" data-track-index="0" data-label="Arreglo: celdas contiguas" data-frags="4" data-enter="2.4" data-step="2.2" data-composition-id="arreglo" data-width="1920" data-height="1080">
+      <section id="arreglo" class="clip slide" data-start="151.20000000000002" data-duration="12.4" data-track-index="0" data-label="Arreglo: celdas contiguas" data-frags="4" data-enter="2.4" data-step="2.2" data-composition-id="arreglo" data-width="1920" data-height="1080">
         <div class="frame" id="arreglo-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
           
@@ -605,7 +655,7 @@ devolver suma</div>
         </div>
       </section>
 
-      <section id="lista" class="clip slide" data-start="140" data-duration="12.4" data-track-index="0" data-label="Lista enlazada: nodos dispersos" data-frags="4" data-enter="2.4" data-step="2.2" data-composition-id="lista" data-width="1920" data-height="1080">
+      <section id="lista" class="clip slide" data-start="163.60000000000002" data-duration="12.4" data-track-index="0" data-label="Lista enlazada: nodos dispersos" data-frags="4" data-enter="2.4" data-step="2.2" data-composition-id="lista" data-width="1920" data-height="1080">
         <div class="frame" id="lista-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
           
@@ -627,7 +677,7 @@ devolver suma</div>
         </div>
       </section>
 
-      <section id="insertar" class="clip slide" data-start="152.4" data-duration="14.4" data-track-index="0" data-label="Insertar al inicio" data-frags="4" data-enter="2.4" data-step="2.7" data-composition-id="insertar" data-width="1920" data-height="1080">
+      <section id="insertar" class="clip slide" data-start="176.00000000000003" data-duration="14.4" data-track-index="0" data-label="Insertar al inicio" data-frags="4" data-enter="2.4" data-step="2.7" data-composition-id="insertar" data-width="1920" data-height="1080">
         <div class="frame" id="insertar-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
           
@@ -655,7 +705,7 @@ devolver suma</div>
         </div>
       </section>
 
-      <section id="costos" class="clip slide" data-start="166.8" data-duration="11.399999999999999" data-track-index="0" data-label="Tabla de costos" data-frags="4" data-enter="2.2" data-step="2" data-composition-id="costos" data-width="1920" data-height="1080">
+      <section id="costos" class="clip slide" data-start="190.40000000000003" data-duration="11.399999999999999" data-track-index="0" data-label="Tabla de costos" data-frags="4" data-enter="2.2" data-step="2" data-composition-id="costos" data-width="1920" data-height="1080">
         <div class="frame" id="costos-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
           
@@ -667,7 +717,7 @@ devolver suma</div>
         </div>
       </section>
 
-      <section id="pe" class="clip slide" data-start="178.20000000000002" data-duration="10" data-track-index="0" data-label="Tu turno: PE-1.1" data-frags="3" data-enter="2.2" data-step="2.2" data-composition-id="pe" data-width="1920" data-height="1080">
+      <section id="pe" class="clip slide" data-start="201.80000000000004" data-duration="10" data-track-index="0" data-label="Tu turno: PE-1.1" data-frags="3" data-enter="2.2" data-step="2.2" data-composition-id="pe" data-width="1920" data-height="1080">
         <div class="frame" id="pe-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
           
@@ -683,7 +733,7 @@ devolver suma</div>
         </div>
       </section>
 
-      <section id="elegir" class="clip slide" data-start="188.20000000000002" data-duration="13.399999999999999" data-track-index="0" data-label="Elegir según los costos" data-frags="5" data-enter="2.2" data-step="2" data-composition-id="elegir" data-width="1920" data-height="1080">
+      <section id="elegir" class="clip slide" data-start="211.80000000000004" data-duration="13.399999999999999" data-track-index="0" data-label="Elegir según los costos" data-frags="5" data-enter="2.2" data-step="2" data-composition-id="elegir" data-width="1920" data-height="1080">
         <div class="frame" id="elegir-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
           
@@ -697,7 +747,7 @@ devolver suma</div>
         </div>
       </section>
 
-      <section id="casos" class="clip slide" data-start="201.60000000000002" data-duration="10.599999999999998" data-track-index="0" data-label="Dos casos, una decisión" data-frags="3" data-enter="2.2" data-step="2.4" data-composition-id="casos" data-width="1920" data-height="1080">
+      <section id="casos" class="clip slide" data-start="225.20000000000005" data-duration="10.599999999999998" data-track-index="0" data-label="Dos casos, una decisión" data-frags="3" data-enter="2.2" data-step="2.4" data-composition-id="casos" data-width="1920" data-height="1080">
         <div class="frame" id="casos-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
           
@@ -710,7 +760,7 @@ devolver suma</div>
         </div>
       </section>
 
-      <section id="situaciones" class="clip slide" data-start="212.20000000000002" data-duration="10" data-track-index="0" data-label="Tres situaciones nuevas" data-frags="3" data-enter="2.2" data-step="2.2" data-composition-id="situaciones" data-width="1920" data-height="1080">
+      <section id="situaciones" class="clip slide" data-start="235.80000000000004" data-duration="10" data-track-index="0" data-label="Tres situaciones nuevas" data-frags="3" data-enter="2.2" data-step="2.2" data-composition-id="situaciones" data-width="1920" data-height="1080">
         <div class="frame" id="situaciones-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
           
@@ -721,7 +771,7 @@ devolver suma</div>
         </div>
       </section>
 
-      <section id="recuperacion" class="clip slide" data-start="222.20000000000002" data-duration="10" data-track-index="0" data-label="Recuperación sin apuntes" data-frags="3" data-enter="2.2" data-step="2.2" data-composition-id="recuperacion" data-width="1920" data-height="1080">
+      <section id="recuperacion" class="clip slide" data-start="245.80000000000004" data-duration="10" data-track-index="0" data-label="Recuperación sin apuntes" data-frags="3" data-enter="2.2" data-step="2.2" data-composition-id="recuperacion" data-width="1920" data-height="1080">
         <div class="frame" id="recuperacion-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
           
@@ -733,7 +783,7 @@ devolver suma</div>
         </div>
       </section>
 
-      <section id="cierre" class="clip slide dark" data-start="232.20000000000002" data-duration="8" data-track-index="0" data-label="Cierre y TA-1.1" data-frags="2" data-enter="2.4" data-step="2.2" data-composition-id="cierre" data-width="1920" data-height="1080">
+      <section id="cierre" class="clip slide dark" data-start="255.80000000000004" data-duration="8" data-track-index="0" data-label="Cierre y TA-1.1" data-frags="2" data-enter="2.4" data-step="2.2" data-composition-id="cierre" data-width="1920" data-height="1080">
         <div class="frame" id="cierre-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
           
@@ -799,7 +849,7 @@ devolver suma</div>
 
       const EXIT = 0.5;
       const tl = gsap.timeline({ paused: true });
-      tl.to({}, { duration: 240.2 }, 0);
+      tl.to({}, { duration: 263.8 }, 0);
       const real = engineHosted ? tl : gsap.timeline({ paused: true });
 
       const VW = 1920, VH = 1080;
