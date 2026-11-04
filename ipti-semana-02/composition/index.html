@@ -460,178 +460,159 @@
       ]
     },
     {
-      "sceneId": "soa-figura",
-      "startTime": 24,
-      "endTime": 29.6,
-      "notes": "La SOA tradicional ordena los servicios en capas. Arriba, los servicios de negocio, que son la puerta de entrada y no tienen lógica propia. Un motor de orquestación los conecta con los servicios empresariales, que guardan la lógica compartida y varios servicios de negocio reutilizan. Aparte están los servicios de aplicación, de una sola aplicación, y los de infraestructura, como autenticación y auditoría. Basta con que entiendan que todo pasa por el motor central. Fuente: Richards y Ford (2020)."
-    },
-    {
       "sceneId": "soa-costo",
-      "startTime": 29.6,
-      "endTime": 39.6,
+      "startTime": 24,
+      "endTime": 34,
       "notes": "Aquí está la paradoja. Si todas las divisiones usan un único servicio de Customer, cualquier cambio en su interfaz llega a todos los consumidores a la vez, como fichas de dominó. Ya no se puede cambiar de a poco: hay que desplegar y probar todo junto. El motor central y la base de datos compartida son los puntos donde todo queda atado. Reutilizar ahorra código pero cobra en acoplamiento. Fuente: Richards y Ford (2020).",
       "fragments": [
-        32,
-        33.6,
-        35.2,
-        36.8,
-        38.4
+        26.4,
+        28,
+        29.599999999999998,
+        31.2,
+        32.8
       ]
     },
     {
       "sceneId": "sync-figura",
-      "startTime": 39.6,
-      "endTime": 45.2,
-      "notes": "La primera decisión al diseñar un contrato es si la comunicación es síncrona o asíncrona. Síncrona: el cliente pregunta y se queda esperando la respuesta, como una llamada telefónica. Asíncrona: el emisor deja un mensaje y sigue con lo suyo, como un correo; un intermediario llamado broker lo reparte a quien corresponda. En el síncrono los dos quedan atados en el tiempo; en el asíncrono el emisor ni siquiera conoce a los consumidores. Fuente: Newman (2015)."
-    },
-    {
-      "sceneId": "coordinar",
-      "startTime": 45.2,
-      "endTime": 55.2,
-      "notes": "Cuatro términos que usarán todo el semestre. Solicitud-respuesta: el cliente pide y espera. Eventos: el emisor solo anuncia que algo pasó, sin decir qué hacer. Orquestación: un cerebro central dirige un proceso que cruza varios servicios, como el director de una orquesta. Coreografía: cada servicio sabe su parte y reacciona a lo que ocurre, como bailarines sin director. Los eventos llevan naturalmente a la coreografía. Fuente: Newman (2015).",
-      "fragments": [
-        47.6,
-        49.2,
-        50.800000000000004,
-        52.400000000000006,
-        54
-      ]
+      "startTime": 34,
+      "endTime": 39.6,
+      "notes": "La primera decisión al diseñar un contrato es si la comunicación es síncrona o asíncrona. Síncrona: el cliente pregunta y se queda esperando la respuesta, como una llamada telefónica. Asíncrona: el emisor deja un mensaje y sigue con lo suyo, como un correo; un intermediario llamado broker lo reparte a quien corresponda. En el síncrono los dos quedan atados en el tiempo; en el asíncrono el emisor ni siquiera conoce a los consumidores. Si un proceso cruza varios servicios, puede dirigirlo un cerebro central (orquestación) o cada servicio puede reaccionar por su cuenta (coreografía); los eventos llevan naturalmente a la segunda. Fuente: Newman (2015)."
     },
     {
       "sceneId": "estilos",
-      "startTime": 55.2,
-      "endTime": 63.6,
+      "startTime": 39.6,
+      "endTime": 48,
       "notes": "Tres maneras de fijar el contrato. REST: recursos con una dirección web y los verbos de HTTP; es lo más fácil de consumir desde cualquier lugar, por eso es lo típico de las APIs públicas. gRPC: llamadas binarias muy rápidas descritas en un archivo .proto; conviene para servicios internos que se hablan mucho. AsyncAPI: describe mensajes que pasan por un broker, para cuando el emisor no debe esperar ni conocer a los consumidores, y para amortiguar picos de carga. No hay un ganador: depende de qué tan tolerante debe ser la relación a la latencia y al cambio. Fuente: Newman (2015).",
       "fragments": [
-        57.6,
-        59.2,
-        60.800000000000004,
-        62.400000000000006
+        42,
+        43.6,
+        45.2,
+        46.8
       ]
     },
     {
       "sceneId": "rest",
-      "startTime": 63.6,
-      "endTime": 72,
+      "startTime": 48,
+      "endTime": 56.4,
       "notes": "Ejemplo con un recurso que no es de matrícula, para que no copien: la reserva de un laboratorio. En REST el recurso se identifica por la URL y el verbo dice qué hacer: GET consulta, POST crea, PUT reemplaza. No hace falta inventar métodos como crearReserva o editarReserva: se envía una representación del recurso al lugar correcto y el verbo indica la operación. En la práctica PE-S2 harán esto con un recurso de matrícula. Fuente: Newman (2015).",
       "fragments": [
-        66,
-        67.6,
-        69.2,
-        70.8
+        50.4,
+        52,
+        53.6,
+        55.2
       ]
     },
     {
       "sceneId": "grpc",
-      "startTime": 72,
-      "endTime": 79.4,
+      "startTime": 56.4,
+      "endTime": 63.8,
       "notes": "El mismo recurso en gRPC. El contrato vive en un archivo .proto: un servicio con sus operaciones y los mensajes de pedido y respuesta. Observar el detalle clave: cada campo lleva un número, y ese número, no el nombre, identifica el campo al viajar en binario. Por eso se puede cambiar el nombre de un campo sin romper a nadie, pero no su número. Desde el archivo, el cliente genera código ya tipado y no arma direcciones a mano. En PE-S2 reescribirán su contrato REST de esta forma. Fuente: Newman (2015).",
       "fragments": [
-        74.6,
-        76.39999999999999,
-        78.19999999999999
-      ]
-    },
-    {
-      "sceneId": "criterios",
-      "startTime": 79.4,
-      "endTime": 89.4,
-      "notes": "Estos son los cuatro criterios de la tabla de comparación de la práctica PE-S2. Acoplamiento: cuánto debe saber el cliente del servicio. Rendimiento: tamaño y velocidad de los mensajes. Legibilidad: qué tan fácil es leer y probar el contrato a simple vista. Compatibilidad hacia atrás: qué pasa con los clientes viejos cuando el contrato cambia. Insistir en que la comparación debe usar datos concretos del contrato, no opiniones.",
-      "fragments": [
-        81.80000000000001,
-        83.4,
-        85.00000000000001,
-        86.60000000000001,
-        88.20000000000002
+        59,
+        60.8,
+        62.6
       ]
     },
     {
       "sceneId": "no-espejo",
-      "startTime": 89.4,
-      "endTime": 96.60000000000001,
+      "startTime": 63.8,
+      "endTime": 71,
       "notes": "Error muy frecuente: como el mismo equipo controla el servicio y a todos sus clientes, se expone directamente la base de datos como contrato. El primer cambio interno, por ejemplo renombrar un campo, rompe a todos a la vez, incluso a los que usaban solo dos de diez campos. Un contrato es una promesa sobre qué información y en qué forma pueden esperar los clientes. Se diseña como una vista del dominio, independiente de cómo se guarda, y se versiona.",
       "fragments": [
-        91.80000000000001,
-        93.60000000000001,
-        95.4
+        66.2,
+        68,
+        69.8
       ]
     },
     {
       "sceneId": "tolerante",
-      "startTime": 96.60000000000001,
-      "endTime": 105.00000000000001,
+      "startTime": 71,
+      "endTime": 79.4,
       "notes": "La mejor manera de evitar el daño de un cambio es no provocarlo. Con el lector tolerante, el cliente toma solo los campos que necesita e ignora el resto; así, si el servicio agrega campos nuevos, el cliente ni se entera. Es la ley de Postel: ser conservador en lo que se envía y liberal en lo que se acepta. Aplicado al comprobante: el sistema contable lee solo número y monto, y no le importa que se agregue otro campo. Fuente: Newman (2015).",
       "fragments": [
-        99.00000000000001,
-        100.60000000000001,
-        102.20000000000002,
-        103.80000000000001
+        73.4,
+        75,
+        76.60000000000001,
+        78.2
       ]
     },
     {
       "sceneId": "semver",
-      "startTime": 105.00000000000001,
-      "endTime": 113.40000000000002,
+      "startTime": 79.4,
+      "endTime": 87.80000000000001,
       "notes": "Cuando el cambio es inevitable se avisa con tres números: MAYOR.MENOR.PARCHE. Un parche corrige errores sin cambiar el comportamiento. Un cambio menor agrega algo y es compatible: un cliente hecho para la 1.2.0 debe seguir funcionando con la 1.3.0. Un cambio mayor rompe la compatibilidad: no se puede asumir lo mismo si el servicio salta a la 2.0.0. Fuente: Newman (2015).",
       "fragments": [
-        107.40000000000002,
-        109.00000000000001,
-        110.60000000000002,
-        112.20000000000002
+        81.80000000000001,
+        83.4,
+        85.00000000000001,
+        86.60000000000001
       ]
     },
     {
       "sceneId": "coexistir",
-      "startTime": 113.40000000000002,
-      "endTime": 119.80000000000003,
+      "startTime": 87.80000000000001,
+      "endTime": 94.20000000000002,
       "notes": "Si ni el versionado evita romper a un cliente, se usa la coexistencia de endpoints. El servicio publica la versión nueva y deja funcionando la anterior; los clientes migran cuando pueden, sin presión; y solo cuando ya nadie usa la vieja se retira. Así los equipos distintos no tienen que actualizarse el mismo día. Fuente: Newman (2015)."
     },
     {
       "sceneId": "compat",
-      "startTime": 119.80000000000003,
-      "endTime": 127.00000000000003,
+      "startTime": 94.20000000000002,
+      "endTime": 101.40000000000002,
       "notes": "Dos garantías con nombre. Compatibilidad hacia atrás: el código nuevo puede leer datos que produjeron versiones anteriores. Compatibilidad hacia adelante: el código antiguo puede procesar datos de versiones nuevas, normalmente ignorando los campos que no conoce. En servicios, el servidor suele actualizarse antes que sus clientes, así que hace falta hacia atrás en las solicitudes que recibe y hacia adelante en las respuestas que envía. Fuente: Kleppmann (2017).",
       "fragments": [
-        122.20000000000003,
-        124.00000000000003,
-        125.80000000000003
+        96.60000000000002,
+        98.40000000000002,
+        100.20000000000002
       ]
     },
     {
       "sceneId": "micro-figura",
-      "startTime": 127.00000000000003,
-      "endTime": 132.60000000000002,
+      "startTime": 101.40000000000002,
+      "endTime": 107.00000000000001,
       "notes": "Los microservicios nacen en 2014, nombrados por Fowler y Lewis, como respuesta explícita a la SOA de servicios grandes y atados. La diferencia más importante es el aislamiento de los datos. En la SOA, tres servicios escriben en una misma base: un cambio de esquema afecta a los tres. En microservicios, cada servicio es dueño de su base y cambia su esquema sin coordinar con los demás. A cambio, cuesta coordinar lo que antes resolvía una sola base compartida. Fuente: Richards y Ford (2020)."
     },
     {
       "sceneId": "retomar",
-      "startTime": 132.60000000000002,
-      "endTime": 141.60000000000002,
+      "startTime": 107.00000000000001,
+      "endTime": 116.00000000000001,
       "notes": "Retomar el reto del inicio y pedir que respondan antes de mostrar cada ficha. Aplicación web: espera la respuesta, así que conviene un contrato síncrono, REST o gRPC. Sistema contable: no necesita respuesta inmediata y sincroniza por lotes, así que conviene AsyncAPI con un broker, lo que además amortigua los picos de carga. Cambio de nombre de un campo: combinar lector tolerante en el cliente con la coexistencia de endpoints, para que nadie tenga que migrar el mismo día.",
       "fragments": [
-        135.00000000000003,
-        136.80000000000004,
-        138.60000000000002,
-        140.40000000000003
+        109.40000000000002,
+        111.20000000000002,
+        113.00000000000001,
+        114.80000000000003
+      ]
+    },
+    {
+      "sceneId": "criterios",
+      "startTime": 116.00000000000001,
+      "endTime": 126.00000000000001,
+      "notes": "Estos son los cuatro criterios de la tabla de comparación de la práctica PE-S2. Acoplamiento: cuánto debe saber el cliente del servicio. Rendimiento: tamaño y velocidad de los mensajes. Legibilidad: qué tan fácil es leer y probar el contrato a simple vista. Compatibilidad hacia atrás: qué pasa con los clientes viejos cuando el contrato cambia. Insistir en que la comparación debe usar datos concretos del contrato, no opiniones.",
+      "fragments": [
+        118.40000000000002,
+        120.00000000000001,
+        121.60000000000002,
+        123.20000000000002,
+        124.80000000000003
       ]
     },
     {
       "sceneId": "actividades",
-      "startTime": 141.60000000000002,
-      "endTime": 146.8,
+      "startTime": 126.00000000000001,
+      "endTime": 131.20000000000002,
       "notes": "PE-S2 vale 2,25 puntos: se escoge un recurso del sistema de matrícula, se documenta su contrato REST con endpoint, verbo y ejemplos, se reescribe en gRPC, se comparan los cuatro criterios y se justifica una decisión con al menos dos criterios. TA-S2 vale 2,25 puntos: un cuadro de SOA, microservicios y serverless más un análisis en prosa con cita APA del capítulo 4 de Newman. GA-S2 vale 1 punto: reflexión sobre la Master Class de ASU. Las consignas, las plantillas y las rúbricas están en Canvas."
     },
     {
       "sceneId": "cierre",
-      "startTime": 146.8,
-      "endTime": 154,
+      "startTime": 131.20000000000002,
+      "endTime": 138.4,
       "notes": "Cerrar con la idea central: un contrato es una promesa y toda promesa tiene un costo de cambio. Reutilizar sin cuidado ata a todos; un buen contrato, bien versionado, deja que cada equipo avance a su ritmo."
     }
   ],
   "slideSequences": []
 }
     </script>
-    <div id="root" data-composition-id="main" data-start="0" data-duration="154" data-width="1920" data-height="1080">
+    <div id="root" data-composition-id="main" data-start="0" data-duration="138.4" data-width="1920" data-height="1080">
 
       <section id="portada" class="clip slide dark" data-start="0" data-duration="5.6" data-track-index="0" data-label="Portada" data-frags="0" data-enter="2.8" data-step="1">
         <div class="frame" id="portada-frame" style="display:block">
@@ -671,16 +652,7 @@
         </div>
       </section>
 
-      <section id="soa-figura" class="clip slide" data-start="24" data-duration="5.6" data-track-index="0" data-label="Capas de servicios en la SOA" data-frags="0" data-enter="2.8" data-step="1">
-        <div class="frame" id="soa-figura-frame">
-          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          
-      <h1 class="ttl">Las capas de servicios de la SOA</h1>
-      <img class="fig" src="assets/fig-soa-taxonomia.png" alt="Taxonomía de servicios SOA: negocio, orquestación, empresariales, aplicación e infraestructura." style="left:270px;top:235px;width:1380px;height:790px" />
-        </div>
-      </section>
-
-      <section id="soa-costo" class="clip slide" data-start="29.6" data-duration="10" data-track-index="0" data-label="El costo de reutilizar" data-frags="4" data-enter="2.4" data-step="1.6">
+      <section id="soa-costo" class="clip slide" data-start="24" data-duration="10" data-track-index="0" data-label="El costo de reutilizar" data-frags="4" data-enter="2.4" data-step="1.6">
         <div class="frame" id="soa-costo-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
           
@@ -692,7 +664,7 @@
         </div>
       </section>
 
-      <section id="sync-figura" class="clip slide" data-start="39.6" data-duration="5.6" data-track-index="0" data-label="Síncrono y asíncrono" data-frags="0" data-enter="2.8" data-step="1">
+      <section id="sync-figura" class="clip slide" data-start="34" data-duration="5.6" data-track-index="0" data-label="Síncrono y asíncrono" data-frags="0" data-enter="2.8" data-step="1">
         <div class="frame" id="sync-figura-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
           
@@ -701,29 +673,17 @@
         </div>
       </section>
 
-      <section id="coordinar" class="clip slide" data-start="45.2" data-duration="10" data-track-index="0" data-label="Cuatro palabras clave" data-frags="4" data-enter="2.4" data-step="1.6">
-        <div class="frame" id="coordinar-frame">
-          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          
-      <h1 class="ttl">Cuatro palabras para describir cómo colaboran los servicios</h1>
-      <div class="x-pc g1" style="left:120px;top:300px;width:520px;height:290px"><strong>Solicitud-respuesta</strong><em>El cliente pide y espera el resultado</em></div>
-      <div class="x-pc g2" style="left:880px;top:300px;width:520px;height:290px"><strong>Eventos</strong><em>El emisor solo anuncia que algo ocurrió</em></div>
-      <div class="x-pc g3" style="left:120px;top:630px;width:520px;height:290px"><strong>Orquestación</strong><em>Un cerebro central dirige el proceso, como un director de orquesta</em></div>
-      <div class="x-pc g4" style="left:880px;top:630px;width:520px;height:290px"><strong>Coreografía</strong><em>Cada servicio sabe su parte y reacciona, sin director</em></div>
-        </div>
-      </section>
-
-      <section id="estilos" class="clip slide" data-start="55.2" data-duration="8.4" data-track-index="0" data-label="REST, gRPC y AsyncAPI" data-frags="3" data-enter="2.4" data-step="1.6">
+      <section id="estilos" class="clip slide" data-start="39.6" data-duration="8.4" data-track-index="0" data-label="REST, gRPC y AsyncAPI" data-frags="3" data-enter="2.4" data-step="1.6">
         <div class="frame" id="estilos-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
           
       <h1 class="ttl">Tres estilos de contrato</h1>
       <div class="x-th"><span class="xc " style="left:120px;width:330px">ESTILO</span><span class="xc " style="left:450px;width:760px">QUÉ ES</span><span class="xc " style="left:1210px;width:620px">CUÁNDO CONVIENE</span></div>
-      <div class="x-tr" style="top:380px"><span class="xc a" style="left:120px;width:330px">REST</span><span class="xc c" style="left:450px;width:760px">Recursos con URL y verbos HTTP</span><span class="xc c" style="left:1210px;width:620px">APIs públicas y externas</span></div><div class="x-tr" style="top:480px"><span class="xc a" style="left:120px;width:330px">gRPC</span><span class="xc c" style="left:450px;width:760px">Llamadas binarias rápidas con .proto</span><span class="xc c" style="left:1210px;width:620px">Servicios internos de alta velocidad</span></div><div class="x-tr" style="top:580px"><span class="xc a" style="left:120px;width:330px">AsyncAPI</span><span class="xc c" style="left:450px;width:760px">Mensajes a través de un broker</span><span class="xc c" style="left:1210px;width:620px">El emisor no espera al cliente</span></div>
+      <div class="x-tr" style="top:380px"><span class="xc a" style="left:120px;width:330px">REST</span><span class="xc c" style="left:450px;width:760px">Recursos con URL y verbos HTTP</span><span class="xc c" style="left:1210px;width:620px">APIs públicas y externas</span></div><div class="x-tr" style="top:480px"><span class="xc a" style="left:120px;width:330px">gRPC</span><span class="xc c" style="left:450px;width:760px">Llamadas binarias rápidas con .proto</span><span class="xc c" style="left:1210px;width:620px">Servicios internos de alta velocidad</span></div><div class="x-tr" style="top:580px"><span class="xc a" style="left:120px;width:330px">AsyncAPI</span><span class="xc c" style="left:450px;width:760px">Mensajes por un buzón intermedio (broker)</span><span class="xc c" style="left:1210px;width:620px">El emisor no espera al cliente</span></div>
         </div>
       </section>
 
-      <section id="rest" class="clip slide" data-start="63.6" data-duration="8.4" data-track-index="0" data-label="REST: verbos sobre recursos" data-frags="3" data-enter="2.4" data-step="1.6">
+      <section id="rest" class="clip slide" data-start="48" data-duration="8.4" data-track-index="0" data-label="REST: verbos sobre recursos" data-frags="3" data-enter="2.4" data-step="1.6">
         <div class="frame" id="rest-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
           
@@ -733,7 +693,7 @@
         </div>
       </section>
 
-      <section id="grpc" class="clip slide" data-start="72" data-duration="7.4" data-track-index="0" data-label="gRPC: el contrato en un archivo .proto" data-frags="2" data-enter="2.6" data-step="1.8">
+      <section id="grpc" class="clip slide" data-start="56.4" data-duration="7.4" data-track-index="0" data-label="gRPC: el contrato en un archivo .proto" data-frags="2" data-enter="2.6" data-step="1.8">
         <div class="frame" id="grpc-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
           
@@ -744,7 +704,80 @@
         </div>
       </section>
 
-      <section id="criterios" class="clip slide" data-start="79.4" data-duration="10" data-track-index="0" data-label="Cuatro criterios para comparar" data-frags="4" data-enter="2.4" data-step="1.6">
+      <section id="no-espejo" class="clip slide" data-start="63.8" data-duration="7.2" data-track-index="0" data-label="El contrato no es un espejo de la base" data-frags="2" data-enter="2.4" data-step="1.8">
+        <div class="frame" id="no-espejo-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Un contrato es una promesa, no una copia de la base de datos</h1>
+      <div class="y-bad g1" style="left:120px;top:330px;width:1680px">Mal: mostrar las tablas tal cual; un cambio rompe a todos</div>
+      <div class="y-good g2" style="left:120px;top:490px;width:1680px">Bien: prometer solo ciertos campos, sin importar cómo se guardan</div>
+        </div>
+      </section>
+
+      <section id="tolerante" class="clip slide" data-start="71" data-duration="8.4" data-track-index="0" data-label="Cambiar sin romper: lector tolerante" data-frags="3" data-enter="2.4" data-step="1.6">
+        <div class="frame" id="tolerante-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">El cliente lee solo lo que necesita</h1>
+      <div class="x-pc g1" style="left:120px;top:360px;width:520px;height:320px"><strong>Lector tolerante</strong><em>El cliente toma los campos que usa e ignora los demás</em></div>
+      <div class="x-pc g2" style="left:700px;top:360px;width:520px;height:320px"><strong>Qué se gana</strong><em>Si el servicio agrega campos, el cliente sigue funcionando igual</em></div>
+      <div class="x-pc g3" style="left:1280px;top:360px;width:520px;height:320px"><strong>Regla de oro</strong><em>Enviar con cuidado y aceptar con flexibilidad</em></div>
+        </div>
+      </section>
+
+      <section id="semver" class="clip slide" data-start="79.4" data-duration="8.4" data-track-index="0" data-label="Versionado semántico" data-frags="3" data-enter="2.4" data-step="1.6">
+        <div class="frame" id="semver-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Tres números que avisan qué tan grande es el cambio</h1>
+      <div class="x-th"><span class="xc " style="left:120px;width:330px">CAMBIA</span><span class="xc " style="left:450px;width:760px">QUÉ SIGNIFICA</span><span class="xc " style="left:1210px;width:620px">EJEMPLO</span></div>
+      <div class="x-tr" style="top:380px"><span class="xc a" style="left:120px;width:330px">PARCHE</span><span class="xc c" style="left:450px;width:760px">Corrige errores, nada cambia para el cliente</span><span class="xc c" style="left:1210px;width:620px">1.2.0 pasa a 1.2.1</span></div><div class="x-tr" style="top:480px"><span class="xc a" style="left:120px;width:330px">MENOR</span><span class="xc c" style="left:450px;width:760px">Agrega algo y sigue siendo compatible</span><span class="xc c" style="left:1210px;width:620px">1.2.1 pasa a 1.3.0</span></div><div class="x-tr" style="top:580px"><span class="xc a" style="left:120px;width:330px">MAYOR</span><span class="xc c" style="left:450px;width:760px">Rompe la compatibilidad con lo anterior</span><span class="xc c" style="left:1210px;width:620px">1.3.0 pasa a 2.0.0</span></div>
+        </div>
+      </section>
+
+      <section id="coexistir" class="clip slide" data-start="87.80000000000001" data-duration="6.4" data-track-index="0" data-label="Coexistir versiones" data-frags="0" data-enter="3.2" data-step="1">
+        <div class="frame" id="coexistir-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Cuando el cambio rompe: dos versiones al mismo tiempo</h1>
+      <p class="lead" style="left:120px;top:270px;width:1600px">Coexistir endpoints, para que cada equipo migre a su ritmo</p>
+      <div class="vl" style="left:230px;top:412px;height:270px"></div>
+      <div class="vn" style="left:202px;top:380px">1</div><p class="vt" style="left:320px;top:389px">Se publica la versión nueva y se deja la anterior funcionando</p><div class="vn" style="left:202px;top:515px">2</div><p class="vt" style="left:320px;top:524px">Cada cliente migra cuando puede, sin apuro</p><div class="vn" style="left:202px;top:650px">3</div><p class="vt" style="left:320px;top:659px">Cuando nadie usa la anterior, se retira</p>
+        </div>
+      </section>
+
+      <section id="compat" class="clip slide" data-start="94.20000000000002" data-duration="7.2" data-track-index="0" data-label="Hacia atrás y hacia adelante" data-frags="2" data-enter="2.4" data-step="1.8">
+        <div class="frame" id="compat-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Dos garantías para que nadie se rompa</h1>
+      <div class="x-pc g1" style="left:120px;top:330px;width:520px;height:300px"><strong>Hacia atrás</strong><em>El código nuevo entiende lo que enviaron versiones anteriores</em></div>
+      <div class="x-pc g2" style="left:720px;top:330px;width:520px;height:300px"><strong>Hacia adelante</strong><em>El código antiguo procesa lo nuevo e ignora lo que no conoce</em></div>
+      <p class="punch g2" style="left:120px;top:730px;width:1680px">El servidor se actualiza primero: acepta lo viejo y envía lo que lo viejo pueda leer</p>
+        </div>
+      </section>
+
+      <section id="micro-figura" class="clip slide" data-start="101.40000000000002" data-duration="5.6" data-track-index="0" data-label="SOA y microservicios" data-frags="0" data-enter="2.8" data-step="1">
+        <div class="frame" id="micro-figura-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">SOA con una base compartida contra microservicios con base propia</h1>
+      <img class="fig" src="assets/fig-soa-vs-microservicios.png" alt="SOA con tres servicios sobre una sola base de datos, frente a microservicios donde cada servicio tiene su propia base." style="left:160px;top:310px;width:1600px;height:613px" />
+        </div>
+      </section>
+
+      <section id="retomar" class="clip slide" data-start="107.00000000000001" data-duration="9" data-track-index="0" data-label="Volvemos al reto" data-frags="3" data-enter="2.4" data-step="1.8">
+        <div class="frame" id="retomar-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Dos clientes, dos contratos, un cambio sin sustos</h1>
+      <div class="x-pc g1" style="left:120px;top:360px;width:520px;height:340px"><strong>Aplicación web</strong><em>Necesita respuesta al instante: contrato síncrono, REST o gRPC</em></div>
+      <div class="x-pc g2" style="left:700px;top:360px;width:520px;height:340px"><strong>Sistema contable</strong><em>Sincroniza de noche: mensajes con AsyncAPI y un broker</em></div>
+      <div class="x-pc g3" style="left:1280px;top:360px;width:520px;height:340px"><strong>El campo que cambia</strong><em>Lector tolerante y dos versiones al mismo tiempo mientras migran</em></div>
+        </div>
+      </section>
+
+      <section id="criterios" class="clip slide" data-start="116.00000000000001" data-duration="10" data-track-index="0" data-label="Cuatro criterios para comparar" data-frags="4" data-enter="2.4" data-step="1.6">
         <div class="frame" id="criterios-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
           
@@ -756,80 +789,7 @@
         </div>
       </section>
 
-      <section id="no-espejo" class="clip slide" data-start="89.4" data-duration="7.2" data-track-index="0" data-label="El contrato no es un espejo de la base" data-frags="2" data-enter="2.4" data-step="1.8">
-        <div class="frame" id="no-espejo-frame">
-          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          
-      <h1 class="ttl">Un contrato es una promesa, no una copia de la base de datos</h1>
-      <div class="y-bad g1" style="left:120px;top:330px;width:1680px">Mal: mostrar las tablas tal cual; un cambio rompe a todos</div>
-      <div class="y-good g2" style="left:120px;top:490px;width:1680px">Bien: prometer solo ciertos campos, sin importar cómo se guardan</div>
-        </div>
-      </section>
-
-      <section id="tolerante" class="clip slide" data-start="96.60000000000001" data-duration="8.4" data-track-index="0" data-label="Cambiar sin romper: lector tolerante" data-frags="3" data-enter="2.4" data-step="1.6">
-        <div class="frame" id="tolerante-frame">
-          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          
-      <h1 class="ttl">El cliente lee solo lo que necesita</h1>
-      <div class="x-pc g1" style="left:120px;top:360px;width:520px;height:320px"><strong>Lector tolerante</strong><em>El cliente toma los campos que usa e ignora los demás</em></div>
-      <div class="x-pc g2" style="left:700px;top:360px;width:520px;height:320px"><strong>Qué se gana</strong><em>Si el servicio agrega campos, el cliente sigue funcionando igual</em></div>
-      <div class="x-pc g3" style="left:1280px;top:360px;width:520px;height:320px"><strong>Ley de Postel</strong><em>Ser estricto en lo que se envía y flexible en lo que se acepta</em></div>
-        </div>
-      </section>
-
-      <section id="semver" class="clip slide" data-start="105.00000000000001" data-duration="8.4" data-track-index="0" data-label="Versionado semántico" data-frags="3" data-enter="2.4" data-step="1.6">
-        <div class="frame" id="semver-frame">
-          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          
-      <h1 class="ttl">Tres números que avisan qué tan grande es el cambio</h1>
-      <div class="x-th"><span class="xc " style="left:120px;width:330px">CAMBIA</span><span class="xc " style="left:450px;width:760px">QUÉ SIGNIFICA</span><span class="xc " style="left:1210px;width:620px">EJEMPLO</span></div>
-      <div class="x-tr" style="top:380px"><span class="xc a" style="left:120px;width:330px">PARCHE</span><span class="xc c" style="left:450px;width:760px">Corrige errores, nada cambia para el cliente</span><span class="xc c" style="left:1210px;width:620px">1.2.0 pasa a 1.2.1</span></div><div class="x-tr" style="top:480px"><span class="xc a" style="left:120px;width:330px">MENOR</span><span class="xc c" style="left:450px;width:760px">Agrega algo y sigue siendo compatible</span><span class="xc c" style="left:1210px;width:620px">1.2.1 pasa a 1.3.0</span></div><div class="x-tr" style="top:580px"><span class="xc a" style="left:120px;width:330px">MAYOR</span><span class="xc c" style="left:450px;width:760px">Rompe la compatibilidad con lo anterior</span><span class="xc c" style="left:1210px;width:620px">1.3.0 pasa a 2.0.0</span></div>
-        </div>
-      </section>
-
-      <section id="coexistir" class="clip slide" data-start="113.40000000000002" data-duration="6.4" data-track-index="0" data-label="Coexistir versiones" data-frags="0" data-enter="3.2" data-step="1">
-        <div class="frame" id="coexistir-frame">
-          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          
-      <h1 class="ttl">Cuando el cambio rompe: dos versiones al mismo tiempo</h1>
-      <p class="lead" style="left:120px;top:270px;width:1600px">Coexistir endpoints, para que cada equipo migre a su ritmo</p>
-      <div class="vl" style="left:230px;top:412px;height:270px"></div>
-      <div class="vn" style="left:202px;top:380px">1</div><p class="vt" style="left:320px;top:389px">Se publica la versión nueva y se deja la anterior funcionando</p><div class="vn" style="left:202px;top:515px">2</div><p class="vt" style="left:320px;top:524px">Cada cliente migra cuando puede, sin apuro</p><div class="vn" style="left:202px;top:650px">3</div><p class="vt" style="left:320px;top:659px">Cuando nadie usa la anterior, se retira</p>
-        </div>
-      </section>
-
-      <section id="compat" class="clip slide" data-start="119.80000000000003" data-duration="7.2" data-track-index="0" data-label="Hacia atrás y hacia adelante" data-frags="2" data-enter="2.4" data-step="1.8">
-        <div class="frame" id="compat-frame">
-          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          
-      <h1 class="ttl">Dos garantías para que nadie se rompa</h1>
-      <div class="x-pc g1" style="left:120px;top:330px;width:520px;height:300px"><strong>Hacia atrás</strong><em>El código nuevo entiende lo que enviaron versiones anteriores</em></div>
-      <div class="x-pc g2" style="left:720px;top:330px;width:520px;height:300px"><strong>Hacia adelante</strong><em>El código antiguo procesa lo nuevo e ignora lo que no conoce</em></div>
-      <p class="punch g2" style="left:120px;top:730px;width:1680px">El servidor se actualiza primero: acepta lo viejo y envía lo que lo viejo pueda leer</p>
-        </div>
-      </section>
-
-      <section id="micro-figura" class="clip slide" data-start="127.00000000000003" data-duration="5.6" data-track-index="0" data-label="SOA y microservicios" data-frags="0" data-enter="2.8" data-step="1">
-        <div class="frame" id="micro-figura-frame">
-          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          
-      <h1 class="ttl">SOA con una base compartida contra microservicios con base propia</h1>
-      <img class="fig" src="assets/fig-soa-vs-microservicios.png" alt="SOA con tres servicios sobre una sola base de datos, frente a microservicios donde cada servicio tiene su propia base." style="left:160px;top:310px;width:1600px;height:613px" />
-        </div>
-      </section>
-
-      <section id="retomar" class="clip slide" data-start="132.60000000000002" data-duration="9" data-track-index="0" data-label="Volvemos al reto" data-frags="3" data-enter="2.4" data-step="1.8">
-        <div class="frame" id="retomar-frame">
-          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          
-      <h1 class="ttl">Dos clientes, dos contratos, un cambio sin sustos</h1>
-      <div class="x-pc g1" style="left:120px;top:360px;width:520px;height:340px"><strong>Aplicación web</strong><em>Necesita respuesta al instante: contrato síncrono, REST o gRPC</em></div>
-      <div class="x-pc g2" style="left:700px;top:360px;width:520px;height:340px"><strong>Sistema contable</strong><em>Sincroniza de noche: mensajes con AsyncAPI y un broker</em></div>
-      <div class="x-pc g3" style="left:1280px;top:360px;width:520px;height:340px"><strong>El campo que cambia</strong><em>Lector tolerante y dos versiones al mismo tiempo mientras migran</em></div>
-        </div>
-      </section>
-
-      <section id="actividades" class="clip slide" data-start="141.60000000000002" data-duration="5.2" data-track-index="0" data-label="Actividades de la semana" data-frags="0" data-enter="2.6" data-step="1">
+      <section id="actividades" class="clip slide" data-start="126.00000000000001" data-duration="5.2" data-track-index="0" data-label="Actividades de la semana" data-frags="0" data-enter="2.6" data-step="1">
         <div class="frame" id="actividades-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
           
@@ -844,7 +804,7 @@
         </div>
       </section>
 
-      <section id="cierre" class="clip slide dark" data-start="146.8" data-duration="7.2" data-track-index="0" data-label="Cierre" data-frags="0" data-enter="3.6" data-step="1">
+      <section id="cierre" class="clip slide dark" data-start="131.20000000000002" data-duration="7.2" data-track-index="0" data-label="Cierre" data-frags="0" data-enter="3.6" data-step="1">
         <div class="frame" id="cierre-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
           
@@ -865,7 +825,7 @@
 
       const EXIT = 0.5;
       const tl = gsap.timeline({ paused: true });
-      tl.to({}, { duration: 154 }, 0);
+      tl.to({}, { duration: 138.4 }, 0);
       const real = engineHosted ? tl : gsap.timeline({ paused: true });
 
       const VW = 1920, VH = 1080;
@@ -1049,14 +1009,11 @@ TYPES.close = (c) => {
 SCENES["portada"] = TYPES["cover"];
 SCENES["reto"] = TYPES["reveal"];
 SCENES["soa-idea"] = TYPES["reveal"];
-SCENES["soa-figura"] = TYPES["img"];
 SCENES["soa-costo"] = TYPES["reveal"];
 SCENES["sync-figura"] = TYPES["img"];
-SCENES["coordinar"] = TYPES["reveal"];
 SCENES["estilos"] = TYPES["table"];
 SCENES["rest"] = TYPES["table"];
 SCENES["grpc"] = TYPES["reveal"];
-SCENES["criterios"] = TYPES["reveal"];
 SCENES["no-espejo"] = TYPES["reveal"];
 SCENES["tolerante"] = TYPES["reveal"];
 SCENES["semver"] = TYPES["table"];
@@ -1064,19 +1021,17 @@ SCENES["coexistir"] = TYPES["steps"];
 SCENES["compat"] = TYPES["reveal"];
 SCENES["micro-figura"] = TYPES["img"];
 SCENES["retomar"] = TYPES["reveal"];
+SCENES["criterios"] = TYPES["reveal"];
 SCENES["actividades"] = TYPES["tickets"];
 SCENES["cierre"] = TYPES["close"];
 SCENE_PER["portada"] = 2;
 SCENE_PER["reto"] = 2;
 SCENE_PER["soa-idea"] = 2;
-SCENE_PER["soa-figura"] = 2;
 SCENE_PER["soa-costo"] = 2;
 SCENE_PER["sync-figura"] = 2;
-SCENE_PER["coordinar"] = 2;
 SCENE_PER["estilos"] = 2;
 SCENE_PER["rest"] = 2;
 SCENE_PER["grpc"] = 2;
-SCENE_PER["criterios"] = 2;
 SCENE_PER["no-espejo"] = 2;
 SCENE_PER["tolerante"] = 2;
 SCENE_PER["semver"] = 2;
@@ -1084,6 +1039,7 @@ SCENE_PER["coexistir"] = 2;
 SCENE_PER["compat"] = 2;
 SCENE_PER["micro-figura"] = 2;
 SCENE_PER["retomar"] = 2;
+SCENE_PER["criterios"] = 2;
 SCENE_PER["actividades"] = 2;
 SCENE_PER["cierre"] = 2;
 
