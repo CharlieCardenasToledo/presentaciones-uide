@@ -34,167 +34,183 @@
     {
       "sceneId": "reto",
       "startTime": 5.6,
-      "endTime": 15.6,
-      "notes": "Dejar la pregunta a la vista antes de avanzar. El servicio de comprobantes de matrícula ya está separado. La aplicación web de estudiantes necesita la respuesta al instante porque el estudiante está esperando. El sistema contable sincroniza una vez por la noche y no necesita respuesta inmediata. Pedir hipótesis: ¿les sirve el mismo tipo de conexión? ¿Y si dentro de seis meses cambia el nombre de un campo? La respuesta se construye durante la clase y se retoma casi al final.",
+      "endTime": 19.599999999999998,
+      "notes": "Dejar la pregunta a la vista y avanzar paso a paso. Primero la aplicación web: pide un comprobante y espera la respuesta, porque el estudiante está mirando la pantalla. Segundo, el sistema contable: junta los comprobantes durante el día y los envía todos juntos una vez por la noche; no espera nada. Tercero, seis meses después el servicio renombra un campo y los dos clientes quedan en duda. Pedir hipótesis antes del tercer avance: ¿les sirve el mismo tipo de conexión a los dos? La respuesta se retoma casi al final.",
       "fragments": [
-        8,
-        9.6,
-        11.2,
-        12.8,
-        14.4
+        8.2,
+        11.6,
+        15,
+        18.4
       ]
     },
     {
       "sceneId": "soa-idea",
-      "startTime": 15.6,
-      "endTime": 24,
+      "startTime": 19.599999999999998,
+      "endTime": 28,
       "notes": "SOA significa Arquitectura Orientada a Servicios. La idea: en lugar de resolver cada integración por separado, se construyen servicios que toda la empresa reutiliza. Un servicio es una capacidad del negocio, por ejemplo registrar un cliente, con un contrato que dice cómo pedírsela. El objetivo era no reescribir código. Fuente: Richards y Ford (2020).",
       "fragments": [
-        18,
-        19.6,
-        21.2,
-        22.8
+        21.999999999999996,
+        23.599999999999998,
+        25.199999999999996,
+        26.799999999999997
       ]
     },
     {
       "sceneId": "soa-costo",
-      "startTime": 24,
-      "endTime": 34,
-      "notes": "Aquí está la paradoja. Si todas las divisiones usan un único servicio de Customer, cualquier cambio en su interfaz llega a todos los consumidores a la vez, como fichas de dominó. Ya no se puede cambiar de a poco: hay que desplegar y probar todo junto. El motor central y la base de datos compartida son los puntos donde todo queda atado. Reutilizar ahorra código pero cobra en acoplamiento. Fuente: Richards y Ford (2020).",
+      "startTime": 28,
+      "endTime": 41.4,
+      "notes": "Aquí está la paradoja de la SOA. Seis divisiones usan un mismo servicio Customer, y esa reutilización ahorra escribir código. Primer avance: alguien cambia la interfaz del servicio. Segundo avance: el cambio llega a todos los consumidores a la vez, como fichas de dominó, y todos se rompen. Tercer avance: por eso ya no se puede cambiar de a poco, hay que desplegar y probar todo junto. Reutilizar ahorra código pero cobra en acoplamiento. Fuente: Richards y Ford (2020).",
       "fragments": [
-        26.4,
-        28,
-        29.599999999999998,
-        31.2,
-        32.8
+        30.6,
+        33.800000000000004,
+        37,
+        40.2
       ]
     },
     {
       "sceneId": "sync-figura",
-      "startTime": 34,
-      "endTime": 39.6,
-      "notes": "La primera decisión al diseñar un contrato es si la comunicación es síncrona o asíncrona. Síncrona: el cliente pregunta y se queda esperando la respuesta, como una llamada telefónica. Asíncrona: el emisor deja un mensaje y sigue con lo suyo, como un correo; un intermediario llamado broker lo reparte a quien corresponda. En el síncrono los dos quedan atados en el tiempo; en el asíncrono el emisor ni siquiera conoce a los consumidores. Si un proceso cruza varios servicios, puede dirigirlo un cerebro central (orquestación) o cada servicio puede reaccionar por su cuenta (coreografía); los eventos llevan naturalmente a la segunda. Fuente: Newman (2015)."
+      "startTime": 41.4,
+      "endTime": 57,
+      "notes": "Dos formas de comunicarse. Arriba, síncrona: el cliente manda la solicitud y se queda esperando, como en una llamada telefónica; solo sigue cuando llega la respuesta. Abajo, asíncrona: el emisor deja un mensaje en un intermediario llamado broker y sigue con lo suyo, como al dejar un correo; el broker lo entrega después a quienes les interese, y el emisor ni siquiera sabe quiénes son. Si un proceso cruza varios servicios, puede dirigirlo un cerebro central (orquestación) o cada servicio puede reaccionar por su cuenta (coreografía). Fuente: Newman (2015).",
+      "fragments": [
+        43.8,
+        46.8,
+        49.8,
+        52.8,
+        55.8
+      ]
     },
     {
       "sceneId": "estilos",
-      "startTime": 39.6,
-      "endTime": 48,
+      "startTime": 57,
+      "endTime": 65.4,
       "notes": "Tres maneras de fijar el contrato. REST: recursos con una dirección web y los verbos de HTTP; es lo más fácil de consumir desde cualquier lugar, por eso es lo típico de las APIs públicas. gRPC: llamadas binarias muy rápidas descritas en un archivo .proto; conviene para servicios internos que se hablan mucho. AsyncAPI: describe mensajes que pasan por un broker, para cuando el emisor no debe esperar ni conocer a los consumidores, y para amortiguar picos de carga. No hay un ganador: depende de qué tan tolerante debe ser la relación a la latencia y al cambio. Fuente: Newman (2015).",
       "fragments": [
-        42,
-        43.6,
-        45.2,
-        46.8
+        59.4,
+        61,
+        62.6,
+        64.2
       ]
     },
     {
       "sceneId": "rest",
-      "startTime": 48,
-      "endTime": 56.4,
-      "notes": "Ejemplo con un recurso que no es de matrícula, para que no copien: la reserva de un laboratorio. En REST el recurso se identifica por la URL y el verbo dice qué hacer: GET consulta, POST crea, PUT reemplaza. No hace falta inventar métodos como crearReserva o editarReserva: se envía una representación del recurso al lugar correcto y el verbo indica la operación. En la práctica PE-S2 harán esto con un recurso de matrícula. Fuente: Newman (2015).",
+      "startTime": 65.4,
+      "endTime": 80,
+      "notes": "Ejemplo con la reserva de un laboratorio, que no es el recurso de la práctica. La dirección identifica el recurso y el verbo dice qué hacer. Primer avance: GET /reservas/12 consulta; el servicio devuelve la reserva 12 y no cambia nada. Segundo: POST /reservas crea una nueva; aparece la reserva 13. Tercero: PUT /reservas/12 reemplaza los datos de la 12. Fíjense que la ruta nunca lleva la acción: no existe /crearReserva. Fuente: Newman (2015).",
       "fragments": [
-        50.4,
-        52,
-        53.6,
-        55.2
+        68,
+        71.6,
+        75.2,
+        78.8
       ]
     },
     {
       "sceneId": "grpc",
-      "startTime": 56.4,
-      "endTime": 63.8,
-      "notes": "El mismo recurso en gRPC. El contrato vive en un archivo .proto: un servicio con sus operaciones y los mensajes de pedido y respuesta. Observar el detalle clave: cada campo lleva un número, y ese número, no el nombre, identifica el campo al viajar en binario. Por eso se puede cambiar el nombre de un campo sin romper a nadie, pero no su número. Desde el archivo, el cliente genera código ya tipado y no arma direcciones a mano. En PE-S2 escribirán un .proto corto de esta forma. Fuente: Newman (2015).",
+      "startTime": 80,
+      "endTime": 90.6,
+      "notes": "El mismo recurso en gRPC. El contrato vive en un archivo .proto, que lista las operaciones y los mensajes; cada campo lleva un número. Primer avance: desde ese único archivo se genera código tanto para el cliente como para el servicio, así que los dos hablan exactamente el mismo contrato y nadie arma direcciones a mano. Segundo avance: la llamada viaja en binario y lo que identifica a cada campo es su número, no su nombre; por eso se puede cambiar el nombre de un campo sin romper a nadie, pero no su número. En PE-S2 escribirán un .proto corto de esta forma. Fuente: Newman (2015).",
       "fragments": [
-        59,
-        60.8,
-        62.6
+        82.6,
+        86,
+        89.39999999999999
       ]
     },
     {
       "sceneId": "no-espejo",
-      "startTime": 63.8,
-      "endTime": 71,
+      "startTime": 90.6,
+      "endTime": 97.8,
       "notes": "Error muy frecuente: como el mismo equipo controla el servicio y a todos sus clientes, se expone directamente la base de datos como contrato. El primer cambio interno, por ejemplo renombrar un campo, rompe a todos a la vez, incluso a los que usaban solo dos de diez campos. El contrato dice qué información y en qué forma pueden esperar los clientes. Se diseña como una vista del dominio, independiente de cómo se guarda, y se versiona.",
       "fragments": [
-        66.2,
-        68,
-        69.8
+        93,
+        94.8,
+        96.6
       ]
     },
     {
       "sceneId": "tolerante",
-      "startTime": 71,
-      "endTime": 77.8,
-      "notes": "La mejor manera de evitar el daño de un cambio es no provocarlo. Con el lector tolerante, el cliente toma solo los campos que necesita e ignora el resto; así, si el servicio agrega campos nuevos, el cliente ni se entera. Aplicado al comprobante: el sistema contable lee solo número y monto, y no le importa que se agregue otro campo. Fuente: Newman (2015).",
+      "startTime": 97.8,
+      "endTime": 108.39999999999999,
+      "notes": "La mejor manera de evitar el daño de un cambio es no provocarlo. A la izquierda, la respuesta del servicio de comprobantes con sus campos. El sistema contable solo necesita el número y el monto. Primer avance: el cliente toma esos dos campos e ignora el resto. Segundo avance: el servicio agrega un campo nuevo, el descuento; como el cliente solo lee lo que necesita, ni se entera y sigue funcionando. Fuente: Newman (2015).",
       "fragments": [
-        73.4,
-        75,
-        76.60000000000001
+        100.39999999999999,
+        103.8,
+        107.19999999999999
       ]
     },
     {
       "sceneId": "semver",
-      "startTime": 77.8,
-      "endTime": 86.2,
-      "notes": "Cuando el cambio es inevitable se avisa con tres números: MAYOR.MENOR.PARCHE. Un parche corrige errores sin cambiar el comportamiento. Un cambio menor agrega algo y es compatible: un cliente hecho para la 1.2.0 debe seguir funcionando con la 1.3.0. Un cambio mayor rompe la compatibilidad: no se puede asumir lo mismo si el servicio salta a la 2.0.0. Fuente: Newman (2015).",
+      "startTime": 108.39999999999999,
+      "endTime": 121.8,
+      "notes": "Cuando el cambio es inevitable se avisa con tres números: MAYOR.MENOR.PARCHE. Hay un cliente hecho para la versión 1.2.0. Primer avance: un parche, de 1.2.0 a 1.2.1, corrige errores y no cambia nada para el cliente. Segundo: un cambio menor, a 1.3.0, agrega algo y sigue siendo compatible, así que el cliente funciona igual. Tercero: un cambio mayor, a 2.0.0, rompe la compatibilidad, y el cliente hay que adaptarlo. Fuente: Newman (2015).",
       "fragments": [
-        80.2,
-        81.8,
-        83.4,
-        85
+        110.99999999999999,
+        114.19999999999999,
+        117.39999999999999,
+        120.6
       ]
     },
     {
       "sceneId": "coexistir",
-      "startTime": 86.2,
-      "endTime": 92.60000000000001,
-      "notes": "Si ni el versionado evita romper a un cliente, se usa la coexistencia de endpoints. El servicio publica la versión nueva y deja funcionando la anterior; los clientes migran cuando pueden, sin presión; y solo cuando ya nadie usa la vieja se retira. Así los equipos distintos no tienen que actualizarse el mismo día. Fuente: Newman (2015)."
+      "startTime": 121.8,
+      "endTime": 135.79999999999998,
+      "notes": "Si ni el versionado evita romper a un cliente, se usa la coexistencia de endpoints. Situación inicial: tres clientes de equipos distintos usan la versión 1. Primer avance: el servicio publica la versión 2 y deja la 1 funcionando, así nadie se rompe. Segundo: los clientes A y B migran a la 2 cuando pueden. Tercero: el cliente C migra; cuando nadie usa la versión 1, se retira. Así los equipos no tienen que actualizarse el mismo día. Fuente: Newman (2015).",
+      "fragments": [
+        124.39999999999999,
+        127.8,
+        131.2,
+        134.6
+      ]
     },
     {
       "sceneId": "compat",
-      "startTime": 92.60000000000001,
-      "endTime": 99.80000000000001,
+      "startTime": 135.79999999999998,
+      "endTime": 142.99999999999997,
       "notes": "Dos garantías con nombre. Compatibilidad hacia atrás: el código nuevo puede leer datos que produjeron versiones anteriores. Compatibilidad hacia adelante: el código antiguo puede procesar datos de versiones nuevas, normalmente ignorando los campos que no conoce. En servicios, el servidor suele actualizarse antes que sus clientes, así que hace falta hacia atrás en las solicitudes que recibe y hacia adelante en las respuestas que envía. Fuente: Kleppmann (2017).",
       "fragments": [
-        95.00000000000001,
-        96.80000000000001,
-        98.60000000000001
+        138.2,
+        140,
+        141.79999999999998
       ]
     },
     {
       "sceneId": "micro-figura",
-      "startTime": 99.80000000000001,
-      "endTime": 105.4,
-      "notes": "Los microservicios nacen en 2014, nombrados por Fowler y Lewis, como respuesta explícita a la SOA de servicios grandes y atados. La diferencia más importante es el aislamiento de los datos. En la SOA, tres servicios escriben en una misma base: un cambio de esquema afecta a los tres. En microservicios, cada servicio es dueño de su base y cambia su esquema sin coordinar con los demás. A cambio, cuesta coordinar lo que antes resolvía una sola base compartida. Fuente: Richards y Ford (2020)."
+      "startTime": 142.99999999999997,
+      "endTime": 153.99999999999997,
+      "notes": "Los microservicios nacen en 2014, nombrados por Fowler y Lewis, como respuesta explícita a la SOA de servicios grandes y atados. La diferencia más importante es dónde viven los datos. A la izquierda, SOA: tres servicios escriben en una misma base. A la derecha, microservicios: cada servicio es dueño de su propia base. Primer avance: se cambia el esquema de la base compartida y los tres servicios quedan afectados. Segundo: en microservicios se cambia la base de un solo servicio y los otros dos siguen igual. A cambio, cuesta coordinar lo que antes resolvía una sola base compartida. Fuente: Richards y Ford (2020).",
+      "fragments": [
+        145.59999999999997,
+        149.19999999999996,
+        152.79999999999995
+      ]
     },
     {
       "sceneId": "retomar",
-      "startTime": 105.4,
-      "endTime": 114.4,
+      "startTime": 153.99999999999997,
+      "endTime": 162.99999999999997,
       "notes": "Retomar el reto del inicio y pedir que respondan antes de mostrar cada ficha. Aplicación web: espera la respuesta, así que conviene un contrato síncrono, REST o gRPC. Sistema contable: no necesita respuesta inmediata y sincroniza por lotes, así que conviene AsyncAPI con un broker, lo que además amortigua los picos de carga. Cambio de nombre de un campo: combinar lector tolerante en el cliente con la coexistencia de endpoints, para que nadie tenga que migrar el mismo día.",
       "fragments": [
-        107.80000000000001,
-        109.60000000000001,
-        111.4,
-        113.20000000000002
+        156.39999999999998,
+        158.2,
+        159.99999999999997,
+        161.79999999999998
       ]
     },
     {
       "sceneId": "pe",
-      "startTime": 114.4,
-      "endTime": 120.80000000000001,
+      "startTime": 162.99999999999997,
+      "endTime": 169.39999999999998,
       "notes": "La práctica PE-S2 es corta. Primero, en la tabla, escriben el verbo HTTP y la ruta de tres operaciones sobre la matrícula: consultar, crear y reemplazar. Luego escriben un archivo .proto con una sola operación y sus dos mensajes, numerando cada campo; el ejemplo de la plantilla es el de la reserva de laboratorio de la clase. Por último eligen REST o gRPC y dan una razón en dos líneas, con el acoplamiento o el rendimiento. Errores esperados: poner la acción en la ruta, como /crearMatricula, y repetir números de campo."
     },
     {
       "sceneId": "actividades",
-      "startTime": 120.80000000000001,
-      "endTime": 126.00000000000001,
+      "startTime": 169.39999999999998,
+      "endTime": 174.59999999999997,
       "notes": "PE-S2 vale 2,25 puntos: verbo y ruta REST de tres operaciones sobre la matrícula, un archivo .proto corto y una decisión de dos líneas. TA-S2 vale 2,25 puntos: un cuadro de SOA, microservicios y serverless más un análisis en prosa con cita APA del capítulo 4 de Newman. GA-S2 vale 1 punto: reflexión sobre la Master Class de ASU. Las consignas, las plantillas y las rúbricas están en Canvas."
     },
     {
       "sceneId": "cierre",
-      "startTime": 126.00000000000001,
-      "endTime": 133.20000000000002,
+      "startTime": 174.59999999999997,
+      "endTime": 181.79999999999995,
       "notes": "Cerrar repasando el orden de la clase: la SOA y lo que costó reutilizar, los tres estilos de contrato, y cómo cambiar un contrato sin romper a los clientes."
     }
   ],
