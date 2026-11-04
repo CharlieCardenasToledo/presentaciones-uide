@@ -505,7 +505,7 @@
       "sceneId": "medicion",
       "startTime": 54.8,
       "endTime": 61.199999999999996,
-      "notes": "Sesión de práctica PE-1.2 con la plantilla de Canvas. El script debe correr sin modificarlo. Medir para n = 1 000, 10 000 y 100 000 tres accesos: a la posición del medio, a la última y el recorrido completo. Repetir al menos 100 veces y reportar la mediana en microsegundos. En el reporte, calcular el cociente entre tamaños e interpretar con Big-O. Errores esperados: medir una sola vez, no repetir, o comparar con Big-O sin mirar el cociente."
+      "notes": "Sesión de práctica PE-1.2, ahora más corta. El script medir_acceso.py ya está hecho y se descarga de Canvas: tiene la clase Nodo, la clase Lista y la función medir. Los estudiantes solo lo corren, copian ocho tiempos a la plantilla (acceso al medio y al último, en arreglo y en lista, con n = 1 000 y n = 100 000), dividen y dicen O(1) u O(n). Cierran con tres o cuatro líneas de explicación. Resultado esperado: en el arreglo el cociente es cercano a 1; en la lista crece mucho, porque llegar a la posición k exige k + 1 saltos. Error esperado: confundir tiempo absoluto con crecimiento; lo que importa es el cociente."
     },
     {
       "sceneId": "contrato",
@@ -564,7 +564,7 @@
       "sceneId": "actividades",
       "startTime": 103.2,
       "endTime": 108.4,
-      "notes": "PE-1.2 vale 2,25 puntos y es el script con el reporte de tiempos; GA-1.1 vale 1 punto y es el checkpoint de invariantes; TA-1.2 vale 2,25 puntos y es el mini informe de tres casos que se hace en el tiempo autónomo. Las consignas, las plantillas y las rúbricas están en Canvas."
+      "notes": "PE-1.2 vale 2,25 puntos y consiste en correr un script ya hecho y explicar sus tiempos; GA-1.1 vale 1 punto y es el checkpoint de invariantes; TA-1.2 vale 2,25 puntos y es el mini informe de tres casos que se hace en el tiempo autónomo. Las consignas, las plantillas y las rúbricas están en Canvas."
     },
     {
       "sceneId": "cierre",
@@ -662,10 +662,10 @@
         <div class="frame" id="medicion-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
           
-      <h1 class="ttl">Práctica: midan el acceso aleatorio y secuencial</h1>
-      <p class="lead" style="left:120px;top:270px;width:1600px">PE-1.2 en la sesión, con la plantilla de Canvas</p>
+      <h1 class="ttl">Práctica: midan cuánto cuesta llegar a una posición</h1>
+      <p class="lead" style="left:120px;top:270px;width:1600px">PE-1.2 en la sesión: el script ya está hecho, solo lo corren</p>
       <div class="vl" style="left:230px;top:412px;height:540px"></div>
-      <div class="vn" style="left:202px;top:380px">1</div><p class="vt" style="left:320px;top:389px">Implementen la lista enlazada simple</p><div class="vn" style="left:202px;top:515px">2</div><p class="vt" style="left:320px;top:524px">Midan con n = 1 000, 10 000 y 100 000</p><div class="vn" style="left:202px;top:650px">3</div><p class="vt" style="left:320px;top:659px">Tres accesos: al medio, al último y el recorrido completo</p><div class="vn" style="left:202px;top:785px">4</div><p class="vt" style="left:320px;top:794px">Repitan 100 veces y reporten la mediana en microsegundos</p><div class="vn" style="left:202px;top:920px">5</div><p class="vt" style="left:320px;top:929px">Calculen el cociente entre tamaños e interpreten con Big-O</p>
+      <div class="vn" style="left:202px;top:380px">1</div><p class="vt" style="left:320px;top:389px">Descarguen medir_acceso.py de Canvas y córranlo sin modificarlo</p><div class="vn" style="left:202px;top:515px">2</div><p class="vt" style="left:320px;top:524px">Copien los ocho tiempos a la tabla de la plantilla</p><div class="vn" style="left:202px;top:650px">3</div><p class="vt" style="left:320px;top:659px">Dividan el tiempo de 100 000 entre el de 1 000</p><div class="vn" style="left:202px;top:785px">4</div><p class="vt" style="left:320px;top:794px">Cociente cerca de 1: O(1). Cociente muy grande: O(n)</p><div class="vn" style="left:202px;top:920px">5</div><p class="vt" style="left:320px;top:929px">Expliquen en tres líneas por qué la lista creció y el arreglo no</p>
         </div>
       </section>
 
@@ -737,7 +737,7 @@
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
           
       <h1 class="ttl">Esta semana entregan tres actividades</h1>
-      <div class="x-tk" style="left:120px;top:300px"><p class="tg">PE-1.2</p><p class="tt">Medición de acceso</p><p class="td">Script y reporte con tiempos y Big-O</p><p class="tp">puntos</p>
+      <div class="x-tk" style="left:120px;top:300px"><p class="tg">PE-1.2</p><p class="tt">Medición de acceso</p><p class="td">Correr el script y explicar los tiempos</p><p class="tp">puntos</p>
           <svg class="ringsvg" width="180" height="180" viewBox="0 0 180 180"><circle class="rg" cx="90" cy="90" r="76" transform="rotate(-90 90 90)" pathLength="1"/></svg><p class="pn" data-n="2.25" style="font-size:60px;top:455px">2,25</p></div>
       <div class="x-tk" style="left:690px;top:300px"><p class="tg">GA-1.1</p><p class="tt">Checkpoint</p><p class="td">Seis afirmaciones con su justificación</p><p class="tp">punto</p>
           <svg class="ringsvg" width="180" height="180" viewBox="0 0 180 180"><circle class="rg" cx="90" cy="90" r="76" transform="rotate(-90 90 90)" pathLength="1"/></svg><p class="pn" data-n="1">1</p></div>
