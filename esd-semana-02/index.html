@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LTI_05U_ESD · Semana 2: Arreglos y listas, acceso e invariantes</title>
+    <script>
+      // El modo público se distingue en la pestaña del navegador.
+      if (new URLSearchParams(location.search).get("mode") === "audience") {
+        document.title = "LTI_05U_ESD · Semana 2: Arreglos y listas, acceso e invariantes" + " (pantalla del público)";
+      }
+    </script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { height: 100%; background: #0a0a0a; overflow: hidden; }
+      hyperframes-slideshow { display: block; position: relative; width: 100vw; height: 100vh; }
+      hyperframes-player { position: absolute; inset: 0; }
+    </style>
+    <script src="../vendor/hyperframes-player.global.js"></script>
+    <script src="../vendor/hyperframes-slideshow.global.js"></script>
+  </head>
+  <body>
+    <hyperframes-slideshow tabindex="0" notes-storage-key="esd-semana-02">
+      <hyperframes-player interactive src="composition/index.html"></hyperframes-player>
+      <script type="application/hyperframes-slideshow+json">
+{
+  "slides": [
+    {
+      "sceneId": "portada",
+      "startTime": 0,
+      "endTime": 5.6,
+      "notes": "Abrir con el caso de la biblioteca sin definir nada: cambiaron un arreglo por una lista enlazada y una operación empeoró mientras otra quedó igual. Pedir que anoten una hipótesis. La clase explica por qué con costos, acceso y contratos."
+    },
+    {
+      "sceneId": "caso",
+      "startTime": 5.6,
+      "endTime": 15.6,
+      "notes": "Dejar la pregunta a la vista antes de avanzar. La biblioteca guarda 100 000 préstamos en un arreglo; mostrar_prestamo(k) se ejecuta miles de veces al día y resumen_mensual() recorre todo una vez al mes. Un desarrollador cambia el arreglo por una lista para agregar y borrar sin mover nada. Resultado: el resumen mensual tarda igual y mostrar_prestamo(k) tarda más cuanto mayor es k. Es la exploración de la semana: dejar que propongan una explicación antes de la teoría.",
+      "fragments": [
+        8,
+        9.6,
+        11.2,
+        12.8,
+        14.4
+      ]
+    },
+    {
+      "sceneId": "costos",
+      "startTime": 15.6,
+      "endTime": 24,
+      "notes": "Tabla de la semana con n elementos. Revelar de a dos filas y pedir que anticipen el costo antes de mostrarlo. Acceder a la posición k: O(1) en arreglo y arreglo dinámico, O(n) en lista. Buscar sin orden: O(n) en todas. Insertar al inicio: O(n) en arreglo, O(1) en lista. Insertar al final: O(1) con espacio libre en arreglo; en el dinámico O(1) salvo al crecer; en la lista simple O(n) si no hay puntero al último nodo. Insertar en el medio: O(n) en todas. Borrar el último: O(1) en arreglo, O(n) en lista simple. Fuentes: Karumanchi (2017); Joyanes (2008).",
+      "fragments": [
+        18,
+        19.6,
+        21.2,
+        22.8
+      ]
+    },
+    {
+      "sceneId": "dominante",
+      "startTime": 24,
+      "endTime": 32.4,
+      "notes": "En el arreglo el costo lo domina desplazar elementos. En la lista, recorrer enlaces hasta la posición. En el arreglo dinámico, copiar los n elementos cada vez que se llena y crece al doble; como ocurre pocas veces, la mayoría de los agregados al final cuestan un paso. El análisis exacto de ese promedio se hace más adelante en el curso.",
+      "fragments": [
+        26.4,
+        28,
+        29.599999999999998,
+        31.2
+      ]
+    },
+    {
+      "sceneId": "medio",
+      "startTime": 32.4,
+      "endTime": 40.8,
+      "notes": "Ejemplo resuelto: insertar un dato en la posición 500 de una colección de n = 1 000. Arreglo: se desplazan los 500 elementos de las posiciones 500 a 999 y se escribe el dato: 501 pasos. Lista simple: 1 salto de la cabeza al primer nodo, 500 saltos hasta el nodo 499 y 2 enlaces cambiados: 502 pasos. Los dos cuestan casi n/2, es decir O(n), pero por causas distintas: uno mueve datos y el otro recorre enlaces.",
+      "fragments": [
+        34.8,
+        36.4,
+        38,
+        39.599999999999994
+      ]
+    },
+    {
+      "sceneId": "acceso-fig",
+      "startTime": 40.8,
+      "endTime": 46.4,
+      "notes": "El arreglo calcula la dirección con base más k por tamaño: una multiplicación y una suma, dos operaciones de tiempo constante, y llega en un paso. La lista parte de la cabeza y sigue seis enlaces para llegar al nodo de índice 5: contando la flecha de la cabeza, el elemento de índice k exige k + 1 saltos. Fuentes: Joyanes (2008); Karumanchi (2017)."
+    },
+    {
+      "sceneId": "aleatorio",
+      "startTime": 46.4,
+      "endTime": 54.8,
+      "notes": "Acceso aleatorio no habla de azar: cualquier posición se alcanza con el mismo trabajo. Acceso secuencial: para llegar a la posición k hay que pasar antes por las k anteriores. Volver al caso de la biblioteca: el acceso secuencial solo pesa cuando se salta a una posición; si se recorre toda la colección, ambas estructuras leen n elementos y cuestan O(n). Por eso resumen_mensual() no cambió y mostrar_prestamo(k) sí.",
+      "fragments": [
+        48.8,
+        50.4,
+        52,
+        53.599999999999994
+      ]
+    },
+    {
+      "sceneId": "medicion",
+      "startTime": 54.8,
+      "endTime": 61.199999999999996,
+      "notes": "Sesión de práctica PE-1.2 con la plantilla de Canvas. El script debe correr sin modificarlo. Medir para n = 1 000, 10 000 y 100 000 tres accesos: a la posición del medio, a la última y el recorrido completo. Repetir al menos 100 veces y reportar la mediana en microsegundos. En el reporte, calcular el cociente entre tamaños e interpretar con Big-O. Errores esperados: medir una sola vez, no repetir, o comparar con Big-O sin mirar el cociente."
+    },
+    {
+      "sceneId": "contrato",
+      "startTime": 61.199999999999996,
+      "endTime": 69.6,
+      "notes": "Un costo bajo no sirve si la estructura queda en un estado inválido. Joyanes propone escribir para cada módulo una precondición, que describe lo que debe cumplirse al principio, y una postcondición, lo que debe cumplirse al final. Lo que debe cumplirse siempre es una invariante. Ejemplo de Joyanes: el procedimiento ordenar; precondición, A es un arreglo de n enteros con 1 ≤ n ≤ Max; postcondición, A queda en orden ascendente y n no cambia. Fuente: Joyanes (2008).",
+      "fragments": [
+        63.599999999999994,
+        65.19999999999999,
+        66.8,
+        68.39999999999999
+      ]
+    },
+    {
+      "sceneId": "invariante-fig",
+      "startTime": 69.6,
+      "endTime": 75.19999999999999,
+      "notes": "Lista con cabeza y tamaño. Tres invariantes: el tamaño nunca es negativo; la cabeza es nula si y solo si el tamaño es 0; recorrer desde la cabeza visita exactamente tamaño nodos. A la derecha, un caso correcto y un caso con error: una inserción que olvida actualizar el tamaño rompe la tercera invariante. Pedir que digan cuál se rompe antes de señalarla."
+    },
+    {
+      "sceneId": "pila",
+      "startTime": 75.19999999999999,
+      "endTime": 83.6,
+      "notes": "Ejemplo resuelto de la guía: una pila de tamaño máximo fijo con un arreglo. Atributos items y tamano. Invariante 1: 0 ≤ tamano ≤ len(items). Invariante 2: los elementos válidos ocupan las posiciones 0 a tamano − 1. apilar(x) tiene la precondición tamano < len(items): escribe x en la posición tamano y suma 1. La invariante 1 se mantiene porque tamano era menor que la capacidad; la 2, porque la posición nueva queda justo al final de las válidas. Conclusión: apilar conserva las invariantes mientras se respete su precondición.",
+      "fragments": [
+        77.6,
+        79.19999999999999,
+        80.8,
+        82.39999999999999
+      ]
+    },
+    {
+      "sceneId": "checkpoint",
+      "startTime": 83.6,
+      "endTime": 89.6,
+      "notes": "GA-1.1 en la sesión de clase: cuestionario de Canvas con seis afirmaciones. Para cada una se marca verdadero o falso y se justifica en una o dos oraciones con una invariante, una precondición o una postcondición. Se cierra según las indicaciones de la actividad en Canvas. Errores esperados: justificar con el costo en lugar de con el contrato, y confundir invariante con postcondición."
+    },
+    {
+      "sceneId": "elegir",
+      "startTime": 89.6,
+      "endTime": 96,
+      "notes": "Para elegir, responder cuatro preguntas sobre el caso. Primera: si salta a posiciones con frecuencia, gana el arreglo (O(1) contra O(n)). Segunda: si inserta o borra al inicio con frecuencia, gana la lista, que solo cambia punteros. Tercera: si agrega al final sin saber cuántos datos habrá, el arreglo dinámico crece duplicando su tamaño, a cambio de copiar; la lista se expande sin copiar pero gasta memoria en cada enlace. Cuarta: si solo recorre toda la colección, el costo no decide y se elige por otros motivos, como memoria o simplicidad. Fuentes: Karumanchi (2017); Joyanes (2008)."
+    },
+    {
+      "sceneId": "justificar",
+      "startTime": 96,
+      "endTime": 103.2,
+      "notes": "Una justificación completa nombra la operación dominante, da su costo en cada estructura y reconoce un inconveniente de la elegida. 'El arreglo dinámico porque es más rápido' no sirve. Un ejemplo válido: el arreglo dinámico, porque el caso agrega mensajes al final miles de veces y casi nunca salta a una posición; eso cuesta O(1) casi siempre en el arreglo dinámico y O(n) en una lista simple sin puntero al último nodo; el inconveniente es que copia todos los elementos cuando crece. Es lo que se pide en TA-1.2.",
+      "fragments": [
+        98.4,
+        100.2,
+        102
+      ]
+    },
+    {
+      "sceneId": "actividades",
+      "startTime": 103.2,
+      "endTime": 108.4,
+      "notes": "PE-1.2 vale 2,25 puntos y es el script con el reporte de tiempos; GA-1.1 vale 1 punto y es el checkpoint de invariantes; TA-1.2 vale 2,25 puntos y es el mini informe de tres casos que se hace en el tiempo autónomo. Las consignas, las plantillas y las rúbricas están en Canvas."
+    },
+    {
+      "sceneId": "cierre",
+      "startTime": 108.4,
+      "endTime": 115.60000000000001,
+      "notes": "Cerrar volviendo a la biblioteca: ahora pueden explicar por qué empeoró mostrar_prestamo(k) y por qué no el resumen mensual. Tarea: repasar sin apuntes las secciones de la guía de la semana y escribir el mini informe de tres casos. Próxima semana: pilas y colas."
+    }
+  ],
+  "slideSequences": []
+}
+      </script>
+    </hyperframes-slideshow>
+  </body>
+</html>

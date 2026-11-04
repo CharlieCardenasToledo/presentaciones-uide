@@ -1,0 +1,1074 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Semana 2 · Arreglos y listas, acceso e invariantes</title>
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      :root {
+        /* Colores tomados del logotipo UIDE: vino #910048 y dorado #E8A920. Sin degradados. */
+        --paper: #ffffff; --ink: #1f1a1d; --muted: #5a5257; --wine: #910048; --wine-deep: #6d0036; --gold: #e8a920;
+        --teal: #0c6b62; --teal-soft: #e3f2f0; --amber: #7a5200; --amber-soft: #fcefc9; --card: #ffffff; --line: #e2dcdf; --tint: #f6f1f3;
+      }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--paper); }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; font-family: system-ui, sans-serif; color: var(--ink); }
+      .slide { position: absolute; inset: 0; }
+      .frame { position: absolute; inset: 0; display: none; opacity: 0; background: var(--paper); transform-origin: 0 0; isolation: isolate; }
+      .dark .frame { background: var(--wine); color: #fff; }
+      .frame > :not(.logo) { position: absolute; }
+      .logo { position: absolute; top: 44px; right: 96px; height: 92px; width: auto; }
+      .dark .logo { top: 0; right: 96px; height: 150px; padding: 26px 30px 22px; background: #fff; border-radius: 0 0 18px 18px; box-sizing: border-box; }
+      .ov { left: 0; top: 0; pointer-events: none; overflow: visible; }
+      .ov path, .mlsvg path { fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; }
+
+      .w { display: inline-block; overflow: hidden; vertical-align: top; padding: 0.18em 0 0.14em; margin: -0.18em 0 -0.14em; }
+      .wi { display: inline-block; }
+      .ch { white-space: pre; }
+      .ttl { left: 120px; top: 96px; width: 1380px; font-family: ui-serif, serif; font-weight: 700; font-size: 64px; line-height: 1.1; letter-spacing: -0.01em; }
+      .ttl.long { font-size: 58px; width: 1600px; }
+      .ttl.xl { font-size: 92px; line-height: 1.08; }
+      .dark .ttl { color: #fff; }
+      .course { font-size: 36px; font-weight: 600; color: var(--gold); }
+      .lead { font-size: 46px; line-height: 1.25; color: var(--muted); }
+      .dark .lead { color: #fff; }
+      .byline { font-size: 32px; color: #f6dfe9; }
+      .punch { font-family: ui-serif, serif; font-size: 60px; font-weight: 700; color: var(--wine); }
+      .punch.soft { color: var(--ink); font-size: 46px; }
+      .punch.good { color: var(--teal); font-size: 54px; }
+      .mono { font-family: ui-monospace, monospace; }
+
+      .sheet { background: var(--tint); border-radius: 8px; overflow: hidden; }
+      .dark .sheet { background: #fff; }
+      .sh { position: relative; padding: 16px 24px; font: 700 36px ui-monospace, monospace; color: #fff; height: 70px; }
+      .sh span { position: absolute; left: 24px; top: 14px; }
+      .sr { position: relative; height: 70px; padding: 14px 24px; font-size: 38px; white-space: nowrap; }
+      .sr + .sr { border-top: 3px solid #fff; }
+      .dark .sr + .sr { border-top-color: var(--tint); }
+      .sr span { }
+      .ph .phnew { position: absolute; left: 24px; top: 14px; opacity: 0; }
+
+      /* ruta */
+      .rl { stroke: var(--wine); stroke-width: 8; }
+      .dot { width: 24px; height: 24px; border-radius: 50%; background: var(--gold); }
+      .node { width: 104px; height: 104px; border-radius: 50%; background: var(--wine); color: #fff; font-size: 52px; font-weight: 800; display: grid; place-items: center; }
+      .nl { width: 340px; text-align: center; font-size: 40px; font-weight: 700; line-height: 1.2; }
+
+      /* caso */
+      .off { font-size: 46px; font-weight: 800; color: var(--wine); }
+      .dsh { height: 0; border-top: 8px dashed var(--amber); }
+      .xm { width: 70px; height: 70px; }
+      .xm::before, .xm::after { content: ""; position: absolute; left: 0; top: 31px; width: 70px; height: 9px; border-radius: 5px; background: #c0392b; }
+      .xm::before { transform: rotate(45deg); } .xm::after { transform: rotate(-45deg); }
+
+      /* versiones */
+      .th { left: 0; top: 300px; width: 1920px; height: 70px; }
+      .th::before { content: ""; position: absolute; left: 120px; width: 1640px; top: 0; height: 70px; background: var(--wine-deep); border-radius: 14px; }
+      .th .cl { color: #fff; font-size: 34px; font-weight: 700; letter-spacing: 0.1em; height: 70px; line-height: 70px; padding-left: 28px; }
+      .tr { left: 0; width: 1920px; height: 86px; }
+      .tr::before { content: ""; position: absolute; left: 120px; width: 1640px; top: 0; height: 86px; background: var(--tint); border-radius: 14px; }
+      .cl { position: absolute; top: 0; height: 86px; line-height: 86px; font-size: 40px; padding-left: 28px; white-space: nowrap; }
+      .cl.b { font-size: 40px; font-weight: 600; }
+      .hb { background: #fbd77a; mix-blend-mode: multiply; border-radius: 12px; }
+      .ld { stroke: var(--amber); stroke-width: 5; }
+      .pt { width: 18px; height: 18px; border-radius: 50%; background: var(--amber); }
+      .co { width: 520px; text-align: center; font-size: 40px; font-weight: 800; color: var(--amber); background: var(--amber-soft); border-radius: 8px; padding: 14px 0; }
+
+      /* marco */
+      .lk { height: 0; border-top: 8px dashed var(--teal); }
+      .qm { width: 60px; height: 60px; border-radius: 50%; background: var(--amber); color: #fff; font-size: 44px; font-weight: 800; display: grid; place-items: center; }
+      .mag { width: 100px; height: 100px; border-radius: 50%; border: 14px solid var(--gold); }
+      .mag::after { content: ""; position: absolute; left: 78px; top: 78px; width: 14px; height: 60px; border-radius: 7px; background: var(--gold); transform: rotate(-45deg); transform-origin: 7px 0; }
+      .chipx { font-size: 40px; font-weight: 800; color: var(--amber); background: var(--amber-soft); border-radius: 8px; padding: 12px 34px; }
+
+      /* causa */
+      .ul { position: relative; display: inline-block; font-weight: 800; color: var(--gold); }
+      .ub { position: absolute; left: 0; bottom: -6px; width: 100%; height: 6px; background: var(--gold); border-radius: 3px; }
+      .isl { width: 300px; height: 300px; border-radius: 50%; background: var(--wine-deep); border: 6px solid var(--gold); color: #fff; font-size: 44px; font-weight: 800; display: grid; place-items: center; }
+
+      iframe.fig { width: 1690px; height: 780px; border: 0; background: transparent; }
+
+      /* definiciones */
+      .sc { width: 380px; height: 76px; border-radius: 6px; background: var(--tint); color: #8a7f85; font-size: 40px; font-weight: 800; line-height: 76px; text-align: center; white-space: pre; }
+      .gl { stroke: var(--gold); stroke-width: 8; }
+      .bp { background: var(--tint); border-radius: 18px; overflow: hidden; }
+      .bh { position: absolute; top: 0; height: 80px; background: var(--wine-deep); color: #fff; font: 700 38px/80px ui-monospace, monospace; padding-left: 28px; }
+      .br { position: absolute; left: 0; width: 1000px; height: 80px; }
+      .br + .br { border-top: 3px solid #fff; }
+      .br .cl { height: 80px; line-height: 80px; font-size: 40px; }
+      .edit .oldn, .edit .newn { position: absolute; left: 28px; }
+      .edit .newn { opacity: 0; font-weight: 800; color: var(--teal); }
+      .usr { width: 120px; height: 120px; border-radius: 50%; background: var(--teal); display: grid; place-items: center; }
+      .ulp { stroke: var(--teal); stroke-width: 6; }
+
+      /* caracteristicas */
+      .qd { left: 120px; top: 300px; width: 1680px; height: 620px; }
+      .qd > * { position: absolute; }
+      .mo { left: 0; top: 30px; width: 320px; height: 300px; transform: scale(1.7); transform-origin: 0 0; }
+      .mo > * { position: absolute; }
+      .tx { left: 700px; top: 40px; width: 1000px; }
+      .tx strong { display: block; font-size: 60px; line-height: 1.12; font-weight: 800; }
+      .tx em { display: block; margin-top: 12px; font-style: normal; font-size: 44px; line-height: 1.2; color: var(--muted); }
+      .ex { display: block; margin-top: 36px; font-size: 40px; line-height: 1.25; font-weight: 600; color: var(--wine); }
+      .cb { width: 94px; height: 48px; background: #e4d6dc; border-radius: 8px; }
+      .fi { background: var(--wine); color: #fff; font: 700 20px/1 ui-monospace, monospace; padding: 10px 14px; border-radius: 12px; white-space: nowrap; }
+      .bk { width: 120px; height: 120px; border-radius: 16px; color: #fff; font-style: normal; font-weight: 800; font-size: 20px; display: grid; place-items: center; }
+      .bk.app { background: var(--wine); } .bk.data { background: var(--teal); width: 110px; }
+      .nc { font-size: 21px; font-weight: 800; color: var(--teal); white-space: nowrap; }
+      .fl { font-size: 21px; font-weight: 800; color: var(--muted); white-space: nowrap; }
+      .ask { font-family: ui-serif, serif; font-style: italic; font-size: 48px; font-weight: 700; color: var(--wine); }
+      .capt { font-size: 44px; font-weight: 600; }
+      .capt b { color: var(--amber); }
+      .wall { width: 0; height: 200px; border-left: 6px dashed var(--amber); }
+      .ext { width: 30px; height: 120px; background: #5fbfb3; border-radius: 8px; }
+      .g4 { width: 64px; height: 54px; background: #e4d6dc; border-radius: 8px; }
+      .fa, .fb { height: 276px; border: 6px solid var(--gold); border-radius: 14px; top: -6px; }
+      .fa { left: -6px; width: 154px; } .fb { left: 146px; width: 160px; border-color: var(--teal); }
+      .hub { left: 110px; top: 100px; width: 100px; height: 100px; background: var(--teal); border-radius: 16px; }
+      .uc { width: 70px; height: 70px; border-radius: 50%; background: var(--wine); }
+      .ml { stroke: var(--teal); stroke-width: 5; }
+      .mlsvg { left: 0; top: 0; }
+      .pu { width: 20px; height: 20px; border-radius: 50%; background: var(--gold); }
+
+      /* catalogo */
+      .pb { width: 640px; height: 160px; background: var(--tint); border-radius: 8px; }
+      .pl { font-size: 40px; font-weight: 800; }
+      .q2 { font-size: 40px; color: var(--muted); }
+      .dc { font-size: 40px; font-weight: 700; color: var(--amber); background: var(--amber-soft); border-radius: 8px; padding: 10px 26px; white-space: nowrap; }
+      .dbms { width: 650px; height: 550px; background: var(--teal-soft); border-radius: 8px; }
+      .dbms > * { position: absolute; }
+      .dt { left: 30px; top: 18px; font-size: 40px; font-weight: 800; color: var(--teal); }
+      .cat { left: 30px; top: 90px; width: 590px; height: 240px; background: var(--teal); border-radius: 16px; color: #fff; font-size: 40px; font-weight: 800; padding: 20px 26px; }
+      .dat { left: 30px; top: 370px; width: 590px; height: 130px; background: #084a44; border-radius: 16px; color: #fff; font-size: 44px; font-weight: 800; display: grid; place-items: center; }
+      .ln { stroke: var(--teal); stroke-width: 6; }
+
+      /* anomalias */
+      .z { top: 330px; width: 520px; height: 700px; }
+      .z > * { position: absolute; }
+      .zl { left: 0; top: 0; font-family: ui-serif, serif; font-size: 48px; font-weight: 800; color: var(--amber); }
+      .zd { left: 0; top: 76px; width: 500px; font-size: 40px; line-height: 1.2; color: var(--muted); }
+      .cp { left: 0; width: 440px; background: var(--amber-soft); color: var(--amber); font: 800 38px/1 ui-monospace, monospace; padding: 24px 24px; border-radius: 8px; white-space: nowrap; }
+      .cnt { width: 110px; height: 110px; border-radius: 50%; background: var(--wine); color: #fff; font-size: 56px; font-weight: 800; display: grid; place-items: center; }
+      .ne { font-size: 170px; font-weight: 800; color: #c0392b; line-height: 1; }
+      .bp1, .bp2 { width: 0; height: 30px; border-left: 6px dashed var(--amber); }
+
+      /* matriz */
+      .mh { left: 0; top: 330px; width: 1920px; height: 70px; }
+      .mh::before { content: ""; position: absolute; left: 120px; width: 1680px; height: 70px; background: var(--wine-deep); border-radius: 14px; }
+      .mh span { position: absolute; top: 0; height: 70px; line-height: 70px; color: #fff; font-size: 34px; font-weight: 700; letter-spacing: 0.1em; }
+      .mr { left: 0; width: 1920px; height: 100px; }
+      .mr::before { content: ""; position: absolute; left: 120px; width: 1680px; height: 100px; background: var(--tint); border-radius: 14px; }
+      .mr span { position: absolute; top: 0; height: 100px; line-height: 100px; font-size: 38px; }
+      .mr .an { left: 140px; top: 20px; height: 60px; line-height: 60px; padding: 0 22px; background: var(--amber-soft); color: var(--amber); font-weight: 800; border-radius: 8px; font-size: 36px; }
+      .mr .ev { left: 560px; }
+      .mr .cq { left: 1150px; font-weight: 800; color: var(--wine); font-size: 36px; }
+      .ar { stroke: var(--wine); stroke-width: 6; }
+
+      /* esquema unificado */
+      .hold, .hnew { }
+      .hnew { opacity: 0; }
+      .sb { width: 1680px; height: 96px; background: var(--wine-deep); color: #fff; border-radius: 18px; font: 700 46px/96px ui-monospace, monospace; padding-left: 36px; }
+      .pg { height: 88px; background: var(--tint); border-radius: 16px; font: 700 42px/88px ui-monospace, monospace; padding-left: 32px; }
+      .sb u, .pg u { text-decoration-thickness: 5px; text-underline-offset: 8px; }
+      .lk { stroke: var(--teal); stroke-width: 6; }
+      path.lk { border: 0; height: auto; }
+      .pd { left: -11px; top: -11px; width: 22px; height: 22px; border-radius: 50%; background: var(--gold); opacity: 0; }
+
+      /* practica */
+      .vl { width: 8px; background: var(--wine); border-radius: 4px; }
+      .vn { width: 64px; height: 64px; border-radius: 50%; background: var(--wine); color: #fff; font-size: 36px; font-weight: 800; display: grid; place-items: center; }
+      .vt { font-size: 44px; font-weight: 600; }
+
+      /* costos */
+      .post { left: 740px; top: 480px; width: 440px; height: 440px; }
+      .stem { position: absolute; left: 200px; top: 0; width: 40px; height: 400px; background: #b9aab1; }
+      .bs { position: absolute; left: 0; top: 400px; width: 440px; height: 40px; border-radius: 10px; background: #b9aab1; }
+      .beam { width: 1000px; height: 20px; background: var(--wine); border-radius: 10px; }
+      .pan { position: absolute; top: 20px; width: 680px; height: 400px; transform-origin: 340px -60px; }
+      .pan.pl { left: -340px; } .pan.pr { left: 660px; }
+      .pan svg { position: absolute; left: 0; top: 0; }
+      .rod { position: absolute; left: 337px; top: -60px; width: 6px; height: 60px; background: #8a7f85; }
+      .tray { position: absolute; left: 0; top: 204px; width: 680px; height: 28px; background: var(--wine-deep); border-radius: 13px; }
+      .w4 { position: absolute; width: 330px; height: 100px; background: var(--amber-soft); color: var(--amber); font-size: 38px; font-weight: 800; line-height: 1.05; display: grid; place-items: center; text-align: center; border-radius: 14px; z-index: 2; }
+      .bw { position: absolute; left: 20px; top: 90px; width: 640px; height: 100px; background: var(--teal); color: #fff; font-size: 42px; font-weight: 800; display: grid; place-items: center; border-radius: 14px; z-index: 2; }
+      .pan.pr .w4 { }
+
+      /* modelos */
+      .sbar { width: 10px; height: 110px; background: var(--wine); border-radius: 5px; }
+      .st { width: 640px; }
+      .st b { display: block; font-family: ui-serif, serif; font-size: 52px; color: #8a7f85; }
+      .st em { display: block; font-style: normal; font-size: 38px; color: var(--muted); margin-top: 6px; }
+      .g { width: 980px; height: 640px; }
+      .tth { height: 70px; border-radius: 14px; color: #fff; font: 800 40px/70px ui-monospace, monospace; padding-left: 28px; }
+      .fld { width: 290px; height: 64px; border-radius: 8px; background: var(--tint); color: var(--ink); font-size: 38px; font-weight: 700; display: grid; place-items: center; }
+      .drw { width: 900px; height: 64px; background: var(--tint); border-radius: 8px; }
+      .drw span { position: absolute; top: 0; width: 300px; padding-left: 20px; font: 600 34px/64px ui-monospace, monospace; white-space: nowrap; }
+      .by { text-align: center; font-size: 36px; color: var(--muted); }
+      .hx { width: 280px; height: 64px; background: #e4d6dc; border-radius: 8px; color: var(--muted); font: 700 36px/64px ui-monospace, monospace; text-align: center; }
+      .pgbar { height: 56px; background: var(--teal-soft); color: var(--teal); font-size: 38px; font-weight: 800; line-height: 56px; text-align: center; border-radius: 14px; }
+      .mcap { font-size: 42px; font-weight: 700; line-height: 1.2; color: var(--wine); }
+      .g > * { position: absolute; }
+      .ent { height: 110px; border-radius: 16px; color: #fff; font-size: 40px; font-weight: 800; display: grid; place-items: center; }
+      .ent.rel { width: 150px; height: 130px; background: var(--gold); color: var(--ink); font-size: 34px; border-radius: 0; clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); }
+      .ent.pill { height: 64px; background: var(--tint); color: var(--ink); font-size: 38px; border-radius: 8px; }
+      .rl2 { stroke: var(--wine); stroke-width: 6; }
+      .tb { background: var(--tint); border-radius: 18px; overflow: hidden; }
+      .tbh { color: #fff; font: 800 40px/1 ui-monospace, monospace; padding: 16px 26px; }
+      .tbr { font: 600 36px/1 ui-monospace, monospace; padding: 16px 26px; border-top: 3px solid #fff; }
+      .pg2 { width: 200px; height: 120px; background: #e4d6dc; border-radius: 12px; color: var(--muted); font: 700 34px/120px ui-monospace, monospace; text-align: center; }
+      .cap { font-size: 44px; font-weight: 800; color: var(--wine); }
+
+      /* esquema y estado */
+      .schl { font-size: 36px; font-weight: 800; letter-spacing: 0.14em; color: var(--muted); }
+      .sch { width: 1680px; height: 110px; background: var(--wine-deep); color: #fff; border-radius: 18px; font: 700 52px/110px ui-monospace, monospace; padding-left: 40px; }
+      .cnt2 { font-size: 40px; font-weight: 800; color: var(--teal); }
+      .sw { position: relative; display: inline-block; width: 220px; height: 50px; vertical-align: bottom; }
+      .sw span { position: absolute; left: 0; top: 0; }
+      .cnt2 .n3 { opacity: 0; }
+      .sth, .sr2, .nr { left: 0; width: 1920px; height: 80px; }
+      .sth .cl { height: 70px; line-height: 70px; font-size: 34px; font-weight: 700; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; }
+      .sr2::before, .nr::before { content: ""; position: absolute; left: 120px; width: 1680px; height: 80px; background: var(--tint); border-radius: 14px; }
+      .nr::before { background: var(--teal-soft); }
+      .sr2 .cl, .nr .cl { height: 80px; line-height: 80px; }
+
+      /* evolucion */
+      .trk { left: 0; top: 0; width: 3600px; height: 1080px; }
+      .trk > * { position: absolute; }
+      .trl { height: 8px; background: var(--wine); border-radius: 4px; }
+      .nd { top: 300px; width: 540px; height: 600px; text-align: center; }
+      .nd > * { position: absolute; left: 0; width: 540px; }
+      .yr { top: 0; font-family: ui-serif, serif; font-size: 100px; font-weight: 800; color: var(--wine); font-variant-numeric: tabular-nums; }
+      .gl2 { left: 190px; top: 180px; width: 160px; height: 160px; border-radius: 50%; background: var(--wine); display: grid; place-items: center; }
+      .nd .gl2 { width: 160px; }
+      .nm { top: 380px; font-size: 48px; font-weight: 800; }
+      .ds { top: 450px; font-size: 38px; color: var(--muted); }
+
+      /* decision */
+      .sit { width: 520px; height: 190px; background: var(--tint); border-radius: 8px; padding: 22px 28px; }
+      .sit strong { display: block; font-size: 40px; line-height: 1.12; font-weight: 800; padding-left: 70px; }
+      .bd { position: absolute; left: 24px; top: 22px; width: 52px; height: 52px; border-radius: 50%; background: var(--wine); color: #fff; font-size: 32px; font-weight: 800; display: grid; place-items: center; }
+      .rs { position: absolute; left: 28px; bottom: 18px; font-style: normal; font-size: 38px; font-weight: 800; color: var(--amber); }
+      .rs.good { color: var(--teal); }
+      .bin { background: var(--teal-soft); border-radius: 8px; }
+      .bin.am { background: var(--amber-soft); }
+      .bin span { position: absolute; left: 30px; top: 14px; font-size: 44px; font-weight: 800; }
+
+      /* actividades */
+      .tk { width: 760px; height: 520px; background: var(--tint); border-radius: 8px; }
+      .tk > * { position: absolute; }
+      .tg { left: 50px; top: 40px; font-size: 44px; font-weight: 800; color: var(--wine); }
+      .tt { left: 50px; top: 120px; width: 660px; font-family: ui-serif, serif; font-size: 56px; font-weight: 700; line-height: 1.1; }
+      .td { left: 50px; top: 270px; width: 660px; font-size: 40px; color: var(--muted); line-height: 1.2; }
+      .tp { left: 520px; top: 480px; width: 180px; text-align: center; font-size: 38px; font-weight: 700; color: var(--muted); }
+      .ringsvg { left: 520px; top: 310px; }
+      .rg { fill: none; stroke: var(--wine); stroke-width: 14; stroke-linecap: round; stroke-dasharray: 1; }
+      .pn { left: 520px; top: 352px; width: 180px; text-align: center; font-size: 84px; font-weight: 800; color: var(--wine); line-height: 1; }
+      .src { font-size: 40px; color: var(--muted); }
+
+      /* cierre */
+      .phc { width: 380px; height: 100px; background: #fff; color: var(--ink); border-radius: 18px; font: 800 48px/100px ui-monospace, monospace; text-align: center; }
+      .ne2 { width: 160px; text-align: center; font-size: 150px; font-weight: 800; color: var(--gold); line-height: 1; }
+
+      /* ── Ingeniería de software: escenas propias ── */
+      .x-q { font-size: 40px; font-weight: 700; color: var(--amber); line-height: 1.2; }
+      .x-cap { font-size: 44px; font-weight: 600; line-height: 1.25; }
+      .x-dot { width: 30px; height: 30px; border-radius: 50%; background: #b9aab1; }
+      .x-dot.now { background: var(--teal); }
+      .x-lb { font-size: 44px; font-weight: 800; color: var(--wine); }
+      .x-blk { width: 900px; height: 70px; background: var(--tint); border-radius: 8px; font-size: 40px; font-weight: 700; line-height: 70px; padding-left: 28px; }
+      .x-blk.base { background: var(--wine-deep); color: #fff; }
+      .x-sm { font-size: 44px; color: var(--muted); }
+      .x-seg { width: 330px; height: 110px; color: #fff; font-size: 40px; font-weight: 800; display: grid; place-items: center; border-radius: 8px; }
+      .x-cod { width: 220px; height: 56px; background: var(--gold); color: var(--ink); font-size: 38px; font-weight: 800; display: grid; place-items: center; border-radius: 8px; }
+      .x-br { stroke: var(--wine); stroke-width: 6; }
+      .xc { position: absolute; top: 0; height: 90px; line-height: 90px; font-size: 38px; padding-left: 24px; white-space: nowrap; }
+      .xc.a { font-weight: 700; } .xc.b { color: var(--muted); } .xc.c { font-weight: 800; color: var(--wine); }
+      .x-th { left: 0; top: 300px; width: 1920px; height: 70px; }
+      .x-th::before { content: ""; position: absolute; left: 120px; width: 1680px; height: 70px; background: var(--wine-deep); border-radius: 8px; }
+      .x-th .xc { color: #fff; font-size: 34px; font-weight: 700; letter-spacing: 0.08em; height: 70px; line-height: 70px; }
+      .x-tr { left: 0; width: 1920px; height: 90px; }
+      .x-tr::before { content: ""; position: absolute; left: 120px; width: 1680px; height: 90px; background: var(--tint); border-radius: 8px; }
+      .x-ln { font-size: 46px; font-weight: 800; color: var(--wine); }
+      .x-nd { width: 380px; height: 110px; background: var(--tint); border-radius: 8px; font-size: 38px; font-weight: 800; display: grid; place-items: center; text-align: center; line-height: 1.1; padding: 0 14px; }
+      .x-nd.hl { background: var(--wine-deep); color: #fff; }
+      .x-gl { width: 270px; text-align: center; font-size: 38px; line-height: 1.15; color: var(--muted); }
+      .x-ar { stroke: var(--wine); stroke-width: 6; }
+      .x-at { left: 120px; top: 300px; width: 1680px; height: 620px; }
+      .x-at > * { position: absolute; }
+      .x-mo { left: 0; top: 30px; width: 560px; height: 520px; }
+      .x-mo > * { position: absolute; }
+      .x-tx { left: 700px; top: 40px; width: 1000px; }
+      .x-tx strong { display: block; font-size: 60px; line-height: 1.12; font-weight: 800; }
+      .x-tx em { display: block; margin-top: 16px; font-style: normal; font-size: 44px; line-height: 1.2; color: var(--muted); }
+      .x-tx span { display: block; margin-top: 36px; font-size: 40px; line-height: 1.25; font-weight: 600; color: var(--wine); }
+      .x-bl { width: 120px; height: 90px; background: #e4d6dc; border-radius: 8px; }
+      .x-chip { background: var(--amber-soft); color: var(--amber); font-size: 38px; font-weight: 800; padding: 10px 24px; border-radius: 8px; white-space: nowrap; }
+      .x-acc { width: 230px; height: 170px; background: var(--tint); border-radius: 8px; font-size: 36px; font-weight: 700; display: grid; place-items: center; text-align: center; padding: 0 12px; line-height: 1.1; }
+      .x-coin { width: 46px; height: 46px; border-radius: 50%; background: var(--gold); }
+      .x-neg { font-size: 44px; font-weight: 800; color: #c0392b; }
+      .x-zero { font-size: 40px; font-weight: 800; color: var(--muted); }
+      .x-sw circle { fill: none; stroke: var(--wine); stroke-width: 18; stroke-linecap: round; stroke-dasharray: 1; }
+      .x-swt { width: 300px; text-align: center; font: 800 84px/1 ui-monospace, monospace; color: var(--wine); }
+      .x-us { width: 150px; height: 150px; border-radius: 50%; background: var(--teal); display: grid; place-items: center; }
+      .x-bub { width: 70px; height: 70px; border-radius: 50%; background: var(--amber); color: #fff; font-size: 48px; font-weight: 800; display: grid; place-items: center; }
+      .x-exp { stroke: #c0392b; stroke-width: 6; }
+      .x-pc { width: 330px; height: 230px; background: var(--tint); border-radius: 8px; padding: 22px 24px; }
+      .x-pc strong { display: block; font-size: 44px; font-weight: 800; color: var(--wine); }
+      .x-pc em { display: block; margin-top: 10px; font-style: normal; font-size: 36px; line-height: 1.15; color: var(--muted); }
+      .x-hd { font-size: 34px; font-weight: 700; letter-spacing: 0.08em; color: var(--muted); }
+      .x-cd { width: 375px; height: 370px; background: var(--tint); border-radius: 8px; padding: 24px 26px; font-size: 38px; line-height: 1.2; }
+      .x-cd.big { display: grid; place-items: center; text-align: center; font-family: ui-serif, serif; font-size: 46px; font-weight: 800; color: var(--wine); }
+      .x-ly { width: 520px; height: 80px; border-radius: 8px; color: #fff; font-size: 38px; font-weight: 800; display: grid; place-items: center; }
+      .x-sys { width: 440px; height: 300px; border: 6px solid var(--wine); border-radius: 8px; }
+      .x-cmp { width: 170px; height: 70px; background: var(--tint); font-size: 36px; font-weight: 700; display: grid; place-items: center; border-radius: 8px; }
+      .x-ai { width: 150px; height: 90px; background: var(--gold); color: var(--ink); font-size: 56px; font-weight: 800; display: grid; place-items: center; border-radius: 8px; }
+      .x-bx2 { width: 520px; height: 110px; background: var(--tint); font-size: 38px; font-weight: 700; display: grid; place-items: center; text-align: center; border-radius: 8px; padding: 0 16px; line-height: 1.1; }
+      .x-pb { width: 150px; height: 64px; background: var(--tint); border-radius: 8px; font-size: 34px; font-weight: 700; display: grid; place-items: center; }
+      .x-sp { stroke: var(--amber); stroke-width: 4; }
+      .x-ts { stroke: var(--teal); stroke-width: 5; }
+      .x-rd { stroke: #c0392b; stroke-width: 5; }
+      .x-gb { width: 330px; height: 90px; background: #f3d3cf; color: #8b2b22; font-size: 38px; font-weight: 800; display: grid; place-items: center; border-radius: 8px; }
+      .x-fn { width: 220px; height: 70px; background: var(--tint); font-size: 36px; font-weight: 700; display: grid; place-items: center; border-radius: 8px; }
+      .x-ob { width: 250px; height: 210px; border: 6px solid var(--teal); border-radius: 8px; background: var(--teal-soft); text-align: center; padding-top: 34px; font-size: 36px; line-height: 1.5; }
+      .x-ob b { display: block; color: var(--teal); }
+      .x-ph { width: 300px; height: 100px; background: var(--tint); border-radius: 8px; font-size: 38px; font-weight: 800; display: grid; place-items: center; }
+      .x-doc { width: 54px; height: 76px; background: #fff; border: 4px solid #b9aab1; border-radius: 4px; }
+      .x-chg { background: #c0392b; color: #fff; font-size: 38px; font-weight: 800; padding: 10px 24px; border-radius: 8px; white-space: nowrap; }
+      .x-rb { stroke: #c0392b; stroke-width: 6; }
+      .x-rl { font-size: 38px; font-weight: 700; color: #c0392b; }
+      .x-cy { width: 120px; height: 120px; border-radius: 50%; background: var(--teal-soft); border: 6px solid var(--teal); color: var(--teal); font-size: 64px; font-weight: 800; display: grid; place-items: center; }
+      .x-rule { font-size: 40px; font-weight: 600; }
+      .x-cr { width: 1680px; height: 130px; background: var(--tint); border-radius: 8px; }
+      .x-cr strong { position: absolute; left: 30px; top: 0; width: 760px; line-height: 130px; font-size: 42px; font-weight: 800; }
+      .x-cr span { position: absolute; left: 820px; top: 0; width: 830px; height: 130px; display: flex; align-items: center; font-size: 40px; line-height: 1.15; color: var(--wine); font-weight: 600; }
+      .x-vd { font-family: ui-serif, serif; font-size: 80px; font-weight: 800; color: var(--wine); }
+      .x-rk { font-size: 42px; font-weight: 700; color: var(--teal); }
+      .x-fence { width: 780px; height: 470px; border: 6px solid var(--wine); border-radius: 8px; }
+      .x-fi { font-family: ui-serif, serif; font-size: 54px; font-weight: 800; }
+      .x-fe { font-size: 40px; color: var(--muted); }
+      .x-rc { width: 780px; height: 90px; background: var(--teal-soft); color: var(--teal); font-size: 44px; font-weight: 800; line-height: 90px; padding-left: 30px; border-radius: 8px; }
+      .x-cc { width: 300px; height: 300px; border-radius: 50%; background: var(--wine); color: #fff; font-family: ui-serif, serif; font-size: 52px; font-weight: 800; display: grid; place-items: center; text-align: center; line-height: 1.1; padding: 0 30px; }
+      .x-sat { width: 380px; height: 76px; background: var(--tint); font-size: 36px; font-weight: 800; display: grid; place-items: center; border-radius: 8px; }
+      .x-sl { stroke: var(--wine); stroke-width: 4; }
+      .x-bx { width: 520px; height: 300px; background: #1f1a1d; color: #fff; font-size: 170px; font-weight: 800; display: grid; place-items: center; border-radius: 8px; }
+      .x-ia { font-size: 40px; font-weight: 700; width: 300px; line-height: 1.15; }
+      .x-lk { font-size: 38px; font-weight: 800; color: var(--amber); background: var(--amber-soft); padding: 8px 20px; border-radius: 8px; }
+      .x-fill { width: 140px; border-radius: 8px 8px 0 0; }
+      .x-bl2 { font-size: 34px; font-weight: 700; text-align: center; width: 220px; line-height: 1.1; }
+      .x-st { border: 5px solid #c0392b; color: #c0392b; font-size: 40px; font-weight: 800; padding: 8px 24px; border-radius: 8px; }
+      .x-pr { width: 540px; height: 170px; background: var(--tint); border-radius: 8px; padding: 18px 28px; }
+      .x-pr strong { display: block; font-size: 48px; color: var(--wine); font-weight: 800; }
+      .x-pr em { display: block; margin-top: 8px; font-style: normal; font-size: 38px; line-height: 1.15; color: var(--muted); }
+      .x-sp2 { font-size: 44px; font-weight: 700; color: #8a7f85; }
+      .x-sp2 b { display: inline-grid; place-items: center; width: 60px; height: 60px; border-radius: 50%; background: #e4d6dc; color: var(--ink); font-size: 34px; margin-right: 22px; }
+      .x-rs p { font-size: 44px; line-height: 1.25; margin-top: 24px; }
+      .x-pair { display: flex; align-items: center; gap: 30px; }
+      .x-pair span { font-size: 54px; font-weight: 800; padding: 16px 34px; border-radius: 8px; background: var(--wine); color: #fff; }
+      .x-pair i { font-style: normal; font-size: 40px; color: var(--muted); }
+      .x-chip2 { background: var(--teal-soft); color: var(--teal); font-weight: 800; padding: 14px 28px; border-radius: 8px; display: inline-block; width: fit-content; }
+      .x-rs p.x-chip2 { display: block; }
+      .x-hub { width: 320px; height: 320px; border-radius: 50%; background: var(--wine); color: #fff; font-family: ui-serif, serif; font-size: 46px; font-weight: 800; display: grid; place-items: center; text-align: center; line-height: 1.1; padding: 0 28px; }
+      .x-co { width: 440px; height: 96px; background: var(--tint); font-size: 38px; font-weight: 800; display: grid; place-items: center; text-align: center; line-height: 1.1; padding: 0 16px; border-radius: 8px; }
+      .x-ext { width: 520px; height: 90px; border: 5px dashed var(--amber); color: var(--amber); font-size: 38px; font-weight: 800; display: grid; place-items: center; border-radius: 8px; }
+      .x-q4 { width: 620px; height: 300px; border-radius: 8px; }
+      .x-q4 b { position: absolute; left: 24px; top: 16px; font-size: 42px; font-weight: 800; }
+      .x-it { width: 560px; height: 110px; background: #fff; border-radius: 8px; font-size: 38px; font-weight: 700; display: grid; place-items: center; text-align: center; line-height: 1.1; padding: 0 14px; }
+      .x-ax { font-size: 40px; font-weight: 700; color: var(--muted); }
+      .x-vl { position: absolute; left: 0; top: 0; font-size: 34px; font-weight: 800; letter-spacing: 0.08em; color: var(--wine); width: 420px; line-height: 90px; }
+      .x-vt { position: absolute; left: 430px; top: 0; font-size: 40px; line-height: 90px; width: 1250px; white-space: nowrap; }
+      .x-vr { width: 1680px; height: 90px; }
+      .x-tk { width: 540px; height: 580px; background: var(--tint); border-radius: 8px; }
+      .x-tk .tg { left: 36px; top: 32px; font-size: 44px; font-weight: 800; color: var(--wine); }
+      .x-tk .tt { left: 36px; top: 100px; width: 470px; font-family: ui-serif, serif; font-size: 50px; font-weight: 700; line-height: 1.1; }
+      .x-tk .td { left: 36px; top: 250px; width: 470px; font-size: 38px; color: var(--muted); line-height: 1.2; }
+      .x-tk .tp { left: 36px; top: 510px; width: 300px; text-align: left; font-size: 38px; font-weight: 700; color: var(--muted); }
+      .x-tk .ringsvg { left: 330px; top: 385px; }
+      .x-tk .pn { left: 330px; top: 427px; }
+      .x-sum { display: flex; gap: 22px; align-items: center; }
+      .x-sc { background: #fff; color: var(--ink); font-size: 46px; font-weight: 800; padding: 14px 30px; border-radius: 8px; white-space: nowrap; }
+      .x-pl { font-style: normal; color: var(--gold); font-size: 60px; font-weight: 800; }
+      .x-eq { font-family: ui-serif, serif; font-size: 60px; font-weight: 800; color: var(--gold); }
+      .x-tk > * { position: absolute; }
+
+      /* ── Semana 2: escenas propias ── */
+      .y-lbl { font-size: 40px; font-weight: 800; color: var(--muted); letter-spacing: 0.06em; }
+      .y-bar { height: 80px; border-radius: 8px; color: #fff; font-size: 40px; font-weight: 800; line-height: 80px; padding-left: 28px; white-space: nowrap; }
+      .y-chip { background: var(--amber-soft); color: var(--amber); font-size: 40px; font-weight: 800; padding: 12px 28px; border-radius: 8px; white-space: nowrap; }
+      .y-year { font-family: ui-serif, serif; font-size: 150px; font-weight: 800; color: var(--wine); line-height: 1; }
+      .y-where { font-size: 44px; line-height: 1.25; color: var(--muted); }
+      .y-st { width: 340px; height: 110px; border-radius: 8px; color: #fff; font-size: 36px; font-weight: 800; display: grid; place-items: center; text-align: center; line-height: 1.1; padding: 0 12px; }
+      .y-inc { width: 500px; border-radius: 8px 8px 0 0; color: #fff; padding: 26px 30px; }
+      .y-inc strong { display: block; font-size: 46px; font-weight: 800; }
+      .y-inc em { display: block; margin-top: 10px; font-style: normal; font-size: 40px; line-height: 1.15; }
+      .y-qn { width: 70px; height: 70px; border-radius: 50%; background: var(--wine); color: #fff; font-size: 40px; font-weight: 800; display: grid; place-items: center; }
+      .y-sent { font-family: ui-serif, serif; font-size: 56px; font-weight: 700; line-height: 1.15; }
+      .y-pn { width: 800px; height: 320px; border-radius: 8px; padding: 28px 34px; }
+      .y-pn b { display: block; font-size: 36px; letter-spacing: 0.08em; font-weight: 800; }
+      .y-pn strong { display: block; margin-top: 26px; font-size: 60px; line-height: 1.1; font-weight: 800; }
+      .y-pn em { display: block; margin-top: 20px; font-style: normal; font-size: 42px; line-height: 1.2; color: var(--muted); }
+      .y-bad { height: 110px; background: var(--tint); border-radius: 8px; padding: 0 30px; font-size: 52px; font-weight: 700; line-height: 110px; color: var(--muted); }
+      .y-good { background: var(--teal-soft); border-radius: 8px; padding: 26px 30px; font-size: 48px; font-weight: 700; line-height: 1.2; }
+      .y-row { width: 1680px; height: 100px; background: var(--tint); border-radius: 8px; }
+      .y-row b { position: absolute; left: 28px; top: 0; width: 330px; line-height: 100px; font-size: 34px; letter-spacing: 0.08em; color: var(--wine); }
+      .y-row span { position: absolute; left: 380px; top: 0; line-height: 100px; font-size: 44px; font-weight: 600; white-space: nowrap; }
+      .y-evita { font-size: 42px; font-weight: 700; color: #c0392b; }
+      .y-ro { width: 1680px; height: 100px; }
+      .y-ro b { position: absolute; left: 0; top: 0; width: 260px; line-height: 100px; font-size: 34px; letter-spacing: 0.08em; color: var(--muted); }
+      .y-ro span { position: absolute; left: 280px; top: 0; height: 100px; line-height: 100px; padding: 0 34px; border-radius: 8px; color: #fff; font-size: 44px; font-weight: 800; white-space: nowrap; }
+      .y-ac { width: 1680px; background: var(--teal-soft); border-radius: 8px; padding: 22px 30px; font-size: 40px; line-height: 1.25; }
+      .y-ac b { color: var(--teal); }
+      .y-iv { width: 370px; height: 100px; background: var(--wine-deep); color: #fff; border-radius: 8px; font-size: 40px; font-weight: 800; display: grid; place-items: center; }
+      .y-mo { width: 800px; height: 130px; background: var(--tint); border-radius: 8px; padding: 10px 28px; }
+      .y-mo strong { display: block; font-size: 42px; font-weight: 800; line-height: 1.1; }
+      .y-mo em { display: block; font-style: normal; font-size: 38px; color: var(--muted); line-height: 1.15; }
+</style>
+  </head>
+  <body>
+    <script type="application/hyperframes-slideshow+json">
+{
+  "slides": [
+    {
+      "sceneId": "portada",
+      "startTime": 0,
+      "endTime": 5.6,
+      "notes": "Abrir con el caso de la biblioteca sin definir nada: cambiaron un arreglo por una lista enlazada y una operación empeoró mientras otra quedó igual. Pedir que anoten una hipótesis. La clase explica por qué con costos, acceso y contratos."
+    },
+    {
+      "sceneId": "caso",
+      "startTime": 5.6,
+      "endTime": 15.6,
+      "notes": "Dejar la pregunta a la vista antes de avanzar. La biblioteca guarda 100 000 préstamos en un arreglo; mostrar_prestamo(k) se ejecuta miles de veces al día y resumen_mensual() recorre todo una vez al mes. Un desarrollador cambia el arreglo por una lista para agregar y borrar sin mover nada. Resultado: el resumen mensual tarda igual y mostrar_prestamo(k) tarda más cuanto mayor es k. Es la exploración de la semana: dejar que propongan una explicación antes de la teoría.",
+      "fragments": [
+        8,
+        9.6,
+        11.2,
+        12.8,
+        14.4
+      ]
+    },
+    {
+      "sceneId": "costos",
+      "startTime": 15.6,
+      "endTime": 24,
+      "notes": "Tabla de la semana con n elementos. Revelar de a dos filas y pedir que anticipen el costo antes de mostrarlo. Acceder a la posición k: O(1) en arreglo y arreglo dinámico, O(n) en lista. Buscar sin orden: O(n) en todas. Insertar al inicio: O(n) en arreglo, O(1) en lista. Insertar al final: O(1) con espacio libre en arreglo; en el dinámico O(1) salvo al crecer; en la lista simple O(n) si no hay puntero al último nodo. Insertar en el medio: O(n) en todas. Borrar el último: O(1) en arreglo, O(n) en lista simple. Fuentes: Karumanchi (2017); Joyanes (2008).",
+      "fragments": [
+        18,
+        19.6,
+        21.2,
+        22.8
+      ]
+    },
+    {
+      "sceneId": "dominante",
+      "startTime": 24,
+      "endTime": 32.4,
+      "notes": "En el arreglo el costo lo domina desplazar elementos. En la lista, recorrer enlaces hasta la posición. En el arreglo dinámico, copiar los n elementos cada vez que se llena y crece al doble; como ocurre pocas veces, la mayoría de los agregados al final cuestan un paso. El análisis exacto de ese promedio se hace más adelante en el curso.",
+      "fragments": [
+        26.4,
+        28,
+        29.599999999999998,
+        31.2
+      ]
+    },
+    {
+      "sceneId": "medio",
+      "startTime": 32.4,
+      "endTime": 40.8,
+      "notes": "Ejemplo resuelto: insertar un dato en la posición 500 de una colección de n = 1 000. Arreglo: se desplazan los 500 elementos de las posiciones 500 a 999 y se escribe el dato: 501 pasos. Lista simple: 1 salto de la cabeza al primer nodo, 500 saltos hasta el nodo 499 y 2 enlaces cambiados: 502 pasos. Los dos cuestan casi n/2, es decir O(n), pero por causas distintas: uno mueve datos y el otro recorre enlaces.",
+      "fragments": [
+        34.8,
+        36.4,
+        38,
+        39.599999999999994
+      ]
+    },
+    {
+      "sceneId": "acceso-fig",
+      "startTime": 40.8,
+      "endTime": 46.4,
+      "notes": "El arreglo calcula la dirección con base más k por tamaño: una multiplicación y una suma, dos operaciones de tiempo constante, y llega en un paso. La lista parte de la cabeza y sigue seis enlaces para llegar al nodo de índice 5: contando la flecha de la cabeza, el elemento de índice k exige k + 1 saltos. Fuentes: Joyanes (2008); Karumanchi (2017)."
+    },
+    {
+      "sceneId": "aleatorio",
+      "startTime": 46.4,
+      "endTime": 54.8,
+      "notes": "Acceso aleatorio no habla de azar: cualquier posición se alcanza con el mismo trabajo. Acceso secuencial: para llegar a la posición k hay que pasar antes por las k anteriores. Volver al caso de la biblioteca: el acceso secuencial solo pesa cuando se salta a una posición; si se recorre toda la colección, ambas estructuras leen n elementos y cuestan O(n). Por eso resumen_mensual() no cambió y mostrar_prestamo(k) sí.",
+      "fragments": [
+        48.8,
+        50.4,
+        52,
+        53.599999999999994
+      ]
+    },
+    {
+      "sceneId": "medicion",
+      "startTime": 54.8,
+      "endTime": 61.199999999999996,
+      "notes": "Sesión de práctica PE-1.2 con la plantilla de Canvas. El script debe correr sin modificarlo. Medir para n = 1 000, 10 000 y 100 000 tres accesos: a la posición del medio, a la última y el recorrido completo. Repetir al menos 100 veces y reportar la mediana en microsegundos. En el reporte, calcular el cociente entre tamaños e interpretar con Big-O. Errores esperados: medir una sola vez, no repetir, o comparar con Big-O sin mirar el cociente."
+    },
+    {
+      "sceneId": "contrato",
+      "startTime": 61.199999999999996,
+      "endTime": 69.6,
+      "notes": "Un costo bajo no sirve si la estructura queda en un estado inválido. Joyanes propone escribir para cada módulo una precondición, que describe lo que debe cumplirse al principio, y una postcondición, lo que debe cumplirse al final. Lo que debe cumplirse siempre es una invariante. Ejemplo de Joyanes: el procedimiento ordenar; precondición, A es un arreglo de n enteros con 1 ≤ n ≤ Max; postcondición, A queda en orden ascendente y n no cambia. Fuente: Joyanes (2008).",
+      "fragments": [
+        63.599999999999994,
+        65.19999999999999,
+        66.8,
+        68.39999999999999
+      ]
+    },
+    {
+      "sceneId": "invariante-fig",
+      "startTime": 69.6,
+      "endTime": 75.19999999999999,
+      "notes": "Lista con cabeza y tamaño. Tres invariantes: el tamaño nunca es negativo; la cabeza es nula si y solo si el tamaño es 0; recorrer desde la cabeza visita exactamente tamaño nodos. A la derecha, un caso correcto y un caso con error: una inserción que olvida actualizar el tamaño rompe la tercera invariante. Pedir que digan cuál se rompe antes de señalarla."
+    },
+    {
+      "sceneId": "pila",
+      "startTime": 75.19999999999999,
+      "endTime": 83.6,
+      "notes": "Ejemplo resuelto de la guía: una pila de tamaño máximo fijo con un arreglo. Atributos items y tamano. Invariante 1: 0 ≤ tamano ≤ len(items). Invariante 2: los elementos válidos ocupan las posiciones 0 a tamano − 1. apilar(x) tiene la precondición tamano < len(items): escribe x en la posición tamano y suma 1. La invariante 1 se mantiene porque tamano era menor que la capacidad; la 2, porque la posición nueva queda justo al final de las válidas. Conclusión: apilar conserva las invariantes mientras se respete su precondición.",
+      "fragments": [
+        77.6,
+        79.19999999999999,
+        80.8,
+        82.39999999999999
+      ]
+    },
+    {
+      "sceneId": "checkpoint",
+      "startTime": 83.6,
+      "endTime": 89.6,
+      "notes": "GA-1.1 en la sesión de clase: cuestionario de Canvas con seis afirmaciones. Para cada una se marca verdadero o falso y se justifica en una o dos oraciones con una invariante, una precondición o una postcondición. Se cierra según las indicaciones de la actividad en Canvas. Errores esperados: justificar con el costo en lugar de con el contrato, y confundir invariante con postcondición."
+    },
+    {
+      "sceneId": "elegir",
+      "startTime": 89.6,
+      "endTime": 96,
+      "notes": "Para elegir, responder cuatro preguntas sobre el caso. Primera: si salta a posiciones con frecuencia, gana el arreglo (O(1) contra O(n)). Segunda: si inserta o borra al inicio con frecuencia, gana la lista, que solo cambia punteros. Tercera: si agrega al final sin saber cuántos datos habrá, el arreglo dinámico crece duplicando su tamaño, a cambio de copiar; la lista se expande sin copiar pero gasta memoria en cada enlace. Cuarta: si solo recorre toda la colección, el costo no decide y se elige por otros motivos, como memoria o simplicidad. Fuentes: Karumanchi (2017); Joyanes (2008)."
+    },
+    {
+      "sceneId": "justificar",
+      "startTime": 96,
+      "endTime": 103.2,
+      "notes": "Una justificación completa nombra la operación dominante, da su costo en cada estructura y reconoce un inconveniente de la elegida. 'El arreglo dinámico porque es más rápido' no sirve. Un ejemplo válido: el arreglo dinámico, porque el caso agrega mensajes al final miles de veces y casi nunca salta a una posición; eso cuesta O(1) casi siempre en el arreglo dinámico y O(n) en una lista simple sin puntero al último nodo; el inconveniente es que copia todos los elementos cuando crece. Es lo que se pide en TA-1.2.",
+      "fragments": [
+        98.4,
+        100.2,
+        102
+      ]
+    },
+    {
+      "sceneId": "actividades",
+      "startTime": 103.2,
+      "endTime": 108.4,
+      "notes": "PE-1.2 vale 2,25 puntos y es el script con el reporte de tiempos; GA-1.1 vale 1 punto y es el checkpoint de invariantes; TA-1.2 vale 2,25 puntos y es el mini informe de tres casos que se hace en el tiempo autónomo. Las consignas, las plantillas y las rúbricas están en Canvas."
+    },
+    {
+      "sceneId": "cierre",
+      "startTime": 108.4,
+      "endTime": 115.60000000000001,
+      "notes": "Cerrar volviendo a la biblioteca: ahora pueden explicar por qué empeoró mostrar_prestamo(k) y por qué no el resumen mensual. Tarea: repasar sin apuntes las secciones de la guía de la semana y escribir el mini informe de tres casos. Próxima semana: pilas y colas."
+    }
+  ],
+  "slideSequences": []
+}
+    </script>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="115.6" data-width="1920" data-height="1080">
+
+      <section id="portada" class="clip slide dark" data-start="0" data-duration="5.6" data-track-index="0" data-label="Portada" data-frags="0" data-enter="2.8" data-step="1">
+        <div class="frame" id="portada-frame" style="display:block">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <p class="course" style="left:120px;top:240px">LTI_05U_ESD · Semana 2</p>
+      <h1 class="ttl xl" style="top:300px;width:930px;font-size:76px">Arreglo o lista: costos, acceso y contratos</h1>
+      <p class="lead" style="left:120px;top:790px;width:1000px">Acceso aleatorio y secuencial, e invariantes de un TDA</p>
+      <p class="byline" style="left:120px;top:950px">Estructura de Datos · Charlie Cárdenas Toledo</p>
+      <div class="sheet" data-layout-allow-overlap style="left:1070px;top:250px;width:500px"><div class="sh" data-layout-allow-overlap style="background:var(--wine-deep)">Arreglo</div><div class="sr" data-layout-allow-overlap>Acceso en O(1)</div><div class="sr" data-layout-allow-overlap>Insertar desplaza</div><div class="sr" data-layout-allow-overlap>Memoria contigua</div></div>
+      <div class="sheet" data-layout-allow-overlap style="left:1190px;top:380px;width:500px"><div class="sh" data-layout-allow-overlap style="background:var(--teal)">Lista</div><div class="sr" data-layout-allow-overlap>Acceso en O(n)</div><div class="sr" data-layout-allow-overlap>Insertar cambia enlaces</div><div class="sr" data-layout-allow-overlap>Nodos dispersos</div></div>
+      <div class="sheet" data-layout-allow-overlap style="left:1310px;top:510px;width:500px"><div class="sh" data-layout-allow-overlap style="background:var(--amber)">Contrato</div><div class="sr" data-layout-allow-overlap>Precondición</div><div class="sr" data-layout-allow-overlap>Postcondición</div><div class="sr" data-layout-allow-overlap>Invariante</div></div>
+        </div>
+      </section>
+
+      <section id="caso" class="clip slide" data-start="5.6" data-duration="10" data-track-index="0" data-label="El cambio en la biblioteca" data-frags="4" data-enter="2.4" data-step="1.6">
+        <div class="frame" id="caso-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">La biblioteca cambió de arreglo a lista y algo empeoró</h1>
+      <p class="y-chip g1" style="left:120px;top:330px">100 000 préstamos guardados en un arreglo</p>
+      <p class="y-chip g2" style="left:120px;top:430px">Cambian a lista para agregar y borrar sin mover nada</p>
+      <p class="y-chip g3" style="left:120px;top:530px">resumen_mensual() tarda lo mismo que antes</p>
+      <p class="y-chip g4" style="left:120px;top:630px">mostrar_prestamo(k) tarda más cuanto mayor es k</p>
+      <p class="ask" style="left:120px;top:860px">¿Por qué una operación empeoró y la otra no?</p>
+        </div>
+      </section>
+
+      <section id="costos" class="clip slide" data-start="15.6" data-duration="8.4" data-track-index="0" data-label="Costo de las operaciones" data-frags="3" data-enter="2.4" data-step="1.6">
+        <div class="frame" id="costos-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Costo de las operaciones con n elementos</h1>
+      <div class="x-th"><span class="xc " style="left:120px;width:520px">OPERACIÓN</span><span class="xc " style="left:640px;width:330px">ARREGLO</span><span class="xc " style="left:970px;width:400px">DINÁMICO</span><span class="xc " style="left:1370px;width:430px">LISTA</span></div>
+      <div class="x-tr" style="top:380px"><span class="xc a" style="left:120px;width:520px">Acceder a la posición k</span><span class="xc c" style="left:640px;width:330px">O(1)</span><span class="xc c" style="left:970px;width:400px">O(1)</span><span class="xc c" style="left:1370px;width:430px">O(n)</span></div><div class="x-tr" style="top:480px"><span class="xc a" style="left:120px;width:520px">Buscar sin orden</span><span class="xc c" style="left:640px;width:330px">O(n)</span><span class="xc c" style="left:970px;width:400px">O(n)</span><span class="xc c" style="left:1370px;width:430px">O(n)</span></div><div class="x-tr" style="top:580px"><span class="xc a" style="left:120px;width:520px">Insertar al inicio</span><span class="xc c" style="left:640px;width:330px">O(n)</span><span class="xc c" style="left:970px;width:400px">O(n)</span><span class="xc c" style="left:1370px;width:430px">O(1)</span></div><div class="x-tr" style="top:680px"><span class="xc a" style="left:120px;width:520px">Insertar al final</span><span class="xc c" style="left:640px;width:330px">O(1)</span><span class="xc c" style="left:970px;width:400px">O(1) salvo crecer</span><span class="xc c" style="left:1370px;width:430px">O(n)</span></div><div class="x-tr" style="top:780px"><span class="xc a" style="left:120px;width:520px">Insertar en el medio</span><span class="xc c" style="left:640px;width:330px">O(n)</span><span class="xc c" style="left:970px;width:400px">O(n)</span><span class="xc c" style="left:1370px;width:430px">O(n)</span></div><div class="x-tr" style="top:880px"><span class="xc a" style="left:120px;width:520px">Borrar el último</span><span class="xc c" style="left:640px;width:330px">O(1)</span><span class="xc c" style="left:970px;width:400px">O(1) salvo reducir</span><span class="xc c" style="left:1370px;width:430px">O(n)</span></div>
+        </div>
+      </section>
+
+      <section id="dominante" class="clip slide" data-start="24" data-duration="8.4" data-track-index="0" data-label="Qué domina el costo" data-frags="3" data-enter="2.4" data-step="1.6">
+        <div class="frame" id="dominante-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Cada estructura paga su costo en un lugar distinto</h1>
+      <div class="x-pc g1" style="left:120px;top:360px;width:520px;height:300px"><strong>Arreglo: desplazar</strong><em>Insertar mueve los elementos que siguen</em></div>
+      <div class="x-pc g2" style="left:700px;top:360px;width:520px;height:300px"><strong>Lista: recorrer</strong><em>Llegar a una posición exige pasar por los nodos anteriores</em></div>
+      <div class="x-pc g3" style="left:1280px;top:360px;width:520px;height:300px"><strong>Dinámico: crecer</strong><em>Al llenarse copia los n elementos, pero ocurre pocas veces</em></div>
+        </div>
+      </section>
+
+      <section id="medio" class="clip slide" data-start="32.4" data-duration="8.4" data-track-index="0" data-label="Insertar en el medio" data-frags="3" data-enter="2.4" data-step="1.6">
+        <div class="frame" id="medio-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Insertar en el medio cuesta casi n/2 en ambas</h1>
+      <p class="y-lbl" style="left:120px;top:290px">n = 1 000, POSICIÓN 500</p>
+      <div class="y-bar g1" style="left:120px;top:370px;width:1500px;background:var(--wine)">Arreglo: 501 pasos (500 desplazamientos y 1 escritura)</div>
+      <div class="y-bar g2" style="left:120px;top:490px;width:1510px;background:var(--teal)">Lista: 502 pasos (500 saltos y 2 enlaces)</div>
+      <p class="punch g3" style="left:120px;top:680px;width:1680px">Mismo O(n), distinta causa: mover datos o recorrer enlaces</p>
+        </div>
+      </section>
+
+      <section id="acceso-fig" class="clip slide" data-start="40.8" data-duration="5.6" data-track-index="0" data-label="Llegar al índice 5" data-frags="0" data-enter="2.8" data-step="1">
+        <div class="frame" id="acceso-fig-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Llegar al índice 5: un paso contra seis saltos</h1>
+      <img class="fig" src="assets/fig-acceso.png" alt="Dos filas de ocho elementos: el arreglo llega al índice 5 con una sola flecha calculada, la lista con seis saltos desde la cabeza." style="left:260px;top:240px;width:1400px;height:784px" />
+        </div>
+      </section>
+
+      <section id="aleatorio" class="clip slide" data-start="46.4" data-duration="8.4" data-track-index="0" data-label="Aleatorio y secuencial" data-frags="3" data-enter="2.4" data-step="1.6">
+        <div class="frame" id="aleatorio-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Dos maneras de llegar a un dato</h1>
+      <div class="x-pc g1" style="left:120px;top:330px;width:520px;height:300px"><strong>Acceso aleatorio</strong><em>Cualquier posición cuesta lo mismo: se calcula la dirección</em></div>
+      <div class="x-pc g2" style="left:720px;top:330px;width:520px;height:300px"><strong>Acceso secuencial</strong><em>Para llegar a la posición k hay que pasar por las k anteriores</em></div>
+      <p class="punch g3" style="left:120px;top:720px;width:1680px">Recorrer todo cuesta O(n) en ambas: por eso el resumen mensual no cambió</p>
+        </div>
+      </section>
+
+      <section id="medicion" class="clip slide" data-start="54.8" data-duration="6.4" data-track-index="0" data-label="Práctica: medir el acceso" data-frags="0" data-enter="3.2" data-step="1">
+        <div class="frame" id="medicion-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Práctica: midan el acceso aleatorio y secuencial</h1>
+      <p class="lead" style="left:120px;top:270px;width:1600px">PE-1.2 en la sesión, con la plantilla de Canvas</p>
+      <div class="vl" style="left:230px;top:412px;height:540px"></div>
+      <div class="vn" style="left:202px;top:380px">1</div><p class="vt" style="left:320px;top:389px">Implementen la lista enlazada simple</p><div class="vn" style="left:202px;top:515px">2</div><p class="vt" style="left:320px;top:524px">Midan con n = 1 000, 10 000 y 100 000</p><div class="vn" style="left:202px;top:650px">3</div><p class="vt" style="left:320px;top:659px">Tres accesos: al medio, al último y el recorrido completo</p><div class="vn" style="left:202px;top:785px">4</div><p class="vt" style="left:320px;top:794px">Repitan 100 veces y reporten la mediana en microsegundos</p><div class="vn" style="left:202px;top:920px">5</div><p class="vt" style="left:320px;top:929px">Calculen el cociente entre tamaños e interpreten con Big-O</p>
+        </div>
+      </section>
+
+      <section id="contrato" class="clip slide" data-start="61.199999999999996" data-duration="8.4" data-track-index="0" data-label="Precondición, postcondición e invariante" data-frags="3" data-enter="2.4" data-step="1.6">
+        <div class="frame" id="contrato-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Tres piezas del contrato de una operación</h1>
+      <div class="x-pc g1" style="left:120px;top:360px;width:520px;height:320px"><strong>Precondición</strong><em>Lo que debe cumplirse al empezar la operación</em></div>
+      <div class="x-pc g2" style="left:700px;top:360px;width:520px;height:320px"><strong>Postcondición</strong><em>Lo que debe cumplirse al terminar</em></div>
+      <div class="x-pc g3" style="left:1280px;top:360px;width:520px;height:320px"><strong>Invariante</strong><em>Lo que debe cumplirse siempre, antes y después de cada operación</em></div>
+        </div>
+      </section>
+
+      <section id="invariante-fig" class="clip slide" data-start="69.6" data-duration="5.6" data-track-index="0" data-label="Invariantes de una lista" data-frags="0" data-enter="2.8" data-step="1">
+        <div class="frame" id="invariante-fig-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Tres invariantes de una lista y el error que las rompe</h1>
+      <img class="fig" src="assets/fig-invariante.png" alt="Lista enlazada con tres invariantes, un caso correcto con tamaño 3 y un caso con error donde el tamaño no coincide con los nodos." style="left:260px;top:240px;width:1400px;height:784px" />
+        </div>
+      </section>
+
+      <section id="pila" class="clip slide" data-start="75.19999999999999" data-duration="8.4" data-track-index="0" data-label="Una pila con arreglo" data-frags="3" data-enter="2.4" data-step="1.6">
+        <div class="frame" id="pila-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Una pila con arreglo y sus invariantes</h1>
+      <p class="y-chip g1" style="left:120px;top:330px">Invariante 1: 0 ≤ tamano ≤ capacidad</p>
+      <p class="y-chip g2" style="left:120px;top:440px">Invariante 2: los válidos ocupan las posiciones 0 a tamano − 1</p>
+      <p class="y-chip g3" style="left:120px;top:550px">apilar(x) las conserva si tamano &lt; capacidad</p>
+        </div>
+      </section>
+
+      <section id="checkpoint" class="clip slide" data-start="83.6" data-duration="6" data-track-index="0" data-label="Checkpoint de invariantes" data-frags="0" data-enter="3" data-step="1">
+        <div class="frame" id="checkpoint-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Ahora resuelvan el checkpoint de invariantes</h1>
+      <p class="lead" style="left:120px;top:270px;width:1600px">GA-1.1 en la sesión, en el cuestionario de Canvas</p>
+      <div class="vl" style="left:230px;top:412px;height:405px"></div>
+      <div class="vn" style="left:202px;top:380px">1</div><p class="vt" style="left:320px;top:389px">Lean las seis afirmaciones</p><div class="vn" style="left:202px;top:515px">2</div><p class="vt" style="left:320px;top:524px">Marquen verdadero o falso en cada una</p><div class="vn" style="left:202px;top:650px">3</div><p class="vt" style="left:320px;top:659px">Justifiquen con una invariante, una precondición o una postcondición</p><div class="vn" style="left:202px;top:785px">4</div><p class="vt" style="left:320px;top:794px">Cierren según las indicaciones de Canvas</p>
+        </div>
+      </section>
+
+      <section id="elegir" class="clip slide" data-start="89.6" data-duration="6.4" data-track-index="0" data-label="Cuatro preguntas para elegir" data-frags="0" data-enter="3.2" data-step="1">
+        <div class="frame" id="elegir-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Cuatro preguntas para elegir la estructura</h1>
+      <p class="lead" style="left:120px;top:270px;width:1600px">Se responden sobre las operaciones del caso</p>
+      <div class="vl" style="left:230px;top:412px;height:405px"></div>
+      <div class="vn" style="left:202px;top:380px">1</div><p class="vt" style="left:320px;top:389px">¿Salta a posiciones con frecuencia? Gana el arreglo</p><div class="vn" style="left:202px;top:515px">2</div><p class="vt" style="left:320px;top:524px">¿Inserta o borra al inicio con frecuencia? Gana la lista</p><div class="vn" style="left:202px;top:650px">3</div><p class="vt" style="left:320px;top:659px">¿Agrega al final sin saber cuántos datos habrá? Arreglo dinámico</p><div class="vn" style="left:202px;top:785px">4</div><p class="vt" style="left:320px;top:794px">¿Solo recorre toda la colección? El costo no decide</p>
+        </div>
+      </section>
+
+      <section id="justificar" class="clip slide" data-start="96" data-duration="7.2" data-track-index="0" data-label="Una justificación completa" data-frags="2" data-enter="2.4" data-step="1.8">
+        <div class="frame" id="justificar-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Una buena justificación nombra la operación dominante</h1>
+      <div class="y-bad g1" style="left:120px;top:330px;width:1680px">Mal: "El arreglo dinámico porque es más rápido"</div>
+      <div class="y-good g2" style="left:120px;top:490px;width:1680px">Bien: agrega al final miles de veces y casi nunca salta; cuesta O(1) casi siempre, frente a O(n) en una lista simple. Inconveniente: copia todo al crecer.</div>
+        </div>
+      </section>
+
+      <section id="actividades" class="clip slide" data-start="103.2" data-duration="5.2" data-track-index="0" data-label="Actividades de la semana" data-frags="0" data-enter="2.6" data-step="1">
+        <div class="frame" id="actividades-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Esta semana entregan tres actividades</h1>
+      <div class="x-tk" style="left:120px;top:300px"><p class="tg">PE-1.2</p><p class="tt">Medición de acceso</p><p class="td">Script y reporte con tiempos y Big-O</p><p class="tp">puntos</p>
+          <svg class="ringsvg" width="180" height="180" viewBox="0 0 180 180"><circle class="rg" cx="90" cy="90" r="76" transform="rotate(-90 90 90)" pathLength="1"/></svg><p class="pn" data-n="2.25" style="font-size:60px;top:455px">2,25</p></div>
+      <div class="x-tk" style="left:690px;top:300px"><p class="tg">GA-1.1</p><p class="tt">Checkpoint</p><p class="td">Seis afirmaciones con su justificación</p><p class="tp">punto</p>
+          <svg class="ringsvg" width="180" height="180" viewBox="0 0 180 180"><circle class="rg" cx="90" cy="90" r="76" transform="rotate(-90 90 90)" pathLength="1"/></svg><p class="pn" data-n="1">1</p></div>
+      <div class="x-tk" style="left:1260px;top:300px"><p class="tg">TA-1.2</p><p class="tt">Mini informe</p><p class="td">Tres casos: arreglo o lista</p><p class="tp">puntos</p>
+          <svg class="ringsvg" width="180" height="180" viewBox="0 0 180 180"><circle class="rg" cx="90" cy="90" r="76" transform="rotate(-90 90 90)" pathLength="1"/></svg><p class="pn" data-n="2.25" style="font-size:60px;top:455px">2,25</p></div>
+      <p class="src" style="left:120px;top:910px;width:1680px">Consigna, plantilla y rúbrica en Canvas.</p>
+        </div>
+      </section>
+
+      <section id="cierre" class="clip slide dark" data-start="108.4" data-duration="7.2" data-track-index="0" data-label="Cierre" data-frags="0" data-enter="3.6" data-step="1">
+        <div class="frame" id="cierre-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <div class="x-sum" style="left:120px;top:230px"><span class="x-sc">Costo</span><i class="x-pl">+</i><span class="x-sc">Acceso</span><i class="x-pl">+</i><span class="x-sc">Contrato</span></div>
+      <p class="x-eq" style="left:120px;top:330px">= elegir con argumentos</p>
+      <h1 class="ttl xl" style="top:470px;width:1560px;font-size:80px">Elegir una estructura es comparar costos y respetar su contrato</h1>
+      <p class="lead" style="left:120px;top:800px;width:1560px">Próxima semana: pilas y colas</p>
+      <p class="byline" style="left:120px;top:960px">Fuentes: Karumanchi (2017) · Joyanes (2008)</p>
+        </div>
+      </section>
+    </div>
+    <script>
+      // Con el motor de HyperFrames (check, Studio, snapshot) el registro ya existe y la línea de
+      // tiempo contiene todas las animaciones. Al presentar, el reproductor solo mueve la línea
+      // "main" (el destino) y esta página reproduce las animaciones en tiempo real hasta alcanzarlo.
+      const engineHosted = Object.prototype.hasOwnProperty.call(window, "__timelines");
+      window.__timelines = window.__timelines || {};
+
+      const EXIT = 0.5;
+      const tl = gsap.timeline({ paused: true });
+      tl.to({}, { duration: 115.6 }, 0);
+      const real = engineHosted ? tl : gsap.timeline({ paused: true });
+
+      const VW = 1920, VH = 1080;
+      const cam = (s, cx, cy) => {
+        let x = VW / 2 - cx * s, y = VH / 2 - cy * s;
+        if (s >= 1) { x = Math.min(0, Math.max(VW - VW * s, x)); y = Math.min(0, Math.max(VH - VH * s, y)); }
+        return { scale: s, x, y };
+      };
+      const overview = cam(1, VW / 2, VH / 2);
+
+const SCENE_PER = {};
+// Escenas de la presentación: cada diapositiva es una animación propia que se construye
+// por pasos. Este archivo se incrusta en index.html (lo hace build.mjs).
+// Disponibles: gsap, real (línea de tiempo de contenido), cam, overview.
+
+function splitWords(el) {
+  if (el._w) return el._w;
+  const words = el.textContent.trim().split(" ");
+  el.textContent = "";
+  el._w = words.map((w, i) => {
+    const o = document.createElement("span"); o.className = "w";
+    const n = document.createElement("span"); n.className = "wi"; n.textContent = w;
+    o.appendChild(n); el.appendChild(o);
+    if (i < words.length - 1) el.appendChild(document.createTextNode(" "));
+    return n;
+  });
+  return el._w;
+}
+function splitChars(el) {
+  const out = [];
+  const walk = (node) => {
+    Array.from(node.childNodes).forEach((ch) => {
+      if (ch.nodeType === 3) {
+        const frag = document.createDocumentFragment();
+        for (const t of ch.textContent) {
+          const s = document.createElement("span"); s.className = "ch"; s.textContent = t;
+          frag.appendChild(s); out.push(s);
+        }
+        ch.replaceWith(frag);
+      } else if (ch.nodeType === 1) walk(ch);
+    });
+  };
+  walk(el);
+  return out;
+}
+
+const EXP = "expo.out", P4 = "power4.out", IO = "power2.inOut";
+const words = (el, at, stag = 0.06, d = 0.75) =>
+  real.fromTo(splitWords(el), { yPercent: 120 }, { yPercent: 0, duration: d, ease: P4, stagger: stag }, at);
+const rise = (t, at, y = 40, d = 0.7) => real.fromTo(t, { opacity: 0, y }, { opacity: 1, y: 0, duration: d, ease: EXP }, at);
+const pop = (t, at, d = 0.6, s0 = 0.5) => real.fromTo(t, { opacity: 0, scale: s0 }, { opacity: 1, scale: 1, duration: d, ease: "back.out(1.8)" }, at);
+const slide = (t, at, x, d = 0.8) => real.fromTo(t, { opacity: 0, x }, { opacity: 1, x: 0, duration: d, ease: EXP }, at);
+const grow = (t, at, d = 0.7) => real.fromTo(t, { scaleX: 0, transformOrigin: "0 50%" }, { scaleX: 1, duration: d, ease: "power3.inOut" }, at);
+const growY = (t, at, d = 0.7) => real.fromTo(t, { scaleY: 0, transformOrigin: "50% 0" }, { scaleY: 1, duration: d, ease: "power3.inOut" }, at);
+const draw = (t, at, d = 0.8, ease = IO) => real.fromTo(t, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease }, at);
+const fadeIn = (t, at, d = 0.5) => real.fromTo(t, { opacity: 0 }, { opacity: 1, duration: d, ease: "power2.out" }, at);
+const flash = (t, at, color = "rgba(232,169,32,0.5)", off = "rgba(232,169,32,0)") => {
+  real.fromTo(t, { backgroundColor: off }, { backgroundColor: color, duration: 0.3, immediateRender: false }, at);
+  real.to(t, { backgroundColor: off, duration: 0.6 }, at + 0.7);
+};
+// Mueve un elemento a lo largo de un trazo SVG.
+function along(el, path, at, d, ease = IO) {
+  const len = path.getTotalLength();
+  const o = { p: 0 };
+  real.fromTo(o, { p: 0 }, { p: 1, duration: d, ease, onUpdate: () => {
+    const pt = path.getPointAtLength(o.p * len);
+    gsap.set(el, { x: pt.x, y: pt.y });
+  } }, at);
+}
+
+const SCENES = {};
+
+// Revela por fragmentos los elementos marcados con g1, g2, g3... según su clase:
+// y-bar y y-up se descubren con un recorte, y-pop aparece con rebote, los trazos se dibujan.
+function wipe(el, at, from = "left") {
+  const hidden = from === "bottom" ? "inset(100% 0 0 0)" : "inset(0 100% 0 0)";
+  real.fromTo(el, { clipPath: hidden }, { clipPath: "inset(0 0 0 0)", duration: 0.7, ease: "power3.inOut" }, at);
+}
+function reveal(c, n, first = 1) {
+  for (let k = first; k <= n; k++) {
+    const at = c.h(k) - c.step;
+    c.qa(".g" + k).forEach((e, i) => {
+      const t = at + 0.2 + i * 0.18;
+      if (e.tagName.toLowerCase() === "path") draw(e, t, 0.7);
+      else if (e.classList.contains("y-bar")) wipe(e, t);
+      else if (e.classList.contains("y-up")) wipe(e, t, "bottom");
+      else if (e.classList.contains("y-pop")) pop(e, t, 0.45);
+      else rise(e, t, 24, 0.55);
+    });
+  }
+}
+// Tabla que descubre sus filas de a "per" por avance.
+function tableScene(c, per) {
+  const { st, q, qa, h } = c;
+  words(q(".ttl"), st + 0.2);
+  real.fromTo(q(".x-th"), { opacity: 0, y: -30 }, { opacity: 1, y: 0, duration: 0.6, ease: EXP }, st + 0.8);
+  const R = qa(".x-tr");
+  if (q(".ask")) rise(q(".ask"), st + 1.6, 20, 0.5);
+  R.forEach((r, i) => {
+    const k = Math.floor(i / per) + 1;
+    const at = h(k) - c.step;
+    real.fromTo(r, { opacity: 0, x: -240 }, { opacity: 1, x: 0, duration: 0.8, ease: EXP }, at + 0.1 + (i % per) * 0.25);
+  });
+}
+
+
+// ── Tipos de escena de las presentaciones de IFT202 ─────────────────────────
+// Cada diapositiva declara "type" en build.mjs y el build registra SCENES[id] = TYPES[type].
+const TYPES = {};
+
+TYPES.cover = (c) => {
+  const { st, q, qa } = c;
+  rise(q(".course"), st + 0.2, 30);
+  words(q(".ttl"), st + 0.3, 0.07, 0.8);
+  rise(q(".lead"), st + 1.3, 40);
+  rise(q(".byline"), st + 1.6, 30);
+  qa(".sheet").forEach((el, i) =>
+    real.fromTo(el, { opacity: 0, y: 900, rotation: 14 }, { opacity: 1, y: 0, rotation: 0, duration: 1.2, ease: EXP }, st + 0.4 + i * 0.25));
+};
+
+// Título, pregunta que se retira al primer avance y elementos g1..gN que se revelan por fragmentos.
+TYPES.reveal = (c) => {
+  const { st, q, qa } = c;
+  words(q(".ttl"), st + 0.2);
+  qa(".y-lbl, .x-sm, .y-sent").forEach((e, i) => rise(e, st + 0.7 + i * 0.1, 16, 0.5));
+  const yr = q(".y-year");
+  if (yr) real.fromTo(yr, { opacity: 0, scale: 0.6, transformOrigin: "0 50%" }, { opacity: 1, scale: 1, duration: 0.7, ease: "back.out(1.6)" }, st + 0.6);
+  const yw = q(".y-where");
+  if (yw) slide(yw, st + 1.0, 60, 0.7);
+  const ask = q(".ask");
+  if (ask) {
+    rise(ask, st + 1.6, 20, 0.5);
+    real.to(ask, { opacity: 0, y: -20, duration: 0.3 }, c.h(1) - c.step);
+  }
+  reveal(c, c.n);
+};
+
+TYPES.table = (c) => tableScene(c, (SCENE_PER[c.s.id] || 2));
+
+// Figura PNG que entra con la escena; los elementos g1..gN se revelan después.
+TYPES.img = (c) => {
+  const { st, q } = c;
+  words(q(".ttl"), st + 0.2);
+  real.fromTo(q(".fig"), { opacity: 0, scale: 0.94, transformOrigin: "50% 50%" }, { opacity: 1, scale: 1, duration: 0.9, ease: EXP }, st + 0.7);
+  reveal(c, c.n);
+};
+
+TYPES.steps = (c) => {
+  const { st, q, qa } = c;
+  words(q(".ttl"), st + 0.2);
+  rise(q(".lead"), st + 0.8, 20, 0.6);
+  growY(q(".vl"), st + 1.0, 1.4);
+  const n = qa(".vn").length;
+  qa(".vn").forEach((e, i) => pop(e, st + 1.0 + (1.4 * i) / n, 0.45));
+  qa(".vt").forEach((e, i) => slide(e, st + 1.1 + (1.4 * i) / n, 60, 0.6));
+};
+
+TYPES.tickets = (c) => {
+  const { st, q, qa } = c;
+  words(q(".ttl"), st + 0.2);
+  qa(".x-tk").forEach((t, i) =>
+    real.fromTo(t, { opacity: 0, y: 500, rotation: [-5, 0, 5][i] }, { opacity: 1, y: 0, rotation: 0, duration: 1.0, ease: EXP }, st + 0.4 + i * 0.2));
+  qa(".rg").forEach((r, i) => draw(r, st + 1.2 + i * 0.15, 0.8));
+  qa(".pn").forEach((p, i) => {
+    const n = Number(p.dataset.n), o = { v: 0 };
+    const fmt = (v) => (n % 1 ? v.toFixed(2).replace(/0$/, "").replace(".", ",") : String(Math.round(v)));
+    real.fromTo(o, { v: 0 }, { v: n, duration: 0.8, ease: "power1.out", onUpdate: () => { p.textContent = fmt(o.v); } }, st + 1.2 + i * 0.15);
+  });
+  rise(q(".src"), st + 1.9, 20, 0.5);
+};
+
+TYPES.close = (c) => {
+  const { st, q, qa } = c;
+  real.fromTo(qa(".x-sum > *"), { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.18, ease: EXP }, st + 0.3);
+  real.fromTo(q(".x-eq"), { opacity: 0, x: -50 }, { opacity: 1, x: 0, duration: 0.7, ease: EXP }, st + 1.6);
+  words(q(".ttl"), st + 2.0, 0.05, 0.7);
+  rise(q(".lead"), st + 2.8, 30, 0.7);
+  rise(q(".byline"), st + 3.1, 20, 0.5);
+};
+
+SCENES["portada"] = TYPES["cover"];
+SCENES["caso"] = TYPES["reveal"];
+SCENES["costos"] = TYPES["table"];
+SCENES["dominante"] = TYPES["reveal"];
+SCENES["medio"] = TYPES["reveal"];
+SCENES["acceso-fig"] = TYPES["img"];
+SCENES["aleatorio"] = TYPES["reveal"];
+SCENES["medicion"] = TYPES["steps"];
+SCENES["contrato"] = TYPES["reveal"];
+SCENES["invariante-fig"] = TYPES["img"];
+SCENES["pila"] = TYPES["reveal"];
+SCENES["checkpoint"] = TYPES["steps"];
+SCENES["elegir"] = TYPES["steps"];
+SCENES["justificar"] = TYPES["reveal"];
+SCENES["actividades"] = TYPES["tickets"];
+SCENES["cierre"] = TYPES["close"];
+SCENE_PER["portada"] = 2;
+SCENE_PER["caso"] = 2;
+SCENE_PER["costos"] = 2;
+SCENE_PER["dominante"] = 2;
+SCENE_PER["medio"] = 2;
+SCENE_PER["acceso-fig"] = 2;
+SCENE_PER["aleatorio"] = 2;
+SCENE_PER["medicion"] = 2;
+SCENE_PER["contrato"] = 2;
+SCENE_PER["invariante-fig"] = 2;
+SCENE_PER["pila"] = 2;
+SCENE_PER["checkpoint"] = 2;
+SCENE_PER["elegir"] = 2;
+SCENE_PER["justificar"] = 2;
+SCENE_PER["actividades"] = 2;
+SCENE_PER["cierre"] = 2;
+
+      const figSyncs = [];
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      const skips = [];
+
+      slides.forEach((slide, index) => {
+        const start = Number(slide.dataset.start);
+        const end = start + Number(slide.dataset.duration);
+        const n = Number(slide.dataset.frags);
+        const en = Number(slide.dataset.enter);
+        const step = Number(slide.dataset.step);
+        const frame = slide.querySelector(".frame");
+        const isDark = slide.classList.contains("dark");
+        const hold = (k) => start + en + k * step;
+        let camCur = overview;
+
+        // Transición: la diapositiva saliente se acerca y se disuelve; la entrante se aleja hasta su plano.
+        const s0 = isDark ? 1.35 : index % 2 ? 1.1 : 0.92;
+        const hasFig = !!frame.querySelector("iframe");
+        if (!hasFig) real.set(frame, { display: "block" }, start);
+        real.fromTo(frame, { opacity: 0, transformOrigin: "0 0", ...cam(s0, VW / 2, VH / 2) },
+          { opacity: 1, ...overview, duration: isDark ? 1.4 : 0.9, ease: "expo.out" }, start);
+        if (index < slides.length - 1) {
+          real.fromTo(frame, { opacity: 1, ...overview }, { opacity: 0, ...cam(1.14, VW / 2, VH / 2), duration: EXIT, ease: "power2.in", immediateRender: false }, end - EXIT);
+          if (!hasFig) real.set(frame, { display: "none" }, end);
+          skips.push([hold(n) + 0.05, end - EXIT]);
+        }
+
+        const ctx = {
+          s: slide, st: start, en, n, step, h: hold,
+          q: (sel) => slide.querySelector(sel),
+          qa: (sel) => Array.from(slide.querySelectorAll(sel)),
+          cam: (cx, cy, s, at, d) => {
+            const to = cam(s, cx, cy);
+            real.fromTo(frame, { ...camCur, transformOrigin: "0 0" }, { ...to, duration: d, ease: "power2.inOut", immediateRender: false }, at);
+            camCur = to;
+          },
+        };
+        if (SCENES[slide.id]) SCENES[slide.id](ctx);
+
+        slide.querySelectorAll("iframe[data-fig]").forEach((el) => {
+          // La figura corre en su propio documento: en vivo anima sola hacia el estado pedido;
+          // con el motor (check, Studio) sigue la línea de tiempo cuadro a cuadro.
+          const steps = Number(el.dataset.fig);
+          let sent = -1;
+          const wanted = () => {
+            const t = tl.time();
+            let u = 0;
+            for (let k = 1; k <= steps; k++) u += Math.min(1, Math.max(0, (t - (hold(k) - 0.6)) / 0.6));
+            return engineHosted ? u / steps : Math.round(u) / steps;
+          };
+          const send = (force) => {
+            const value = wanted();
+            if (!el.contentWindow || (!force && value === sent)) return;
+            sent = value;
+            el.contentWindow.postMessage({ type: "fig", mode: engineHosted ? "set" : "go", value }, "*");
+          };
+          figSyncs.push(send);
+          el.addEventListener("load", () => send(true));
+        });
+      });
+
+      tl.eventCallback("onUpdate", () => figSyncs.forEach((sync) => sync()));
+
+      if (!engineHosted) {
+        // En vivo: "main" marca el destino (lo mueve el reproductor) y "real" lo persigue en tiempo
+        // real, así cada avance reproduce la animación en lugar de saltar. Retroceder es inmediato.
+        // Sin suavizado de retardo: el avance sigue el reloj real aunque el equipo vaya justo.
+        gsap.ticker.lagSmoothing(0);
+        let shown = tl.time(), lastT = gsap.ticker.time;
+        real.time(shown, false);
+        window.__deckState = () => ({ target: tl.time(), shown });
+        gsap.ticker.add((now) => {
+          const dt = Math.min(1, now - lastT);
+          lastT = now;
+          figSyncs.forEach((sync) => sync());
+          const target = tl.time();
+          if (target === shown) return;
+          if (target < shown || target - shown > 14) shown = target;
+          else {
+            shown = Math.min(target, shown + dt * 1.5);
+            for (const [a, b] of skips) if (shown > a && shown < b) shown = Math.min(target, b);
+          }
+          real.time(shown, false);
+        });
+      }
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

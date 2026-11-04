@@ -10,6 +10,7 @@ Sitio: https://charliecardenastoledo.github.io/presentaciones-uide/
 | LTI_05A_INS Ingeniería del Software | 1. Ingeniería de software hoy, ética y descubrimiento inicial del proyecto | [ins-semana-01](https://charliecardenastoledo.github.io/presentaciones-uide/ins-semana-01/) |
 | LTI_05U_IHC Interacción Hombre Computadora | 1. HCI como ciencia de sistemas interactivos | [hci-semana-01](https://charliecardenastoledo.github.io/presentaciones-uide/hci-semana-01/) |
 | LTI_05U_ESD Estructura de Datos | 1. Big-O, TDA y representación en memoria | [esd-semana-01](https://charliecardenastoledo.github.io/presentaciones-uide/esd-semana-01/) |
+| LTI_05U_ESD Estructura de Datos | 2. Arreglos y listas, acceso aleatorio y secuencial, invariantes | [esd-semana-02](https://charliecardenastoledo.github.io/presentaciones-uide/esd-semana-02/) |
 | CC05A_IFT202 Fundamentos de la Seguridad | 1. Principios de ciberseguridad: tríada CIA, riesgo y ética | [ift202-semana-01](https://charliecardenastoledo.github.io/presentaciones-uide/ift202-semana-01/) |
 | CC05A_IFT202 Fundamentos de la Seguridad | 2. Introducción al marco NIST: funciones, perfiles y niveles | [ift202-semana-02](https://charliecardenastoledo.github.io/presentaciones-uide/ift202-semana-02/) |
 
