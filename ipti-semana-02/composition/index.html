@@ -449,178 +449,178 @@
     {
       "sceneId": "soa-idea",
       "startTime": 19.599999999999998,
-      "endTime": 28,
-      "notes": "SOA significa Arquitectura Orientada a Servicios. La idea: en lugar de resolver cada integración por separado, se construyen servicios que toda la empresa reutiliza. Un servicio es una capacidad del negocio, por ejemplo registrar un cliente, con un contrato que dice cómo pedírsela. El objetivo era no reescribir código. Fuente: Richards y Ford (2020).",
+      "endTime": 33,
+      "notes": "SOA significa Arquitectura Orientada a Servicios. Primer avance: un servicio es una capacidad del negocio, por ejemplo crear un cliente, y por dentro tiene sus reglas y sus datos. Segundo avance: el contrato es lo único que se muestra hacia afuera, dice cómo pedir y qué se recibe, sin mostrar cómo lo hace. Tercer avance: varias divisiones piden lo mismo al mismo servicio; el objetivo era no escribir dos veces el mismo código. Fuente: Richards y Ford (2020).",
       "fragments": [
-        21.999999999999996,
-        23.599999999999998,
-        25.199999999999996,
-        26.799999999999997
+        22.2,
+        25.4,
+        28.6,
+        31.8
       ]
     },
     {
       "sceneId": "soa-costo",
-      "startTime": 28,
-      "endTime": 41.4,
+      "startTime": 33,
+      "endTime": 46.4,
       "notes": "Aquí está la paradoja de la SOA. Seis divisiones usan un mismo servicio Customer, y esa reutilización ahorra escribir código. Primer avance: alguien cambia la interfaz del servicio. Segundo avance: el cambio llega a todos los consumidores a la vez, como fichas de dominó, y todos se rompen. Tercer avance: por eso ya no se puede cambiar de a poco, hay que desplegar y probar todo junto. Reutilizar ahorra código pero cobra en acoplamiento. Fuente: Richards y Ford (2020).",
       "fragments": [
-        30.6,
-        33.800000000000004,
-        37,
-        40.2
+        35.6,
+        38.800000000000004,
+        42,
+        45.2
       ]
     },
     {
       "sceneId": "sync-figura",
-      "startTime": 41.4,
-      "endTime": 57,
+      "startTime": 46.4,
+      "endTime": 62,
       "notes": "Dos formas de comunicarse. Arriba, síncrona: el cliente manda la solicitud y se queda esperando, como en una llamada telefónica; solo sigue cuando llega la respuesta. Abajo, asíncrona: el emisor deja un mensaje en un intermediario llamado broker y sigue con lo suyo, como al dejar un correo; el broker lo entrega después a quienes les interese, y el emisor ni siquiera sabe quiénes son. Si un proceso cruza varios servicios, puede dirigirlo un cerebro central (orquestación) o cada servicio puede reaccionar por su cuenta (coreografía). Fuente: Newman (2015).",
       "fragments": [
-        43.8,
-        46.8,
-        49.8,
-        52.8,
-        55.8
+        48.8,
+        51.8,
+        54.8,
+        57.8,
+        60.8
       ]
     },
     {
       "sceneId": "estilos",
-      "startTime": 57,
-      "endTime": 65.4,
-      "notes": "Tres maneras de fijar el contrato. REST: recursos con una dirección web y los verbos de HTTP; es lo más fácil de consumir desde cualquier lugar, por eso es lo típico de las APIs públicas. gRPC: llamadas binarias muy rápidas descritas en un archivo .proto; conviene para servicios internos que se hablan mucho. AsyncAPI: describe mensajes que pasan por un broker, para cuando el emisor no debe esperar ni conocer a los consumidores, y para amortiguar picos de carga. No hay un ganador: depende de qué tan tolerante debe ser la relación a la latencia y al cambio. Fuente: Newman (2015).",
+      "startTime": 62,
+      "endTime": 74.8,
+      "notes": "Tres maneras de fijar el contrato. REST: recursos con una dirección web y los verbos de HTTP; es lo más fácil de consumir desde cualquier lugar, por eso es lo típico de las APIs públicas. gRPC: llamadas binarias muy rápidas descritas en un archivo .proto; conviene para servicios internos que se hablan mucho. AsyncAPI: describe mensajes que pasan por un buzón intermedio llamado broker, para cuando el emisor no debe esperar ni conocer a los consumidores. No hay un ganador: depende de qué tan tolerante debe ser la relación a la latencia y al cambio. Fuente: Newman (2015).",
       "fragments": [
-        59.4,
-        61,
-        62.6,
-        64.2
+        64.6,
+        67.6,
+        70.6,
+        73.6
       ]
     },
     {
       "sceneId": "rest",
-      "startTime": 65.4,
-      "endTime": 80,
+      "startTime": 74.8,
+      "endTime": 89.39999999999999,
       "notes": "Ejemplo con la reserva de un laboratorio, que no es el recurso de la práctica. La dirección identifica el recurso y el verbo dice qué hacer. Primer avance: GET /reservas/12 consulta; el servicio devuelve la reserva 12 y no cambia nada. Segundo: POST /reservas crea una nueva; aparece la reserva 13. Tercero: PUT /reservas/12 reemplaza los datos de la 12. Fíjense que la ruta nunca lleva la acción: no existe /crearReserva. Fuente: Newman (2015).",
       "fragments": [
-        68,
-        71.6,
-        75.2,
-        78.8
+        77.39999999999999,
+        80.99999999999999,
+        84.6,
+        88.19999999999999
       ]
     },
     {
       "sceneId": "grpc",
-      "startTime": 80,
-      "endTime": 90.6,
+      "startTime": 89.39999999999999,
+      "endTime": 99.99999999999999,
       "notes": "El mismo recurso en gRPC. El contrato vive en un archivo .proto, que lista las operaciones y los mensajes; cada campo lleva un número. Primer avance: desde ese único archivo se genera código tanto para el cliente como para el servicio, así que los dos hablan exactamente el mismo contrato y nadie arma direcciones a mano. Segundo avance: la llamada viaja en binario y lo que identifica a cada campo es su número, no su nombre; por eso se puede cambiar el nombre de un campo sin romper a nadie, pero no su número. En PE-S2 escribirán un .proto corto de esta forma. Fuente: Newman (2015).",
       "fragments": [
-        82.6,
-        86,
-        89.39999999999999
+        91.99999999999999,
+        95.39999999999999,
+        98.79999999999998
       ]
     },
     {
       "sceneId": "no-espejo",
-      "startTime": 90.6,
-      "endTime": 97.8,
-      "notes": "Error muy frecuente: como el mismo equipo controla el servicio y a todos sus clientes, se expone directamente la base de datos como contrato. El primer cambio interno, por ejemplo renombrar un campo, rompe a todos a la vez, incluso a los que usaban solo dos de diez campos. El contrato dice qué información y en qué forma pueden esperar los clientes. Se diseña como una vista del dominio, independiente de cómo se guarda, y se versiona.",
+      "startTime": 99.99999999999999,
+      "endTime": 110.99999999999999,
+      "notes": "Error muy frecuente: como el mismo equipo controla el servicio y a todos sus clientes, se expone directamente la base de datos como contrato. Primer avance: el cliente lee la tabla tal cual; cuando por dentro se renombra la columna saldo a monto, el cliente se rompe. Segundo avance: se pone un contrato en el medio que promete solo dos campos; ahora por dentro se renombra otra columna, nombre, y el cliente sigue funcionando. El contrato dice qué información y en qué forma pueden esperar los clientes, independientemente de cómo se guarde.",
       "fragments": [
-        93,
-        94.8,
-        96.6
+        102.59999999999998,
+        106.19999999999997,
+        109.79999999999998
       ]
     },
     {
       "sceneId": "tolerante",
-      "startTime": 97.8,
-      "endTime": 108.39999999999999,
+      "startTime": 110.99999999999999,
+      "endTime": 121.59999999999998,
       "notes": "La mejor manera de evitar el daño de un cambio es no provocarlo. A la izquierda, la respuesta del servicio de comprobantes con sus campos. El sistema contable solo necesita el número y el monto. Primer avance: el cliente toma esos dos campos e ignora el resto. Segundo avance: el servicio agrega un campo nuevo, el descuento; como el cliente solo lee lo que necesita, ni se entera y sigue funcionando. Fuente: Newman (2015).",
       "fragments": [
-        100.39999999999999,
-        103.8,
-        107.19999999999999
+        113.59999999999998,
+        116.99999999999999,
+        120.39999999999998
       ]
     },
     {
       "sceneId": "semver",
-      "startTime": 108.39999999999999,
-      "endTime": 121.8,
+      "startTime": 121.59999999999998,
+      "endTime": 134.99999999999997,
       "notes": "Cuando el cambio es inevitable se avisa con tres números: MAYOR.MENOR.PARCHE. Hay un cliente hecho para la versión 1.2.0. Primer avance: un parche, de 1.2.0 a 1.2.1, corrige errores y no cambia nada para el cliente. Segundo: un cambio menor, a 1.3.0, agrega algo y sigue siendo compatible, así que el cliente funciona igual. Tercero: un cambio mayor, a 2.0.0, rompe la compatibilidad, y el cliente hay que adaptarlo. Fuente: Newman (2015).",
       "fragments": [
-        110.99999999999999,
-        114.19999999999999,
-        117.39999999999999,
-        120.6
+        124.19999999999997,
+        127.39999999999998,
+        130.59999999999997,
+        133.79999999999998
       ]
     },
     {
       "sceneId": "coexistir",
-      "startTime": 121.8,
-      "endTime": 135.79999999999998,
+      "startTime": 134.99999999999997,
+      "endTime": 148.99999999999997,
       "notes": "Si ni el versionado evita romper a un cliente, se usa la coexistencia de endpoints. Situación inicial: tres clientes de equipos distintos usan la versión 1. Primer avance: el servicio publica la versión 2 y deja la 1 funcionando, así nadie se rompe. Segundo: los clientes A y B migran a la 2 cuando pueden. Tercero: el cliente C migra; cuando nadie usa la versión 1, se retira. Así los equipos no tienen que actualizarse el mismo día. Fuente: Newman (2015).",
       "fragments": [
-        124.39999999999999,
-        127.8,
-        131.2,
-        134.6
+        137.59999999999997,
+        140.99999999999997,
+        144.39999999999998,
+        147.79999999999995
       ]
     },
     {
       "sceneId": "compat",
-      "startTime": 135.79999999999998,
-      "endTime": 142.99999999999997,
-      "notes": "Dos garantías con nombre. Compatibilidad hacia atrás: el código nuevo puede leer datos que produjeron versiones anteriores. Compatibilidad hacia adelante: el código antiguo puede procesar datos de versiones nuevas, normalmente ignorando los campos que no conoce. En servicios, el servidor suele actualizarse antes que sus clientes, así que hace falta hacia atrás en las solicitudes que recibe y hacia adelante en las respuestas que envía. Fuente: Kleppmann (2017).",
+      "startTime": 148.99999999999997,
+      "endTime": 159.59999999999997,
+      "notes": "Dos garantías con nombre. Compatibilidad hacia atrás: el código nuevo puede leer lo que produjeron versiones anteriores; arriba, un cliente viejo manda un pedido de la versión 1 y el servicio nuevo lo entiende. Compatibilidad hacia adelante: el código antiguo puede procesar lo que producen versiones nuevas, normalmente ignorando los campos que no conoce; abajo, el servicio nuevo responde con un campo extra y el cliente viejo lo ignora. En servicios, el servidor suele actualizarse antes que sus clientes, así que hace falta hacia atrás en lo que recibe y hacia adelante en lo que envía. Fuente: Kleppmann (2017).",
       "fragments": [
-        138.2,
-        140,
-        141.79999999999998
+        151.59999999999997,
+        154.99999999999997,
+        158.39999999999998
       ]
     },
     {
       "sceneId": "micro-figura",
-      "startTime": 142.99999999999997,
-      "endTime": 153.99999999999997,
+      "startTime": 159.59999999999997,
+      "endTime": 170.59999999999997,
       "notes": "Los microservicios nacen en 2014, nombrados por Fowler y Lewis, como respuesta explícita a la SOA de servicios grandes y atados. La diferencia más importante es dónde viven los datos. A la izquierda, SOA: tres servicios escriben en una misma base. A la derecha, microservicios: cada servicio es dueño de su propia base. Primer avance: se cambia el esquema de la base compartida y los tres servicios quedan afectados. Segundo: en microservicios se cambia la base de un solo servicio y los otros dos siguen igual. A cambio, cuesta coordinar lo que antes resolvía una sola base compartida. Fuente: Richards y Ford (2020).",
       "fragments": [
-        145.59999999999997,
-        149.19999999999996,
-        152.79999999999995
+        162.19999999999996,
+        165.79999999999995,
+        169.39999999999995
       ]
     },
     {
       "sceneId": "retomar",
-      "startTime": 153.99999999999997,
-      "endTime": 162.99999999999997,
-      "notes": "Retomar el reto del inicio y pedir que respondan antes de mostrar cada ficha. Aplicación web: espera la respuesta, así que conviene un contrato síncrono, REST o gRPC. Sistema contable: no necesita respuesta inmediata y sincroniza por lotes, así que conviene AsyncAPI con un broker, lo que además amortigua los picos de carga. Cambio de nombre de un campo: combinar lector tolerante en el cliente con la coexistencia de endpoints, para que nadie tenga que migrar el mismo día.",
+      "startTime": 170.59999999999997,
+      "endTime": 184.59999999999997,
+      "notes": "Retomar el reto del inicio y pedir que respondan antes de cada avance. Aplicación web: espera la respuesta, así que conviene un contrato síncrono, REST o gRPC. Sistema contable: no necesita respuesta inmediata y sincroniza por lotes, así que conviene AsyncAPI con un broker, que además amortigua los picos de carga. Cambio de nombre de un campo: combinar lector tolerante en el cliente con dos versiones del servicio al mismo tiempo, para que nadie tenga que migrar el mismo día.",
       "fragments": [
-        156.39999999999998,
-        158.2,
-        159.99999999999997,
-        161.79999999999998
+        173.19999999999996,
+        176.59999999999997,
+        179.99999999999997,
+        183.39999999999995
       ]
     },
     {
       "sceneId": "pe",
-      "startTime": 162.99999999999997,
-      "endTime": 169.39999999999998,
+      "startTime": 184.59999999999997,
+      "endTime": 190.99999999999997,
       "notes": "La práctica PE-S2 es corta. Primero, en la tabla, escriben el verbo HTTP y la ruta de tres operaciones sobre la matrícula: consultar, crear y reemplazar. Luego escriben un archivo .proto con una sola operación y sus dos mensajes, numerando cada campo; el ejemplo de la plantilla es el de la reserva de laboratorio de la clase. Por último eligen REST o gRPC y dan una razón en dos líneas, con el acoplamiento o el rendimiento. Errores esperados: poner la acción en la ruta, como /crearMatricula, y repetir números de campo."
     },
     {
       "sceneId": "actividades",
-      "startTime": 169.39999999999998,
-      "endTime": 174.59999999999997,
+      "startTime": 190.99999999999997,
+      "endTime": 196.19999999999996,
       "notes": "PE-S2 vale 2,25 puntos: verbo y ruta REST de tres operaciones sobre la matrícula, un archivo .proto corto y una decisión de dos líneas. TA-S2 vale 2,25 puntos: un cuadro de SOA, microservicios y serverless más un análisis en prosa con cita APA del capítulo 4 de Newman. GA-S2 vale 1 punto: reflexión sobre la Master Class de ASU. Las consignas, las plantillas y las rúbricas están en Canvas."
     },
     {
       "sceneId": "cierre",
-      "startTime": 174.59999999999997,
-      "endTime": 181.79999999999995,
+      "startTime": 196.19999999999996,
+      "endTime": 203.39999999999995,
       "notes": "Cerrar repasando el orden de la clase: la SOA y lo que costó reutilizar, los tres estilos de contrato, y cómo cambiar un contrato sin romper a los clientes."
     }
   ],
   "slideSequences": []
 }
     </script>
-    <div id="root" data-composition-id="main" data-start="0" data-duration="181.8" data-width="1920" data-height="1080">
+    <div id="root" data-composition-id="main" data-start="0" data-duration="203.4" data-width="1920" data-height="1080">
 
       <section id="portada" class="clip slide dark" data-start="0" data-duration="5.6" data-track-index="0" data-label="Portada" data-frags="0" data-enter="2.8" data-step="1">
         <div class="frame" id="portada-frame" style="display:block">
@@ -666,18 +666,34 @@
         </div>
       </section>
 
-      <section id="soa-idea" class="clip slide" data-start="19.599999999999998" data-duration="8.4" data-track-index="0" data-label="Qué es la SOA" data-frags="3" data-enter="2.4" data-step="1.6">
+      <section id="soa-idea" class="clip slide" data-start="19.599999999999998" data-duration="13.4" data-track-index="0" data-label="Qué es la SOA" data-frags="3" data-enter="2.6" data-step="3.2">
         <div class="frame" id="soa-idea-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          
-      <h1 class="ttl">SOA: servicios que toda la empresa reutiliza</h1>
-      <div class="x-pc g1" style="left:120px;top:360px;width:520px;height:330px"><strong>Servicio</strong><em>Una capacidad del negocio, como crear un cliente o hacer un pedido</em></div>
-      <div class="x-pc g2" style="left:700px;top:360px;width:520px;height:330px"><strong>Contrato</strong><em>Dice cómo pedirle algo al servicio, sin mostrar cómo lo hace por dentro</em></div>
-      <div class="x-pc g3" style="left:1280px;top:360px;width:520px;height:330px"><strong>Objetivo</strong><em>No escribir dos veces lo mismo: cada división reutiliza el mismo servicio</em></div>
+          <style>
+.dg{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font:700 34px/1.18 system-ui,sans-serif;border-radius:16px;color:#fff;padding:6px 14px;box-sizing:border-box}
+.dg.row{flex-direction:row}
+.dg.top{justify-content:flex-start;padding-top:26px}
+.dg small{display:block;font-size:30px;font-weight:600;opacity:.92;margin-top:6px}
+.dg.t{background:transparent;color:#1f1a1d;border-radius:0;align-items:flex-start;text-align:left;font-weight:600;padding:0}
+.dpk{position:absolute;display:flex;align-items:center;justify-content:center;font:800 30px/1 ui-monospace,Consolas,monospace;border-radius:30px;height:60px;padding:0 22px;white-space:nowrap;color:#fff;opacity:0;z-index:5}
+.dln{position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:visible;pointer-events:none}
+.dln path{fill:none;stroke:#cfc6ca;stroke-width:6;stroke-linecap:round}
+.dln path.on{stroke:#0c6b62}
+</style>
+      <h1 class="ttl">SOA: un servicio que toda la empresa reutiliza</h1>
+      <div id="sv" class="dg top" data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:1100px;top:330px;width:680px;height:540px;background:#f6f1f3;color:#1f1a1d;font-size:36px">Servicio: crear un cliente</div>
+      <div id="in" class="dg " data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:1330px;top:560px;width:420px;height:240px;background:#8a7f85;color:#fff;font-size:34px">Por dentro<small>reglas y datos</small></div>
+      <div id="ct" class="dg " data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:1040px;top:540px;width:240px;height:150px;background:#0c6b62;color:#fff;font-size:36px">Contrato<small>cómo pedir</small></div>
+      <div id="d0" class="dg " data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:140px;top:340px;width:380px;height:120px;background:#910048;color:#fff;font-size:36px">Matrícula</div><div id="d1" class="dg " data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:140px;top:540px;width:380px;height:120px;background:#910048;color:#fff;font-size:36px">Pagos</div><div id="d2" class="dg " data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:140px;top:740px;width:380px;height:120px;background:#910048;color:#fff;font-size:36px">Becas</div>
+      <svg class="dln"><path id="sl0" class="" d="M520 400 L1040 590" pathLength="1" style="stroke-dasharray:1"/></svg><svg class="dln"><path id="sl1" class="" d="M520 600 H1040" pathLength="1" style="stroke-dasharray:1"/></svg><svg class="dln"><path id="sl2" class="" d="M520 800 L1040 640" pathLength="1" style="stroke-dasharray:1"/></svg>
+      <div id="p0" class="dpk" data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:545px;top:370px;background:#7a5200">Pedir cliente</div><div id="p1" class="dpk" data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:545px;top:570px;background:#7a5200">Pedir cliente</div><div id="p2" class="dpk" data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:545px;top:770px;background:#7a5200">Pedir cliente</div>
+      <div id="n1" class="dg t" data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:140px;top:940px;width:1640px;font-size:36px;color:#1f1a1d">Una capacidad del negocio, con sus reglas por dentro</div>
+      <div id="n2" class="dg t" data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:140px;top:940px;width:1640px;font-size:36px;color:#0c6b62">El contrato muestra cómo pedir, no cómo se hace</div>
+      <div id="n3" class="dg t" data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:140px;top:940px;width:1640px;font-size:36px;color:#910048">Varias divisiones reutilizan el mismo servicio</div>
         </div>
       </section>
 
-      <section id="soa-costo" class="clip slide" data-start="28" data-duration="13.4" data-track-index="0" data-label="El costo de reutilizar" data-frags="3" data-enter="2.6" data-step="3.2">
+      <section id="soa-costo" class="clip slide" data-start="33" data-duration="13.4" data-track-index="0" data-label="El costo de reutilizar" data-frags="3" data-enter="2.6" data-step="3.2">
         <div class="frame" id="soa-costo-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
           <style>
@@ -703,7 +719,7 @@
         </div>
       </section>
 
-      <section id="sync-figura" class="clip slide" data-start="41.4" data-duration="15.6" data-track-index="0" data-label="Síncrono y asíncrono" data-frags="4" data-enter="2.4" data-step="3">
+      <section id="sync-figura" class="clip slide" data-start="46.4" data-duration="15.6" data-track-index="0" data-label="Síncrono y asíncrono" data-frags="4" data-enter="2.4" data-step="3">
         <div class="frame" id="sync-figura-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
           <style>
@@ -738,17 +754,37 @@
         </div>
       </section>
 
-      <section id="estilos" class="clip slide" data-start="57" data-duration="8.4" data-track-index="0" data-label="REST, gRPC y AsyncAPI" data-frags="3" data-enter="2.4" data-step="1.6">
+      <section id="estilos" class="clip slide" data-start="62" data-duration="12.799999999999999" data-track-index="0" data-label="REST, gRPC y AsyncAPI" data-frags="3" data-enter="2.6" data-step="3">
         <div class="frame" id="estilos-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          
+          <style>
+.dg{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font:700 34px/1.18 system-ui,sans-serif;border-radius:16px;color:#fff;padding:6px 14px;box-sizing:border-box}
+.dg.row{flex-direction:row}
+.dg.top{justify-content:flex-start;padding-top:26px}
+.dg small{display:block;font-size:30px;font-weight:600;opacity:.92;margin-top:6px}
+.dg.t{background:transparent;color:#1f1a1d;border-radius:0;align-items:flex-start;text-align:left;font-weight:600;padding:0}
+.dpk{position:absolute;display:flex;align-items:center;justify-content:center;font:800 30px/1 ui-monospace,Consolas,monospace;border-radius:30px;height:60px;padding:0 22px;white-space:nowrap;color:#fff;opacity:0;z-index:5}
+.dln{position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:visible;pointer-events:none}
+.dln path{fill:none;stroke:#cfc6ca;stroke-width:6;stroke-linecap:round}
+.dln path.on{stroke:#0c6b62}
+</style>
       <h1 class="ttl">Tres estilos de contrato</h1>
-      <div class="x-th"><span class="xc " style="left:120px;width:330px">ESTILO</span><span class="xc " style="left:450px;width:760px">QUÉ ES</span><span class="xc " style="left:1210px;width:620px">CUÁNDO CONVIENE</span></div>
-      <div class="x-tr" style="top:380px"><span class="xc a" style="left:120px;width:330px">REST</span><span class="xc c" style="left:450px;width:760px">Recursos con URL y verbos HTTP</span><span class="xc c" style="left:1210px;width:620px">APIs públicas y externas</span></div><div class="x-tr" style="top:480px"><span class="xc a" style="left:120px;width:330px">gRPC</span><span class="xc c" style="left:450px;width:760px">Llamadas binarias rápidas con .proto</span><span class="xc c" style="left:1210px;width:620px">Servicios internos de alta velocidad</span></div><div class="x-tr" style="top:580px"><span class="xc a" style="left:120px;width:330px">AsyncAPI</span><span class="xc c" style="left:450px;width:760px">Mensajes por un buzón intermedio (broker)</span><span class="xc c" style="left:1210px;width:620px">El emisor no espera al cliente</span></div>
+      <svg class="dln"><path id="sl0" class="" d="M680 395 H1060" pathLength="1" style="stroke-dasharray:1"/></svg><svg class="dln"><path id="sl1" class="" d="M680 625 H1060" pathLength="1" style="stroke-dasharray:1"/></svg>
+      <div id="l0" class="dg " data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:140px;top:330px;width:260px;height:130px;background:#910048;color:#fff;font-size:36px">REST</div><div id="l1" class="dg " data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:140px;top:560px;width:260px;height:130px;background:#910048;color:#fff;font-size:36px">gRPC</div><div id="l2" class="dg " data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:140px;top:790px;width:260px;height:130px;background:#910048;color:#fff;font-size:36px">AsyncAPI</div>
+      <div id="a0" class="dg " data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:440px;top:330px;width:240px;height:130px;background:#0c6b62;color:#fff;font-size:36px">Cliente</div><div id="b0" class="dg " data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:1060px;top:330px;width:240px;height:130px;background:#0c6b62;color:#fff;font-size:36px">Servicio</div>
+      <div id="a1" class="dg " data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:440px;top:560px;width:240px;height:130px;background:#0c6b62;color:#fff;font-size:36px">Cliente</div><div id="b1" class="dg " data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:1060px;top:560px;width:240px;height:130px;background:#0c6b62;color:#fff;font-size:36px">Servicio</div>
+      <div id="a2" class="dg " data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:440px;top:790px;width:200px;height:130px;background:#0c6b62;color:#fff;font-size:36px">Emisor</div><div id="m2" class="dg " data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:730px;top:790px;width:240px;height:130px;background:#7a5200;color:#fff;font-size:36px">Broker</div><div id="b2" class="dg " data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:1060px;top:790px;width:240px;height:130px;background:#0c6b62;color:#fff;font-size:36px">Consumidor</div>
+      <svg class="dln"><path id="sm" class="" d="M640 855 H730" pathLength="1" style="stroke-dasharray:1"/></svg><svg class="dln"><path id="sn" class="" d="M970 855 H1060" pathLength="1" style="stroke-dasharray:1"/></svg>
+      <div id="k0" class="dpk" data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:700px;top:365px;background:#910048">GET /reservas/12</div>
+      <div id="k1" class="dpk" data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:700px;top:595px;background:#910048">0A 0C 12 08</div>
+      <div id="k2" class="dpk" data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:650px;top:825px;background:#7a5200">Evento</div>
+      <div id="t0" class="dg t" data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:1340px;top:340px;width:460px;font-size:32px;color:#1f1a1d">Recursos con URL y verbos HTTP.<br>Para APIs públicas.</div>
+      <div id="t1" class="dg t" data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:1340px;top:570px;width:460px;font-size:32px;color:#1f1a1d">Llamadas binarias rápidas.<br>Para servicios internos.</div>
+      <div id="t2" class="dg t" data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:1340px;top:800px;width:460px;font-size:32px;color:#1f1a1d">Mensajes por un buzón.<br>El emisor no espera.</div>
         </div>
       </section>
 
-      <section id="rest" class="clip slide" data-start="65.4" data-duration="14.6" data-track-index="0" data-label="REST: verbos sobre recursos" data-frags="3" data-enter="2.6" data-step="3.6">
+      <section id="rest" class="clip slide" data-start="74.8" data-duration="14.6" data-track-index="0" data-label="REST: verbos sobre recursos" data-frags="3" data-enter="2.6" data-step="3.6">
         <div class="frame" id="rest-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
           <style>
@@ -781,7 +817,7 @@
         </div>
       </section>
 
-      <section id="grpc" class="clip slide" data-start="80" data-duration="10.6" data-track-index="0" data-label="gRPC: el contrato en un archivo .proto" data-frags="2" data-enter="2.6" data-step="3.4">
+      <section id="grpc" class="clip slide" data-start="89.39999999999999" data-duration="10.6" data-track-index="0" data-label="gRPC: el contrato en un archivo .proto" data-frags="2" data-enter="2.6" data-step="3.4">
         <div class="frame" id="grpc-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
           <style>
@@ -809,17 +845,35 @@
         </div>
       </section>
 
-      <section id="no-espejo" class="clip slide" data-start="90.6" data-duration="7.2" data-track-index="0" data-label="El contrato no es un espejo de la base" data-frags="2" data-enter="2.4" data-step="1.8">
+      <section id="no-espejo" class="clip slide" data-start="99.99999999999999" data-duration="11" data-track-index="0" data-label="El contrato no es un espejo de la base" data-frags="2" data-enter="2.6" data-step="3.6">
         <div class="frame" id="no-espejo-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          
+          <style>
+.dg{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font:700 34px/1.18 system-ui,sans-serif;border-radius:16px;color:#fff;padding:6px 14px;box-sizing:border-box}
+.dg.row{flex-direction:row}
+.dg.top{justify-content:flex-start;padding-top:26px}
+.dg small{display:block;font-size:30px;font-weight:600;opacity:.92;margin-top:6px}
+.dg.t{background:transparent;color:#1f1a1d;border-radius:0;align-items:flex-start;text-align:left;font-weight:600;padding:0}
+.dpk{position:absolute;display:flex;align-items:center;justify-content:center;font:800 30px/1 ui-monospace,Consolas,monospace;border-radius:30px;height:60px;padding:0 22px;white-space:nowrap;color:#fff;opacity:0;z-index:5}
+.dln{position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:visible;pointer-events:none}
+.dln path{fill:none;stroke:#cfc6ca;stroke-width:6;stroke-linecap:round}
+.dln path.on{stroke:#0c6b62}
+</style>
       <h1 class="ttl">El contrato no debe copiar la base de datos</h1>
-      <div class="y-bad g1" style="left:120px;top:330px;width:1680px">Mal: mostrar las tablas tal cual; un cambio rompe a todos</div>
-      <div class="y-good g2" style="left:120px;top:490px;width:1680px">Bien: prometer solo ciertos campos, sin importar cómo se guardan</div>
+      <div id="dbh" class="dg " data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:140px;top:330px;width:640px;height:80px;background:#7a5200;color:#fff;font-size:34px">Tabla de la base de datos</div>
+      <div id="r0" class="dg " data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:140px;top:410px;width:640px;height:80px;background:#f6f1f3;color:#1f1a1d;font-size:34px">id</div><div id="r1" class="dg " data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:140px;top:490px;width:640px;height:80px;background:#f6f1f3;color:#1f1a1d;font-size:34px">nombre</div><div id="r2" class="dg " data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:140px;top:570px;width:640px;height:80px;background:#f6f1f3;color:#1f1a1d;font-size:34px">cedula</div><div id="r3" class="dg " data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:140px;top:650px;width:640px;height:80px;background:#f6f1f3;color:#1f1a1d;font-size:34px">saldo</div><div id="r4" class="dg " data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:140px;top:730px;width:640px;height:80px;background:#f6f1f3;color:#1f1a1d;font-size:34px">nota_interna</div>
+      <div id="rn" class="dg " data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:140px;top:650px;width:640px;height:80px;background:#fcefc9;color:#7a5200;font-size:34px">monto</div>
+      <div id="rn2" class="dg " data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:140px;top:490px;width:640px;height:80px;background:#fcefc9;color:#7a5200;font-size:34px">nombre_completo</div>
+      <svg class="dln"><path id="sl0" class="" d="M780 690 H1300" pathLength="1" style="stroke-dasharray:1"/></svg>
+      <div id="cli" class="dg " data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:1300px;top:520px;width:480px;height:200px;background:#0c6b62;color:#fff;font-size:36px">Cliente</div>
+      <div id="bad" class="dg " data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:1300px;top:520px;width:480px;height:200px;background:#b3261e;color:#fff;font-size:36px">Se rompe<small>ya no existe la columna saldo</small></div>
+      <div id="pl" class="dg " data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:940px;top:560px;width:280px;height:120px;background:#0c6b62;color:#fff;font-size:36px">Contrato<small>id y saldo</small></div>
+      <div id="n1" class="dg t" data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:140px;top:880px;width:1640px;font-size:36px;color:#b3261e">Mal: se muestra la tabla tal cual y un cambio interno rompe al cliente</div>
+      <div id="n2" class="dg t" data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:140px;top:880px;width:1640px;font-size:36px;color:#0c6b62">Bien: el contrato promete solo algunos campos y la tabla puede cambiar por dentro</div>
         </div>
       </section>
 
-      <section id="tolerante" class="clip slide" data-start="97.8" data-duration="10.6" data-track-index="0" data-label="Cambiar sin romper: lector tolerante" data-frags="2" data-enter="2.6" data-step="3.4">
+      <section id="tolerante" class="clip slide" data-start="110.99999999999999" data-duration="10.6" data-track-index="0" data-label="Cambiar sin romper: lector tolerante" data-frags="2" data-enter="2.6" data-step="3.4">
         <div class="frame" id="tolerante-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
           <style>
@@ -844,7 +898,7 @@
         </div>
       </section>
 
-      <section id="semver" class="clip slide" data-start="108.39999999999999" data-duration="13.4" data-track-index="0" data-label="Versionado semántico" data-frags="3" data-enter="2.6" data-step="3.2">
+      <section id="semver" class="clip slide" data-start="121.59999999999998" data-duration="13.4" data-track-index="0" data-label="Versionado semántico" data-frags="3" data-enter="2.6" data-step="3.2">
         <div class="frame" id="semver-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
           <style>
@@ -870,7 +924,7 @@
         </div>
       </section>
 
-      <section id="coexistir" class="clip slide" data-start="121.8" data-duration="13.999999999999998" data-track-index="0" data-label="Coexistir versiones" data-frags="3" data-enter="2.6" data-step="3.4">
+      <section id="coexistir" class="clip slide" data-start="134.99999999999997" data-duration="13.999999999999998" data-track-index="0" data-label="Coexistir versiones" data-frags="3" data-enter="2.6" data-step="3.4">
         <div class="frame" id="coexistir-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
           <style>
@@ -896,18 +950,34 @@
         </div>
       </section>
 
-      <section id="compat" class="clip slide" data-start="135.79999999999998" data-duration="7.2" data-track-index="0" data-label="Hacia atrás y hacia adelante" data-frags="2" data-enter="2.4" data-step="1.8">
+      <section id="compat" class="clip slide" data-start="148.99999999999997" data-duration="10.6" data-track-index="0" data-label="Hacia atrás y hacia adelante" data-frags="2" data-enter="2.6" data-step="3.4">
         <div class="frame" id="compat-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          
+          <style>
+.dg{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font:700 34px/1.18 system-ui,sans-serif;border-radius:16px;color:#fff;padding:6px 14px;box-sizing:border-box}
+.dg.row{flex-direction:row}
+.dg.top{justify-content:flex-start;padding-top:26px}
+.dg small{display:block;font-size:30px;font-weight:600;opacity:.92;margin-top:6px}
+.dg.t{background:transparent;color:#1f1a1d;border-radius:0;align-items:flex-start;text-align:left;font-weight:600;padding:0}
+.dpk{position:absolute;display:flex;align-items:center;justify-content:center;font:800 30px/1 ui-monospace,Consolas,monospace;border-radius:30px;height:60px;padding:0 22px;white-space:nowrap;color:#fff;opacity:0;z-index:5}
+.dln{position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:visible;pointer-events:none}
+.dln path{fill:none;stroke:#cfc6ca;stroke-width:6;stroke-linecap:round}
+.dln path.on{stroke:#0c6b62}
+</style>
       <h1 class="ttl">Compatibilidad hacia atrás y hacia adelante</h1>
-      <div class="x-pc g1" style="left:120px;top:330px;width:520px;height:300px"><strong>Hacia atrás</strong><em>El código nuevo entiende lo que enviaron versiones anteriores</em></div>
-      <div class="x-pc g2" style="left:720px;top:330px;width:520px;height:300px"><strong>Hacia adelante</strong><em>El código antiguo procesa lo nuevo e ignora lo que no conoce</em></div>
-      <p class="punch g2" style="left:120px;top:730px;width:1680px">El servidor se actualiza primero: acepta lo viejo y responde algo que lo viejo entienda</p>
+      <svg class="dln"><path id="sl0" class="" d="M520 450 H1400" pathLength="1" style="stroke-dasharray:1"/></svg><svg class="dln"><path id="sl1" class="" d="M520 790 H1400" pathLength="1" style="stroke-dasharray:1"/></svg>
+      <div id="c0" class="dg " data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:140px;top:380px;width:380px;height:140px;background:#8a7f85;color:#fff;font-size:36px">Cliente viejo<small>versión 1</small></div><div id="s0" class="dg " data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:1400px;top:380px;width:380px;height:140px;background:#910048;color:#fff;font-size:36px">Servicio nuevo<small>versión 2</small></div>
+      <div id="c1" class="dg " data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:140px;top:720px;width:380px;height:140px;background:#8a7f85;color:#fff;font-size:36px">Cliente viejo<small>versión 1</small></div><div id="s1" class="dg " data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:1400px;top:720px;width:380px;height:140px;background:#910048;color:#fff;font-size:36px">Servicio nuevo<small>versión 2</small></div>
+      <div id="p0" class="dpk" data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:545px;top:420px;background:#8a7f85">Pedido v1: id</div>
+      <div id="p1" class="dpk" data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:1010px;top:760px;background:#910048">id, lab, extra</div>
+      <div id="ok0" class="dg " data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:1000px;top:300px;width:380px;height:70px;background:#0c6b62;color:#fff;font-size:32px">El servicio lo entiende</div>
+      <div id="ok1" class="dg " data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:145px;top:880px;width:380px;height:60px;background:#0c6b62;color:#fff;font-size:32px">Ignora el campo extra</div>
+      <div id="h0" class="dg t" data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:140px;top:280px;width:800px;font-size:36px;color:#910048">Hacia atrás: lo nuevo entiende lo viejo</div>
+      <div id="h1" class="dg t" data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:140px;top:620px;width:800px;font-size:36px;color:#910048">Hacia adelante: lo viejo tolera lo nuevo</div>
         </div>
       </section>
 
-      <section id="micro-figura" class="clip slide" data-start="142.99999999999997" data-duration="11" data-track-index="0" data-label="SOA y microservicios" data-frags="2" data-enter="2.6" data-step="3.6">
+      <section id="micro-figura" class="clip slide" data-start="159.59999999999997" data-duration="11" data-track-index="0" data-label="SOA y microservicios" data-frags="2" data-enter="2.6" data-step="3.6">
         <div class="frame" id="micro-figura-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
           <style>
@@ -934,18 +1004,36 @@
         </div>
       </section>
 
-      <section id="retomar" class="clip slide" data-start="153.99999999999997" data-duration="9" data-track-index="0" data-label="Volvemos al reto" data-frags="3" data-enter="2.4" data-step="1.8">
+      <section id="retomar" class="clip slide" data-start="170.59999999999997" data-duration="13.999999999999998" data-track-index="0" data-label="Volvemos al reto" data-frags="3" data-enter="2.6" data-step="3.4">
         <div class="frame" id="retomar-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          
+          <style>
+.dg{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font:700 34px/1.18 system-ui,sans-serif;border-radius:16px;color:#fff;padding:6px 14px;box-sizing:border-box}
+.dg.row{flex-direction:row}
+.dg.top{justify-content:flex-start;padding-top:26px}
+.dg small{display:block;font-size:30px;font-weight:600;opacity:.92;margin-top:6px}
+.dg.t{background:transparent;color:#1f1a1d;border-radius:0;align-items:flex-start;text-align:left;font-weight:600;padding:0}
+.dpk{position:absolute;display:flex;align-items:center;justify-content:center;font:800 30px/1 ui-monospace,Consolas,monospace;border-radius:30px;height:60px;padding:0 22px;white-space:nowrap;color:#fff;opacity:0;z-index:5}
+.dln{position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:visible;pointer-events:none}
+.dln path{fill:none;stroke:#cfc6ca;stroke-width:6;stroke-linecap:round}
+.dln path.on{stroke:#0c6b62}
+</style>
       <h1 class="ttl">Respuesta al reto del comprobante</h1>
-      <div class="x-pc g1" style="left:120px;top:360px;width:520px;height:340px"><strong>Aplicación web</strong><em>Necesita respuesta al instante: contrato síncrono, REST o gRPC</em></div>
-      <div class="x-pc g2" style="left:700px;top:360px;width:520px;height:340px"><strong>Sistema contable</strong><em>Sincroniza de noche: mensajes con AsyncAPI y un broker</em></div>
-      <div class="x-pc g3" style="left:1280px;top:360px;width:520px;height:340px"><strong>El campo que cambia</strong><em>Lector tolerante y dos versiones al mismo tiempo mientras migran</em></div>
+      <svg class="dln"><path id="l1" class="" d="M520 405 H1400" pathLength="1" style="stroke-dasharray:1"/></svg><svg class="dln"><path id="l2a" class="" d="M520 825 H760" pathLength="1" style="stroke-dasharray:1"/></svg><svg class="dln"><path id="l2b" class="" d="M1060 825 H1400" pathLength="1" style="stroke-dasharray:1"/></svg>
+      <div id="web" class="dg " data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:140px;top:330px;width:380px;height:150px;background:#0c6b62;color:#fff;font-size:36px">Aplicación web</div><div id="cont" class="dg " data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:140px;top:750px;width:380px;height:150px;background:#7a5200;color:#fff;font-size:36px">Sistema contable</div>
+      <div id="srv" class="dg top" data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:1400px;top:330px;width:380px;height:570px;background:#910048;color:#fff;font-size:36px">Servicio de comprobantes</div>
+      <div id="brk" class="dg " data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:760px;top:750px;width:300px;height:150px;background:#7a5200;color:#fff;font-size:36px">Broker<small>buzón intermedio</small></div>
+      <div id="a1" class="dpk" data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:545px;top:375px;background:#910048">Pedir</div><div id="a2" class="dpk" data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:1140px;top:375px;background:#0c6b62">Comprobante</div>
+      <div id="b1" class="dpk" data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:545px;top:795px;background:#7a5200">Lote</div><div id="b2" class="dpk" data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:1080px;top:795px;background:#7a5200">Lote</div>
+      <div id="t1" class="dg t" data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:545px;top:440px;width:800px;font-size:36px;color:#910048">Síncrono: REST o gRPC</div>
+      <div id="t2" class="dg t" data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:545px;top:910px;width:800px;font-size:36px;color:#7a5200">AsyncAPI con un broker</div>
+      <div id="v1" class="dg " data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:1430px;top:480px;width:320px;height:100px;background:#fff;color:#7a5200;font-size:32px">Versión 1<small>sigue funcionando</small></div>
+      <div id="v2" class="dg " data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:1430px;top:620px;width:320px;height:100px;background:#fff;color:#0c6b62;font-size:32px">Versión 2<small>con el campo nuevo</small></div>
+      <div id="k1" class="dg " data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:140px;top:490px;width:380px;height:60px;background:#fcefc9;color:#7a5200;font-size:32px">Lector tolerante</div><div id="k2" class="dg " data-layout-allow-overlap data-layout-allow-occlusion data-layout-allow-overflow style="left:140px;top:910px;width:380px;height:60px;background:#fcefc9;color:#7a5200;font-size:32px">Lector tolerante</div>
         </div>
       </section>
 
-      <section id="pe" class="clip slide" data-start="162.99999999999997" data-duration="6.4" data-track-index="0" data-label="Práctica PE-S2" data-frags="0" data-enter="3.2" data-step="1">
+      <section id="pe" class="clip slide" data-start="184.59999999999997" data-duration="6.4" data-track-index="0" data-label="Práctica PE-S2" data-frags="0" data-enter="3.2" data-step="1">
         <div class="frame" id="pe-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
           
@@ -956,7 +1044,7 @@
         </div>
       </section>
 
-      <section id="actividades" class="clip slide" data-start="169.39999999999998" data-duration="5.2" data-track-index="0" data-label="Actividades de la semana" data-frags="0" data-enter="2.6" data-step="1">
+      <section id="actividades" class="clip slide" data-start="190.99999999999997" data-duration="5.2" data-track-index="0" data-label="Actividades de la semana" data-frags="0" data-enter="2.6" data-step="1">
         <div class="frame" id="actividades-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
           
@@ -971,7 +1059,7 @@
         </div>
       </section>
 
-      <section id="cierre" class="clip slide dark" data-start="174.59999999999997" data-duration="7.2" data-track-index="0" data-label="Cierre" data-frags="0" data-enter="3.6" data-step="1">
+      <section id="cierre" class="clip slide dark" data-start="196.19999999999996" data-duration="7.2" data-track-index="0" data-label="Cierre" data-frags="0" data-enter="3.6" data-step="1">
         <div class="frame" id="cierre-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
           
@@ -992,7 +1080,7 @@
 
       const EXIT = 0.5;
       const tl = gsap.timeline({ paused: true });
-      tl.to({}, { duration: 181.8 }, 0);
+      tl.to({}, { duration: 203.4 }, 0);
       const real = engineHosted ? tl : gsap.timeline({ paused: true });
 
       const VW = 1920, VH = 1080;
@@ -1201,7 +1289,19 @@ SCENES["reto"] = (c) => {
     pop(c.q("#q1"), T(3) + 0.8, 0.5);
     pop(c.q("#q2"), T(3) + 1.0, 0.5);
   };
-SCENES["soa-idea"] = TYPES["reveal"];
+SCENES["soa-idea"] = (c) => {
+    const T = (k) => c.h(k) - c.step;
+    words(c.q(".ttl"), c.st + 0.2);
+    ["#sv", "#in", "#ct", "#d0", "#d1", "#d2", "#n1", "#n2", "#n3", "#sl0", "#sl1", "#sl2"].forEach((s) => real.fromTo(c.q(s), { opacity: 0 }, { opacity: 0, duration: 0.01 }, 0));
+    rise(c.q("#sv"), T(1) + 0.2, 30, 0.6); rise(c.q("#in"), T(1) + 0.7, 30, 0.6); rise(c.q("#n1"), T(1) + 1.5, 10, 0.5);
+    real.to(c.q("#n1"), { opacity: 0, duration: 0.3 }, T(2));
+    pop(c.q("#ct"), T(2) + 0.3, 0.5); rise(c.q("#n2"), T(2) + 1.1, 10, 0.5);
+    real.to(c.q("#n2"), { opacity: 0, duration: 0.3 }, T(3));
+    ["#d0", "#d1", "#d2"].forEach((s, i) => rise(c.q(s), T(3) + 0.2 + i * 0.15, 24, 0.5));
+    ["#sl0", "#sl1", "#sl2"].forEach((s, i) => { real.fromTo(c.q(s), { opacity: 0 }, { opacity: 1, duration: 0.1 }, T(3) + 0.7); draw(c.q(s), T(3) + 0.7 + i * 0.1, 0.5); });
+    ["#p0", "#p1", "#p2"].forEach((s, i) => travel(c.q(s), T(3) + 1.2 + i * 0.15, 330, 0, 0.9));
+    rise(c.q("#n3"), T(3) + 2.3, 10, 0.5);
+  };
 SCENES["soa-costo"] = (c) => {
     const T = (k) => c.h(k) - c.step;
     words(c.q(".ttl"), c.st + 0.2);
@@ -1242,7 +1342,23 @@ SCENES["sync-figura"] = (c) => {
     real.to(c.q("#ca"), { backgroundColor: TE, duration: 0.4 }, T(4) + 1.5);
     real.to(c.q("#cb"), { backgroundColor: TE, duration: 0.4 }, T(4) + 1.5);
   };
-SCENES["estilos"] = TYPES["table"];
+SCENES["estilos"] = (c) => {
+    const T = (k) => c.h(k) - c.step;
+    words(c.q(".ttl"), c.st + 0.2);
+    ["#sl0", "#sl1", "#sm", "#sn", "#l0", "#a0", "#b0", "#l1", "#a1", "#b1", "#l2", "#a2", "#m2", "#b2", "#t0", "#t1", "#t2"].forEach((s) => real.fromTo(c.q(s), { opacity: 0 }, { opacity: 0, duration: 0.01 }, 0));
+    [["l0", "a0", "b0", "sl0", "t0"], ["l1", "a1", "b1", "sl1", "t1"]].forEach(([l, a, b, s, t], i) => {
+      const at = T(i + 1);
+      rise(c.q("#" + l), at + 0.1, 20, 0.5); rise(c.q("#" + a), at + 0.25, 20, 0.5); rise(c.q("#" + b), at + 0.4, 20, 0.5);
+      real.fromTo(c.q("#" + s), { opacity: 0 }, { opacity: 1, duration: 0.1 }, at + 0.5); draw(c.q("#" + s), at + 0.5, 0.5);
+      travel(c.q("#k" + i), at + 1.0, 340, 0, 0.9);
+      rise(c.q("#" + t), at + 2.0, 10, 0.5);
+    });
+    const at = T(3);
+    ["l2", "a2", "m2", "b2"].forEach((s, i) => rise(c.q("#" + s), at + 0.1 + i * 0.15, 20, 0.5));
+    ["#sm", "#sn"].forEach((s) => { real.fromTo(c.q(s), { opacity: 0 }, { opacity: 1, duration: 0.1 }, at + 0.7); draw(c.q(s), at + 0.7, 0.5); });
+    travel(c.q("#k2"), at + 1.2, 80, 0, 0.6);
+    rise(c.q("#t2"), at + 2.1, 10, 0.5);
+  };
 SCENES["rest"] = (c) => {
     const T = (k) => c.h(k) - c.step;
     words(c.q(".ttl"), c.st + 0.2);
@@ -1291,7 +1407,27 @@ SCENES["grpc"] = (c) => {
     travel(c.q("#q2"), T(2) + 1.9, -540, 0, 1.0);
     rise(c.q("#gt2"), T(2) + 2.8, 10, 0.5);
   };
-SCENES["no-espejo"] = TYPES["reveal"];
+SCENES["no-espejo"] = (c) => {
+    const T = (k) => c.h(k) - c.step;
+    words(c.q(".ttl"), c.st + 0.2);
+    rise(c.q("#dbh"), c.st + 0.5, 20, 0.5);
+    ["#r0", "#r1", "#r2", "#r3", "#r4"].forEach((s, i) => rise(c.q(s), c.st + 0.6 + i * 0.1, 20, 0.5));
+    rise(c.q("#cli"), c.st + 1.0, 30, 0.6);
+    ["#rn", "#rn2", "#bad", "#pl", "#n1", "#n2", "#sl0"].forEach((s) => real.fromTo(c.q(s), { opacity: 0 }, { opacity: 0, duration: 0.01 }, 0));
+    real.fromTo(c.q("#sl0"), { opacity: 0 }, { opacity: 1, duration: 0.1 }, T(1) + 0.2); draw(c.q("#sl0"), T(1) + 0.2, 0.6);
+    real.to(c.q("#r3"), { opacity: 0, duration: 0.3 }, T(1) + 1.2);
+    real.fromTo(c.q("#rn"), { opacity: 0 }, { opacity: 1, duration: 0.3 }, T(1) + 1.2);
+    real.to(c.q("#cli"), { opacity: 0, duration: 0.3 }, T(1) + 1.8);
+    real.fromTo(c.q("#bad"), { opacity: 0 }, { opacity: 1, duration: 0.3 }, T(1) + 1.8);
+    rise(c.q("#n1"), T(1) + 2.6, 10, 0.5);
+    real.to(c.q("#n1"), { opacity: 0, duration: 0.3 }, T(2));
+    real.to(c.q("#bad"), { opacity: 0, duration: 0.3 }, T(2) + 0.2);
+    real.to(c.q("#cli"), { opacity: 1, duration: 0.3 }, T(2) + 0.2);
+    pop(c.q("#pl"), T(2) + 0.5, 0.5);
+    real.to(c.q("#r1"), { opacity: 0, duration: 0.3 }, T(2) + 1.4);
+    real.fromTo(c.q("#rn2"), { opacity: 0 }, { opacity: 1, duration: 0.3 }, T(2) + 1.4);
+    rise(c.q("#n2"), T(2) + 2.4, 10, 0.5);
+  };
 SCENES["tolerante"] = (c) => {
     const T = (k) => c.h(k) - c.step;
     words(c.q(".ttl"), c.st + 0.2);
@@ -1345,10 +1481,21 @@ SCENES["coexistir"] = (c) => {
     real.to(c.q("#n2"), { opacity: 0, duration: 0.3 }, T(3));
     real.to(c.q("#c1"), { opacity: 0, duration: 0.4 }, T(3) + 0.3);
     real.fromTo(c.q("#c2"), { opacity: 0, strokeDashoffset: 1 }, { opacity: 1, strokeDashoffset: 0, duration: 0.7, ease: IO }, T(3) + 0.3);
-    real.to(c.q("#v1"), { opacity: 0.18, duration: 0.8 }, T(3) + 1.4);
+    real.to(c.q("#v1"), { backgroundColor: "#e2dcdf", color: "#5a5257", duration: 0.8 }, T(3) + 1.4);
     rise(c.q("#n3"), T(3) + 1.6, 10, 0.5);
   };
-SCENES["compat"] = TYPES["reveal"];
+SCENES["compat"] = (c) => {
+    const T = (k) => c.h(k) - c.step;
+    words(c.q(".ttl"), c.st + 0.2);
+    ["#sl0", "#sl1", "#c0", "#s0", "#c1", "#s1", "#ok0", "#ok1", "#h0", "#h1"].forEach((s) => real.fromTo(c.q(s), { opacity: 0 }, { opacity: 0, duration: 0.01 }, 0));
+    const lane = (l, at) => {
+      rise(c.q("#h" + l), at + 0.1, 10, 0.5);
+      rise(c.q("#c" + l), at + 0.2, 20, 0.5); rise(c.q("#s" + l), at + 0.3, 20, 0.5);
+      real.fromTo(c.q("#sl" + l), { opacity: 0 }, { opacity: 1, duration: 0.1 }, at + 0.5); draw(c.q("#sl" + l), at + 0.5, 0.5);
+    };
+    lane(0, T(1)); travel(c.q("#p0"), T(1) + 1.2, 560, 0, 1.0); rise(c.q("#ok0"), T(1) + 2.4, 10, 0.5);
+    lane(1, T(2)); travel(c.q("#p1"), T(2) + 1.2, -530, 0, 1.0); rise(c.q("#ok1"), T(2) + 2.4, 10, 0.5);
+  };
 SCENES["micro-figura"] = (c) => {
     const T = (k) => c.h(k) - c.step;
     words(c.q(".ttl"), c.st + 0.2);
@@ -1369,7 +1516,19 @@ SCENES["micro-figura"] = (c) => {
     real.to(c.q("#mB"), { backgroundColor: RD, duration: 0.4 }, T(2) + 1.2);
     rise(c.q("#t2"), T(2) + 2.0, 10, 0.5);
   };
-SCENES["retomar"] = TYPES["reveal"];
+SCENES["retomar"] = (c) => {
+    const T = (k) => c.h(k) - c.step;
+    words(c.q(".ttl"), c.st + 0.2);
+    ["#web", "#cont", "#srv"].forEach((s, i) => rise(c.q(s), c.st + 0.5 + i * 0.2, 24, 0.5));
+    ["#l1", "#l2a", "#l2b", "#brk", "#t1", "#t2", "#v1", "#v2", "#k1", "#k2"].forEach((s) => real.fromTo(c.q(s), { opacity: 0 }, { opacity: 0, duration: 0.01 }, 0));
+    real.fromTo(c.q("#l1"), { opacity: 0 }, { opacity: 1, duration: 0.1 }, T(1) + 0.1); draw(c.q("#l1"), T(1) + 0.1, 0.6);
+    travel(c.q("#a1"), T(1) + 0.8, 640, 0, 1.0); travel(c.q("#a2"), T(1) + 2.0, -600, 0, 1.0); rise(c.q("#t1"), T(1) + 2.6, 10, 0.5);
+    pop(c.q("#brk"), T(2) + 0.2, 0.5);
+    ["#l2a", "#l2b"].forEach((s) => { real.fromTo(c.q(s), { opacity: 0 }, { opacity: 1, duration: 0.1 }, T(2) + 0.6); draw(c.q(s), T(2) + 0.6, 0.5); });
+    travel(c.q("#b1"), T(2) + 1.2, 180, 0, 0.8); travel(c.q("#b2"), T(2) + 2.1, 270, 0, 0.8); rise(c.q("#t2"), T(2) + 2.5, 10, 0.5);
+    rise(c.q("#v1"), T(3) + 0.2, 20, 0.5); rise(c.q("#v2"), T(3) + 0.6, 20, 0.5);
+    rise(c.q("#k1"), T(3) + 1.2, 10, 0.5); rise(c.q("#k2"), T(3) + 1.4, 10, 0.5);
+  };
 SCENES["pe"] = TYPES["steps"];
 SCENES["actividades"] = TYPES["tickets"];
 SCENES["cierre"] = TYPES["close"];
