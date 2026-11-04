@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CC05A_IFT202 · Semana 2: Introducción al marco NIST</title>
+    <script>
+      // El modo público se distingue en la pestaña del navegador.
+      if (new URLSearchParams(location.search).get("mode") === "audience") {
+        document.title = "CC05A_IFT202 · Semana 2: Introducción al marco NIST" + " (pantalla del público)";
+      }
+    </script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { height: 100%; background: #0a0a0a; overflow: hidden; }
+      hyperframes-slideshow { display: block; position: relative; width: 100vw; height: 100vh; }
+      hyperframes-player { position: absolute; inset: 0; }
+    </style>
+    <script src="../vendor/hyperframes-player.global.js"></script>
+    <script src="../vendor/hyperframes-slideshow.global.js"></script>
+  </head>
+  <body>
+    <hyperframes-slideshow tabindex="0" notes-storage-key="ift202-semana-02">
+      <hyperframes-player interactive src="composition/index.html"></hyperframes-player>
+      <script type="application/hyperframes-slideshow+json">
+{
+  "slides": [
+    {
+      "sceneId": "portada",
+      "startTime": 0,
+      "endTime": 5.6,
+      "notes": "Abrir con la pregunta del municipio: si un lunes los archivos aparecen cifrados, ¿qué es lo primero que hacen? Anotar tres respuestas distintas sin corregirlas. La clase muestra que todas son razonables y que ninguna es un plan: falta un lenguaje común."
+    },
+    {
+      "sceneId": "caso",
+      "startTime": 5.6,
+      "endTime": 14,
+      "notes": "Dejar la pregunta a la vista y pedir que escriban tres acciones para antes, tres para durante y tres para después. Revelar el caso: 40 empleados, un servidor con catastro y cobros de agua, archivos cifrados un lunes, nadie sabía qué equipos tenía, no había copias recientes y nadie decidía; a los cuatro días el cobro seguía detenido. Es la exploración de la semana.",
+      "fragments": [
+        8,
+        9.6,
+        11.2,
+        12.8
+      ]
+    },
+    {
+      "sceneId": "proposito",
+      "startTime": 14,
+      "endTime": 21.2,
+      "notes": "El marco nació de la orden ejecutiva 13636, que el presidente Obama firmó el 12 de febrero de 2013 para proteger infraestructuras críticas. La versión 2.0 se publicó el 26 de febrero de 2024. Ofrece una taxonomía de resultados que sirve a cualquier organización, sin importar su tamaño, sector o madurez. No prescribe cómo lograr cada resultado. El documento de la OEA describe la versión 1.1, con cinco funciones y 23 categorías. Fuentes: NIST (2024); OEA y AWS (2019).",
+      "fragments": [
+        16.4,
+        18.2,
+        20
+      ]
+    },
+    {
+      "sceneId": "rueda",
+      "startTime": 21.2,
+      "endTime": 26.799999999999997,
+      "notes": "Gobernar está al centro porque establece la estrategia, las políticas y los responsables que orientan a las otras cinco. Identificar y proteger preparan; detectar, responder y recuperar actúan cuando algo ocurre; la flecha de recuperar vuelve a identificar porque cada incidente enseña algo. Fuente: NIST (2024), figura 2."
+    },
+    {
+      "sceneId": "funciones",
+      "startTime": 26.799999999999997,
+      "endTime": 35.199999999999996,
+      "notes": "Cada función responde una pregunta. Revelar de a dos y pedir que la clase diga un ejemplo de una acción que respondería esa pregunta antes de revelar la siguiente fila.",
+      "fragments": [
+        29.199999999999996,
+        30.799999999999997,
+        32.4,
+        34
+      ]
+    },
+    {
+      "sceneId": "categorias",
+      "startTime": 35.199999999999996,
+      "endTime": 42.4,
+      "notes": "La versión 2.0 tiene 22 categorías: 6 en gobernar, 3 en identificar, 5 en proteger, 2 en detectar, 4 en responder y 2 en recuperar. Cada una tiene un identificador, por ejemplo ID.AM o PR.AA. No hay que memorizarlas: se consultan en la tabla de la página 2.1. Aclarar que la versión 1.1 tenía 23 categorías, por eso los números del documento de la OEA no coinciden. Fuente: NIST (2024), tabla 1.",
+      "fragments": [
+        37.599999999999994,
+        39.39999999999999,
+        41.199999999999996
+      ]
+    },
+    {
+      "sceneId": "clasificar",
+      "startTime": 42.4,
+      "endTime": 50.8,
+      "notes": "Para clasificar una acción se pregunta en qué momento de la vida del riesgo actúa: antes y fija reglas, gobernar; descubre lo que existe, identificar; pone una salvaguarda, proteger; busca señales, detectar; contiene o comunica un incidente, responder; vuelve a la normalidad, recuperar. Pedir que digan la función antes de revelar cada fila.",
+      "fragments": [
+        44.8,
+        46.4,
+        48,
+        49.599999999999994
+      ]
+    },
+    {
+      "sceneId": "colonial",
+      "startTime": 50.8,
+      "endTime": 59.199999999999996,
+      "notes": "Leer el caso con las seis funciones. La cuenta heredada es una falla de identificar, porque nadie revisaba el inventario de cuentas, y de proteger, por la falta de segundo factor. Detener el bombeo fue una decisión de responder. En gobernar no hay datos públicos suficientes: se anota que no se informó y se formula la pregunta. Distinguir lo que el caso dice de lo que se supone.",
+      "fragments": [
+        53.199999999999996,
+        54.8,
+        56.4,
+        58
+      ]
+    },
+    {
+      "sceneId": "perfiles",
+      "startTime": 59.199999999999996,
+      "endTime": 67.6,
+      "notes": "Un perfil describe la postura de ciberseguridad de una organización, actual o deseada, en términos de los resultados del marco. La distancia entre el perfil actual y el objetivo es la brecha, y se cierra con un plan de acción priorizado por costo, beneficio y riesgo (OEA y AWS, 2019; NIST, 2024). Ejemplo: una clínica con copias en un disco sin probar, nivel 1, que quiere copias probadas cada trimestre, nivel 3.",
+      "fragments": [
+        61.599999999999994,
+        63.199999999999996,
+        64.8,
+        66.39999999999999
+      ]
+    },
+    {
+      "sceneId": "niveles",
+      "startTime": 67.6,
+      "endTime": 74.39999999999999,
+      "notes": "Los cuatro niveles describen el rigor de las prácticas de gobierno y gestión del riesgo: parcial, informado por el riesgo, repetible y adaptativo. Un nivel más alto no siempre es la meta: cada organización elige según su riesgo, su presupuesto y sus obligaciones. Pregunta para la clase: ¿qué nivel necesita un taller de ocho personas y cuál un banco? Las descripciones de la tabla son ejemplos didácticos, no citas. Fuente: NIST (2024).",
+      "fragments": [
+        70,
+        71.6,
+        73.2
+      ]
+    },
+    {
+      "sceneId": "guias",
+      "startTime": 74.39999999999999,
+      "endTime": 82.8,
+      "notes": "Una guía es un documento de un organismo que recomienda prácticas, controles o requisitos. Se distingue de un marco por ser más concreta y de una norma porque no siempre se certifica. CIS Controls v8 agrupa 18 controles; ISO/IEC 27001 es una norma certificable; el OWASP Top 10 lista los diez riesgos más críticos de las aplicaciones web; NIST SP 800-61 trata el manejo de incidentes; el INCIBE publica políticas para la pyme. Usar siempre la fuente oficial.",
+      "fragments": [
+        76.8,
+        78.39999999999999,
+        80,
+        81.6
+      ]
+    },
+    {
+      "sceneId": "seis",
+      "startTime": 82.8,
+      "endTime": 89.2,
+      "notes": "Con estas seis preguntas basta un resumen de diez líneas para explicar una guía en cinco minutos. Insistir en contrastar al menos tres datos con el documento original: los asistentes de inteligencia artificial pueden inventar nombres, números de controles o fechas. Es la base de GTA S2 y de GA S2."
+    },
+    {
+      "sceneId": "practica",
+      "startTime": 89.2,
+      "endTime": 95.2,
+      "notes": "Treinta minutos individuales con el escenario de la Cooperativa Raíces del Sur, que es ficticia. Recorrer las mesas. Errores esperados: asignar dos funciones a un mismo hecho sin justificar, perfiles sin plazo, priorizar por intuición y no por costo y efecto. La actividad se entrega al final de la clase del jueves."
+    },
+    {
+      "sceneId": "actividades",
+      "startTime": 95.2,
+      "endTime": 100.4,
+      "notes": "GPE S2 vale 3 puntos y se entrega al final de la clase del jueves. GTA S2 vale 1 punto y GA S2 vale 1,5; ambas cierran el domingo 8 de noviembre a las 23:59. La explicación de GA S2 se graba en video de cinco minutos como máximo. Las consignas, las plantillas y las rúbricas están en Canvas."
+    },
+    {
+      "sceneId": "cierre",
+      "startTime": 100.4,
+      "endTime": 107.60000000000001,
+      "notes": "Cerrar volviendo al municipio: ahora saben decir qué función faltaba en cada momento. Tarea: repasar sin apuntes las páginas 2.1 a 2.3 y comenzar a investigar la guía de GTA S2. Próxima semana: identificación y autenticación, con el primer tema de control de acceso."
+    }
+  ],
+  "slideSequences": []
+}
+      </script>
+    </hyperframes-slideshow>
+  </body>
+</html>
