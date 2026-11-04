@@ -1,0 +1,1179 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Semana 2 · Contratos de API, SOA y microservicios</title>
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      :root {
+        /* Colores tomados del logotipo UIDE: vino #910048 y dorado #E8A920. Sin degradados. */
+        --paper: #ffffff; --ink: #1f1a1d; --muted: #5a5257; --wine: #910048; --wine-deep: #6d0036; --gold: #e8a920;
+        --teal: #0c6b62; --teal-soft: #e3f2f0; --amber: #7a5200; --amber-soft: #fcefc9; --card: #ffffff; --line: #e2dcdf; --tint: #f6f1f3;
+      }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--paper); }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; font-family: system-ui, sans-serif; color: var(--ink); }
+      .slide { position: absolute; inset: 0; }
+      .frame { position: absolute; inset: 0; display: none; opacity: 0; background: var(--paper); transform-origin: 0 0; isolation: isolate; }
+      .dark .frame { background: var(--wine); color: #fff; }
+      .frame > :not(.logo) { position: absolute; }
+      .logo { position: absolute; top: 44px; right: 96px; height: 92px; width: auto; }
+      .dark .logo { top: 0; right: 96px; height: 150px; padding: 26px 30px 22px; background: #fff; border-radius: 0 0 18px 18px; box-sizing: border-box; }
+      .ov { left: 0; top: 0; pointer-events: none; overflow: visible; }
+      .ov path, .mlsvg path { fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; }
+
+      .w { display: inline-block; overflow: hidden; vertical-align: top; padding: 0.18em 0 0.14em; margin: -0.18em 0 -0.14em; }
+      .wi { display: inline-block; }
+      .ch { white-space: pre; }
+      .ttl { left: 120px; top: 96px; width: 1380px; font-family: ui-serif, serif; font-weight: 700; font-size: 64px; line-height: 1.1; letter-spacing: -0.01em; }
+      .ttl.long { font-size: 58px; width: 1600px; }
+      .ttl.xl { font-size: 92px; line-height: 1.08; }
+      .dark .ttl { color: #fff; }
+      .course { font-size: 36px; font-weight: 600; color: var(--gold); }
+      .lead { font-size: 46px; line-height: 1.25; color: var(--muted); }
+      .dark .lead { color: #fff; }
+      .byline { font-size: 32px; color: #f6dfe9; }
+      .punch { font-family: ui-serif, serif; font-size: 60px; font-weight: 700; color: var(--wine); }
+      .punch.soft { color: var(--ink); font-size: 46px; }
+      .punch.good { color: var(--teal); font-size: 54px; }
+      .mono { font-family: ui-monospace, monospace; }
+
+      .sheet { background: var(--tint); border-radius: 8px; overflow: hidden; }
+      .dark .sheet { background: #fff; }
+      .sh { position: relative; padding: 16px 24px; font: 700 36px ui-monospace, monospace; color: #fff; height: 70px; }
+      .sh span { position: absolute; left: 24px; top: 14px; }
+      .sr { position: relative; height: 70px; padding: 14px 24px; font-size: 38px; white-space: nowrap; }
+      .sr + .sr { border-top: 3px solid #fff; }
+      .dark .sr + .sr { border-top-color: var(--tint); }
+      .sr span { }
+      .ph .phnew { position: absolute; left: 24px; top: 14px; opacity: 0; }
+
+      /* ruta */
+      .rl { stroke: var(--wine); stroke-width: 8; }
+      .dot { width: 24px; height: 24px; border-radius: 50%; background: var(--gold); }
+      .node { width: 104px; height: 104px; border-radius: 50%; background: var(--wine); color: #fff; font-size: 52px; font-weight: 800; display: grid; place-items: center; }
+      .nl { width: 340px; text-align: center; font-size: 40px; font-weight: 700; line-height: 1.2; }
+
+      /* caso */
+      .off { font-size: 46px; font-weight: 800; color: var(--wine); }
+      .dsh { height: 0; border-top: 8px dashed var(--amber); }
+      .xm { width: 70px; height: 70px; }
+      .xm::before, .xm::after { content: ""; position: absolute; left: 0; top: 31px; width: 70px; height: 9px; border-radius: 5px; background: #c0392b; }
+      .xm::before { transform: rotate(45deg); } .xm::after { transform: rotate(-45deg); }
+
+      /* versiones */
+      .th { left: 0; top: 300px; width: 1920px; height: 70px; }
+      .th::before { content: ""; position: absolute; left: 120px; width: 1640px; top: 0; height: 70px; background: var(--wine-deep); border-radius: 14px; }
+      .th .cl { color: #fff; font-size: 34px; font-weight: 700; letter-spacing: 0.1em; height: 70px; line-height: 70px; padding-left: 28px; }
+      .tr { left: 0; width: 1920px; height: 86px; }
+      .tr::before { content: ""; position: absolute; left: 120px; width: 1640px; top: 0; height: 86px; background: var(--tint); border-radius: 14px; }
+      .cl { position: absolute; top: 0; height: 86px; line-height: 86px; font-size: 40px; padding-left: 28px; white-space: nowrap; }
+      .cl.b { font-size: 40px; font-weight: 600; }
+      .hb { background: #fbd77a; mix-blend-mode: multiply; border-radius: 12px; }
+      .ld { stroke: var(--amber); stroke-width: 5; }
+      .pt { width: 18px; height: 18px; border-radius: 50%; background: var(--amber); }
+      .co { width: 520px; text-align: center; font-size: 40px; font-weight: 800; color: var(--amber); background: var(--amber-soft); border-radius: 8px; padding: 14px 0; }
+
+      /* marco */
+      .lk { height: 0; border-top: 8px dashed var(--teal); }
+      .qm { width: 60px; height: 60px; border-radius: 50%; background: var(--amber); color: #fff; font-size: 44px; font-weight: 800; display: grid; place-items: center; }
+      .mag { width: 100px; height: 100px; border-radius: 50%; border: 14px solid var(--gold); }
+      .mag::after { content: ""; position: absolute; left: 78px; top: 78px; width: 14px; height: 60px; border-radius: 7px; background: var(--gold); transform: rotate(-45deg); transform-origin: 7px 0; }
+      .chipx { font-size: 40px; font-weight: 800; color: var(--amber); background: var(--amber-soft); border-radius: 8px; padding: 12px 34px; }
+
+      /* causa */
+      .ul { position: relative; display: inline-block; font-weight: 800; color: var(--gold); }
+      .ub { position: absolute; left: 0; bottom: -6px; width: 100%; height: 6px; background: var(--gold); border-radius: 3px; }
+      .isl { width: 300px; height: 300px; border-radius: 50%; background: var(--wine-deep); border: 6px solid var(--gold); color: #fff; font-size: 44px; font-weight: 800; display: grid; place-items: center; }
+
+      iframe.fig { width: 1690px; height: 780px; border: 0; background: transparent; }
+
+      /* definiciones */
+      .sc { width: 380px; height: 76px; border-radius: 6px; background: var(--tint); color: #8a7f85; font-size: 40px; font-weight: 800; line-height: 76px; text-align: center; white-space: pre; }
+      .gl { stroke: var(--gold); stroke-width: 8; }
+      .bp { background: var(--tint); border-radius: 18px; overflow: hidden; }
+      .bh { position: absolute; top: 0; height: 80px; background: var(--wine-deep); color: #fff; font: 700 38px/80px ui-monospace, monospace; padding-left: 28px; }
+      .br { position: absolute; left: 0; width: 1000px; height: 80px; }
+      .br + .br { border-top: 3px solid #fff; }
+      .br .cl { height: 80px; line-height: 80px; font-size: 40px; }
+      .edit .oldn, .edit .newn { position: absolute; left: 28px; }
+      .edit .newn { opacity: 0; font-weight: 800; color: var(--teal); }
+      .usr { width: 120px; height: 120px; border-radius: 50%; background: var(--teal); display: grid; place-items: center; }
+      .ulp { stroke: var(--teal); stroke-width: 6; }
+
+      /* caracteristicas */
+      .qd { left: 120px; top: 300px; width: 1680px; height: 620px; }
+      .qd > * { position: absolute; }
+      .mo { left: 0; top: 30px; width: 320px; height: 300px; transform: scale(1.7); transform-origin: 0 0; }
+      .mo > * { position: absolute; }
+      .tx { left: 700px; top: 40px; width: 1000px; }
+      .tx strong { display: block; font-size: 60px; line-height: 1.12; font-weight: 800; }
+      .tx em { display: block; margin-top: 12px; font-style: normal; font-size: 44px; line-height: 1.2; color: var(--muted); }
+      .ex { display: block; margin-top: 36px; font-size: 40px; line-height: 1.25; font-weight: 600; color: var(--wine); }
+      .cb { width: 94px; height: 48px; background: #e4d6dc; border-radius: 8px; }
+      .fi { background: var(--wine); color: #fff; font: 700 20px/1 ui-monospace, monospace; padding: 10px 14px; border-radius: 12px; white-space: nowrap; }
+      .bk { width: 120px; height: 120px; border-radius: 16px; color: #fff; font-style: normal; font-weight: 800; font-size: 20px; display: grid; place-items: center; }
+      .bk.app { background: var(--wine); } .bk.data { background: var(--teal); width: 110px; }
+      .nc { font-size: 21px; font-weight: 800; color: var(--teal); white-space: nowrap; }
+      .fl { font-size: 21px; font-weight: 800; color: var(--muted); white-space: nowrap; }
+      .ask { font-family: ui-serif, serif; font-style: italic; font-size: 48px; font-weight: 700; color: var(--wine); }
+      .capt { font-size: 44px; font-weight: 600; }
+      .capt b { color: var(--amber); }
+      .wall { width: 0; height: 200px; border-left: 6px dashed var(--amber); }
+      .ext { width: 30px; height: 120px; background: #5fbfb3; border-radius: 8px; }
+      .g4 { width: 64px; height: 54px; background: #e4d6dc; border-radius: 8px; }
+      .fa, .fb { height: 276px; border: 6px solid var(--gold); border-radius: 14px; top: -6px; }
+      .fa { left: -6px; width: 154px; } .fb { left: 146px; width: 160px; border-color: var(--teal); }
+      .hub { left: 110px; top: 100px; width: 100px; height: 100px; background: var(--teal); border-radius: 16px; }
+      .uc { width: 70px; height: 70px; border-radius: 50%; background: var(--wine); }
+      .ml { stroke: var(--teal); stroke-width: 5; }
+      .mlsvg { left: 0; top: 0; }
+      .pu { width: 20px; height: 20px; border-radius: 50%; background: var(--gold); }
+
+      /* catalogo */
+      .pb { width: 640px; height: 160px; background: var(--tint); border-radius: 8px; }
+      .pl { font-size: 40px; font-weight: 800; }
+      .q2 { font-size: 40px; color: var(--muted); }
+      .dc { font-size: 40px; font-weight: 700; color: var(--amber); background: var(--amber-soft); border-radius: 8px; padding: 10px 26px; white-space: nowrap; }
+      .dbms { width: 650px; height: 550px; background: var(--teal-soft); border-radius: 8px; }
+      .dbms > * { position: absolute; }
+      .dt { left: 30px; top: 18px; font-size: 40px; font-weight: 800; color: var(--teal); }
+      .cat { left: 30px; top: 90px; width: 590px; height: 240px; background: var(--teal); border-radius: 16px; color: #fff; font-size: 40px; font-weight: 800; padding: 20px 26px; }
+      .dat { left: 30px; top: 370px; width: 590px; height: 130px; background: #084a44; border-radius: 16px; color: #fff; font-size: 44px; font-weight: 800; display: grid; place-items: center; }
+      .ln { stroke: var(--teal); stroke-width: 6; }
+
+      /* anomalias */
+      .z { top: 330px; width: 520px; height: 700px; }
+      .z > * { position: absolute; }
+      .zl { left: 0; top: 0; font-family: ui-serif, serif; font-size: 48px; font-weight: 800; color: var(--amber); }
+      .zd { left: 0; top: 76px; width: 500px; font-size: 40px; line-height: 1.2; color: var(--muted); }
+      .cp { left: 0; width: 440px; background: var(--amber-soft); color: var(--amber); font: 800 38px/1 ui-monospace, monospace; padding: 24px 24px; border-radius: 8px; white-space: nowrap; }
+      .cnt { width: 110px; height: 110px; border-radius: 50%; background: var(--wine); color: #fff; font-size: 56px; font-weight: 800; display: grid; place-items: center; }
+      .ne { font-size: 170px; font-weight: 800; color: #c0392b; line-height: 1; }
+      .bp1, .bp2 { width: 0; height: 30px; border-left: 6px dashed var(--amber); }
+
+      /* matriz */
+      .mh { left: 0; top: 330px; width: 1920px; height: 70px; }
+      .mh::before { content: ""; position: absolute; left: 120px; width: 1680px; height: 70px; background: var(--wine-deep); border-radius: 14px; }
+      .mh span { position: absolute; top: 0; height: 70px; line-height: 70px; color: #fff; font-size: 34px; font-weight: 700; letter-spacing: 0.1em; }
+      .mr { left: 0; width: 1920px; height: 100px; }
+      .mr::before { content: ""; position: absolute; left: 120px; width: 1680px; height: 100px; background: var(--tint); border-radius: 14px; }
+      .mr span { position: absolute; top: 0; height: 100px; line-height: 100px; font-size: 38px; }
+      .mr .an { left: 140px; top: 20px; height: 60px; line-height: 60px; padding: 0 22px; background: var(--amber-soft); color: var(--amber); font-weight: 800; border-radius: 8px; font-size: 36px; }
+      .mr .ev { left: 560px; }
+      .mr .cq { left: 1150px; font-weight: 800; color: var(--wine); font-size: 36px; }
+      .ar { stroke: var(--wine); stroke-width: 6; }
+
+      /* esquema unificado */
+      .hold, .hnew { }
+      .hnew { opacity: 0; }
+      .sb { width: 1680px; height: 96px; background: var(--wine-deep); color: #fff; border-radius: 18px; font: 700 46px/96px ui-monospace, monospace; padding-left: 36px; }
+      .pg { height: 88px; background: var(--tint); border-radius: 16px; font: 700 42px/88px ui-monospace, monospace; padding-left: 32px; }
+      .sb u, .pg u { text-decoration-thickness: 5px; text-underline-offset: 8px; }
+      .lk { stroke: var(--teal); stroke-width: 6; }
+      path.lk { border: 0; height: auto; }
+      .pd { left: -11px; top: -11px; width: 22px; height: 22px; border-radius: 50%; background: var(--gold); opacity: 0; }
+
+      /* practica */
+      .vl { width: 8px; background: var(--wine); border-radius: 4px; }
+      .vn { width: 64px; height: 64px; border-radius: 50%; background: var(--wine); color: #fff; font-size: 36px; font-weight: 800; display: grid; place-items: center; }
+      .vt { font-size: 44px; font-weight: 600; }
+
+      /* costos */
+      .post { left: 740px; top: 480px; width: 440px; height: 440px; }
+      .stem { position: absolute; left: 200px; top: 0; width: 40px; height: 400px; background: #b9aab1; }
+      .bs { position: absolute; left: 0; top: 400px; width: 440px; height: 40px; border-radius: 10px; background: #b9aab1; }
+      .beam { width: 1000px; height: 20px; background: var(--wine); border-radius: 10px; }
+      .pan { position: absolute; top: 20px; width: 680px; height: 400px; transform-origin: 340px -60px; }
+      .pan.pl { left: -340px; } .pan.pr { left: 660px; }
+      .pan svg { position: absolute; left: 0; top: 0; }
+      .rod { position: absolute; left: 337px; top: -60px; width: 6px; height: 60px; background: #8a7f85; }
+      .tray { position: absolute; left: 0; top: 204px; width: 680px; height: 28px; background: var(--wine-deep); border-radius: 13px; }
+      .w4 { position: absolute; width: 330px; height: 100px; background: var(--amber-soft); color: var(--amber); font-size: 38px; font-weight: 800; line-height: 1.05; display: grid; place-items: center; text-align: center; border-radius: 14px; z-index: 2; }
+      .bw { position: absolute; left: 20px; top: 90px; width: 640px; height: 100px; background: var(--teal); color: #fff; font-size: 42px; font-weight: 800; display: grid; place-items: center; border-radius: 14px; z-index: 2; }
+      .pan.pr .w4 { }
+
+      /* modelos */
+      .sbar { width: 10px; height: 110px; background: var(--wine); border-radius: 5px; }
+      .st { width: 640px; }
+      .st b { display: block; font-family: ui-serif, serif; font-size: 52px; color: #8a7f85; }
+      .st em { display: block; font-style: normal; font-size: 38px; color: var(--muted); margin-top: 6px; }
+      .g { width: 980px; height: 640px; }
+      .tth { height: 70px; border-radius: 14px; color: #fff; font: 800 40px/70px ui-monospace, monospace; padding-left: 28px; }
+      .fld { width: 290px; height: 64px; border-radius: 8px; background: var(--tint); color: var(--ink); font-size: 38px; font-weight: 700; display: grid; place-items: center; }
+      .drw { width: 900px; height: 64px; background: var(--tint); border-radius: 8px; }
+      .drw span { position: absolute; top: 0; width: 300px; padding-left: 20px; font: 600 34px/64px ui-monospace, monospace; white-space: nowrap; }
+      .by { text-align: center; font-size: 36px; color: var(--muted); }
+      .hx { width: 280px; height: 64px; background: #e4d6dc; border-radius: 8px; color: var(--muted); font: 700 36px/64px ui-monospace, monospace; text-align: center; }
+      .pgbar { height: 56px; background: var(--teal-soft); color: var(--teal); font-size: 38px; font-weight: 800; line-height: 56px; text-align: center; border-radius: 14px; }
+      .mcap { font-size: 42px; font-weight: 700; line-height: 1.2; color: var(--wine); }
+      .g > * { position: absolute; }
+      .ent { height: 110px; border-radius: 16px; color: #fff; font-size: 40px; font-weight: 800; display: grid; place-items: center; }
+      .ent.rel { width: 150px; height: 130px; background: var(--gold); color: var(--ink); font-size: 34px; border-radius: 0; clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); }
+      .ent.pill { height: 64px; background: var(--tint); color: var(--ink); font-size: 38px; border-radius: 8px; }
+      .rl2 { stroke: var(--wine); stroke-width: 6; }
+      .tb { background: var(--tint); border-radius: 18px; overflow: hidden; }
+      .tbh { color: #fff; font: 800 40px/1 ui-monospace, monospace; padding: 16px 26px; }
+      .tbr { font: 600 36px/1 ui-monospace, monospace; padding: 16px 26px; border-top: 3px solid #fff; }
+      .pg2 { width: 200px; height: 120px; background: #e4d6dc; border-radius: 12px; color: var(--muted); font: 700 34px/120px ui-monospace, monospace; text-align: center; }
+      .cap { font-size: 44px; font-weight: 800; color: var(--wine); }
+
+      /* esquema y estado */
+      .schl { font-size: 36px; font-weight: 800; letter-spacing: 0.14em; color: var(--muted); }
+      .sch { width: 1680px; height: 110px; background: var(--wine-deep); color: #fff; border-radius: 18px; font: 700 52px/110px ui-monospace, monospace; padding-left: 40px; }
+      .cnt2 { font-size: 40px; font-weight: 800; color: var(--teal); }
+      .sw { position: relative; display: inline-block; width: 220px; height: 50px; vertical-align: bottom; }
+      .sw span { position: absolute; left: 0; top: 0; }
+      .cnt2 .n3 { opacity: 0; }
+      .sth, .sr2, .nr { left: 0; width: 1920px; height: 80px; }
+      .sth .cl { height: 70px; line-height: 70px; font-size: 34px; font-weight: 700; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; }
+      .sr2::before, .nr::before { content: ""; position: absolute; left: 120px; width: 1680px; height: 80px; background: var(--tint); border-radius: 14px; }
+      .nr::before { background: var(--teal-soft); }
+      .sr2 .cl, .nr .cl { height: 80px; line-height: 80px; }
+
+      /* evolucion */
+      .trk { left: 0; top: 0; width: 3600px; height: 1080px; }
+      .trk > * { position: absolute; }
+      .trl { height: 8px; background: var(--wine); border-radius: 4px; }
+      .nd { top: 300px; width: 540px; height: 600px; text-align: center; }
+      .nd > * { position: absolute; left: 0; width: 540px; }
+      .yr { top: 0; font-family: ui-serif, serif; font-size: 100px; font-weight: 800; color: var(--wine); font-variant-numeric: tabular-nums; }
+      .gl2 { left: 190px; top: 180px; width: 160px; height: 160px; border-radius: 50%; background: var(--wine); display: grid; place-items: center; }
+      .nd .gl2 { width: 160px; }
+      .nm { top: 380px; font-size: 48px; font-weight: 800; }
+      .ds { top: 450px; font-size: 38px; color: var(--muted); }
+
+      /* decision */
+      .sit { width: 520px; height: 190px; background: var(--tint); border-radius: 8px; padding: 22px 28px; }
+      .sit strong { display: block; font-size: 40px; line-height: 1.12; font-weight: 800; padding-left: 70px; }
+      .bd { position: absolute; left: 24px; top: 22px; width: 52px; height: 52px; border-radius: 50%; background: var(--wine); color: #fff; font-size: 32px; font-weight: 800; display: grid; place-items: center; }
+      .rs { position: absolute; left: 28px; bottom: 18px; font-style: normal; font-size: 38px; font-weight: 800; color: var(--amber); }
+      .rs.good { color: var(--teal); }
+      .bin { background: var(--teal-soft); border-radius: 8px; }
+      .bin.am { background: var(--amber-soft); }
+      .bin span { position: absolute; left: 30px; top: 14px; font-size: 44px; font-weight: 800; }
+
+      /* actividades */
+      .tk { width: 760px; height: 520px; background: var(--tint); border-radius: 8px; }
+      .tk > * { position: absolute; }
+      .tg { left: 50px; top: 40px; font-size: 44px; font-weight: 800; color: var(--wine); }
+      .tt { left: 50px; top: 120px; width: 660px; font-family: ui-serif, serif; font-size: 56px; font-weight: 700; line-height: 1.1; }
+      .td { left: 50px; top: 270px; width: 660px; font-size: 40px; color: var(--muted); line-height: 1.2; }
+      .tp { left: 520px; top: 480px; width: 180px; text-align: center; font-size: 38px; font-weight: 700; color: var(--muted); }
+      .ringsvg { left: 520px; top: 310px; }
+      .rg { fill: none; stroke: var(--wine); stroke-width: 14; stroke-linecap: round; stroke-dasharray: 1; }
+      .pn { left: 520px; top: 352px; width: 180px; text-align: center; font-size: 84px; font-weight: 800; color: var(--wine); line-height: 1; }
+      .src { font-size: 40px; color: var(--muted); }
+
+      /* cierre */
+      .phc { width: 380px; height: 100px; background: #fff; color: var(--ink); border-radius: 18px; font: 800 48px/100px ui-monospace, monospace; text-align: center; }
+      .ne2 { width: 160px; text-align: center; font-size: 150px; font-weight: 800; color: var(--gold); line-height: 1; }
+
+      /* ── Ingeniería de software: escenas propias ── */
+      .x-q { font-size: 40px; font-weight: 700; color: var(--amber); line-height: 1.2; }
+      .x-cap { font-size: 44px; font-weight: 600; line-height: 1.25; }
+      .x-dot { width: 30px; height: 30px; border-radius: 50%; background: #b9aab1; }
+      .x-dot.now { background: var(--teal); }
+      .x-lb { font-size: 44px; font-weight: 800; color: var(--wine); }
+      .x-blk { width: 900px; height: 70px; background: var(--tint); border-radius: 8px; font-size: 40px; font-weight: 700; line-height: 70px; padding-left: 28px; }
+      .x-blk.base { background: var(--wine-deep); color: #fff; }
+      .x-sm { font-size: 44px; color: var(--muted); }
+      .x-seg { width: 330px; height: 110px; color: #fff; font-size: 40px; font-weight: 800; display: grid; place-items: center; border-radius: 8px; }
+      .x-cod { width: 220px; height: 56px; background: var(--gold); color: var(--ink); font-size: 38px; font-weight: 800; display: grid; place-items: center; border-radius: 8px; }
+      .x-br { stroke: var(--wine); stroke-width: 6; }
+      .xc { position: absolute; top: 0; height: 90px; line-height: 90px; font-size: 38px; padding-left: 24px; white-space: nowrap; }
+      .xc.a { font-weight: 700; } .xc.b { color: var(--muted); } .xc.c { font-weight: 800; color: var(--wine); }
+      .x-th { left: 0; top: 300px; width: 1920px; height: 70px; }
+      .x-th::before { content: ""; position: absolute; left: 120px; width: 1680px; height: 70px; background: var(--wine-deep); border-radius: 8px; }
+      .x-th .xc { color: #fff; font-size: 34px; font-weight: 700; letter-spacing: 0.08em; height: 70px; line-height: 70px; }
+      .x-tr { left: 0; width: 1920px; height: 90px; }
+      .x-tr::before { content: ""; position: absolute; left: 120px; width: 1680px; height: 90px; background: var(--tint); border-radius: 8px; }
+      .x-ln { font-size: 46px; font-weight: 800; color: var(--wine); }
+      .x-nd { width: 380px; height: 110px; background: var(--tint); border-radius: 8px; font-size: 38px; font-weight: 800; display: grid; place-items: center; text-align: center; line-height: 1.1; padding: 0 14px; }
+      .x-nd.hl { background: var(--wine-deep); color: #fff; }
+      .x-gl { width: 270px; text-align: center; font-size: 38px; line-height: 1.15; color: var(--muted); }
+      .x-ar { stroke: var(--wine); stroke-width: 6; }
+      .x-at { left: 120px; top: 300px; width: 1680px; height: 620px; }
+      .x-at > * { position: absolute; }
+      .x-mo { left: 0; top: 30px; width: 560px; height: 520px; }
+      .x-mo > * { position: absolute; }
+      .x-tx { left: 700px; top: 40px; width: 1000px; }
+      .x-tx strong { display: block; font-size: 60px; line-height: 1.12; font-weight: 800; }
+      .x-tx em { display: block; margin-top: 16px; font-style: normal; font-size: 44px; line-height: 1.2; color: var(--muted); }
+      .x-tx span { display: block; margin-top: 36px; font-size: 40px; line-height: 1.25; font-weight: 600; color: var(--wine); }
+      .x-bl { width: 120px; height: 90px; background: #e4d6dc; border-radius: 8px; }
+      .x-chip { background: var(--amber-soft); color: var(--amber); font-size: 38px; font-weight: 800; padding: 10px 24px; border-radius: 8px; white-space: nowrap; }
+      .x-acc { width: 230px; height: 170px; background: var(--tint); border-radius: 8px; font-size: 36px; font-weight: 700; display: grid; place-items: center; text-align: center; padding: 0 12px; line-height: 1.1; }
+      .x-coin { width: 46px; height: 46px; border-radius: 50%; background: var(--gold); }
+      .x-neg { font-size: 44px; font-weight: 800; color: #c0392b; }
+      .x-zero { font-size: 40px; font-weight: 800; color: var(--muted); }
+      .x-sw circle { fill: none; stroke: var(--wine); stroke-width: 18; stroke-linecap: round; stroke-dasharray: 1; }
+      .x-swt { width: 300px; text-align: center; font: 800 84px/1 ui-monospace, monospace; color: var(--wine); }
+      .x-us { width: 150px; height: 150px; border-radius: 50%; background: var(--teal); display: grid; place-items: center; }
+      .x-bub { width: 70px; height: 70px; border-radius: 50%; background: var(--amber); color: #fff; font-size: 48px; font-weight: 800; display: grid; place-items: center; }
+      .x-exp { stroke: #c0392b; stroke-width: 6; }
+      .x-pc { width: 330px; height: 230px; background: var(--tint); border-radius: 8px; padding: 22px 24px; }
+      .x-pc strong { display: block; font-size: 44px; font-weight: 800; color: var(--wine); }
+      .x-pc em { display: block; margin-top: 10px; font-style: normal; font-size: 36px; line-height: 1.15; color: var(--muted); }
+      .x-hd { font-size: 34px; font-weight: 700; letter-spacing: 0.08em; color: var(--muted); }
+      .x-cd { width: 375px; height: 370px; background: var(--tint); border-radius: 8px; padding: 24px 26px; font-size: 38px; line-height: 1.2; }
+      .x-cd.big { display: grid; place-items: center; text-align: center; font-family: ui-serif, serif; font-size: 46px; font-weight: 800; color: var(--wine); }
+      .x-ly { width: 520px; height: 80px; border-radius: 8px; color: #fff; font-size: 38px; font-weight: 800; display: grid; place-items: center; }
+      .x-sys { width: 440px; height: 300px; border: 6px solid var(--wine); border-radius: 8px; }
+      .x-cmp { width: 170px; height: 70px; background: var(--tint); font-size: 36px; font-weight: 700; display: grid; place-items: center; border-radius: 8px; }
+      .x-ai { width: 150px; height: 90px; background: var(--gold); color: var(--ink); font-size: 56px; font-weight: 800; display: grid; place-items: center; border-radius: 8px; }
+      .x-bx2 { width: 520px; height: 110px; background: var(--tint); font-size: 38px; font-weight: 700; display: grid; place-items: center; text-align: center; border-radius: 8px; padding: 0 16px; line-height: 1.1; }
+      .x-pb { width: 150px; height: 64px; background: var(--tint); border-radius: 8px; font-size: 34px; font-weight: 700; display: grid; place-items: center; }
+      .x-sp { stroke: var(--amber); stroke-width: 4; }
+      .x-ts { stroke: var(--teal); stroke-width: 5; }
+      .x-rd { stroke: #c0392b; stroke-width: 5; }
+      .x-gb { width: 330px; height: 90px; background: #f3d3cf; color: #8b2b22; font-size: 38px; font-weight: 800; display: grid; place-items: center; border-radius: 8px; }
+      .x-fn { width: 220px; height: 70px; background: var(--tint); font-size: 36px; font-weight: 700; display: grid; place-items: center; border-radius: 8px; }
+      .x-ob { width: 250px; height: 210px; border: 6px solid var(--teal); border-radius: 8px; background: var(--teal-soft); text-align: center; padding-top: 34px; font-size: 36px; line-height: 1.5; }
+      .x-ob b { display: block; color: var(--teal); }
+      .x-ph { width: 300px; height: 100px; background: var(--tint); border-radius: 8px; font-size: 38px; font-weight: 800; display: grid; place-items: center; }
+      .x-doc { width: 54px; height: 76px; background: #fff; border: 4px solid #b9aab1; border-radius: 4px; }
+      .x-chg { background: #c0392b; color: #fff; font-size: 38px; font-weight: 800; padding: 10px 24px; border-radius: 8px; white-space: nowrap; }
+      .x-rb { stroke: #c0392b; stroke-width: 6; }
+      .x-rl { font-size: 38px; font-weight: 700; color: #c0392b; }
+      .x-cy { width: 120px; height: 120px; border-radius: 50%; background: var(--teal-soft); border: 6px solid var(--teal); color: var(--teal); font-size: 64px; font-weight: 800; display: grid; place-items: center; }
+      .x-rule { font-size: 40px; font-weight: 600; }
+      .x-cr { width: 1680px; height: 130px; background: var(--tint); border-radius: 8px; }
+      .x-cr strong { position: absolute; left: 30px; top: 0; width: 760px; line-height: 130px; font-size: 42px; font-weight: 800; }
+      .x-cr span { position: absolute; left: 820px; top: 0; width: 830px; height: 130px; display: flex; align-items: center; font-size: 40px; line-height: 1.15; color: var(--wine); font-weight: 600; }
+      .x-vd { font-family: ui-serif, serif; font-size: 80px; font-weight: 800; color: var(--wine); }
+      .x-rk { font-size: 42px; font-weight: 700; color: var(--teal); }
+      .x-fence { width: 780px; height: 470px; border: 6px solid var(--wine); border-radius: 8px; }
+      .x-fi { font-family: ui-serif, serif; font-size: 54px; font-weight: 800; }
+      .x-fe { font-size: 40px; color: var(--muted); }
+      .x-rc { width: 780px; height: 90px; background: var(--teal-soft); color: var(--teal); font-size: 44px; font-weight: 800; line-height: 90px; padding-left: 30px; border-radius: 8px; }
+      .x-cc { width: 300px; height: 300px; border-radius: 50%; background: var(--wine); color: #fff; font-family: ui-serif, serif; font-size: 52px; font-weight: 800; display: grid; place-items: center; text-align: center; line-height: 1.1; padding: 0 30px; }
+      .x-sat { width: 380px; height: 76px; background: var(--tint); font-size: 36px; font-weight: 800; display: grid; place-items: center; border-radius: 8px; }
+      .x-sl { stroke: var(--wine); stroke-width: 4; }
+      .x-bx { width: 520px; height: 300px; background: #1f1a1d; color: #fff; font-size: 170px; font-weight: 800; display: grid; place-items: center; border-radius: 8px; }
+      .x-ia { font-size: 40px; font-weight: 700; width: 300px; line-height: 1.15; }
+      .x-lk { font-size: 38px; font-weight: 800; color: var(--amber); background: var(--amber-soft); padding: 8px 20px; border-radius: 8px; }
+      .x-fill { width: 140px; border-radius: 8px 8px 0 0; }
+      .x-bl2 { font-size: 34px; font-weight: 700; text-align: center; width: 220px; line-height: 1.1; }
+      .x-st { border: 5px solid #c0392b; color: #c0392b; font-size: 40px; font-weight: 800; padding: 8px 24px; border-radius: 8px; }
+      .x-pr { width: 540px; height: 170px; background: var(--tint); border-radius: 8px; padding: 18px 28px; }
+      .x-pr strong { display: block; font-size: 48px; color: var(--wine); font-weight: 800; }
+      .x-pr em { display: block; margin-top: 8px; font-style: normal; font-size: 38px; line-height: 1.15; color: var(--muted); }
+      .x-sp2 { font-size: 44px; font-weight: 700; color: #8a7f85; }
+      .x-sp2 b { display: inline-grid; place-items: center; width: 60px; height: 60px; border-radius: 50%; background: #e4d6dc; color: var(--ink); font-size: 34px; margin-right: 22px; }
+      .x-rs p { font-size: 44px; line-height: 1.25; margin-top: 24px; }
+      .x-pair { display: flex; align-items: center; gap: 30px; }
+      .x-pair span { font-size: 54px; font-weight: 800; padding: 16px 34px; border-radius: 8px; background: var(--wine); color: #fff; }
+      .x-pair i { font-style: normal; font-size: 40px; color: var(--muted); }
+      .x-chip2 { background: var(--teal-soft); color: var(--teal); font-weight: 800; padding: 14px 28px; border-radius: 8px; display: inline-block; width: fit-content; }
+      .x-rs p.x-chip2 { display: block; }
+      .x-hub { width: 320px; height: 320px; border-radius: 50%; background: var(--wine); color: #fff; font-family: ui-serif, serif; font-size: 46px; font-weight: 800; display: grid; place-items: center; text-align: center; line-height: 1.1; padding: 0 28px; }
+      .x-co { width: 440px; height: 96px; background: var(--tint); font-size: 38px; font-weight: 800; display: grid; place-items: center; text-align: center; line-height: 1.1; padding: 0 16px; border-radius: 8px; }
+      .x-ext { width: 520px; height: 90px; border: 5px dashed var(--amber); color: var(--amber); font-size: 38px; font-weight: 800; display: grid; place-items: center; border-radius: 8px; }
+      .x-q4 { width: 620px; height: 300px; border-radius: 8px; }
+      .x-q4 b { position: absolute; left: 24px; top: 16px; font-size: 42px; font-weight: 800; }
+      .x-it { width: 560px; height: 110px; background: #fff; border-radius: 8px; font-size: 38px; font-weight: 700; display: grid; place-items: center; text-align: center; line-height: 1.1; padding: 0 14px; }
+      .x-ax { font-size: 40px; font-weight: 700; color: var(--muted); }
+      .x-vl { position: absolute; left: 0; top: 0; font-size: 34px; font-weight: 800; letter-spacing: 0.08em; color: var(--wine); width: 420px; line-height: 90px; }
+      .x-vt { position: absolute; left: 430px; top: 0; font-size: 40px; line-height: 90px; width: 1250px; white-space: nowrap; }
+      .x-vr { width: 1680px; height: 90px; }
+      .x-tk { width: 540px; height: 580px; background: var(--tint); border-radius: 8px; }
+      .x-tk .tg { left: 36px; top: 32px; font-size: 44px; font-weight: 800; color: var(--wine); }
+      .x-tk .tt { left: 36px; top: 100px; width: 470px; font-family: ui-serif, serif; font-size: 50px; font-weight: 700; line-height: 1.1; }
+      .x-tk .td { left: 36px; top: 250px; width: 470px; font-size: 38px; color: var(--muted); line-height: 1.2; }
+      .x-tk .tp { left: 36px; top: 510px; width: 300px; text-align: left; font-size: 38px; font-weight: 700; color: var(--muted); }
+      .x-tk .ringsvg { left: 330px; top: 385px; }
+      .x-tk .pn { left: 330px; top: 427px; }
+      .x-sum { display: flex; gap: 22px; align-items: center; }
+      .x-sc { background: #fff; color: var(--ink); font-size: 46px; font-weight: 800; padding: 14px 30px; border-radius: 8px; white-space: nowrap; }
+      .x-pl { font-style: normal; color: var(--gold); font-size: 60px; font-weight: 800; }
+      .x-eq { font-family: ui-serif, serif; font-size: 60px; font-weight: 800; color: var(--gold); }
+      .x-tk > * { position: absolute; }
+
+      /* ── Semana 2: escenas propias ── */
+      .y-lbl { font-size: 40px; font-weight: 800; color: var(--muted); letter-spacing: 0.06em; }
+      .y-bar { height: 80px; border-radius: 8px; color: #fff; font-size: 40px; font-weight: 800; line-height: 80px; padding-left: 28px; white-space: nowrap; }
+      .y-chip { background: var(--amber-soft); color: var(--amber); font-size: 40px; font-weight: 800; padding: 12px 28px; border-radius: 8px; white-space: nowrap; }
+      .y-year { font-family: ui-serif, serif; font-size: 150px; font-weight: 800; color: var(--wine); line-height: 1; }
+      .y-where { font-size: 44px; line-height: 1.25; color: var(--muted); }
+      .y-st { width: 340px; height: 110px; border-radius: 8px; color: #fff; font-size: 36px; font-weight: 800; display: grid; place-items: center; text-align: center; line-height: 1.1; padding: 0 12px; }
+      .y-inc { width: 500px; border-radius: 8px 8px 0 0; color: #fff; padding: 26px 30px; }
+      .y-inc strong { display: block; font-size: 46px; font-weight: 800; }
+      .y-inc em { display: block; margin-top: 10px; font-style: normal; font-size: 40px; line-height: 1.15; }
+      .y-qn { width: 70px; height: 70px; border-radius: 50%; background: var(--wine); color: #fff; font-size: 40px; font-weight: 800; display: grid; place-items: center; }
+      .y-sent { font-family: ui-serif, serif; font-size: 56px; font-weight: 700; line-height: 1.15; }
+      .y-pn { width: 800px; height: 320px; border-radius: 8px; padding: 28px 34px; }
+      .y-pn b { display: block; font-size: 36px; letter-spacing: 0.08em; font-weight: 800; }
+      .y-pn strong { display: block; margin-top: 26px; font-size: 60px; line-height: 1.1; font-weight: 800; }
+      .y-pn em { display: block; margin-top: 20px; font-style: normal; font-size: 42px; line-height: 1.2; color: var(--muted); }
+      .y-bad { height: 110px; background: var(--tint); border-radius: 8px; padding: 0 30px; font-size: 52px; font-weight: 700; line-height: 110px; color: var(--muted); }
+      .y-good { background: var(--teal-soft); border-radius: 8px; padding: 26px 30px; font-size: 48px; font-weight: 700; line-height: 1.2; }
+      .y-row { width: 1680px; height: 100px; background: var(--tint); border-radius: 8px; }
+      .y-row b { position: absolute; left: 28px; top: 0; width: 330px; line-height: 100px; font-size: 34px; letter-spacing: 0.08em; color: var(--wine); }
+      .y-row span { position: absolute; left: 380px; top: 0; line-height: 100px; font-size: 44px; font-weight: 600; white-space: nowrap; }
+      .y-evita { font-size: 42px; font-weight: 700; color: #c0392b; }
+      .y-ro { width: 1680px; height: 100px; }
+      .y-ro b { position: absolute; left: 0; top: 0; width: 260px; line-height: 100px; font-size: 34px; letter-spacing: 0.08em; color: var(--muted); }
+      .y-ro span { position: absolute; left: 280px; top: 0; height: 100px; line-height: 100px; padding: 0 34px; border-radius: 8px; color: #fff; font-size: 44px; font-weight: 800; white-space: nowrap; }
+      .y-ac { width: 1680px; background: var(--teal-soft); border-radius: 8px; padding: 22px 30px; font-size: 40px; line-height: 1.25; }
+      .y-ac b { color: var(--teal); }
+      .y-iv { width: 370px; height: 100px; background: var(--wine-deep); color: #fff; border-radius: 8px; font-size: 40px; font-weight: 800; display: grid; place-items: center; }
+      .y-mo { width: 800px; height: 130px; background: var(--tint); border-radius: 8px; padding: 10px 28px; }
+      .y-mo strong { display: block; font-size: 42px; font-weight: 800; line-height: 1.1; }
+      .y-mo em { display: block; font-style: normal; font-size: 38px; color: var(--muted); line-height: 1.15; }
+</style>
+  </head>
+  <body>
+    <script type="application/hyperframes-slideshow+json">
+{
+  "slides": [
+    {
+      "sceneId": "portada",
+      "startTime": 0,
+      "endTime": 5.6,
+      "notes": "Abrir con el reto del sistema de matrícula sin definir nada todavía: dos consumidores distintos para el mismo servicio de comprobantes. Pedir que anoten si un solo contrato de API les serviría a los dos. Las tres ideas de la semana son: qué costó la reutilización en la SOA, cómo se fija un contrato de API (REST, gRPC o AsyncAPI) y cómo cambiarlo sin romper a nadie."
+    },
+    {
+      "sceneId": "reto",
+      "startTime": 5.6,
+      "endTime": 15.6,
+      "notes": "Dejar la pregunta a la vista antes de avanzar. El servicio de comprobantes de matrícula ya está separado. La aplicación web de estudiantes necesita la respuesta al instante porque el estudiante está esperando. El sistema contable sincroniza una vez por la noche y no necesita respuesta inmediata. Pedir hipótesis: ¿les sirve el mismo tipo de conexión? ¿Y si dentro de seis meses cambia el nombre de un campo? La respuesta se construye durante la clase y se retoma casi al final.",
+      "fragments": [
+        8,
+        9.6,
+        11.2,
+        12.8,
+        14.4
+      ]
+    },
+    {
+      "sceneId": "soa-idea",
+      "startTime": 15.6,
+      "endTime": 24,
+      "notes": "SOA significa Arquitectura Orientada a Servicios. La idea: en lugar de resolver cada integración por separado, se construyen servicios que toda la empresa reutiliza. Un servicio es una capacidad del negocio, por ejemplo registrar un cliente, con un contrato que dice cómo pedírsela. La promesa era no reescribir código. Fuente: Richards y Ford (2020).",
+      "fragments": [
+        18,
+        19.6,
+        21.2,
+        22.8
+      ]
+    },
+    {
+      "sceneId": "soa-figura",
+      "startTime": 24,
+      "endTime": 29.6,
+      "notes": "La SOA tradicional ordena los servicios en capas. Arriba, los servicios de negocio, que son la puerta de entrada y no tienen lógica propia. Un motor de orquestación los conecta con los servicios empresariales, que guardan la lógica compartida y varios servicios de negocio reutilizan. Aparte están los servicios de aplicación, de una sola aplicación, y los de infraestructura, como autenticación y auditoría. Basta con que entiendan que todo pasa por el motor central. Fuente: Richards y Ford (2020)."
+    },
+    {
+      "sceneId": "soa-costo",
+      "startTime": 29.6,
+      "endTime": 39.6,
+      "notes": "Aquí está la paradoja. Si todas las divisiones usan un único servicio de Customer, cualquier cambio en su interfaz llega a todos los consumidores a la vez, como fichas de dominó. Ya no se puede cambiar de a poco: hay que desplegar y probar todo junto. El motor central y la base de datos compartida son los puntos donde todo queda atado. Reutilizar ahorra código pero cobra en acoplamiento. Fuente: Richards y Ford (2020).",
+      "fragments": [
+        32,
+        33.6,
+        35.2,
+        36.8,
+        38.4
+      ]
+    },
+    {
+      "sceneId": "sync-figura",
+      "startTime": 39.6,
+      "endTime": 45.2,
+      "notes": "La primera decisión al diseñar un contrato es si la comunicación es síncrona o asíncrona. Síncrona: el cliente pregunta y se queda esperando la respuesta, como una llamada telefónica. Asíncrona: el emisor deja un mensaje y sigue con lo suyo, como un correo; un intermediario llamado broker lo reparte a quien corresponda. En el síncrono los dos quedan atados en el tiempo; en el asíncrono el emisor ni siquiera conoce a los consumidores. Fuente: Newman (2015)."
+    },
+    {
+      "sceneId": "coordinar",
+      "startTime": 45.2,
+      "endTime": 55.2,
+      "notes": "Cuatro términos que usarán todo el semestre. Solicitud-respuesta: el cliente pide y espera. Eventos: el emisor solo anuncia que algo pasó, sin decir qué hacer. Orquestación: un cerebro central dirige un proceso que cruza varios servicios, como el director de una orquesta. Coreografía: cada servicio sabe su parte y reacciona a lo que ocurre, como bailarines sin director. Los eventos llevan naturalmente a la coreografía. Fuente: Newman (2015).",
+      "fragments": [
+        47.6,
+        49.2,
+        50.800000000000004,
+        52.400000000000006,
+        54
+      ]
+    },
+    {
+      "sceneId": "estilos",
+      "startTime": 55.2,
+      "endTime": 63.6,
+      "notes": "Tres maneras de fijar el contrato. REST: recursos con una dirección web y los verbos de HTTP; es lo más fácil de consumir desde cualquier lugar, por eso es lo típico de las APIs públicas. gRPC: llamadas binarias muy rápidas descritas en un archivo .proto; conviene para servicios internos que se hablan mucho. AsyncAPI: describe mensajes que pasan por un broker, para cuando el emisor no debe esperar ni conocer a los consumidores, y para amortiguar picos de carga. No hay un ganador: depende de qué tan tolerante debe ser la relación a la latencia y al cambio. Fuente: Newman (2015).",
+      "fragments": [
+        57.6,
+        59.2,
+        60.800000000000004,
+        62.400000000000006
+      ]
+    },
+    {
+      "sceneId": "rest",
+      "startTime": 63.6,
+      "endTime": 72,
+      "notes": "Ejemplo con un recurso que no es de matrícula, para que no copien: la reserva de un laboratorio. En REST el recurso se identifica por la URL y el verbo dice qué hacer: GET consulta, POST crea, PUT reemplaza. No hace falta inventar métodos como crearReserva o editarReserva: se envía una representación del recurso al lugar correcto y el verbo indica la operación. En la práctica PE-S2 harán esto con un recurso de matrícula. Fuente: Newman (2015).",
+      "fragments": [
+        66,
+        67.6,
+        69.2,
+        70.8
+      ]
+    },
+    {
+      "sceneId": "grpc",
+      "startTime": 72,
+      "endTime": 79.4,
+      "notes": "El mismo recurso en gRPC. El contrato vive en un archivo .proto: un servicio con sus operaciones y los mensajes de pedido y respuesta. Observar el detalle clave: cada campo lleva un número, y ese número, no el nombre, identifica el campo al viajar en binario. Por eso se puede cambiar el nombre de un campo sin romper a nadie, pero no su número. Desde el archivo, el cliente genera código ya tipado y no arma direcciones a mano. En PE-S2 reescribirán su contrato REST de esta forma. Fuente: Newman (2015).",
+      "fragments": [
+        74.6,
+        76.39999999999999,
+        78.19999999999999
+      ]
+    },
+    {
+      "sceneId": "criterios",
+      "startTime": 79.4,
+      "endTime": 89.4,
+      "notes": "Estos son los cuatro criterios de la tabla de comparación de la práctica PE-S2. Acoplamiento: cuánto debe saber el cliente del servicio. Rendimiento: tamaño y velocidad de los mensajes. Legibilidad: qué tan fácil es leer y probar el contrato a simple vista. Compatibilidad hacia atrás: qué pasa con los clientes viejos cuando el contrato cambia. Insistir en que la comparación debe usar datos concretos del contrato, no opiniones.",
+      "fragments": [
+        81.80000000000001,
+        83.4,
+        85.00000000000001,
+        86.60000000000001,
+        88.20000000000002
+      ]
+    },
+    {
+      "sceneId": "no-espejo",
+      "startTime": 89.4,
+      "endTime": 96.60000000000001,
+      "notes": "Error muy frecuente: como el mismo equipo controla el servicio y a todos sus clientes, se expone directamente la base de datos como contrato. El primer cambio interno, por ejemplo renombrar un campo, rompe a todos a la vez, incluso a los que usaban solo dos de diez campos. Un contrato es una promesa sobre qué información y en qué forma pueden esperar los clientes. Se diseña como una vista del dominio, independiente de cómo se guarda, y se versiona.",
+      "fragments": [
+        91.80000000000001,
+        93.60000000000001,
+        95.4
+      ]
+    },
+    {
+      "sceneId": "tolerante",
+      "startTime": 96.60000000000001,
+      "endTime": 105.00000000000001,
+      "notes": "La mejor manera de evitar el daño de un cambio es no provocarlo. Con el lector tolerante, el cliente toma solo los campos que necesita e ignora el resto; así, si el servicio agrega campos nuevos, el cliente ni se entera. Es la ley de Postel: ser conservador en lo que se envía y liberal en lo que se acepta. Aplicado al comprobante: el sistema contable lee solo número y monto, y no le importa que se agregue otro campo. Fuente: Newman (2015).",
+      "fragments": [
+        99.00000000000001,
+        100.60000000000001,
+        102.20000000000002,
+        103.80000000000001
+      ]
+    },
+    {
+      "sceneId": "semver",
+      "startTime": 105.00000000000001,
+      "endTime": 113.40000000000002,
+      "notes": "Cuando el cambio es inevitable se avisa con tres números: MAYOR.MENOR.PARCHE. Un parche corrige errores sin cambiar el comportamiento. Un cambio menor agrega algo y es compatible: un cliente hecho para la 1.2.0 debe seguir funcionando con la 1.3.0. Un cambio mayor rompe la compatibilidad: no se puede asumir lo mismo si el servicio salta a la 2.0.0. Fuente: Newman (2015).",
+      "fragments": [
+        107.40000000000002,
+        109.00000000000001,
+        110.60000000000002,
+        112.20000000000002
+      ]
+    },
+    {
+      "sceneId": "coexistir",
+      "startTime": 113.40000000000002,
+      "endTime": 119.80000000000003,
+      "notes": "Si ni el versionado evita romper a un cliente, se usa la coexistencia de endpoints. El servicio publica la versión nueva y deja funcionando la anterior; los clientes migran cuando pueden, sin presión; y solo cuando ya nadie usa la vieja se retira. Así los equipos distintos no tienen que actualizarse el mismo día. Fuente: Newman (2015)."
+    },
+    {
+      "sceneId": "compat",
+      "startTime": 119.80000000000003,
+      "endTime": 127.00000000000003,
+      "notes": "Dos garantías con nombre. Compatibilidad hacia atrás: el código nuevo puede leer datos que produjeron versiones anteriores. Compatibilidad hacia adelante: el código antiguo puede procesar datos de versiones nuevas, normalmente ignorando los campos que no conoce. En servicios, el servidor suele actualizarse antes que sus clientes, así que hace falta hacia atrás en las solicitudes que recibe y hacia adelante en las respuestas que envía. Fuente: Kleppmann (2017).",
+      "fragments": [
+        122.20000000000003,
+        124.00000000000003,
+        125.80000000000003
+      ]
+    },
+    {
+      "sceneId": "micro-figura",
+      "startTime": 127.00000000000003,
+      "endTime": 132.60000000000002,
+      "notes": "Los microservicios nacen en 2014, nombrados por Fowler y Lewis, como respuesta explícita a la SOA de servicios grandes y atados. La diferencia más importante es el aislamiento de los datos. En la SOA, tres servicios escriben en una misma base: un cambio de esquema afecta a los tres. En microservicios, cada servicio es dueño de su base y cambia su esquema sin coordinar con los demás. A cambio, cuesta coordinar lo que antes resolvía una sola base compartida. Fuente: Richards y Ford (2020)."
+    },
+    {
+      "sceneId": "retomar",
+      "startTime": 132.60000000000002,
+      "endTime": 141.60000000000002,
+      "notes": "Retomar el reto del inicio y pedir que respondan antes de mostrar cada ficha. Aplicación web: espera la respuesta, así que conviene un contrato síncrono, REST o gRPC. Sistema contable: no necesita respuesta inmediata y sincroniza por lotes, así que conviene AsyncAPI con un broker, lo que además amortigua los picos de carga. Cambio de nombre de un campo: combinar lector tolerante en el cliente con la coexistencia de endpoints, para que nadie tenga que migrar el mismo día.",
+      "fragments": [
+        135.00000000000003,
+        136.80000000000004,
+        138.60000000000002,
+        140.40000000000003
+      ]
+    },
+    {
+      "sceneId": "actividades",
+      "startTime": 141.60000000000002,
+      "endTime": 146.8,
+      "notes": "PE-S2 vale 2,25 puntos: se escoge un recurso del sistema de matrícula, se documenta su contrato REST con endpoint, verbo y ejemplos, se reescribe en gRPC, se comparan los cuatro criterios y se justifica una decisión con al menos dos criterios. TA-S2 vale 2,25 puntos: un cuadro de SOA, microservicios y serverless más un análisis en prosa con cita APA del capítulo 4 de Newman. GA-S2 vale 1 punto: reflexión sobre la Master Class de ASU. Las consignas, las plantillas y las rúbricas están en Canvas."
+    },
+    {
+      "sceneId": "cierre",
+      "startTime": 146.8,
+      "endTime": 154,
+      "notes": "Cerrar con la idea central: un contrato es una promesa y toda promesa tiene un costo de cambio. Reutilizar sin cuidado ata a todos; un buen contrato, bien versionado, deja que cada equipo avance a su ritmo."
+    }
+  ],
+  "slideSequences": []
+}
+    </script>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="154" data-width="1920" data-height="1080">
+
+      <section id="portada" class="clip slide dark" data-start="0" data-duration="5.6" data-track-index="0" data-label="Portada" data-frags="0" data-enter="2.8" data-step="1">
+        <div class="frame" id="portada-frame" style="display:block">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <p class="course" style="left:120px;top:240px">PP_08_IPTI · Semana 2</p>
+      <h1 class="ttl xl" style="top:300px;width:930px;font-size:76px">Contratos de API: cómo se comunican los servicios</h1>
+      <p class="lead" style="left:120px;top:790px;width:1000px">De la SOA a los microservicios, y cómo cambiar un contrato sin romper a nadie</p>
+      <p class="byline" style="left:120px;top:950px">Arquitectura e Integración de Plataformas de TI · Charlie Cárdenas Toledo</p>
+      <div class="sheet" data-layout-allow-overlap style="left:1070px;top:250px;width:500px"><div class="sh" data-layout-allow-overlap style="background:var(--wine-deep)">SOA</div><div class="sr" data-layout-allow-overlap>Servicios para toda la empresa</div><div class="sr" data-layout-allow-overlap>Contratos compartidos</div><div class="sr" data-layout-allow-overlap>Un cambio afecta a todos</div></div>
+      <div class="sheet" data-layout-allow-overlap style="left:1190px;top:380px;width:500px"><div class="sh" data-layout-allow-overlap style="background:var(--teal)">Contrato de API</div><div class="sr" data-layout-allow-overlap>REST</div><div class="sr" data-layout-allow-overlap>gRPC</div><div class="sr" data-layout-allow-overlap>AsyncAPI</div></div>
+      <div class="sheet" data-layout-allow-overlap style="left:1310px;top:510px;width:500px"><div class="sh" data-layout-allow-overlap style="background:var(--amber)">Versionado</div><div class="sr" data-layout-allow-overlap>Lector tolerante</div><div class="sr" data-layout-allow-overlap>MAYOR.MENOR.PARCHE</div><div class="sr" data-layout-allow-overlap>Coexistir versiones</div></div>
+        </div>
+      </section>
+
+      <section id="reto" class="clip slide" data-start="5.6" data-duration="10" data-track-index="0" data-label="El reto del comprobante" data-frags="4" data-enter="2.4" data-step="1.6">
+        <div class="frame" id="reto-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Un servicio de comprobantes y dos clientes muy distintos</h1>
+      <p class="y-chip g1" style="left:120px;top:330px">La aplicación web pide un comprobante y espera la respuesta</p>
+      <p class="y-chip g2" style="left:120px;top:430px">El sistema contable los sincroniza de noche, sin apuro</p>
+      <p class="y-chip g3" style="left:120px;top:530px">Seis meses después, un campo cambia de nombre</p>
+      <p class="y-chip g4" style="left:120px;top:630px">Los dos clientes siguen funcionando, ¿cómo?</p>
+      <p class="ask" style="left:120px;top:860px">¿Un solo contrato sirve para los dos?</p>
+        </div>
+      </section>
+
+      <section id="soa-idea" class="clip slide" data-start="15.6" data-duration="8.4" data-track-index="0" data-label="Qué es la SOA" data-frags="3" data-enter="2.4" data-step="1.6">
+        <div class="frame" id="soa-idea-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">SOA: servicios que toda la empresa reutiliza</h1>
+      <div class="x-pc g1" style="left:120px;top:360px;width:520px;height:330px"><strong>Servicio</strong><em>Una capacidad del negocio, como crear un cliente o hacer un pedido</em></div>
+      <div class="x-pc g2" style="left:700px;top:360px;width:520px;height:330px"><strong>Contrato</strong><em>Dice cómo pedirle algo al servicio, sin mostrar cómo lo hace por dentro</em></div>
+      <div class="x-pc g3" style="left:1280px;top:360px;width:520px;height:330px"><strong>Promesa</strong><em>No escribir dos veces lo mismo: cada división reutiliza el mismo servicio</em></div>
+        </div>
+      </section>
+
+      <section id="soa-figura" class="clip slide" data-start="24" data-duration="5.6" data-track-index="0" data-label="Capas de servicios en la SOA" data-frags="0" data-enter="2.8" data-step="1">
+        <div class="frame" id="soa-figura-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Las capas de servicios de la SOA</h1>
+      <img class="fig" src="assets/fig-soa-taxonomia.png" alt="Taxonomía de servicios SOA: negocio, orquestación, empresariales, aplicación e infraestructura." style="left:270px;top:235px;width:1380px;height:790px" />
+        </div>
+      </section>
+
+      <section id="soa-costo" class="clip slide" data-start="29.6" data-duration="10" data-track-index="0" data-label="El costo de reutilizar" data-frags="4" data-enter="2.4" data-step="1.6">
+        <div class="frame" id="soa-costo-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Reutilizar ahorra código, pero ata a todos</h1>
+      <p class="y-chip g1" style="left:120px;top:330px">Un solo servicio Customer para todas las divisiones</p>
+      <p class="y-chip g2" style="left:120px;top:430px">Cambia su interfaz y todos los que lo usan se ven afectados</p>
+      <p class="y-chip g3" style="left:120px;top:530px">Ya no hay cambios pequeños: se despliega y prueba todo junto</p>
+      <p class="punch g4" style="left:120px;top:730px;width:1680px">Acoplamiento: lo que le pasa a uno le pasa a todos</p>
+        </div>
+      </section>
+
+      <section id="sync-figura" class="clip slide" data-start="39.6" data-duration="5.6" data-track-index="0" data-label="Síncrono y asíncrono" data-frags="0" data-enter="2.8" data-step="1">
+        <div class="frame" id="sync-figura-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Esperar la respuesta o dejar un mensaje</h1>
+      <img class="fig" src="assets/fig-sync-async.png" alt="Comunicación síncrona, con el cliente esperando, y asíncrona, con un emisor que publica un evento en un broker que lo reparte a dos suscriptores." style="left:160px;top:330px;width:1600px;height:464px" />
+        </div>
+      </section>
+
+      <section id="coordinar" class="clip slide" data-start="45.2" data-duration="10" data-track-index="0" data-label="Cuatro palabras clave" data-frags="4" data-enter="2.4" data-step="1.6">
+        <div class="frame" id="coordinar-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Cuatro palabras para describir cómo colaboran los servicios</h1>
+      <div class="x-pc g1" style="left:120px;top:300px;width:520px;height:290px"><strong>Solicitud-respuesta</strong><em>El cliente pide y espera el resultado</em></div>
+      <div class="x-pc g2" style="left:880px;top:300px;width:520px;height:290px"><strong>Eventos</strong><em>El emisor solo anuncia que algo ocurrió</em></div>
+      <div class="x-pc g3" style="left:120px;top:630px;width:520px;height:290px"><strong>Orquestación</strong><em>Un cerebro central dirige el proceso, como un director de orquesta</em></div>
+      <div class="x-pc g4" style="left:880px;top:630px;width:520px;height:290px"><strong>Coreografía</strong><em>Cada servicio sabe su parte y reacciona, sin director</em></div>
+        </div>
+      </section>
+
+      <section id="estilos" class="clip slide" data-start="55.2" data-duration="8.4" data-track-index="0" data-label="REST, gRPC y AsyncAPI" data-frags="3" data-enter="2.4" data-step="1.6">
+        <div class="frame" id="estilos-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Tres estilos de contrato</h1>
+      <div class="x-th"><span class="xc " style="left:120px;width:330px">ESTILO</span><span class="xc " style="left:450px;width:760px">QUÉ ES</span><span class="xc " style="left:1210px;width:620px">CUÁNDO CONVIENE</span></div>
+      <div class="x-tr" style="top:380px"><span class="xc a" style="left:120px;width:330px">REST</span><span class="xc c" style="left:450px;width:760px">Recursos con URL y verbos HTTP</span><span class="xc c" style="left:1210px;width:620px">APIs públicas y externas</span></div><div class="x-tr" style="top:480px"><span class="xc a" style="left:120px;width:330px">gRPC</span><span class="xc c" style="left:450px;width:760px">Llamadas binarias rápidas con .proto</span><span class="xc c" style="left:1210px;width:620px">Servicios internos de alta velocidad</span></div><div class="x-tr" style="top:580px"><span class="xc a" style="left:120px;width:330px">AsyncAPI</span><span class="xc c" style="left:450px;width:760px">Mensajes a través de un broker</span><span class="xc c" style="left:1210px;width:620px">El emisor no espera al cliente</span></div>
+        </div>
+      </section>
+
+      <section id="rest" class="clip slide" data-start="63.6" data-duration="8.4" data-track-index="0" data-label="REST: verbos sobre recursos" data-frags="3" data-enter="2.4" data-step="1.6">
+        <div class="frame" id="rest-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">REST: la dirección es el recurso, el verbo es la acción</h1>
+      <div class="x-th"><span class="xc " style="left:120px;width:330px">VERBO</span><span class="xc " style="left:450px;width:760px">QUÉ HACE</span><span class="xc " style="left:1210px;width:620px">EJEMPLO</span></div>
+      <div class="x-tr" style="top:380px"><span class="xc a" style="left:120px;width:330px">GET</span><span class="xc c" style="left:450px;width:760px">Consulta una reserva</span><span class="xc c" style="left:1210px;width:620px">GET /reservas/12</span></div><div class="x-tr" style="top:480px"><span class="xc a" style="left:120px;width:330px">POST</span><span class="xc c" style="left:450px;width:760px">Crea una reserva nueva</span><span class="xc c" style="left:1210px;width:620px">POST /reservas</span></div><div class="x-tr" style="top:580px"><span class="xc a" style="left:120px;width:330px">PUT</span><span class="xc c" style="left:450px;width:760px">Reemplaza una reserva</span><span class="xc c" style="left:1210px;width:620px">PUT /reservas/12</span></div>
+        </div>
+      </section>
+
+      <section id="grpc" class="clip slide" data-start="72" data-duration="7.4" data-track-index="0" data-label="gRPC: el contrato en un archivo .proto" data-frags="2" data-enter="2.6" data-step="1.8">
+        <div class="frame" id="grpc-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">gRPC: el mismo contrato en un archivo .proto</h1>
+      <div class="sheet" data-layout-allow-overlap style="left:120px;top:330px;width:1100px"><div class="sh" data-layout-allow-overlap style="background:var(--teal)">reservas.proto</div><div class="sr" data-layout-allow-overlap>service Reservas { rpc Obtener (Pedido) returns (Reserva); }</div><div class="sr" data-layout-allow-overlap>message Pedido { int32 id = 1; }</div><div class="sr" data-layout-allow-overlap>message Reserva { int32 id = 1; string laboratorio = 2; }</div></div>
+      <p class="punch g1" style="left:120px;top:720px;width:1680px">El número de cada campo lo identifica, no su nombre</p>
+      <p class="y-chip g2" style="left:120px;top:860px">El cliente genera su código desde este archivo</p>
+        </div>
+      </section>
+
+      <section id="criterios" class="clip slide" data-start="79.4" data-duration="10" data-track-index="0" data-label="Cuatro criterios para comparar" data-frags="4" data-enter="2.4" data-step="1.6">
+        <div class="frame" id="criterios-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Cómo comparar REST y gRPC en la práctica</h1>
+      <div class="x-pc g1" style="left:120px;top:300px;width:520px;height:290px"><strong>Acoplamiento</strong><em>Cuánto necesita saber el cliente del servicio</em></div>
+      <div class="x-pc g2" style="left:880px;top:300px;width:520px;height:290px"><strong>Rendimiento</strong><em>Tamaño y velocidad de los mensajes</em></div>
+      <div class="x-pc g3" style="left:120px;top:630px;width:520px;height:290px"><strong>Legibilidad</strong><em>Qué tan fácil es leer y probar el contrato</em></div>
+      <div class="x-pc g4" style="left:880px;top:630px;width:520px;height:290px"><strong>Compatibilidad hacia atrás</strong><em>Qué pasa con los clientes viejos al cambiar el contrato</em></div>
+        </div>
+      </section>
+
+      <section id="no-espejo" class="clip slide" data-start="89.4" data-duration="7.2" data-track-index="0" data-label="El contrato no es un espejo de la base" data-frags="2" data-enter="2.4" data-step="1.8">
+        <div class="frame" id="no-espejo-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Un contrato es una promesa, no una copia de la base de datos</h1>
+      <div class="y-bad g1" style="left:120px;top:330px;width:1680px">Mal: mostrar las tablas tal cual; un cambio rompe a todos</div>
+      <div class="y-good g2" style="left:120px;top:490px;width:1680px">Bien: prometer solo ciertos campos, sin importar cómo se guardan</div>
+        </div>
+      </section>
+
+      <section id="tolerante" class="clip slide" data-start="96.60000000000001" data-duration="8.4" data-track-index="0" data-label="Cambiar sin romper: lector tolerante" data-frags="3" data-enter="2.4" data-step="1.6">
+        <div class="frame" id="tolerante-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">El cliente lee solo lo que necesita</h1>
+      <div class="x-pc g1" style="left:120px;top:360px;width:520px;height:320px"><strong>Lector tolerante</strong><em>El cliente toma los campos que usa e ignora los demás</em></div>
+      <div class="x-pc g2" style="left:700px;top:360px;width:520px;height:320px"><strong>Qué se gana</strong><em>Si el servicio agrega campos, el cliente sigue funcionando igual</em></div>
+      <div class="x-pc g3" style="left:1280px;top:360px;width:520px;height:320px"><strong>Ley de Postel</strong><em>Ser estricto en lo que se envía y flexible en lo que se acepta</em></div>
+        </div>
+      </section>
+
+      <section id="semver" class="clip slide" data-start="105.00000000000001" data-duration="8.4" data-track-index="0" data-label="Versionado semántico" data-frags="3" data-enter="2.4" data-step="1.6">
+        <div class="frame" id="semver-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Tres números que avisan qué tan grande es el cambio</h1>
+      <div class="x-th"><span class="xc " style="left:120px;width:330px">CAMBIA</span><span class="xc " style="left:450px;width:760px">QUÉ SIGNIFICA</span><span class="xc " style="left:1210px;width:620px">EJEMPLO</span></div>
+      <div class="x-tr" style="top:380px"><span class="xc a" style="left:120px;width:330px">PARCHE</span><span class="xc c" style="left:450px;width:760px">Corrige errores, nada cambia para el cliente</span><span class="xc c" style="left:1210px;width:620px">1.2.0 pasa a 1.2.1</span></div><div class="x-tr" style="top:480px"><span class="xc a" style="left:120px;width:330px">MENOR</span><span class="xc c" style="left:450px;width:760px">Agrega algo y sigue siendo compatible</span><span class="xc c" style="left:1210px;width:620px">1.2.1 pasa a 1.3.0</span></div><div class="x-tr" style="top:580px"><span class="xc a" style="left:120px;width:330px">MAYOR</span><span class="xc c" style="left:450px;width:760px">Rompe la compatibilidad con lo anterior</span><span class="xc c" style="left:1210px;width:620px">1.3.0 pasa a 2.0.0</span></div>
+        </div>
+      </section>
+
+      <section id="coexistir" class="clip slide" data-start="113.40000000000002" data-duration="6.4" data-track-index="0" data-label="Coexistir versiones" data-frags="0" data-enter="3.2" data-step="1">
+        <div class="frame" id="coexistir-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Cuando el cambio rompe: dos versiones al mismo tiempo</h1>
+      <p class="lead" style="left:120px;top:270px;width:1600px">Coexistir endpoints, para que cada equipo migre a su ritmo</p>
+      <div class="vl" style="left:230px;top:412px;height:270px"></div>
+      <div class="vn" style="left:202px;top:380px">1</div><p class="vt" style="left:320px;top:389px">Se publica la versión nueva y se deja la anterior funcionando</p><div class="vn" style="left:202px;top:515px">2</div><p class="vt" style="left:320px;top:524px">Cada cliente migra cuando puede, sin apuro</p><div class="vn" style="left:202px;top:650px">3</div><p class="vt" style="left:320px;top:659px">Cuando nadie usa la anterior, se retira</p>
+        </div>
+      </section>
+
+      <section id="compat" class="clip slide" data-start="119.80000000000003" data-duration="7.2" data-track-index="0" data-label="Hacia atrás y hacia adelante" data-frags="2" data-enter="2.4" data-step="1.8">
+        <div class="frame" id="compat-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Dos garantías para que nadie se rompa</h1>
+      <div class="x-pc g1" style="left:120px;top:330px;width:520px;height:300px"><strong>Hacia atrás</strong><em>El código nuevo entiende lo que enviaron versiones anteriores</em></div>
+      <div class="x-pc g2" style="left:720px;top:330px;width:520px;height:300px"><strong>Hacia adelante</strong><em>El código antiguo procesa lo nuevo e ignora lo que no conoce</em></div>
+      <p class="punch g2" style="left:120px;top:730px;width:1680px">El servidor se actualiza primero: acepta lo viejo y envía lo que lo viejo pueda leer</p>
+        </div>
+      </section>
+
+      <section id="micro-figura" class="clip slide" data-start="127.00000000000003" data-duration="5.6" data-track-index="0" data-label="SOA y microservicios" data-frags="0" data-enter="2.8" data-step="1">
+        <div class="frame" id="micro-figura-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">SOA con una base compartida contra microservicios con base propia</h1>
+      <img class="fig" src="assets/fig-soa-vs-microservicios.png" alt="SOA con tres servicios sobre una sola base de datos, frente a microservicios donde cada servicio tiene su propia base." style="left:160px;top:310px;width:1600px;height:613px" />
+        </div>
+      </section>
+
+      <section id="retomar" class="clip slide" data-start="132.60000000000002" data-duration="9" data-track-index="0" data-label="Volvemos al reto" data-frags="3" data-enter="2.4" data-step="1.8">
+        <div class="frame" id="retomar-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Dos clientes, dos contratos, un cambio sin sustos</h1>
+      <div class="x-pc g1" style="left:120px;top:360px;width:520px;height:340px"><strong>Aplicación web</strong><em>Necesita respuesta al instante: contrato síncrono, REST o gRPC</em></div>
+      <div class="x-pc g2" style="left:700px;top:360px;width:520px;height:340px"><strong>Sistema contable</strong><em>Sincroniza de noche: mensajes con AsyncAPI y un broker</em></div>
+      <div class="x-pc g3" style="left:1280px;top:360px;width:520px;height:340px"><strong>El campo que cambia</strong><em>Lector tolerante y dos versiones al mismo tiempo mientras migran</em></div>
+        </div>
+      </section>
+
+      <section id="actividades" class="clip slide" data-start="141.60000000000002" data-duration="5.2" data-track-index="0" data-label="Actividades de la semana" data-frags="0" data-enter="2.6" data-step="1">
+        <div class="frame" id="actividades-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <h1 class="ttl">Esta semana entregan tres actividades</h1>
+      <div class="x-tk" style="left:120px;top:300px"><p class="tg">PE-S2</p><p class="tt">Contrato REST y gRPC</p><p class="td">Un recurso, dos contratos y una decisión</p><p class="tp">puntos</p>
+          <svg class="ringsvg" width="180" height="180" viewBox="0 0 180 180"><circle class="rg" cx="90" cy="90" r="76" transform="rotate(-90 90 90)" pathLength="1"/></svg><p class="pn" data-n="2.25" style="font-size:60px;top:455px">2,25</p></div>
+      <div class="x-tk" style="left:690px;top:300px"><p class="tg">TA-S2</p><p class="tt">SOA, microservicios y serverless</p><p class="td">Cuadro comparativo y análisis con cita APA</p><p class="tp">puntos</p>
+          <svg class="ringsvg" width="180" height="180" viewBox="0 0 180 180"><circle class="rg" cx="90" cy="90" r="76" transform="rotate(-90 90 90)" pathLength="1"/></svg><p class="pn" data-n="2.25" style="font-size:60px;top:455px">2,25</p></div>
+      <div class="x-tk" style="left:1260px;top:300px"><p class="tg">GA-S2</p><p class="tt">Master Class ASU</p><p class="td">Reflexión sobre la clase de ASU</p><p class="tp">punto</p>
+          <svg class="ringsvg" width="180" height="180" viewBox="0 0 180 180"><circle class="rg" cx="90" cy="90" r="76" transform="rotate(-90 90 90)" pathLength="1"/></svg><p class="pn" data-n="1">1</p></div>
+      <p class="src" style="left:120px;top:910px;width:1680px">Consigna, plantilla y rúbrica en Canvas.</p>
+        </div>
+      </section>
+
+      <section id="cierre" class="clip slide dark" data-start="146.8" data-duration="7.2" data-track-index="0" data-label="Cierre" data-frags="0" data-enter="3.6" data-step="1">
+        <div class="frame" id="cierre-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          
+      <div class="x-sum" style="left:120px;top:230px"><span class="x-sc">Contrato</span><i class="x-pl">+</i><span class="x-sc">Estilo</span><i class="x-pl">+</i><span class="x-sc">Versión</span></div>
+      <p class="x-eq" style="left:120px;top:330px">= cambiar sin romper a nadie</p>
+      <h1 class="ttl xl" style="top:470px;width:1560px;font-size:80px">Un contrato es una promesa: se diseña para poder cambiar</h1>
+      <p class="lead" style="left:120px;top:800px;width:1560px">Próxima semana: continuamos con integración de plataformas</p>
+      <p class="byline" style="left:120px;top:960px">Fuentes: Newman (2015) · Richards y Ford (2020) · Kleppmann (2017)</p>
+        </div>
+      </section>
+    </div>
+    <script>
+      // Con el motor de HyperFrames (check, Studio, snapshot) el registro ya existe y la línea de
+      // tiempo contiene todas las animaciones. Al presentar, el reproductor solo mueve la línea
+      // "main" (el destino) y esta página reproduce las animaciones en tiempo real hasta alcanzarlo.
+      const engineHosted = Object.prototype.hasOwnProperty.call(window, "__timelines");
+      window.__timelines = window.__timelines || {};
+
+      const EXIT = 0.5;
+      const tl = gsap.timeline({ paused: true });
+      tl.to({}, { duration: 154 }, 0);
+      const real = engineHosted ? tl : gsap.timeline({ paused: true });
+
+      const VW = 1920, VH = 1080;
+      const cam = (s, cx, cy) => {
+        let x = VW / 2 - cx * s, y = VH / 2 - cy * s;
+        if (s >= 1) { x = Math.min(0, Math.max(VW - VW * s, x)); y = Math.min(0, Math.max(VH - VH * s, y)); }
+        return { scale: s, x, y };
+      };
+      const overview = cam(1, VW / 2, VH / 2);
+
+const SCENE_PER = {};
+// Escenas de la presentación: cada diapositiva es una animación propia que se construye
+// por pasos. Este archivo se incrusta en index.html (lo hace build.mjs).
+// Disponibles: gsap, real (línea de tiempo de contenido), cam, overview.
+
+function splitWords(el) {
+  if (el._w) return el._w;
+  const words = el.textContent.trim().split(" ");
+  el.textContent = "";
+  el._w = words.map((w, i) => {
+    const o = document.createElement("span"); o.className = "w";
+    const n = document.createElement("span"); n.className = "wi"; n.textContent = w;
+    o.appendChild(n); el.appendChild(o);
+    if (i < words.length - 1) el.appendChild(document.createTextNode(" "));
+    return n;
+  });
+  return el._w;
+}
+function splitChars(el) {
+  const out = [];
+  const walk = (node) => {
+    Array.from(node.childNodes).forEach((ch) => {
+      if (ch.nodeType === 3) {
+        const frag = document.createDocumentFragment();
+        for (const t of ch.textContent) {
+          const s = document.createElement("span"); s.className = "ch"; s.textContent = t;
+          frag.appendChild(s); out.push(s);
+        }
+        ch.replaceWith(frag);
+      } else if (ch.nodeType === 1) walk(ch);
+    });
+  };
+  walk(el);
+  return out;
+}
+
+const EXP = "expo.out", P4 = "power4.out", IO = "power2.inOut";
+const words = (el, at, stag = 0.06, d = 0.75) =>
+  real.fromTo(splitWords(el), { yPercent: 120 }, { yPercent: 0, duration: d, ease: P4, stagger: stag }, at);
+const rise = (t, at, y = 40, d = 0.7) => real.fromTo(t, { opacity: 0, y }, { opacity: 1, y: 0, duration: d, ease: EXP }, at);
+const pop = (t, at, d = 0.6, s0 = 0.5) => real.fromTo(t, { opacity: 0, scale: s0 }, { opacity: 1, scale: 1, duration: d, ease: "back.out(1.8)" }, at);
+const slide = (t, at, x, d = 0.8) => real.fromTo(t, { opacity: 0, x }, { opacity: 1, x: 0, duration: d, ease: EXP }, at);
+const grow = (t, at, d = 0.7) => real.fromTo(t, { scaleX: 0, transformOrigin: "0 50%" }, { scaleX: 1, duration: d, ease: "power3.inOut" }, at);
+const growY = (t, at, d = 0.7) => real.fromTo(t, { scaleY: 0, transformOrigin: "50% 0" }, { scaleY: 1, duration: d, ease: "power3.inOut" }, at);
+const draw = (t, at, d = 0.8, ease = IO) => real.fromTo(t, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease }, at);
+const fadeIn = (t, at, d = 0.5) => real.fromTo(t, { opacity: 0 }, { opacity: 1, duration: d, ease: "power2.out" }, at);
+const flash = (t, at, color = "rgba(232,169,32,0.5)", off = "rgba(232,169,32,0)") => {
+  real.fromTo(t, { backgroundColor: off }, { backgroundColor: color, duration: 0.3, immediateRender: false }, at);
+  real.to(t, { backgroundColor: off, duration: 0.6 }, at + 0.7);
+};
+// Mueve un elemento a lo largo de un trazo SVG.
+function along(el, path, at, d, ease = IO) {
+  const len = path.getTotalLength();
+  const o = { p: 0 };
+  real.fromTo(o, { p: 0 }, { p: 1, duration: d, ease, onUpdate: () => {
+    const pt = path.getPointAtLength(o.p * len);
+    gsap.set(el, { x: pt.x, y: pt.y });
+  } }, at);
+}
+
+const SCENES = {};
+
+// Revela por fragmentos los elementos marcados con g1, g2, g3... según su clase:
+// y-bar y y-up se descubren con un recorte, y-pop aparece con rebote, los trazos se dibujan.
+function wipe(el, at, from = "left") {
+  const hidden = from === "bottom" ? "inset(100% 0 0 0)" : "inset(0 100% 0 0)";
+  real.fromTo(el, { clipPath: hidden }, { clipPath: "inset(0 0 0 0)", duration: 0.7, ease: "power3.inOut" }, at);
+}
+function reveal(c, n, first = 1) {
+  for (let k = first; k <= n; k++) {
+    const at = c.h(k) - c.step;
+    c.qa(".g" + k).forEach((e, i) => {
+      const t = at + 0.2 + i * 0.18;
+      if (e.tagName.toLowerCase() === "path") draw(e, t, 0.7);
+      else if (e.classList.contains("y-bar")) wipe(e, t);
+      else if (e.classList.contains("y-up")) wipe(e, t, "bottom");
+      else if (e.classList.contains("y-pop")) pop(e, t, 0.45);
+      else rise(e, t, 24, 0.55);
+    });
+  }
+}
+// Tabla que descubre sus filas de a "per" por avance.
+function tableScene(c, per) {
+  const { st, q, qa, h } = c;
+  words(q(".ttl"), st + 0.2);
+  real.fromTo(q(".x-th"), { opacity: 0, y: -30 }, { opacity: 1, y: 0, duration: 0.6, ease: EXP }, st + 0.8);
+  const R = qa(".x-tr");
+  if (q(".ask")) rise(q(".ask"), st + 1.6, 20, 0.5);
+  R.forEach((r, i) => {
+    const k = Math.floor(i / per) + 1;
+    const at = h(k) - c.step;
+    real.fromTo(r, { opacity: 0, x: -240 }, { opacity: 1, x: 0, duration: 0.8, ease: EXP }, at + 0.1 + (i % per) * 0.25);
+  });
+}
+
+
+// ── Tipos de escena de las presentaciones de IFT202 ─────────────────────────
+// Cada diapositiva declara "type" en build.mjs y el build registra SCENES[id] = TYPES[type].
+const TYPES = {};
+
+TYPES.cover = (c) => {
+  const { st, q, qa } = c;
+  rise(q(".course"), st + 0.2, 30);
+  words(q(".ttl"), st + 0.3, 0.07, 0.8);
+  rise(q(".lead"), st + 1.3, 40);
+  rise(q(".byline"), st + 1.6, 30);
+  qa(".sheet").forEach((el, i) =>
+    real.fromTo(el, { opacity: 0, y: 900, rotation: 14 }, { opacity: 1, y: 0, rotation: 0, duration: 1.2, ease: EXP }, st + 0.4 + i * 0.25));
+};
+
+// Título, pregunta que se retira al primer avance y elementos g1..gN que se revelan por fragmentos.
+TYPES.reveal = (c) => {
+  const { st, q, qa } = c;
+  words(q(".ttl"), st + 0.2);
+  qa(".y-lbl, .x-sm, .y-sent").forEach((e, i) => rise(e, st + 0.7 + i * 0.1, 16, 0.5));
+  const yr = q(".y-year");
+  if (yr) real.fromTo(yr, { opacity: 0, scale: 0.6, transformOrigin: "0 50%" }, { opacity: 1, scale: 1, duration: 0.7, ease: "back.out(1.6)" }, st + 0.6);
+  const yw = q(".y-where");
+  if (yw) slide(yw, st + 1.0, 60, 0.7);
+  const ask = q(".ask");
+  if (ask) {
+    rise(ask, st + 1.6, 20, 0.5);
+    real.to(ask, { opacity: 0, y: -20, duration: 0.3 }, c.h(1) - c.step);
+  }
+  reveal(c, c.n);
+};
+
+TYPES.table = (c) => tableScene(c, (SCENE_PER[c.s.id] || 2));
+
+// Figura PNG que entra con la escena; los elementos g1..gN se revelan después.
+TYPES.img = (c) => {
+  const { st, q } = c;
+  words(q(".ttl"), st + 0.2);
+  real.fromTo(q(".fig"), { opacity: 0, scale: 0.94, transformOrigin: "50% 50%" }, { opacity: 1, scale: 1, duration: 0.9, ease: EXP }, st + 0.7);
+  reveal(c, c.n);
+};
+
+TYPES.steps = (c) => {
+  const { st, q, qa } = c;
+  words(q(".ttl"), st + 0.2);
+  rise(q(".lead"), st + 0.8, 20, 0.6);
+  growY(q(".vl"), st + 1.0, 1.4);
+  const n = qa(".vn").length;
+  qa(".vn").forEach((e, i) => pop(e, st + 1.0 + (1.4 * i) / n, 0.45));
+  qa(".vt").forEach((e, i) => slide(e, st + 1.1 + (1.4 * i) / n, 60, 0.6));
+};
+
+TYPES.tickets = (c) => {
+  const { st, q, qa } = c;
+  words(q(".ttl"), st + 0.2);
+  qa(".x-tk").forEach((t, i) =>
+    real.fromTo(t, { opacity: 0, y: 500, rotation: [-5, 0, 5][i] }, { opacity: 1, y: 0, rotation: 0, duration: 1.0, ease: EXP }, st + 0.4 + i * 0.2));
+  qa(".rg").forEach((r, i) => draw(r, st + 1.2 + i * 0.15, 0.8));
+  qa(".pn").forEach((p, i) => {
+    const n = Number(p.dataset.n), o = { v: 0 };
+    const fmt = (v) => (n % 1 ? v.toFixed(2).replace(/0$/, "").replace(".", ",") : String(Math.round(v)));
+    real.fromTo(o, { v: 0 }, { v: n, duration: 0.8, ease: "power1.out", onUpdate: () => { p.textContent = fmt(o.v); } }, st + 1.2 + i * 0.15);
+  });
+  rise(q(".src"), st + 1.9, 20, 0.5);
+};
+
+TYPES.close = (c) => {
+  const { st, q, qa } = c;
+  real.fromTo(qa(".x-sum > *"), { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.18, ease: EXP }, st + 0.3);
+  real.fromTo(q(".x-eq"), { opacity: 0, x: -50 }, { opacity: 1, x: 0, duration: 0.7, ease: EXP }, st + 1.6);
+  words(q(".ttl"), st + 2.0, 0.05, 0.7);
+  rise(q(".lead"), st + 2.8, 30, 0.7);
+  rise(q(".byline"), st + 3.1, 20, 0.5);
+};
+
+SCENES["portada"] = TYPES["cover"];
+SCENES["reto"] = TYPES["reveal"];
+SCENES["soa-idea"] = TYPES["reveal"];
+SCENES["soa-figura"] = TYPES["img"];
+SCENES["soa-costo"] = TYPES["reveal"];
+SCENES["sync-figura"] = TYPES["img"];
+SCENES["coordinar"] = TYPES["reveal"];
+SCENES["estilos"] = TYPES["table"];
+SCENES["rest"] = TYPES["table"];
+SCENES["grpc"] = TYPES["reveal"];
+SCENES["criterios"] = TYPES["reveal"];
+SCENES["no-espejo"] = TYPES["reveal"];
+SCENES["tolerante"] = TYPES["reveal"];
+SCENES["semver"] = TYPES["table"];
+SCENES["coexistir"] = TYPES["steps"];
+SCENES["compat"] = TYPES["reveal"];
+SCENES["micro-figura"] = TYPES["img"];
+SCENES["retomar"] = TYPES["reveal"];
+SCENES["actividades"] = TYPES["tickets"];
+SCENES["cierre"] = TYPES["close"];
+SCENE_PER["portada"] = 2;
+SCENE_PER["reto"] = 2;
+SCENE_PER["soa-idea"] = 2;
+SCENE_PER["soa-figura"] = 2;
+SCENE_PER["soa-costo"] = 2;
+SCENE_PER["sync-figura"] = 2;
+SCENE_PER["coordinar"] = 2;
+SCENE_PER["estilos"] = 2;
+SCENE_PER["rest"] = 2;
+SCENE_PER["grpc"] = 2;
+SCENE_PER["criterios"] = 2;
+SCENE_PER["no-espejo"] = 2;
+SCENE_PER["tolerante"] = 2;
+SCENE_PER["semver"] = 2;
+SCENE_PER["coexistir"] = 2;
+SCENE_PER["compat"] = 2;
+SCENE_PER["micro-figura"] = 2;
+SCENE_PER["retomar"] = 2;
+SCENE_PER["actividades"] = 2;
+SCENE_PER["cierre"] = 2;
+
+      const figSyncs = [];
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      const skips = [];
+
+      slides.forEach((slide, index) => {
+        const start = Number(slide.dataset.start);
+        const end = start + Number(slide.dataset.duration);
+        const n = Number(slide.dataset.frags);
+        const en = Number(slide.dataset.enter);
+        const step = Number(slide.dataset.step);
+        const frame = slide.querySelector(".frame");
+        const isDark = slide.classList.contains("dark");
+        const hold = (k) => start + en + k * step;
+        let camCur = overview;
+
+        // Transición: la diapositiva saliente se acerca y se disuelve; la entrante se aleja hasta su plano.
+        const s0 = isDark ? 1.35 : index % 2 ? 1.1 : 0.92;
+        const hasFig = !!frame.querySelector("iframe");
+        if (!hasFig) real.set(frame, { display: "block" }, start);
+        real.fromTo(frame, { opacity: 0, transformOrigin: "0 0", ...cam(s0, VW / 2, VH / 2) },
+          { opacity: 1, ...overview, duration: isDark ? 1.4 : 0.9, ease: "expo.out" }, start);
+        if (index < slides.length - 1) {
+          real.fromTo(frame, { opacity: 1, ...overview }, { opacity: 0, ...cam(1.14, VW / 2, VH / 2), duration: EXIT, ease: "power2.in", immediateRender: false }, end - EXIT);
+          if (!hasFig) real.set(frame, { display: "none" }, end);
+          skips.push([hold(n) + 0.05, end - EXIT]);
+        }
+
+        const ctx = {
+          s: slide, st: start, en, n, step, h: hold,
+          q: (sel) => slide.querySelector(sel),
+          qa: (sel) => Array.from(slide.querySelectorAll(sel)),
+          cam: (cx, cy, s, at, d) => {
+            const to = cam(s, cx, cy);
+            real.fromTo(frame, { ...camCur, transformOrigin: "0 0" }, { ...to, duration: d, ease: "power2.inOut", immediateRender: false }, at);
+            camCur = to;
+          },
+        };
+        if (SCENES[slide.id]) SCENES[slide.id](ctx);
+
+        slide.querySelectorAll("iframe[data-fig]").forEach((el) => {
+          // La figura corre en su propio documento: en vivo anima sola hacia el estado pedido;
+          // con el motor (check, Studio) sigue la línea de tiempo cuadro a cuadro.
+          const steps = Number(el.dataset.fig);
+          let sent = -1;
+          const wanted = () => {
+            const t = tl.time();
+            let u = 0;
+            for (let k = 1; k <= steps; k++) u += Math.min(1, Math.max(0, (t - (hold(k) - 0.6)) / 0.6));
+            return engineHosted ? u / steps : Math.round(u) / steps;
+          };
+          const send = (force) => {
+            const value = wanted();
+            if (!el.contentWindow || (!force && value === sent)) return;
+            sent = value;
+            el.contentWindow.postMessage({ type: "fig", mode: engineHosted ? "set" : "go", value }, "*");
+          };
+          figSyncs.push(send);
+          el.addEventListener("load", () => send(true));
+        });
+      });
+
+      tl.eventCallback("onUpdate", () => figSyncs.forEach((sync) => sync()));
+
+      if (!engineHosted) {
+        // En vivo: "main" marca el destino (lo mueve el reproductor) y "real" lo persigue en tiempo
+        // real, así cada avance reproduce la animación en lugar de saltar. Retroceder es inmediato.
+        // Sin suavizado de retardo: el avance sigue el reloj real aunque el equipo vaya justo.
+        gsap.ticker.lagSmoothing(0);
+        let shown = tl.time(), lastT = gsap.ticker.time;
+        real.time(shown, false);
+        window.__deckState = () => ({ target: tl.time(), shown });
+        gsap.ticker.add((now) => {
+          const dt = Math.min(1, now - lastT);
+          lastT = now;
+          figSyncs.forEach((sync) => sync());
+          const target = tl.time();
+          if (target === shown) return;
+          if (target < shown || target - shown > 14) shown = target;
+          else {
+            shown = Math.min(target, shown + dt * 1.5);
+            for (const [a, b] of skips) if (shown > a && shown < b) shown = Math.min(target, b);
+          }
+          real.time(shown, false);
+        });
+      }
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
