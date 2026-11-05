@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CC05A_IFT200 · Semana 2: Arquitectura de tres esquemas</title>
+    <script>
+      // El modo público se distingue en la pestaña del navegador.
+      if (new URLSearchParams(location.search).get("mode") === "audience") {
+        document.title = "CC05A_IFT200 · Semana 2: Arquitectura de tres esquemas" + " (pantalla del público)";
+      }
+    </script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { height: 100%; background: #0a0a0a; overflow: hidden; }
+      hyperframes-slideshow { display: block; position: relative; width: 100vw; height: 100vh; }
+      hyperframes-player { position: absolute; inset: 0; }
+    </style>
+    <script src="../vendor/hyperframes-player.global.js"></script>
+    <script src="../vendor/hyperframes-slideshow.global.js"></script>
+  </head>
+  <body>
+    <hyperframes-slideshow tabindex="0" notes-storage-key="bd-semana-02">
+      <hyperframes-player interactive src="composition/index.html"></hyperframes-player>
+      <script type="application/hyperframes-slideshow+json">
+{
+  "slides": [
+    {
+      "sceneId": "portada",
+      "startTime": 0,
+      "endTime": 3.5,
+      "notes": "Abrir con una pregunta: si la universidad agrega mañana un campo nuevo a su ficha de estudiante, ¿deja de funcionar la consulta de notas? Recoger dos o tres respuestas sin corregirlas. La clase termina respondiendo esa pregunta."
+    },
+    {
+      "sceneId": "ruta",
+      "startTime": 3.5,
+      "endTime": 7,
+      "notes": "Presentar la ruta en un minuto. Es la misma secuencia de la guía: primero el caso, después los nombres técnicos, y al final el motor por dentro."
+    },
+    {
+      "sceneId": "pedidos",
+      "startTime": 7,
+      "endTime": 15.5,
+      "notes": "El instituto de la semana 1 ya tiene su base de datos: ESTUDIANTE, PAGO y PRESTAMO. Revelar los pedidos uno por uno. Pedir a la clase que los agrupe según lo que habría que modificar. Es la Tabla 1 de la guía.",
+      "fragments": [
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ]
+    },
+    {
+      "sceneId": "grupos",
+      "startTime": 15.5,
+      "endTime": 22,
+      "notes": "Revelar los grupos después de escuchar a la clase. La prueba para distinguirlos: comparar el listado de Secretaría antes y después de cada pedido. Tras P4 es idéntico; tras P5 existe un dato que antes no existía.",
+      "fragments": [
+        17.5,
+        18.5,
+        19.5,
+        20.5
+      ]
+    },
+    {
+      "sceneId": "idea",
+      "startTime": 22,
+      "endTime": 25.5,
+      "notes": "Diapositiva de transición. Aquí aparece el nombre técnico: arquitectura de tres esquemas. Su objetivo es separar las aplicaciones de los usuarios de la base de datos física."
+    },
+    {
+      "sceneId": "vocab1",
+      "startTime": 25.5,
+      "endTime": 33,
+      "notes": "Antes de los niveles, fijar cuatro palabras que se usarán toda la clase. Pedir que la clase las diga con sus palabras antes de revelar cada definición. Esquema se confunde con los datos: el esquema es la descripción de la estructura; los datos son lo que se guarda. Índice: usar la analogía del índice de un libro.",
+      "fragments": [
+        27.5,
+        28.5,
+        29.5,
+        30.5,
+        31.5
+      ]
+    },
+    {
+      "sceneId": "niveles",
+      "startTime": 33,
+      "endTime": 39.5,
+      "notes": "Revelar de arriba hacia abajo y volver a los pedidos: P1 a P3 son esquemas externos, P5 toca el conceptual y P4 el interno. Definir índice con la analogía del índice de un libro: es una ruta de acceso. Aclarar que los datos reales están solo en el nivel físico, el que describe el esquema interno.",
+      "fragments": [
+        35,
+        36,
+        37,
+        38
+      ]
+    },
+    {
+      "sceneId": "figura-niveles",
+      "startTime": 39.5,
+      "endTime": 45,
+      "notes": "Figura interactiva en tres pasos. Al entrar: arriba las ventanillas de cada oficina, en medio la ficha completa, abajo el almacenamiento. Preguntar qué ventanilla deja ver el teléfono. Primer avance: entra un índice al almacenamiento; preguntar qué cambió arriba (nada). Segundo avance: se agrega correo_personal a la ficha; preguntar de nuevo. El contador de vistas modificadas se queda en 0 las dos veces. Las flechas del teclado controlan la figura igual que el resto de la diapositiva.",
+      "fragments": [
+        41.5,
+        42.5,
+        43.5
+      ]
+    },
+    {
+      "sceneId": "correspondencias",
+      "startTime": 45,
+      "endTime": 50.5,
+      "notes": "Los tres esquemas son descripciones; los datos están una sola vez. Cuando Secretaría pide su listado, el DBMS traduce la petición hacia abajo y el resultado hacia arriba. Ese trabajo de traducción se llama correspondencia.",
+      "fragments": [
+        47,
+        48,
+        49
+      ]
+    },
+    {
+      "sceneId": "independencia",
+      "startTime": 50.5,
+      "endTime": 55,
+      "notes": "Las dos definiciones, lado a lado. Lógica: cambia el conceptual, no cambian las vistas ni los programas. Física: cambia el interno, no cambia el conceptual. Preguntar cuál de las dos creen más difícil de lograr: la lógica, porque exige admitir cambios de estructura sin afectar a los programas.",
+      "fragments": [
+        52.5,
+        53.5
+      ]
+    },
+    {
+      "sceneId": "cambios",
+      "startTime": 55,
+      "endTime": 62.5,
+      "notes": "Tres decisiones por cambio: en qué nivel ocurre, qué no debe modificarse y qué independencia lo permite. Revelar fila por fila pidiendo la clasificación antes de mostrarla. La última fila prepara el límite. Es la Tabla 3 de la guía y el formato del taller PE-1.2.",
+      "fragments": [
+        57,
+        58,
+        59,
+        60,
+        61
+      ]
+    },
+    {
+      "sceneId": "limite",
+      "startTime": 62.5,
+      "endTime": 66,
+      "notes": "Si se reduce la base, solo quedan a salvo las vistas que usan los datos que permanecen. Secretaría usa el teléfono: su vista sí cambia. Regla práctica para el taller: antes de quitar una columna, revisar qué vistas la usan."
+    },
+    {
+      "sceneId": "workbench",
+      "startTime": 66,
+      "endTime": 72.5,
+      "notes": "Abrir Workbench en vivo con el script Caso_ILE_BD.sql ya ejecutado. Mostrar el esquema ile: carpeta Views, carpeta Tables y la pestaña Indexes de la tabla lote. Aclarar que la clave es conceptual y el índice que la sostiene es interno. Es el laboratorio guiado de la guía y la antesala del taller PE-1.2.",
+      "fragments": [
+        68,
+        69,
+        70,
+        71
+      ]
+    },
+    {
+      "sceneId": "vocab2",
+      "startTime": 72.5,
+      "endTime": 79,
+      "notes": "Tres palabras que aparecen en la lámina siguiente. DDL es el lenguaje con que se definen los esquemas; SQL reúne definición y manipulación. El catálogo no contiene los datos de los estudiantes: contiene la descripción de la base. El plan es el camino que elige el motor para resolver la consulta.",
+      "fragments": [
+        74.5,
+        75.5,
+        76.5,
+        77.5
+      ]
+    },
+    {
+      "sceneId": "motor",
+      "startTime": 79,
+      "endTime": 87.5,
+      "notes": "Seguir la consulta de Secretaría módulo por módulo. Señalar las dos veces que aparece el catálogo: lo escribe el compilador de DDL y lo consulta el optimizador. Ahí está la razón de la independencia: la consulta nombra tablas y columnas, y el optimizador decide el camino. Es la Figura 2 de la guía.",
+      "fragments": [
+        81,
+        82,
+        83,
+        84,
+        85,
+        86
+      ]
+    },
+    {
+      "sceneId": "capas",
+      "startTime": 87.5,
+      "endTime": 92,
+      "notes": "El cliente y el servidor suelen estar en computadores distintos. En dos capas el software se reparte entre cliente y servidor. En tres capas aparece una capa intermedia: el servidor de aplicaciones o servidor web. Ejemplo cercano: la plataforma de la universidad desde el navegador.",
+      "fragments": [
+        89.5,
+        90.5
+      ]
+    },
+    {
+      "sceneId": "criterios",
+      "startTime": 92,
+      "endTime": 99.5,
+      "notes": "Los cuatro criterios del cuadro TA-1.2. Pedir a la clase que clasifique MySQL con cada uno: relacional, multiusuario, centralizado en la instalación del taller y de código abierto. El quinto criterio del texto, las rutas de acceso, queda para más adelante.",
+      "fragments": [
+        94,
+        95,
+        96,
+        97,
+        98
+      ]
+    },
+    {
+      "sceneId": "practica",
+      "startTime": 99.5,
+      "endTime": 106,
+      "notes": "Comprobación antes de las actividades, con el mismo instituto. Para cada cambio, pedir primero tres respuestas: nivel, qué independencia lo permite y qué vistas se afectan. Revelar la fila después. El tercer cambio repite el límite: Tesorería usa el valor, así que su vista cambia. Quien clasifica bien los tres está listo para el taller PE-1.2.",
+      "fragments": [
+        101.5,
+        102.5,
+        103.5,
+        104.5
+      ]
+    },
+    {
+      "sceneId": "actividades",
+      "startTime": 106,
+      "endTime": 109.5,
+      "notes": "PE-1.2 se hace en clase con el caso ILE en Workbench: mapa de niveles, cuatro cambios y justificación. TA-1.2 es autónomo: cuadro de tres DBMS, diagrama de módulos de uno y un párrafo sobre independencia física. Las plantillas y las fechas están en Canvas."
+    },
+    {
+      "sceneId": "cierre",
+      "startTime": 109.5,
+      "endTime": 113,
+      "notes": "Volver a la pregunta inicial: si la universidad agrega un campo a la ficha, la consulta de notas sigue funcionando, porque no usa ese campo. Tarea para casa: repasar sin apuntes las páginas 2.1 a 2.3 del módulo y responder de memoria qué nivel cambia con un índice y cuál con una columna nueva. Próxima semana: modelo entidad-relación."
+    }
+  ],
+  "slideSequences": []
+}
+      </script>
+    </hyperframes-slideshow>
+  </body>
+</html>

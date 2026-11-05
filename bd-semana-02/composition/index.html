@@ -1,0 +1,702 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Semana 2 · Arquitectura de tres esquemas</title>
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      :root {
+        /* Colores tomados del logotipo UIDE: vino #910048 y dorado #E8A920. Sin degradados. */
+        --paper: #ffffff; --ink: #1f1a1d; --muted: #5a5257; --wine: #910048; --wine-deep: #6d0036; --gold: #e8a920;
+        --teal: #0c6b62; --teal-soft: #e3f2f0; --amber: #7a5200; --amber-soft: #fcefc9; --card: #ffffff; --line: #e2dcdf; --tint: #f6f1f3;
+      }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--paper); }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; font-family: system-ui, sans-serif; color: var(--ink); }
+      .slide { position: absolute; inset: 0; }
+      .frame { position: absolute; inset: 0; padding: 92px 120px 150px; display: flex; flex-direction: column; justify-content: center; opacity: 0; background: var(--paper); }
+      .frame::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 22px; background: var(--wine); }
+      .frame::after { content: ""; position: absolute; left: 22px; top: 0; bottom: 0; width: 8px; background: var(--gold); }
+      .dark .frame { background: var(--wine); color: #fff; }
+      .dark .frame::before { background: var(--gold); }
+      .dark .frame::after { display: none; }
+      .logo { position: absolute; top: 44px; right: 96px; height: 92px; width: auto; }
+      .dark .logo { top: 0; right: 96px; height: 150px; padding: 26px 30px 22px; background: #fff; border-radius: 0 0 18px 18px; box-sizing: border-box; }
+      .num { position: absolute; bottom: 52px; left: 120px; font-size: 26px; letter-spacing: 0.14em; color: var(--muted); font-variant-numeric: tabular-nums; }
+      .dark .num { color: #f1d3e0; }
+      .course { font-size: 34px; font-weight: 600; color: var(--gold); margin-bottom: 30px; }
+      .claim { font-family: ui-serif, serif; font-weight: 700; font-size: 74px; line-height: 1.08; letter-spacing: -0.015em; max-width: 1480px; margin-bottom: 44px; }
+      .claim.long { font-size: 62px; max-width: 1640px; }
+      .claim.xl { font-size: 96px; max-width: 1500px; }
+      .lead { font-size: 48px; line-height: 1.25; color: #ffffff; max-width: 1400px; }
+      .lead.dark-ink { color: var(--muted); margin-top: -14px; margin-bottom: 40px; }
+      .byline { font-size: 32px; color: #f6dfe9; margin-top: 70px; }
+      .source { font-size: 30px; color: var(--muted); margin-top: 34px; }
+      .punch { font-family: ui-serif, serif; font-size: 56px; font-weight: 700; color: var(--wine); margin-top: 44px; }
+      .punch.soft { color: var(--ink); font-size: 46px; margin-top: 18px; }
+      .punch.good { color: var(--teal); }
+
+      .steps { list-style: none; display: grid; gap: 18px; max-width: 1500px; }
+      .steps li { display: flex; align-items: center; gap: 30px; font-size: 46px; background: var(--tint); border-radius: 18px; padding: 18px 30px; }
+      .steps b { flex: none; width: 72px; height: 72px; border-radius: 50%; background: var(--wine); color: #fff; display: grid; place-items: center; font-size: 40px; }
+
+      .cards { display: grid; gap: 30px; }
+      .cards.three { grid-template-columns: repeat(3, 1fr); }
+      .cards.two { grid-template-columns: repeat(2, 1fr); }
+      .cards.four { grid-template-columns: repeat(4, 1fr); }
+      .cards.grid2 { grid-template-columns: repeat(2, 1fr); gap: 26px; }
+      .cards.tight { margin-top: 30px; }
+      .card { background: var(--tint); border-radius: 22px; padding: 36px 40px; display: flex; flex-direction: column; gap: 14px; }
+      .card strong { font-size: 48px; line-height: 1.12; font-weight: 800; }
+      .card em { font-style: normal; font-size: 40px; line-height: 1.2; color: var(--muted); }
+      .card .tag, .panel .tag { align-self: flex-start; font-size: 34px; font-weight: 600; color: var(--wine); }
+      .card.file strong { font-family: ui-monospace, monospace; font-size: 46px; }
+      .card.empty, .card.warn { background: var(--amber-soft); }
+      .card.warn strong { color: var(--amber); }
+      .card.pill { align-items: center; text-align: center; padding: 30px 20px; }
+      .card.pill b { width: 68px; height: 68px; border-radius: 50%; background: var(--wine); color: #fff; display: grid; place-items: center; font-size: 38px; }
+      .cards.tall .card { min-height: 300px; }
+      .verdict { margin-top: auto; padding: 14px 18px; border-radius: 12px; background: #fbe3a6; color: var(--amber) !important; font-weight: 700; }
+      .verdict.good { background: #cfe9e5; color: var(--teal) !important; }
+
+      table.data { border-collapse: collapse; width: 100%; background: var(--tint); border-radius: 20px; overflow: hidden; }
+      table.data th { text-align: left; font-size: 30px; letter-spacing: 0.1em; text-transform: uppercase; color: #fff; background: var(--wine-deep); padding: 20px 28px; }
+      table.data td { font-size: 42px; padding: 22px 28px; border-top: 3px solid #ffffff; font-variant-numeric: tabular-nums; }
+      table.data.matrix td { font-size: 40px; padding: 24px 28px; }
+      table.data.matrix b { color: var(--wine); }
+      .chips { display: flex; gap: 22px; margin-top: 36px; flex-wrap: wrap; }
+      .chip { font-size: 40px; font-weight: 700; padding: 16px 28px; border-radius: 999px; background: var(--amber-soft); color: var(--amber); }
+
+      .split { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+      .panel { background: var(--tint); border-radius: 22px; padding: 30px 34px; display: flex; flex-direction: column; gap: 18px; }
+      .panel.good { background: var(--teal-soft); }
+      .panel.good .tag { color: var(--teal); }
+      .box { font-size: 40px; padding: 18px 24px; border-radius: 14px; background: #ffffff; }
+      .box i { font-style: normal; color: var(--amber); font-weight: 700; }
+      .box.strong { background: var(--teal); color: #fff; font-weight: 700; }
+      .box.new { background: var(--teal-soft); color: var(--teal); font-weight: 700; }
+      .schema { font-family: ui-monospace, monospace; font-size: 44px; font-weight: 700; padding: 26px 32px; border-radius: 18px; background: var(--tint); }
+      .schema.main { font-size: 50px; background: var(--wine-deep); color: #fff; }
+      .schema.small { font-size: 40px; background: #ffffff; }
+      .schema u { text-decoration-thickness: 5px; text-underline-offset: 8px; }
+
+      .layers { display: grid; gap: 22px; max-width: 1500px; }
+      .layer { display: flex; align-items: baseline; gap: 34px; padding: 30px 38px; border-radius: 20px; background: var(--wine); color: #fff; }
+      .layer.mid { background: #7f003f; margin-left: 70px; }
+      .layer.low { background: var(--wine-deep); margin-left: 140px; }
+      .layer strong { font-size: 50px; flex: none; width: 430px; }
+      .layer em { font-style: normal; font-size: 40px; color: #ffffff; }
+
+      .timeline { display: grid; gap: 14px; }
+      .timeline .row { display: grid; grid-template-columns: 170px 560px 1fr; align-items: center; gap: 30px; background: var(--tint); border-radius: 16px; padding: 14px 28px; }
+      .timeline b { font-family: ui-serif, serif; font-size: 52px; color: var(--wine); font-variant-numeric: tabular-nums; }
+      .timeline strong { font-size: 42px; }
+      .timeline em { font-style: normal; font-size: 40px; color: var(--muted); }
+
+      iframe.fig { flex: none; width: 1560px; height: 720px; border: 0; background: transparent; align-self: center; margin-top: -24px; }
+
+      /* Transiciones solo al presentar en vivo: el reproductor salta entre
+         puntos de la línea de tiempo y el navegador suaviza el cambio. */
+      html.live .frame { transition: opacity 0.45s ease; }
+      html.live [data-in], html.live [data-f] { transition: opacity 0.5s ease, transform 0.55s cubic-bezier(0.2, 0.7, 0.2, 1); transition-delay: calc(var(--i, 0) * 70ms); }
+      html.live [data-hl] { transition: background-color 0.4s ease, color 0.4s ease; }
+    </style>
+  </head>
+  <body>
+    <script type="application/hyperframes-slideshow+json">
+{
+  "slides": [
+    {
+      "sceneId": "portada",
+      "startTime": 0,
+      "endTime": 3.5,
+      "notes": "Abrir con una pregunta: si la universidad agrega mañana un campo nuevo a su ficha de estudiante, ¿deja de funcionar la consulta de notas? Recoger dos o tres respuestas sin corregirlas. La clase termina respondiendo esa pregunta."
+    },
+    {
+      "sceneId": "ruta",
+      "startTime": 3.5,
+      "endTime": 7,
+      "notes": "Presentar la ruta en un minuto. Es la misma secuencia de la guía: primero el caso, después los nombres técnicos, y al final el motor por dentro."
+    },
+    {
+      "sceneId": "pedidos",
+      "startTime": 7,
+      "endTime": 15.5,
+      "notes": "El instituto de la semana 1 ya tiene su base de datos: ESTUDIANTE, PAGO y PRESTAMO. Revelar los pedidos uno por uno. Pedir a la clase que los agrupe según lo que habría que modificar. Es la Tabla 1 de la guía.",
+      "fragments": [
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ]
+    },
+    {
+      "sceneId": "grupos",
+      "startTime": 15.5,
+      "endTime": 22,
+      "notes": "Revelar los grupos después de escuchar a la clase. La prueba para distinguirlos: comparar el listado de Secretaría antes y después de cada pedido. Tras P4 es idéntico; tras P5 existe un dato que antes no existía.",
+      "fragments": [
+        17.5,
+        18.5,
+        19.5,
+        20.5
+      ]
+    },
+    {
+      "sceneId": "idea",
+      "startTime": 22,
+      "endTime": 25.5,
+      "notes": "Diapositiva de transición. Aquí aparece el nombre técnico: arquitectura de tres esquemas. Su objetivo es separar las aplicaciones de los usuarios de la base de datos física."
+    },
+    {
+      "sceneId": "vocab1",
+      "startTime": 25.5,
+      "endTime": 33,
+      "notes": "Antes de los niveles, fijar cuatro palabras que se usarán toda la clase. Pedir que la clase las diga con sus palabras antes de revelar cada definición. Esquema se confunde con los datos: el esquema es la descripción de la estructura; los datos son lo que se guarda. Índice: usar la analogía del índice de un libro.",
+      "fragments": [
+        27.5,
+        28.5,
+        29.5,
+        30.5,
+        31.5
+      ]
+    },
+    {
+      "sceneId": "niveles",
+      "startTime": 33,
+      "endTime": 39.5,
+      "notes": "Revelar de arriba hacia abajo y volver a los pedidos: P1 a P3 son esquemas externos, P5 toca el conceptual y P4 el interno. Definir índice con la analogía del índice de un libro: es una ruta de acceso. Aclarar que los datos reales están solo en el nivel físico, el que describe el esquema interno.",
+      "fragments": [
+        35,
+        36,
+        37,
+        38
+      ]
+    },
+    {
+      "sceneId": "figura-niveles",
+      "startTime": 39.5,
+      "endTime": 45,
+      "notes": "Figura interactiva en tres pasos. Al entrar: arriba las ventanillas de cada oficina, en medio la ficha completa, abajo el almacenamiento. Preguntar qué ventanilla deja ver el teléfono. Primer avance: entra un índice al almacenamiento; preguntar qué cambió arriba (nada). Segundo avance: se agrega correo_personal a la ficha; preguntar de nuevo. El contador de vistas modificadas se queda en 0 las dos veces. Las flechas del teclado controlan la figura igual que el resto de la diapositiva.",
+      "fragments": [
+        41.5,
+        42.5,
+        43.5
+      ]
+    },
+    {
+      "sceneId": "correspondencias",
+      "startTime": 45,
+      "endTime": 50.5,
+      "notes": "Los tres esquemas son descripciones; los datos están una sola vez. Cuando Secretaría pide su listado, el DBMS traduce la petición hacia abajo y el resultado hacia arriba. Ese trabajo de traducción se llama correspondencia.",
+      "fragments": [
+        47,
+        48,
+        49
+      ]
+    },
+    {
+      "sceneId": "independencia",
+      "startTime": 50.5,
+      "endTime": 55,
+      "notes": "Las dos definiciones, lado a lado. Lógica: cambia el conceptual, no cambian las vistas ni los programas. Física: cambia el interno, no cambia el conceptual. Preguntar cuál de las dos creen más difícil de lograr: la lógica, porque exige admitir cambios de estructura sin afectar a los programas.",
+      "fragments": [
+        52.5,
+        53.5
+      ]
+    },
+    {
+      "sceneId": "cambios",
+      "startTime": 55,
+      "endTime": 62.5,
+      "notes": "Tres decisiones por cambio: en qué nivel ocurre, qué no debe modificarse y qué independencia lo permite. Revelar fila por fila pidiendo la clasificación antes de mostrarla. La última fila prepara el límite. Es la Tabla 3 de la guía y el formato del taller PE-1.2.",
+      "fragments": [
+        57,
+        58,
+        59,
+        60,
+        61
+      ]
+    },
+    {
+      "sceneId": "limite",
+      "startTime": 62.5,
+      "endTime": 66,
+      "notes": "Si se reduce la base, solo quedan a salvo las vistas que usan los datos que permanecen. Secretaría usa el teléfono: su vista sí cambia. Regla práctica para el taller: antes de quitar una columna, revisar qué vistas la usan."
+    },
+    {
+      "sceneId": "workbench",
+      "startTime": 66,
+      "endTime": 72.5,
+      "notes": "Abrir Workbench en vivo con el script Caso_ILE_BD.sql ya ejecutado. Mostrar el esquema ile: carpeta Views, carpeta Tables y la pestaña Indexes de la tabla lote. Aclarar que la clave es conceptual y el índice que la sostiene es interno. Es el laboratorio guiado de la guía y la antesala del taller PE-1.2.",
+      "fragments": [
+        68,
+        69,
+        70,
+        71
+      ]
+    },
+    {
+      "sceneId": "vocab2",
+      "startTime": 72.5,
+      "endTime": 79,
+      "notes": "Tres palabras que aparecen en la lámina siguiente. DDL es el lenguaje con que se definen los esquemas; SQL reúne definición y manipulación. El catálogo no contiene los datos de los estudiantes: contiene la descripción de la base. El plan es el camino que elige el motor para resolver la consulta.",
+      "fragments": [
+        74.5,
+        75.5,
+        76.5,
+        77.5
+      ]
+    },
+    {
+      "sceneId": "motor",
+      "startTime": 79,
+      "endTime": 87.5,
+      "notes": "Seguir la consulta de Secretaría módulo por módulo. Señalar las dos veces que aparece el catálogo: lo escribe el compilador de DDL y lo consulta el optimizador. Ahí está la razón de la independencia: la consulta nombra tablas y columnas, y el optimizador decide el camino. Es la Figura 2 de la guía.",
+      "fragments": [
+        81,
+        82,
+        83,
+        84,
+        85,
+        86
+      ]
+    },
+    {
+      "sceneId": "capas",
+      "startTime": 87.5,
+      "endTime": 92,
+      "notes": "El cliente y el servidor suelen estar en computadores distintos. En dos capas el software se reparte entre cliente y servidor. En tres capas aparece una capa intermedia: el servidor de aplicaciones o servidor web. Ejemplo cercano: la plataforma de la universidad desde el navegador.",
+      "fragments": [
+        89.5,
+        90.5
+      ]
+    },
+    {
+      "sceneId": "criterios",
+      "startTime": 92,
+      "endTime": 99.5,
+      "notes": "Los cuatro criterios del cuadro TA-1.2. Pedir a la clase que clasifique MySQL con cada uno: relacional, multiusuario, centralizado en la instalación del taller y de código abierto. El quinto criterio del texto, las rutas de acceso, queda para más adelante.",
+      "fragments": [
+        94,
+        95,
+        96,
+        97,
+        98
+      ]
+    },
+    {
+      "sceneId": "practica",
+      "startTime": 99.5,
+      "endTime": 106,
+      "notes": "Comprobación antes de las actividades, con el mismo instituto. Para cada cambio, pedir primero tres respuestas: nivel, qué independencia lo permite y qué vistas se afectan. Revelar la fila después. El tercer cambio repite el límite: Tesorería usa el valor, así que su vista cambia. Quien clasifica bien los tres está listo para el taller PE-1.2.",
+      "fragments": [
+        101.5,
+        102.5,
+        103.5,
+        104.5
+      ]
+    },
+    {
+      "sceneId": "actividades",
+      "startTime": 106,
+      "endTime": 109.5,
+      "notes": "PE-1.2 se hace en clase con el caso ILE en Workbench: mapa de niveles, cuatro cambios y justificación. TA-1.2 es autónomo: cuadro de tres DBMS, diagrama de módulos de uno y un párrafo sobre independencia física. Las plantillas y las fechas están en Canvas."
+    },
+    {
+      "sceneId": "cierre",
+      "startTime": 109.5,
+      "endTime": 113,
+      "notes": "Volver a la pregunta inicial: si la universidad agrega un campo a la ficha, la consulta de notas sigue funcionando, porque no usa ese campo. Tarea para casa: repasar sin apuntes las páginas 2.1 a 2.3 del módulo y responder de memoria qué nivel cambia con un índice y cuál con una columna nueva. Próxima semana: modelo entidad-relación."
+    }
+  ],
+  "slideSequences": []
+}
+    </script>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="113" data-width="1920" data-height="1080">
+
+      <section id="portada" class="clip slide dark" data-start="0" data-duration="3.5" data-track-index="0" data-label="Portada" data-frags="0">
+        <div class="frame" id="portada-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">01 / 20</span>
+      <p class="course" data-in="0" style="--i:0">CC05A_IFT200 · Semana 2</p>
+      <h1 class="claim xl" data-in="1" style="--i:1">Una base de datos puede cambiar sin romper lo que ya funciona</h1>
+      <p class="lead" data-in="2" style="--i:2">Esquemas y arquitectura de tres esquemas</p>
+      <p class="byline" data-in="3" style="--i:3">Estructura, modelado, almacenamiento de BDD · Charlie Cárdenas Toledo</p>
+        </div>
+      </section>
+
+      <section id="ruta" class="clip slide" data-start="3.5" data-duration="3.5" data-track-index="0" data-label="Ruta de la clase" data-frags="0">
+        <div class="frame" id="ruta-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">02 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">La clase va de cinco pedidos al interior del motor</h1>
+      <ol class="steps">
+        <li data-in="1" style="--i:1"><b>1</b><span>Explorar cinco pedidos sobre la misma base</span></li>
+        <li data-in="2" style="--i:2"><b>2</b><span>Separar los tres niveles</span></li>
+        <li data-in="3" style="--i:3"><b>3</b><span>Explicar la independencia de datos</span></li>
+        <li data-in="4" style="--i:4"><b>4</b><span>Reconocer los niveles en MySQL Workbench</span></li>
+        <li data-in="5" style="--i:5"><b>5</b><span>Recorrer los módulos del DBMS y clasificarlo</span></li>
+      </ol>
+        </div>
+      </section>
+
+      <section id="pedidos" class="clip slide" data-start="7" data-duration="8.5" data-track-index="0" data-label="Cinco pedidos" data-frags="5">
+        <div class="frame" id="pedidos-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">03 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">En una semana llegan cinco pedidos sobre la misma base</h1>
+      <table class="data matrix" data-in="1" style="--i:1">
+        <thead><tr><th>Pedido</th><th>Quién</th><th>Qué necesita</th></tr></thead>
+        <tbody>
+          <tr data-f="1"><td><b>P1</b></td><td>Secretaría</td><td>Nombre, carrera, correo y teléfono</td></tr>
+          <tr data-f="2"><td><b>P2</b></td><td>Tesorería</td><td>Cédula, nombre y pagos</td></tr>
+          <tr data-f="3"><td><b>P3</b></td><td>Biblioteca</td><td>Cédula, nombre y libros sin devolver</td></tr>
+          <tr data-f="4"><td><b>P4</b></td><td>Tecnología</td><td>Acelerar las búsquedas por nombre</td></tr>
+          <tr data-f="5"><td><b>P5</b></td><td>Dirección</td><td>Guardar un segundo correo</td></tr>
+        </tbody>
+      </table>
+        </div>
+      </section>
+
+      <section id="grupos" class="clip slide" data-start="15.5" data-duration="6.5" data-track-index="0" data-label="Tres grupos" data-frags="3">
+        <div class="frame" id="grupos-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">04 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">Los cinco pedidos tocan la base en tres lugares distintos</h1>
+      <div class="cards three tall">
+        <div class="card" data-f="1"><span class="tag">P1 · P2 · P3</span><strong>Lo que ve cada oficina</strong><em>Los datos guardados son los mismos</em></div>
+        <div class="card" data-f="2"><span class="tag">P5</span><strong>Lo que existe</strong><em>Se agrega una columna</em></div>
+        <div class="card" data-f="3"><span class="tag">P4</span><strong>Cómo se busca</strong><em>Cambia solo la rapidez</em></div>
+      </div>
+        </div>
+      </section>
+
+      <section id="idea" class="clip slide dark" data-start="22" data-duration="3.5" data-track-index="0" data-label="La idea" data-frags="0">
+        <div class="frame" id="idea-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">05 / 20</span>
+      <h1 class="claim xl" data-in="0" style="--i:0">La misma base de datos se describe en tres niveles</h1>
+      <p class="lead" data-in="1" style="--i:1">Eso es la arquitectura de tres esquemas.</p>
+        </div>
+      </section>
+
+      <section id="vocab1" class="clip slide" data-start="25.5" data-duration="7.5" data-track-index="0" data-label="Cuatro palabras" data-frags="4">
+        <div class="frame" id="vocab1-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">06 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">Cuatro palabras que se usan toda la clase</h1>
+      <table class="data matrix" data-in="1" style="--i:1">
+        <thead><tr><th>Palabra</th><th>Qué significa</th></tr></thead>
+        <tbody>
+          <tr data-f="1"><td><b>DBMS</b></td><td>El software que administra la base de datos</td></tr>
+          <tr data-f="2"><td><b>Esquema</b></td><td>La descripción de cómo está organizada la base, no los datos</td></tr>
+          <tr data-f="3"><td><b>Vista</b></td><td>La parte de la base que ve un grupo de usuarios</td></tr>
+          <tr data-f="4"><td><b>Índice</b></td><td>Ruta auxiliar que evita recorrer toda la tabla, como el índice de un libro</td></tr>
+        </tbody>
+      </table>
+        </div>
+      </section>
+
+      <section id="niveles" class="clip slide" data-start="33" data-duration="6.5" data-track-index="0" data-label="Los tres niveles" data-frags="3">
+        <div class="frame" id="niveles-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">07 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">Cada nivel describe la base para alguien distinto</h1>
+      <div class="layers">
+        <div class="layer" data-f="1"><strong>Externo</strong><em>Vistas: la parte que ve cada grupo</em></div>
+        <div class="layer mid" data-f="2"><strong>Conceptual</strong><em>Toda la base: tablas, columnas y restricciones</em></div>
+        <div class="layer low" data-f="3"><strong>Interno</strong><em>Almacenamiento y rutas de acceso</em></div>
+      </div>
+      <p class="source" data-in="1" style="--i:1">Elmasri y Navathe (2016), sección 2.2</p>
+        </div>
+      </section>
+
+      <section id="figura-niveles" class="clip slide" data-start="39.5" data-duration="5.5" data-track-index="0" data-label="Tres niveles, dos cambios" data-frags="2">
+        <div class="frame" id="figura-niveles-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">08 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">Dos cambios abajo, ninguna vista modificada</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="2" src="figuras/tres-niveles/tres-niveles.html?embed" title="Un mueble de tres pisos: ventanillas de cada oficina, la ficha completa y el almacenamiento. Entra un índice y después se agrega un campo; las ventanillas no cambian." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="correspondencias" class="clip slide" data-start="45" data-duration="5.5" data-track-index="0" data-label="Correspondencias" data-frags="2">
+        <div class="frame" id="correspondencias-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">09 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">Los datos se guardan una sola vez; lo demás son descripciones</h1>
+      <p class="punch" data-f="1">El DBMS traduce cada petición de un nivel al siguiente.</p>
+      <p class="punch soft" data-f="2">Esas traducciones se llaman correspondencias.</p>
+        </div>
+      </section>
+
+      <section id="independencia" class="clip slide" data-start="50.5" data-duration="4.5" data-track-index="0" data-label="Independencia de datos" data-frags="1">
+        <div class="frame" id="independencia-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">10 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">Separar niveles permite cambiar uno sin tocar los demás</h1>
+      <div class="split">
+        <div class="panel" data-in="1" style="--i:1">
+          <span class="tag">Independencia lógica</span>
+          <div class="box strong" style="background:var(--wine-deep)">Cambia el esquema conceptual</div>
+          <div class="box">No cambian las vistas ni los programas</div>
+          <div class="box">Ejemplo: agregar correo_personal</div>
+        </div>
+        <div class="panel good" data-f="1">
+          <span class="tag">Independencia física</span>
+          <div class="box strong">Cambia el esquema interno</div>
+          <div class="box new">No cambia el esquema conceptual</div>
+          <div class="box new">Ejemplo: crear un índice por nombre</div>
+        </div>
+      </div>
+        </div>
+      </section>
+
+      <section id="cambios" class="clip slide" data-start="55" data-duration="7.5" data-track-index="0" data-label="Clasificar cambios" data-frags="4">
+        <div class="frame" id="cambios-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">11 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">Clasificar un cambio exige tres decisiones</h1>
+      <table class="data matrix" data-in="1" style="--i:1">
+        <thead><tr><th>Cambio</th><th>Nivel</th><th>No se modifica</th><th>Independencia</th></tr></thead>
+        <tbody>
+          <tr data-f="1"><td>Índice por nombre</td><td>Interno</td><td>Tablas, vistas y programas</td><td><b>Física</b></td></tr>
+          <tr data-f="2"><td>Columna correo_personal</td><td>Conceptual</td><td>Las tres vistas</td><td><b>Lógica</b></td></tr>
+          <tr data-f="3"><td>Tabla BECA</td><td>Conceptual</td><td>Las tres vistas</td><td><b>Lógica</b></td></tr>
+          <tr data-f="4"><td>Eliminar teléfono</td><td>Conceptual</td><td>Tesorería y Biblioteca</td><td><b>Lógica, con límite</b></td></tr>
+        </tbody>
+      </table>
+        </div>
+      </section>
+
+      <section id="limite" class="clip slide dark" data-start="62.5" data-duration="3.5" data-track-index="0" data-label="El límite" data-frags="0">
+        <div class="frame" id="limite-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">12 / 20</span>
+      <h1 class="claim xl" data-in="0" style="--i:0">Una vista solo se rompe si usa la columna que desaparece</h1>
+      <p class="lead" data-in="1" style="--i:1">Antes de eliminar una columna, se revisa qué vistas la usan.</p>
+        </div>
+      </section>
+
+      <section id="workbench" class="clip slide" data-start="66" data-duration="6.5" data-track-index="0" data-label="En MySQL Workbench" data-frags="3">
+        <div class="frame" id="workbench-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">13 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">En MySQL Workbench, cada nivel está en un lugar distinto</h1>
+      <div class="timeline">
+        <div class="row" data-f="1"><b>Ext.</b><strong>Carpeta Views</strong><em>v_distribucion, v_calidad, v_compras</em></div>
+        <div class="row" data-f="2"><b>Con.</b><strong>Carpeta Tables</strong><em>producto, proveedor, lote, pedido</em></div>
+        <div class="row" data-f="3"><b>Int.</b><strong>Pestaña Indexes</strong><em>idx_lote_bodega y los que sostienen las claves</em></div>
+      </div>
+        </div>
+      </section>
+
+      <section id="vocab2" class="clip slide" data-start="72.5" data-duration="6.5" data-track-index="0" data-label="Tres palabras del motor" data-frags="3">
+        <div class="frame" id="vocab2-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">14 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">Tres palabras antes de entrar al motor</h1>
+      <table class="data matrix" data-in="1" style="--i:1">
+        <thead><tr><th>Palabra</th><th>Qué significa</th></tr></thead>
+        <tbody>
+          <tr data-f="1"><td><b>DDL</b></td><td>El lenguaje con que se definen los esquemas</td></tr>
+          <tr data-f="2"><td><b>Catálogo</b></td><td>El registro donde el DBMS guarda la descripción de la base</td></tr>
+          <tr data-f="3"><td><b>Plan</b></td><td>El camino que elige el DBMS para resolver una consulta</td></tr>
+        </tbody>
+      </table>
+        </div>
+      </section>
+
+      <section id="motor" class="clip slide" data-start="79" data-duration="8.5" data-track-index="0" data-label="El motor por dentro" data-frags="5">
+        <div class="frame" id="motor-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">15 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">Una orden pasa por cinco módulos antes de tocar el disco</h1>
+      <div class="timeline">
+        <div class="row" data-f="1"><b>DDL</b><strong>Compilador de DDL</strong><em>Guarda la descripción en el catálogo</em></div>
+        <div class="row" data-f="2"><b>1</b><strong>Compilador de consultas</strong><em>Valida sintaxis y nombres</em></div>
+        <div class="row" data-f="3"><b>2</b><strong>Optimizador</strong><em>Consulta el catálogo y decide el plan</em></div>
+        <div class="row" data-f="4"><b>3</b><strong>Procesador en ejecución</strong><em>Ejecuta el plan</em></div>
+        <div class="row" data-f="5"><b>4</b><strong>Gestor de datos</strong><em>Lee y escribe en disco</em></div>
+      </div>
+        </div>
+      </section>
+
+      <section id="capas" class="clip slide" data-start="87.5" data-duration="4.5" data-track-index="0" data-label="Dos y tres capas" data-frags="1">
+        <div class="frame" id="capas-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">16 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">El DBMS casi nunca está en el computador de quien consulta</h1>
+      <div class="cards two tall">
+        <div class="card" data-in="1" style="--i:1"><span class="tag">Dos capas</span><strong>Cliente y servidor</strong><em>El programa cliente se conecta al servidor de base de datos</em></div>
+        <div class="card" data-f="1"><span class="tag">Tres capas</span><strong>Cliente, servidor web y servidor de base de datos</strong><em>Una capa intermedia atiende al navegador</em></div>
+      </div>
+        </div>
+      </section>
+
+      <section id="criterios" class="clip slide" data-start="92" data-duration="7.5" data-track-index="0" data-label="Clasificar un DBMS" data-frags="4">
+        <div class="frame" id="criterios-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">17 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">Cuatro criterios bastan para comparar un DBMS con otro</h1>
+      <div class="cards grid2">
+        <div class="card" data-f="1"><strong>Modelo de datos</strong><em>Relacional, de objetos, NoSQL</em></div>
+        <div class="card" data-f="2"><strong>Número de usuarios</strong><em>Monousuario o multiusuario</em></div>
+        <div class="card" data-f="3"><strong>Número de sitios</strong><em>Centralizado o distribuido</em></div>
+        <div class="card" data-f="4"><strong>Costo</strong><em>Código abierto o con licencia de pago</em></div>
+      </div>
+        </div>
+      </section>
+
+      <section id="practica" class="clip slide" data-start="99.5" data-duration="6.5" data-track-index="0" data-label="Comprueba lo aprendido" data-frags="3">
+        <div class="frame" id="practica-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">18 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">Clasifica tres cambios nuevos del instituto</h1>
+      <table class="data matrix" data-in="1" style="--i:1">
+        <thead><tr><th>Cambio</th><th>Nivel</th><th>Independencia</th><th>Vistas afectadas</th></tr></thead>
+        <tbody>
+          <tr data-f="1"><td>Índice por cédula en PAGO</td><td>Interno</td><td><b>Física</b></td><td>Ninguna</td></tr>
+          <tr data-f="2"><td>Columna beca en ESTUDIANTE</td><td>Conceptual</td><td><b>Lógica</b></td><td>Ninguna</td></tr>
+          <tr data-f="3"><td>Eliminar valor de PAGO</td><td>Conceptual</td><td><b>Lógica, con límite</b></td><td>Tesorería</td></tr>
+        </tbody>
+      </table>
+        </div>
+      </section>
+
+      <section id="actividades" class="clip slide" data-start="106" data-duration="3.5" data-track-index="0" data-label="Actividades" data-frags="0">
+        <div class="frame" id="actividades-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">19 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">Dos actividades calificadas cierran la semana</h1>
+      <div class="cards two tall">
+        <div class="card" data-in="1" style="--i:1"><span class="tag">PE-1.2 · 2 puntos</span><strong>Taller de arquitectura</strong><em>Ubicar los objetos de ILE en su nivel y clasificar cuatro cambios</em></div>
+        <div class="card" data-in="2" style="--i:2"><span class="tag">TA-1.2 · 2 puntos</span><strong>Cuadro comparativo DBMS</strong><em>Tres DBMS, cuatro criterios, el diagrama de un motor y un párrafo sobre independencia física</em></div>
+      </div>
+        </div>
+      </section>
+
+      <section id="cierre" class="clip slide dark" data-start="109.5" data-duration="3.5" data-track-index="0" data-label="Cierre" data-frags="0">
+        <div class="frame" id="cierre-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">20 / 20</span>
+      <h1 class="claim xl" data-in="0" style="--i:0">La consulta nombra los datos; el motor decide cómo llegar a ellos</h1>
+      <p class="lead" data-in="1" style="--i:1">Próxima semana: modelo entidad-relación</p>
+      <p class="byline" data-in="2" style="--i:2">Fuente: Elmasri y Navathe (2016), capítulo 2 · ASU IFT 200, Module 1</p>
+        </div>
+      </section>
+    </div>
+    <script>
+      // Con el motor de HyperFrames (check, Studio) el registro ya existe.
+      // Al presentar, el reproductor mueve esta línea de tiempo directamente.
+      const engineHosted = Object.prototype.hasOwnProperty.call(window, "__timelines");
+      window.__timelines = window.__timelines || {};
+      if (!engineHosted) document.documentElement.classList.add("live");
+
+      // Las figuras incrustadas reenvían las flechas aquí: se les quita el foco y se entrega la tecla
+      // al documento donde el reproductor la escucha, para que las flechas siempre controlen el deck.
+      window.addEventListener("message", (ev) => {
+        const m = ev.data;
+        if (!m || m.type !== "deck-key") return;
+        let w = window;
+        for (;;) {
+          try { if (w.document.activeElement && w.document.activeElement !== w.document.body) w.document.activeElement.blur(); } catch (e) {}
+          if (w === w.parent) break;
+          w = w.parent;
+        }
+        try { w.focus(); w.document.dispatchEvent(new KeyboardEvent("keydown", { key: m.key, bubbles: true, cancelable: true })); } catch (e) {}
+      });
+
+      // El reproductor retrocede de diapositiva en diapositiva. Se reemplaza prev() del controlador para
+      // que teclado, botón y deslizamiento deshagan un avance a la vez: de un avance al anterior y,
+      // desde el primero, al último avance de la diapositiva previa.
+      (function installStepBack() {
+        let w = window, host = null;
+        for (;;) {
+          try { host = w.document.querySelector("hyperframes-slideshow"); } catch (e) {}
+          if (host || w === w.parent) break;
+          w = w.parent;
+        }
+        if (!host) return;
+        const patch = () => {
+          const c = host.controller;
+          if (!c) return false;
+          if (c.__stepBack) return true;
+          c.__stepBack = true;
+          const original = c.prev.bind(c);
+          c.prev = () => {
+            const f = c.frame;
+            if (c.stack.length > 1) return original();
+            if (f.fragmentIndex > 0) c.resumeSlide(f.slideIndex, f.fragmentIndex - 1);
+            else if (f.slideIndex > 0) {
+              const p = f.slideIndex - 1, n = c.show.slides[p].fragments.length;
+              c.resumeSlide(p, n > 0 ? n - 1 : -1);
+            }
+          };
+          return true;
+        };
+        setInterval(patch, 300);
+        patch();
+      })();
+
+      const ENTER = 2;
+      const tl = gsap.timeline({ paused: true });
+      tl.to({}, { duration: 113 }, 0);
+
+      const figSyncs = [];
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      slides.forEach((slide, index) => {
+        const start = Number(slide.dataset.start);
+        const end = start + Number(slide.dataset.duration);
+        const frame = slide.querySelector(".frame");
+        tl.set(frame, { opacity: 1 }, start);
+        if (index < slides.length - 1) tl.set(frame, { opacity: 0 }, end);
+
+        slide.querySelectorAll("[data-in]").forEach((el) => {
+          const i = Number(el.dataset.in);
+          tl.fromTo(el, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, start + 0.12 + i * 0.07);
+        });
+        slide.querySelectorAll("[data-f]").forEach((el) => {
+          const hold = start + ENTER + Number(el.dataset.f);
+          tl.fromTo(el, { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, hold - 0.6);
+        });
+        slide.querySelectorAll("iframe[data-fig]").forEach((el) => {
+          // La figura corre en su propio documento: en vivo anima sola hacia el estado pedido;
+          // con el motor (check, Studio) sigue la línea de tiempo cuadro a cuadro.
+          // El estado se calcula desde el tiempo de la línea de tiempo, así responde igual
+          // al avanzar, al retroceder y al saltar entre diapositivas.
+          const steps = Number(el.dataset.fig);
+          let sent = -1;
+          const wanted = () => {
+            const t = tl.time();
+            let u = 0;
+            for (let step = 1; step <= steps; step++) u += Math.min(1, Math.max(0, (t - (start + ENTER + step - 0.6)) / 0.6));
+            return engineHosted ? u / steps : Math.round(u) / steps;
+          };
+          const send = (force) => {
+            const value = wanted();
+            if (!el.contentWindow || (!force && value === sent)) return;
+            sent = value;
+            el.contentWindow.postMessage({ type: "fig", mode: engineHosted ? "set" : "go", value }, "*");
+          };
+          figSyncs.push(send);
+          el.addEventListener("load", () => send(true));
+        });
+        slide.querySelectorAll("[data-hl]").forEach((el) => {
+          const hold = start + ENTER + Number(el.dataset.hl);
+          tl.to(el, { backgroundColor: "#fbe3a6", color: "#5c3d00", duration: 0.4 }, hold - 0.5);
+        });
+      });
+
+      tl.eventCallback("onUpdate", () => figSyncs.forEach((sync) => sync()));
+      // En vivo el reproductor puede mover la línea de tiempo sin emitir eventos: se revisa en cada tic de GSAP.
+      if (!engineHosted) gsap.ticker.add(() => figSyncs.forEach((sync) => sync()));
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

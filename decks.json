@@ -1,0 +1,95 @@
+[
+  {
+    "codigo": "CC05A_IFT200",
+    "nombre": "Estructura, modelado y almacenamiento de BD",
+    "color": "#910048",
+    "texto": "#ffffff",
+    "semanas": [
+      {
+        "n": 1,
+        "slug": "bd-semana-01",
+        "tema": "Enfoque de bases de datos, modelos de datos, esquemas y DBMS"
+      },
+      {
+        "n": 2,
+        "slug": "bd-semana-02",
+        "tema": "Esquemas, arquitectura de tres esquemas, independencia de datos y componentes del DBMS"
+      }
+    ]
+  },
+  {
+    "codigo": "LTI_05U_ESD",
+    "nombre": "Estructura de Datos",
+    "color": "#0c6b62",
+    "texto": "#ffffff",
+    "semanas": [
+      {
+        "n": 1,
+        "slug": "esd-semana-01",
+        "tema": "Big-O, tipos de dato abstracto y representación en memoria: arreglo y lista enlazada"
+      },
+      {
+        "n": 2,
+        "slug": "esd-semana-02",
+        "tema": "Costos de arreglo y lista, acceso aleatorio y secuencial, e invariantes de un TDA"
+      }
+    ]
+  },
+  {
+    "codigo": "LTI_05A_INS",
+    "nombre": "Ingeniería del Software",
+    "color": "#7a5200",
+    "texto": "#ffffff",
+    "semanas": [
+      {
+        "n": 1,
+        "slug": "ins-semana-01",
+        "tema": "Ingeniería de software hoy, ética y descubrimiento inicial del proyecto"
+      }
+    ]
+  },
+  {
+    "codigo": "LTI_05U_IHC",
+    "nombre": "Interacción Hombre Computadora",
+    "color": "#6d0036",
+    "texto": "#ffffff",
+    "semanas": [
+      {
+        "n": 1,
+        "slug": "hci-semana-01",
+        "tema": "HCI como ciencia de sistemas interactivos: bucle, latencia, modos, métricas y paradigmas"
+      }
+    ]
+  },
+  {
+    "codigo": "PP_08_IPTI",
+    "nombre": "Arquitectura e Integración de Plataformas de TI",
+    "color": "#1f1a1d",
+    "texto": "#ffffff",
+    "semanas": [
+      {
+        "n": 2,
+        "slug": "ipti-semana-02",
+        "tema": "SOA, contratos REST, gRPC y AsyncAPI, versionado y origen de los microservicios"
+      }
+    ]
+  },
+  {
+    "codigo": "CC05A_IFT202",
+    "nombre": "Fundamentos de Seguridad",
+    "color": "#e8a920",
+    "texto": "#1f1a1d",
+    "semanas": [
+      {
+        "n": 1,
+        "slug": "ift202-semana-01",
+        "tema": "Tríada CIA, activos, amenazas, riesgo, ética y análisis de incidentes reales"
+      },
+      {
+        "n": 2,
+        "slug": "ift202-semana-02",
+        "tema": "Marco NIST CSF 2.0: funciones, categorías, perfiles, niveles y guías de seguridad"
+      }
+    ]
+  }
+]
