@@ -109,7 +109,7 @@
       "sceneId": "correspondencias",
       "startTime": 45,
       "endTime": 50.5,
-      "notes": "Los tres esquemas son descripciones; los datos están una sola vez. Cuando Secretaría pide su listado, el DBMS traduce la petición hacia abajo y el resultado hacia arriba. Ese trabajo de traducción se llama correspondencia.",
+      "notes": "Los tres esquemas son descripciones; los datos están una sola vez, en el nivel interno. Primer paso: Secretaría pide su listado y el DBMS traduce la petición hacia abajo, de la vista a las tablas y de las tablas a los archivos. Segundo paso: el resultado sube por el mismo camino hasta la vista. Cada traducción entre dos niveles se llama correspondencia. Esto explica por qué un cambio en un nivel no obliga a tocar los demás: solo hay que actualizar la correspondencia.",
       "fragments": [
         47,
         48,
@@ -129,105 +129,127 @@
     {
       "sceneId": "cambios",
       "startTime": 55,
-      "endTime": 62.5,
-      "notes": "Tres decisiones por cambio: en qué nivel ocurre, qué no debe modificarse y qué independencia lo permite. Revelar fila por fila pidiendo la clasificación antes de mostrarla. La última fila prepara el límite. Es la Tabla 3 de la guía y el formato del taller PE-1.2.",
+      "endTime": 63.5,
+      "notes": "Tres decisiones por cambio: en qué nivel ocurre, qué no debe modificarse y qué independencia lo permite. Revelar fila por fila pidiendo la clasificación antes de mostrarla. Mover la base a otros discos cambia solo cómo se almacena, así que es interno. La última fila prepara el límite. Es la Tabla 3 de la guía y el formato del taller PE-1.2.",
       "fragments": [
         57,
         58,
         59,
         60,
-        61
+        61,
+        62
       ]
     },
     {
       "sceneId": "limite",
-      "startTime": 62.5,
-      "endTime": 66,
-      "notes": "Si se reduce la base, solo quedan a salvo las vistas que usan los datos que permanecen. Secretaría usa el teléfono: su vista sí cambia. Regla práctica para el taller: antes de quitar una columna, revisar qué vistas la usan."
+      "startTime": 63.5,
+      "endTime": 70,
+      "notes": "Figura en tres pasos con el instituto. Primero se marca qué columnas de ESTUDIANTE usa cada vista: Secretaría usa nombre, carrera, correo y teléfono; Tesorería y Biblioteca usan cédula y nombre. Segundo, el cambio: eliminar la columna teléfono. Tercero, solo deja de funcionar la vista que usaba esa columna. Este es el método del taller PE-1.2: antes de quitar una columna, abrir cada vista y revisar qué columnas usa. En Workbench se hace con clic derecho sobre la vista y Alter View, o con SHOW CREATE VIEW.",
+      "fragments": [
+        65.5,
+        66.5,
+        67.5,
+        68.5
+      ]
     },
     {
       "sceneId": "workbench",
-      "startTime": 66,
-      "endTime": 72.5,
-      "notes": "Abrir Workbench en vivo con el script Caso_ILE_BD.sql ya ejecutado. Mostrar el esquema ile: carpeta Views, carpeta Tables y la pestaña Indexes de la tabla lote. Aclarar que la clave es conceptual y el índice que la sostiene es interno. Es el laboratorio guiado de la guía y la antesala del taller PE-1.2.",
+      "startTime": 70,
+      "endTime": 76.5,
+      "notes": "Figura con el instituto para ver el patrón: en el Navigator, las tablas son el nivel conceptual, las vistas el externo y los índices el interno. Después abrir Workbench en vivo con el script Caso_ILE_BD.sql ya ejecutado y repetir el recorrido en el esquema ile: carpeta Tables, carpeta Views y la pestaña Indexes de la tabla lote. Aclarar que la clave es conceptual y el índice que la sostiene es interno. Es la antesala del taller PE-1.2: la tabla I de la plantilla se llena con este recorrido.",
       "fragments": [
-        68,
-        69,
-        70,
-        71
+        72,
+        73,
+        74,
+        75
       ]
     },
     {
       "sceneId": "vocab2",
-      "startTime": 72.5,
-      "endTime": 79,
+      "startTime": 76.5,
+      "endTime": 83,
       "notes": "Tres palabras que aparecen en la lámina siguiente. DDL es el lenguaje con que se definen los esquemas; SQL reúne definición y manipulación. El catálogo no contiene los datos de los estudiantes: contiene la descripción de la base. El plan es el camino que elige el motor para resolver la consulta.",
       "fragments": [
-        74.5,
-        75.5,
-        76.5,
-        77.5
+        78.5,
+        79.5,
+        80.5,
+        81.5
       ]
     },
     {
       "sceneId": "motor",
-      "startTime": 79,
-      "endTime": 87.5,
-      "notes": "Seguir la consulta de Secretaría módulo por módulo. Señalar las dos veces que aparece el catálogo: lo escribe el compilador de DDL y lo consulta el optimizador. Ahí está la razón de la independencia: la consulta nombra tablas y columnas, y el optimizador decide el camino. Es la Figura 2 de la guía.",
+      "startTime": 83,
+      "endTime": 91.5,
+      "notes": "Seguir la consulta paso a paso: el DDL guarda la descripción en el catálogo; la consulta pasa por el compilador de consultas, el optimizador (que consulta el catálogo y decide el plan), el procesador en ejecución y el gestor de datos, que lee el disco. En el último paso se crea un índice: la consulta es la misma y el optimizador elige otra ruta; eso es la independencia física. Es la Figura 2 de la guía y el modelo del diagrama que cada estudiante dibuja en la TA-1.2 con los módulos de su DBMS elegido.",
       "fragments": [
-        81,
-        82,
-        83,
-        84,
         85,
-        86
+        86,
+        87,
+        88,
+        89,
+        90
       ]
     },
     {
       "sceneId": "capas",
-      "startTime": 87.5,
-      "endTime": 92,
-      "notes": "El cliente y el servidor suelen estar en computadores distintos. En dos capas el software se reparte entre cliente y servidor. En tres capas aparece una capa intermedia: el servidor de aplicaciones o servidor web. Ejemplo cercano: la plataforma de la universidad desde el navegador.",
+      "startTime": 91.5,
+      "endTime": 98,
+      "notes": "El cliente y el servidor suelen estar en computadores distintos. Primer paso, dos capas: el programa cliente envía la consulta directo al servidor de base de datos y recibe los datos. Segundo paso, tres capas: aparece una capa intermedia, el servidor web o de aplicaciones; el navegador pide a esa capa y ella consulta la base. Tercer paso: los datos vuelven al servidor web, que arma la página y la devuelve al navegador. Ejemplo cercano: la plataforma de la universidad desde el navegador.",
       "fragments": [
-        89.5,
-        90.5
+        93.5,
+        94.5,
+        95.5,
+        96.5
       ]
     },
     {
       "sceneId": "criterios",
-      "startTime": 92,
-      "endTime": 99.5,
-      "notes": "Los cuatro criterios del cuadro TA-1.2. Pedir a la clase que clasifique MySQL con cada uno: relacional, multiusuario, centralizado en la instalación del taller y de código abierto. El quinto criterio del texto, las rutas de acceso, queda para más adelante.",
+      "startTime": 98,
+      "endTime": 105.5,
+      "notes": "Los cuatro criterios del cuadro TA-1.2. MySQL queda como ejemplo resuelto de la primera columna del cuadro. En la TA-1.2 cada estudiante elige tres DBMS y escribe un valor concreto en cada celda, apoyado en la documentación oficial. El quinto criterio del texto, las rutas de acceso, queda para más adelante.",
       "fragments": [
-        94,
-        95,
-        96,
-        97,
-        98
+        100,
+        101,
+        102,
+        103,
+        104
       ]
     },
     {
       "sceneId": "practica",
-      "startTime": 99.5,
-      "endTime": 106,
+      "startTime": 105.5,
+      "endTime": 112,
       "notes": "Comprobación antes de las actividades, con el mismo instituto. Para cada cambio, pedir primero tres respuestas: nivel, qué independencia lo permite y qué vistas se afectan. Revelar la fila después. El tercer cambio repite el límite: Tesorería usa el valor, así que su vista cambia. Quien clasifica bien los tres está listo para el taller PE-1.2.",
       "fragments": [
-        101.5,
-        102.5,
-        103.5,
-        104.5
+        107.5,
+        108.5,
+        109.5,
+        110.5
+      ]
+    },
+    {
+      "sceneId": "justificacion",
+      "startTime": 112,
+      "endTime": 119.5,
+      "notes": "Modelo para la parte III del taller PE-1.2, que pide un párrafo con los términos esquema externo, esquema conceptual, esquema interno e independencia de datos. Cuatro frases: nombrar el cambio y el nivel, decir qué no cambia, nombrar la independencia y, si hay límite, decir qué vista hay que revisar. Se muestra con el instituto; en el taller cada estudiante lo repite con los cuatro cambios de ILE.",
+      "fragments": [
+        114,
+        115,
+        116,
+        117,
+        118
       ]
     },
     {
       "sceneId": "actividades",
-      "startTime": 106,
-      "endTime": 109.5,
+      "startTime": 119.5,
+      "endTime": 123,
       "notes": "PE-1.2 se hace en clase con el caso ILE en Workbench: mapa de niveles, cuatro cambios y justificación. TA-1.2 es autónomo: cuadro de tres DBMS, diagrama de módulos de uno y un párrafo sobre independencia física. Las plantillas y las fechas están en Canvas."
     },
     {
       "sceneId": "cierre",
-      "startTime": 109.5,
-      "endTime": 113,
+      "startTime": 123,
+      "endTime": 126.5,
       "notes": "Volver a la pregunta inicial: si la universidad agrega un campo a la ficha, la consulta de notas sigue funcionando, porque no usa ese campo. Tarea para casa: repasar sin apuntes las páginas 2.1 a 2.3 del módulo y responder de memoria qué nivel cambia con un índice y cuál con una columna nueva. Próxima semana: modelo entidad-relación."
     }
   ],

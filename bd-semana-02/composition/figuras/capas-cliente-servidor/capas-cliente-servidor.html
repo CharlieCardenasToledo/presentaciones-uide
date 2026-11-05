@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Dos y tres capas</title>
+<style>
+:root{--wine:#910048;--wine-deep:#6d0036;--gold:#e8a920;--teal:#0c6b62;--amber:#7a5200;--ink:#1f1a1d;--muted:#5a5257;--tint:#f6f1f3;--red:#b3261e}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:transparent;font-family:system-ui,"Segoe UI",sans-serif;color:var(--ink);overflow:hidden}
+#st{position:absolute;left:0;top:0;width:1560px;height:720px;transform-origin:0 0}
+.b{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border-radius:16px;padding:6px 14px;font-weight:700;font-size:32px;line-height:1.15;background:var(--tint);color:var(--ink)}
+.b small{display:block;font-size:24px;font-weight:600;margin-top:4px}
+.t{position:absolute;font-size:34px;font-weight:700;line-height:1.2}
+.pill{position:absolute;display:flex;align-items:center;justify-content:center;height:52px;padding:0 20px;border-radius:26px;color:#fff;font:800 24px/1 ui-monospace,Consolas,monospace;white-space:nowrap;opacity:0;z-index:5}
+.ln{position:absolute;background:#cfc6ca}
+
+</style></head><body>
+<div id="st">
+<div class="t" style="left:30px;top:20px;width:400px;color:var(--wine);font-size:34px">Dos capas</div>
+<div class="ln" style="left:350px;top:157px;width:860px;height:6px"></div>
+<div id="a1" class="b" style="left:60px;top:100px;width:290px;height:120px;background:var(--teal);color:#fff">Cliente<small>programa de escritorio</small></div>
+<div id="a2" class="b" style="left:1210px;top:100px;width:290px;height:120px;background:var(--wine);color:#fff">Servidor de<br>base de datos</div>
+<div id="p1" class="pill" style="background:#910048">consulta</div>
+<div id="p2" class="pill" style="background:#0c6b62">datos</div>
+<div class="t" id="l3" style="left:30px;top:330px;width:400px;color:var(--wine);font-size:34px;opacity:0">Tres capas</div>
+<div class="ln" id="g1" style="left:350px;top:497px;width:230px;height:6px;opacity:0"></div>
+<div class="ln" id="g2" style="left:930px;top:497px;width:280px;height:6px;opacity:0"></div>
+<div id="b1" class="b" style="left:60px;top:440px;width:290px;height:120px;background:var(--teal);color:#fff;opacity:0">Cliente<small>navegador</small></div>
+<div id="b2" class="b" style="left:640px;top:440px;width:290px;height:120px;background:var(--amber);color:#fff;opacity:0">Servidor web<small>capa intermedia</small></div>
+<div id="b3" class="b" style="left:1210px;top:440px;width:290px;height:120px;background:var(--wine);color:#fff;opacity:0">Servidor de<br>base de datos</div>
+<div id="p3" class="pill" style="background:#910048">pedido</div>
+<div id="p4" class="pill" style="background:#910048">consulta</div>
+<div id="p5" class="pill" style="background:#0c6b62">datos</div>
+<div id="p6" class="pill" style="background:#0c6b62">página</div>
+<div id="cap1" class="t" style="left:30px;top:640px;width:1500px;opacity:0;color:var(--wine-deep)">En dos capas, el programa cliente habla directo con el servidor de base de datos</div>
+<div id="cap2" class="t" style="left:30px;top:640px;width:1500px;opacity:0;color:var(--wine-deep)">En tres capas, una capa intermedia atiende al navegador y consulta la base</div>
+</div>
+<script>
+const N = 3;
+const st = document.getElementById("st");
+function fit() { const k = Math.min(innerWidth / 1560, innerHeight / 720); st.style.transform = "scale(" + k + ")"; }
+fit(); addEventListener("resize", fit);
+const $ = (s) => document.querySelector(s);
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const ease = (t) => { t = clamp(t, 0, 1); return t * t * (3 - 2 * t); };
+const win = (s, a, b) => ease((s - a) / (b - a));
+const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+const mix = (a, b, t) => { const x = hex(a), y = hex(b); return "rgb(" + x.map((v, i) => Math.round(v + (y[i] - v) * t)).join(",") + ")"; };
+function lit(el, base, color, t, fg0, fg1) { el.style.background = mix(base, color, t); el.style.color = mix(fg0 || "#1f1a1d", fg1 || "#ffffff", t); }
+function put(el, x, y, a) { el.style.transform = "translate(" + x + "px," + y + "px)"; el.style.opacity = String(a); }
+function route(k, pts) { for (let i = 0; i < pts.length - 1; i++) { if (k <= pts[i + 1][0]) { const t = ease((k - pts[i][0]) / (pts[i + 1][0] - pts[i][0])); return [pts[i][1] + (pts[i + 1][1] - pts[i][1]) * t, pts[i][2] + (pts[i + 1][2] - pts[i][2]) * t]; } } const l = pts[pts.length - 1]; return [l[1], l[2]]; }
+
+let u = 0, target = 0, frame = 0, timer = 0, last = 0;
+function draw() { 
+const s = u * N;
+// paso 1: dos capas
+const r1 = route(clamp(s / 0.5, 0, 1), [[0, 370, 124], [1, 920, 124]]);
+put($("#p1"), r1[0], r1[1], s > 0.02 && s < 0.55 ? 1 : 0);
+const r2 = route(clamp((s - 0.5) / 0.45, 0, 1), [[0, 920, 124], [1, 370, 124]]);
+put($("#p2"), r2[0], r2[1], s > 0.52 && s < 1.0 ? 1 : 0);
+put($("#cap1"), 0, 0, clamp(win(s, 0, 0.3) - win(s, 1, 1.2), 0, 1));
+// paso 2: aparece la capa intermedia y viajan pedido y consulta
+put($("#l3"), 0, 0, win(s, 1, 1.25));
+["#b1", "#b2", "#b3", "#g1", "#g2"].forEach((q, i) => put($(q), 0, 0, win(s, 1.0 + i * 0.05, 1.35 + i * 0.05)));
+const k3 = route(clamp((s - 1.4) / 0.3, 0, 1), [[0, 370, 464], [1, 540, 464]]);
+put($("#p3"), k3[0], k3[1], s > 1.41 && s < 1.75 ? 1 : 0);
+const k4 = route(clamp((s - 1.7) / 0.3, 0, 1), [[0, 950, 464], [1, 1070, 464]]);
+put($("#p4"), k4[0], k4[1], s > 1.71 && s < 2.05 ? 1 : 0);
+// paso 3: vuelven los datos y la página
+const k5 = route(clamp((s - 2.0) / 0.5, 0, 1), [[0, 1070, 464], [1, 950, 464]]);
+put($("#p5"), k5[0], k5[1], s > 2.02 && s < 2.55 ? 1 : 0);
+const k6 = route(clamp((s - 2.5) / 0.5, 0, 1), [[0, 540, 464], [1, 380, 464]]);
+put($("#p6"), k6[0], k6[1], s > 2.52 && s < 3.02 ? 1 : 0);
+put($("#cap2"), 0, 0, win(s, 1.25, 1.6));
+ }
+function loop() {
+  clearTimeout(timer); cancelAnimationFrame(frame);
+  const now = performance.now();
+  const dt = last ? Math.min((now - last) / 1000, 1) : 1 / 60; last = now;
+  const speed = 1 / (N * 1.6);
+  u = target > u ? Math.min(target, u + dt * speed) : Math.max(target, u - dt * speed * 2);
+  draw();
+  if (u !== target) { frame = requestAnimationFrame(loop); timer = setTimeout(loop, 80); } else { frame = 0; timer = 0; last = 0; }
+}
+const run = () => { if (!frame && !timer) { last = 0; loop(); } };
+const go = (v) => { target = clamp(v, 0, 1); run(); };
+window.__fig = { set(v) { u = target = clamp(v, 0, 1); draw(); }, go, get u() { return u; } };
+addEventListener("message", (e) => { const m = e.data; if (!m || m.type !== "fig") return; if (m.mode === "set") window.__fig.set(Number(m.value)); else go(Number(m.value)); });
+if (window.parent !== window) {
+  const KEYMAP = { ArrowRight: "ArrowRight", PageDown: "ArrowRight", " ": "ArrowRight", Enter: "ArrowRight", ArrowLeft: "ArrowLeft", PageUp: "ArrowLeft", Backspace: "ArrowLeft" };
+  addEventListener("keydown", (e) => { const k = KEYMAP[e.key]; if (!k) return; e.preventDefault(); e.stopImmediatePropagation(); parent.postMessage({ type: "deck-key", key: k }, "*"); }, true);
+} else {
+  addEventListener("click", () => go(target >= 1 ? 0 : Math.min(1, Math.round(target * N + 1) / N)));
+}
+draw();
+</script></body></html>

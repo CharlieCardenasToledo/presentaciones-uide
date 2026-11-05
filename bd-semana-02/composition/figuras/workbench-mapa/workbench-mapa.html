@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Dónde vive cada nivel en MySQL Workbench</title>
+<style>
+:root{--wine:#910048;--wine-deep:#6d0036;--gold:#e8a920;--teal:#0c6b62;--amber:#7a5200;--ink:#1f1a1d;--muted:#5a5257;--tint:#f6f1f3;--red:#b3261e}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:transparent;font-family:system-ui,"Segoe UI",sans-serif;color:var(--ink);overflow:hidden}
+#st{position:absolute;left:0;top:0;width:1560px;height:720px;transform-origin:0 0}
+.b{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border-radius:16px;padding:6px 14px;font-weight:700;font-size:32px;line-height:1.15;background:var(--tint);color:var(--ink)}
+.b small{display:block;font-size:24px;font-weight:600;margin-top:4px}
+.t{position:absolute;font-size:34px;font-weight:700;line-height:1.2}
+.pill{position:absolute;display:flex;align-items:center;justify-content:center;height:52px;padding:0 20px;border-radius:26px;color:#fff;font:800 24px/1 ui-monospace,Consolas,monospace;white-space:nowrap;opacity:0;z-index:5}
+.ln{position:absolute;background:#cfc6ca}
+
+</style></head><body>
+<div id="st">
+<div class="b" style="left:0;top:20px;width:620px;height:680px;border-radius:20px;background:#ececee;align-items:flex-start;justify-content:flex-start;padding:0"><div style="width:100%;padding:14px 24px;background:#d9d9dd;border-radius:20px 20px 0 0;font-size:26px;color:#5a5257;font-weight:800;letter-spacing:.06em">SCHEMAS</div></div>
+<div id="r_esq" class="t" style="left:30px;top:100px;width:530px;height:42px;border-radius:8px;padding:2px 10px;font-size:30px;font-weight:800;font-family:inherit">instituto</div>
+<div id="r_tab" class="t" style="left:60px;top:150px;width:500px;height:42px;border-radius:8px;padding:2px 10px;font-size:30px;font-weight:800;font-family:inherit">Tables</div>
+<div id="r_est" class="t" style="left:100px;top:195px;width:460px;height:42px;border-radius:8px;padding:2px 10px;font-size:30px;font-weight:600;font-family:ui-monospace,Consolas,monospace">ESTUDIANTE</div>
+<div id="r_ixh" class="t" style="left:140px;top:240px;width:420px;height:42px;border-radius:8px;padding:2px 10px;font-size:30px;font-weight:800;font-family:inherit">Indexes</div>
+<div id="r_idx" class="t" style="left:180px;top:285px;width:380px;height:42px;border-radius:8px;padding:2px 10px;font-size:30px;font-weight:600;font-family:ui-monospace,Consolas,monospace">idx_estudiante_nombre</div>
+<div id="r_pag" class="t" style="left:100px;top:330px;width:460px;height:42px;border-radius:8px;padding:2px 10px;font-size:30px;font-weight:600;font-family:ui-monospace,Consolas,monospace">PAGO</div>
+<div id="r_pre" class="t" style="left:100px;top:375px;width:460px;height:42px;border-radius:8px;padding:2px 10px;font-size:30px;font-weight:600;font-family:ui-monospace,Consolas,monospace">PRESTAMO</div>
+<div id="r_vws" class="t" style="left:60px;top:430px;width:500px;height:42px;border-radius:8px;padding:2px 10px;font-size:30px;font-weight:800;font-family:inherit">Views</div>
+<div id="r_vs" class="t" style="left:100px;top:475px;width:460px;height:42px;border-radius:8px;padding:2px 10px;font-size:30px;font-weight:600;font-family:ui-monospace,Consolas,monospace">v_secretaria</div>
+<div id="r_vt" class="t" style="left:100px;top:520px;width:460px;height:42px;border-radius:8px;padding:2px 10px;font-size:30px;font-weight:600;font-family:ui-monospace,Consolas,monospace">v_tesoreria</div>
+<div id="r_vb" class="t" style="left:100px;top:565px;width:460px;height:42px;border-radius:8px;padding:2px 10px;font-size:30px;font-weight:600;font-family:ui-monospace,Consolas,monospace">v_biblioteca</div>
+<div id="cc" class="b" style="left:700px;top:130px;width:820px;height:130px;background:var(--teal);color:#fff;opacity:0;align-items:flex-start;padding:14px 28px"><span style="font-size:40px">Conceptual</span><small style="text-align:left;font-size:30px">Las tablas y sus columnas: la base completa</small></div>
+<div id="ce" class="b" style="left:700px;top:290px;width:820px;height:130px;background:var(--wine);color:#fff;opacity:0;align-items:flex-start;padding:14px 28px"><span style="font-size:40px">Externo</span><small style="text-align:left;font-size:30px">Las vistas: lo que ve cada área</small></div>
+<div id="ci" class="b" style="left:700px;top:450px;width:820px;height:130px;background:var(--amber);color:#fff;opacity:0;align-items:flex-start;padding:14px 28px"><span style="font-size:40px">Interno</span><small style="text-align:left;font-size:30px">Los índices y el almacenamiento: la ruta de acceso</small></div>
+<div id="nota" class="t" style="left:700px;top:610px;width:820px;color:var(--muted);font-size:30px;opacity:0">La clave es conceptual; el índice que la sostiene es interno.</div>
+<div id="tit" class="t" style="left:700px;top:30px;width:820px;color:var(--muted);font-size:30px">Dónde está cada nivel en el Navigator</div>
+</div>
+<script>
+const N = 3;
+const st = document.getElementById("st");
+function fit() { const k = Math.min(innerWidth / 1560, innerHeight / 720); st.style.transform = "scale(" + k + ")"; }
+fit(); addEventListener("resize", fit);
+const $ = (s) => document.querySelector(s);
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const ease = (t) => { t = clamp(t, 0, 1); return t * t * (3 - 2 * t); };
+const win = (s, a, b) => ease((s - a) / (b - a));
+const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+const mix = (a, b, t) => { const x = hex(a), y = hex(b); return "rgb(" + x.map((v, i) => Math.round(v + (y[i] - v) * t)).join(",") + ")"; };
+function lit(el, base, color, t, fg0, fg1) { el.style.background = mix(base, color, t); el.style.color = mix(fg0 || "#1f1a1d", fg1 || "#ffffff", t); }
+function put(el, x, y, a) { el.style.transform = "translate(" + x + "px," + y + "px)"; el.style.opacity = String(a); }
+function route(k, pts) { for (let i = 0; i < pts.length - 1; i++) { if (k <= pts[i + 1][0]) { const t = ease((k - pts[i][0]) / (pts[i + 1][0] - pts[i][0])); return [pts[i][1] + (pts[i + 1][1] - pts[i][1]) * t, pts[i][2] + (pts[i + 1][2] - pts[i][2]) * t]; } } const l = pts[pts.length - 1]; return [l[1], l[2]]; }
+
+const G = { c: ["#r_est", "#r_pag", "#r_pre"], e: ["#r_vs", "#r_vt", "#r_vb"], i: ["#r_idx"] };
+const COL = { c: "#0c6b62", e: "#910048", i: "#7a5200" };
+const CARD = { c: "#cc", e: "#ce", i: "#ci" };
+const ORD = ["c", "e", "i"];
+
+let u = 0, target = 0, frame = 0, timer = 0, last = 0;
+function draw() { 
+const s = u * N;
+ORD.forEach((g, k) => {
+  const p = win(s, k, k + 0.6);
+  G[g].forEach((q) => { const el = $(q); lit(el, "#ececee", COL[g], p, "#1f1a1d", "#ffffff"); });
+  const c = $(CARD[g]); put(c, 0, (1 - p) * 20, p);
+});
+$("#nota").style.opacity = String(win(s, 2.3, 2.9));
+ }
+function loop() {
+  clearTimeout(timer); cancelAnimationFrame(frame);
+  const now = performance.now();
+  const dt = last ? Math.min((now - last) / 1000, 1) : 1 / 60; last = now;
+  const speed = 1 / (N * 1.6);
+  u = target > u ? Math.min(target, u + dt * speed) : Math.max(target, u - dt * speed * 2);
+  draw();
+  if (u !== target) { frame = requestAnimationFrame(loop); timer = setTimeout(loop, 80); } else { frame = 0; timer = 0; last = 0; }
+}
+const run = () => { if (!frame && !timer) { last = 0; loop(); } };
+const go = (v) => { target = clamp(v, 0, 1); run(); };
+window.__fig = { set(v) { u = target = clamp(v, 0, 1); draw(); }, go, get u() { return u; } };
+addEventListener("message", (e) => { const m = e.data; if (!m || m.type !== "fig") return; if (m.mode === "set") window.__fig.set(Number(m.value)); else go(Number(m.value)); });
+if (window.parent !== window) {
+  const KEYMAP = { ArrowRight: "ArrowRight", PageDown: "ArrowRight", " ": "ArrowRight", Enter: "ArrowRight", ArrowLeft: "ArrowLeft", PageUp: "ArrowLeft", Backspace: "ArrowLeft" };
+  addEventListener("keydown", (e) => { const k = KEYMAP[e.key]; if (!k) return; e.preventDefault(); e.stopImmediatePropagation(); parent.postMessage({ type: "deck-key", key: k }, "*"); }, true);
+} else {
+  addEventListener("click", () => go(target >= 1 ? 0 : Math.min(1, Math.round(target * N + 1) / N)));
+}
+draw();
+</script></body></html>

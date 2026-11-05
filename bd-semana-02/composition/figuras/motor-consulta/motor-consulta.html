@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>El camino de una consulta dentro del DBMS</title>
+<style>
+:root{--wine:#910048;--wine-deep:#6d0036;--gold:#e8a920;--teal:#0c6b62;--amber:#7a5200;--ink:#1f1a1d;--muted:#5a5257;--tint:#f6f1f3;--red:#b3261e}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:transparent;font-family:system-ui,"Segoe UI",sans-serif;color:var(--ink);overflow:hidden}
+#st{position:absolute;left:0;top:0;width:1560px;height:720px;transform-origin:0 0}
+.b{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border-radius:16px;padding:6px 14px;font-weight:700;font-size:32px;line-height:1.15;background:var(--tint);color:var(--ink)}
+.b small{display:block;font-size:24px;font-weight:600;margin-top:4px}
+.t{position:absolute;font-size:34px;font-weight:700;line-height:1.2}
+.pill{position:absolute;display:flex;align-items:center;justify-content:center;height:52px;padding:0 20px;border-radius:26px;color:#fff;font:800 24px/1 ui-monospace,Consolas,monospace;white-space:nowrap;opacity:0;z-index:5}
+.ln{position:absolute;background:#cfc6ca}
+
+</style></head><body>
+<div id="st">
+<div id="ldd" class="ln" style="left:240px;top:107px;width:40px;height:6px"></div>
+<div id="ldc" class="ln" style="left:490px;top:107px;width:70px;height:6px"></div>
+<div id="lcat" class="ln" style="left:632px;top:180px;width:6px;height:120px"></div>
+<div id="d0" class="b" style="left:30px;top:60px;width:210px;height:100px;font-size:28px">Orden DDL</div>
+<div id="d1" class="b" style="left:280px;top:60px;width:210px;height:100px;font-size:28px">Compilador de DDL</div>
+<div id="cat" class="b" style="left:560px;top:50px;width:300px;height:130px;background:#f4e3b5;color:#7a5200">Catálogo<small>descripción de la base</small></div>
+<div class="ln" style="left:240px;top:357px;width:40px;height:6px"></div>
+<div class="ln" style="left:490px;top:357px;width:40px;height:6px"></div>
+<div class="ln" style="left:740px;top:357px;width:40px;height:6px"></div>
+<div class="ln" style="left:990px;top:357px;width:40px;height:6px"></div>
+<div class="ln" style="left:1240px;top:357px;width:40px;height:6px"></div>
+<div id="m0" class="b" style="left:30px;top:300px;width:210px;height:120px;font-size:28px">Consulta</div>
+<div id="m1" class="b" style="left:280px;top:300px;width:210px;height:120px;font-size:28px">Compilador de consultas</div>
+<div id="m2" class="b" style="left:530px;top:300px;width:210px;height:120px;font-size:28px">Optimizador</div>
+<div id="m3" class="b" style="left:780px;top:300px;width:210px;height:120px;font-size:28px">Procesador en ejecución</div>
+<div id="m4" class="b" style="left:1030px;top:300px;width:210px;height:120px;font-size:28px">Gestor de datos</div>
+<div id="m5" class="b" style="left:1280px;top:300px;width:210px;height:120px;font-size:28px">Disco</div>
+<div id="ds0" class="t" style="left:30px;top:430px;width:210px;text-align:center;font-size:24px;font-weight:600;color:var(--muted)">pide los datos</div>
+<div id="ds1" class="t" style="left:280px;top:430px;width:210px;text-align:center;font-size:24px;font-weight:600;color:var(--muted)">valida sintaxis y nombres</div>
+<div id="ds2" class="t" style="left:530px;top:430px;width:210px;text-align:center;font-size:24px;font-weight:600;color:var(--muted)">elige el plan</div>
+<div id="ds3" class="t" style="left:780px;top:430px;width:210px;text-align:center;font-size:24px;font-weight:600;color:var(--muted)">ejecuta el plan</div>
+<div id="ds4" class="t" style="left:1030px;top:430px;width:210px;text-align:center;font-size:24px;font-weight:600;color:var(--muted)">lee y escribe</div>
+<div id="ds5" class="t" style="left:1280px;top:430px;width:210px;text-align:center;font-size:24px;font-weight:600;color:var(--muted)">guarda los datos</div>
+<div id="pA" class="pill" style="background:#910048">CREATE TABLE</div>
+<div id="pB" class="pill" style="background:#0c6b62">SELECT ...</div>
+<div id="pC" class="pill" style="background:#7a5200">CREATE INDEX</div>
+<div id="cp0" class="t" style="left:30px;top:540px;width:1500px;opacity:0;color:var(--wine-deep)">Una orden DDL guarda la descripción de la base en el catálogo</div>
+<div id="cp1" class="t" style="left:30px;top:540px;width:1500px;opacity:0;color:var(--wine-deep)">La consulta llega al compilador, que valida la sintaxis y los nombres</div>
+<div id="cp2" class="t" style="left:30px;top:540px;width:1500px;opacity:0;color:var(--wine-deep)">El optimizador consulta el catálogo y decide el plan</div>
+<div id="cp3" class="t" style="left:30px;top:540px;width:1500px;opacity:0;color:var(--wine-deep)">El procesador ejecuta el plan y el gestor de datos lee el disco</div>
+<div id="cp4" class="t" style="left:30px;top:540px;width:1500px;opacity:0;color:var(--wine-deep)">Se crea un índice: la consulta es la misma y el optimizador elige otra ruta</div>
+<div id="plan" class="t" style="left:530px;top:430px;width:210px;text-align:center;font-size:24px;font-weight:700;color:var(--amber);opacity:0">plan nuevo: usa el índice</div>
+</div>
+<script>
+const N = 5;
+const st = document.getElementById("st");
+function fit() { const k = Math.min(innerWidth / 1560, innerHeight / 720); st.style.transform = "scale(" + k + ")"; }
+fit(); addEventListener("resize", fit);
+const $ = (s) => document.querySelector(s);
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const ease = (t) => { t = clamp(t, 0, 1); return t * t * (3 - 2 * t); };
+const win = (s, a, b) => ease((s - a) / (b - a));
+const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+const mix = (a, b, t) => { const x = hex(a), y = hex(b); return "rgb(" + x.map((v, i) => Math.round(v + (y[i] - v) * t)).join(",") + ")"; };
+function lit(el, base, color, t, fg0, fg1) { el.style.background = mix(base, color, t); el.style.color = mix(fg0 || "#1f1a1d", fg1 || "#ffffff", t); }
+function put(el, x, y, a) { el.style.transform = "translate(" + x + "px," + y + "px)"; el.style.opacity = String(a); }
+function route(k, pts) { for (let i = 0; i < pts.length - 1; i++) { if (k <= pts[i + 1][0]) { const t = ease((k - pts[i][0]) / (pts[i + 1][0] - pts[i][0])); return [pts[i][1] + (pts[i + 1][1] - pts[i][1]) * t, pts[i][2] + (pts[i + 1][2] - pts[i][2]) * t]; } } const l = pts[pts.length - 1]; return [l[1], l[2]]; }
+
+const BASE = "#f6f1f3";
+const dd = [[0, 30 + 105 - 76, 86], [1, 280 + 105 - 76, 86], [1.8, 560 + 150 - 76, 98]];
+const sel = [[1, 30 + 105 - 76, 334], [2, 280 + 105 - 76, 334], [3, 530 + 105 - 76, 334], [3.4, 780 + 105 - 76, 334], [3.7, 1030 + 105 - 76, 334], [4, 1280 + 105 - 76, 334]];
+
+let u = 0, target = 0, frame = 0, timer = 0, last = 0;
+function draw() { 
+const s = u * N;
+// paquete DDL: de 0 a 1.8
+const k0 = clamp(s, 0, 1.8); const pa = route(k0, dd);
+put($("#pA"), pa[0], pa[1], s > 0.02 && s < 1.95 ? 1 : 0);
+// paquete SELECT: de 1 a 4
+const pb = route(clamp(s, 1, 4), sel);
+put($("#pB"), pb[0], pb[1], s > 1.02 && s < 4.1 ? 1 : 0);
+// paquete CREATE INDEX: de 4 a 4.8
+const pc = route(clamp(s - 4, 0, 0.8) * 1.25 , [[0, 30 + 105 - 90, 86], [0.5, 280 + 105 - 90, 86], [1, 560 + 150 - 90, 98]]);
+put($("#pC"), pc[0], pc[1], s > 4.02 && s < 4.9 ? 1 : 0);
+// módulos
+lit($("#d1"), BASE, "#910048", win(s, 0.4, 0.9) - win(s, 1.8, 2.2));
+lit($("#cat"), "#f4e3b5", "#7a5200", Math.max(win(s, 1.5, 1.9) - win(s, 2.2, 2.6), win(s, 2.6, 3.0) - win(s, 3.2, 3.6)), "#7a5200", "#ffffff");
+lit($("#m1"), BASE, "#0c6b62", win(s, 1.5, 1.9) - win(s, 2.2, 2.5));
+lit($("#m2"), BASE, "#0c6b62", win(s, 2.4, 2.8) - win(s, 3.2, 3.5));
+lit($("#m3"), BASE, "#0c6b62", win(s, 3.2, 3.5) - win(s, 3.7, 3.9));
+lit($("#m4"), BASE, "#0c6b62", win(s, 3.5, 3.8) - win(s, 3.9, 4.0));
+lit($("#m5"), BASE, "#0c6b62", win(s, 3.8, 4.0));
+$("#lcat").style.background = mix("#cfc6ca", "#7a5200", win(s, 2.4, 2.8) - win(s, 3.2, 3.6));
+// paso 5: el plan nuevo
+const a5 = win(s, 4.7, 5.0);
+lit($("#m2"), BASE, "#e8a920", a5, "#1f1a1d", "#1f1a1d");
+put($("#plan"), 0, 0, a5); put($("#ds2"), 0, 0, 1 - a5);
+for (let k = 0; k < 5; k++) { const a = win(s, k - 0.05, k + 0.3) - win(s, k + 0.95, k + 1.3); put($("#cp" + k), 0, 0, clamp(a, 0, 1)); }
+ }
+function loop() {
+  clearTimeout(timer); cancelAnimationFrame(frame);
+  const now = performance.now();
+  const dt = last ? Math.min((now - last) / 1000, 1) : 1 / 60; last = now;
+  const speed = 1 / (N * 1.6);
+  u = target > u ? Math.min(target, u + dt * speed) : Math.max(target, u - dt * speed * 2);
+  draw();
+  if (u !== target) { frame = requestAnimationFrame(loop); timer = setTimeout(loop, 80); } else { frame = 0; timer = 0; last = 0; }
+}
+const run = () => { if (!frame && !timer) { last = 0; loop(); } };
+const go = (v) => { target = clamp(v, 0, 1); run(); };
+window.__fig = { set(v) { u = target = clamp(v, 0, 1); draw(); }, go, get u() { return u; } };
+addEventListener("message", (e) => { const m = e.data; if (!m || m.type !== "fig") return; if (m.mode === "set") window.__fig.set(Number(m.value)); else go(Number(m.value)); });
+if (window.parent !== window) {
+  const KEYMAP = { ArrowRight: "ArrowRight", PageDown: "ArrowRight", " ": "ArrowRight", Enter: "ArrowRight", ArrowLeft: "ArrowLeft", PageUp: "ArrowLeft", Backspace: "ArrowLeft" };
+  addEventListener("keydown", (e) => { const k = KEYMAP[e.key]; if (!k) return; e.preventDefault(); e.stopImmediatePropagation(); parent.postMessage({ type: "deck-key", key: k }, "*"); }, true);
+} else {
+  addEventListener("click", () => go(target >= 1 ? 0 : Math.min(1, Math.round(target * N + 1) / N)));
+}
+draw();
+</script></body></html>
