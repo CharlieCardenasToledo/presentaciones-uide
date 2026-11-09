@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CC05A_IFT200 · Semana 3: Entidades, atributos y claves</title>
+    <script>
+      // El modo público se distingue en la pestaña del navegador.
+      if (new URLSearchParams(location.search).get("mode") === "audience") {
+        document.title = "CC05A_IFT200 · Semana 3: Entidades, atributos y claves" + " (pantalla del público)";
+      }
+    </script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { height: 100%; background: #0a0a0a; overflow: hidden; }
+      hyperframes-slideshow { display: block; position: relative; width: 100vw; height: 100vh; }
+      hyperframes-player { position: absolute; inset: 0; }
+    </style>
+    <script src="../vendor/hyperframes-player.global.js"></script>
+    <script src="../vendor/hyperframes-slideshow.global.js"></script>
+  </head>
+  <body>
+    <hyperframes-slideshow tabindex="0" notes-storage-key="bd-semana-03">
+      <hyperframes-player interactive src="composition/index.html"></hyperframes-player>
+      <script type="application/hyperframes-slideshow+json">
+{
+  "slides": [
+    {
+      "sceneId": "portada",
+      "startTime": 0,
+      "endTime": 3.5,
+      "notes": "Abrir con una pregunta: si la biblioteca nos entrega media página con lo que necesita guardar, ¿por dónde se empieza a diseñar? Recoger dos o tres respuestas sin corregirlas. La clase termina con un diccionario de datos hecho a partir de ese párrafo."
+    },
+    {
+      "sceneId": "ruta",
+      "startTime": 3.5,
+      "endTime": 7,
+      "notes": "Presentar la ruta en un minuto. Es la misma secuencia del material de la semana: primero el párrafo de requisitos, después los nombres técnicos y al final el diccionario de datos."
+    },
+    {
+      "sceneId": "pedido",
+      "startTime": 7,
+      "endTime": 12.5,
+      "notes": "Leer en voz alta el párrafo del material de la semana. Pedir que subrayen los sustantivos y que marquen los datos raros: un estudiante puede dar uno o dos teléfonos, algunos no tienen correo, la biblioteca quiere conocer la edad y un libro puede tener varios autores. Todavía sin nombres técnicos.",
+      "fragments": [
+        9,
+        10,
+        11
+      ]
+    },
+    {
+      "sceneId": "clasifica-pedido",
+      "startTime": 12.5,
+      "endTime": 19,
+      "notes": "Figura en tres pasos con los doce datos que nombra el pedido, mezclados. Antes de cada avance, preguntar a la clase qué va a pasar. Primer avance: estudiante y libro suben como encabezados, porque existen por sí mismos. Segundo avance: los demás se acomodan debajo de la cosa a la que describen. Tercer avance: se marcan los cinco datos raros (tiene partes, puede repetirse, se puede calcular, puede faltar); todavía no tienen nombre técnico. Es la exploración del material de la semana.",
+      "fragments": [
+        14.5,
+        15.5,
+        16.5,
+        17.5
+      ]
+    },
+    {
+      "sceneId": "idea",
+      "startTime": 19,
+      "endTime": 22.5,
+      "notes": "Aquí aparecen los nombres técnicos. Entidad: cosa u objeto del mundo real con existencia independiente, física o conceptual. Atributo: propiedad particular que la describe. Ana Rivas es una entidad; su cédula es un atributo."
+    },
+    {
+      "sceneId": "diseno",
+      "startTime": 22.5,
+      "endTime": 29,
+      "notes": "Ubicar la semana dentro del proceso de diseño. El párrafo de la biblioteca es el resultado de la recolección y el análisis de requisitos. Con él se construye el esquema conceptual. El modelo de alto nivel que usa el curso es el entidad-relación.",
+      "fragments": [
+        24.5,
+        25.5,
+        26.5,
+        27.5
+      ]
+    },
+    {
+      "sceneId": "notacion",
+      "startTime": 29,
+      "endTime": 35.5,
+      "notes": "Es la Figura 1 del material de la semana, dibujada en tres pasos. Primero el rectángulo con el nombre del tipo de entidad. Después los atributos como óvalos unidos por líneas. Luego el subrayado de la clave y el óvalo doble del multivaluado. Por último, el compuesto: nombre_completo reparte sus partes en óvalos más pequeños. Edad queda como óvalo simple; la notación del derivado se verá más adelante.",
+      "fragments": [
+        31,
+        32,
+        33,
+        34
+      ]
+    },
+    {
+      "sceneId": "figura-ficha",
+      "startTime": 35.5,
+      "endTime": 42,
+      "notes": "Figura en cuatro estados. Al entrar: la ficha de ESTUDIANTE con los datos de Ana Rivas. Primer avance: nombre_completo se abre en nombres y apellidos (compuesto). Segundo avance: aparece un segundo teléfono (multivaluado, de 1 a 2). Tercer avance: edad sale de fecha_nacimiento (derivado). Antes de cada avance, preguntar qué creen que va a pasar.",
+      "fragments": [
+        37.5,
+        38.5,
+        39.5,
+        40.5
+      ]
+    },
+    {
+      "sceneId": "pares",
+      "startTime": 42,
+      "endTime": 49.5,
+      "notes": "Las tres primeras preguntas son los tres pares de categorías del material de la semana; la cuarta es el valor especial NULL, que se explica en la lámina siguiente. Son las mismas cuatro preguntas que pide la plantilla del taller PE-1.3, en las columnas Partes, Valores, Origen y Admite NULL. Insistir en que la decisión de dividir un compuesto depende del uso: la biblioteca ordena sus listados por apellido, así que le conviene separar. En este curso la edad no se escribe a mano.",
+      "fragments": [
+        44,
+        45,
+        46,
+        47,
+        48
+      ]
+    },
+    {
+      "sceneId": "null",
+      "startTime": 49.5,
+      "endTime": 55,
+      "notes": "NULL no es cero ni un texto vacío: es la marca de que no hay valor. Las dos fichas se ven idénticas, pero significan cosas distintas. Primer avance: no aplicable, Ana no tiene correo. Segundo avance: desconocido, Marco tiene correo y la biblioteca no lo sabe. Al diseñar se decide atributo por atributo si se admite. Un multivaluado que se queda sin valores también lleva NULL con el significado de no aplicable: un paciente sin alergias tiene NULL en alergias.",
+      "fragments": [
+        51.5,
+        52.5,
+        53.5
+      ]
+    },
+    {
+      "sceneId": "clasificacion",
+      "startTime": 55,
+      "endTime": 62.5,
+      "notes": "Es la Tabla 1 del material de la semana, reducida a los cuatro atributos interesantes. Revelar fila por fila pidiendo la clasificación antes de mostrarla. Es el formato del taller PE-1.3.",
+      "fragments": [
+        57,
+        58,
+        59,
+        60,
+        61
+      ]
+    },
+    {
+      "sceneId": "tipo-conjunto",
+      "startTime": 62.5,
+      "endTime": 68,
+      "notes": "La biblioteca no diseña una ficha para Ana: diseña una ficha para todos sus estudiantes. A la izquierda, el tipo de entidad, la descripción. A la derecha aparecen los estudiantes de hoy, el conjunto de entidades. Segundo avance: se inscribe una persona más; el conjunto cambia y el tipo no. Conectar con la semana 1: tipo de entidad es como el esquema, y conjunto de entidades es como el estado.",
+      "fragments": [
+        64.5,
+        65.5,
+        66.5
+      ]
+    },
+    {
+      "sceneId": "clave",
+      "startTime": 68,
+      "endTime": 71.5,
+      "notes": "Declarar una clave es poner una restricción: la unicidad debe cumplirse en todos los conjuntos de entidades del tipo, no solo en el de hoy. Que hoy no haya dos libros con el mismo título no convierte al título en clave. El código sí lo es, porque la biblioteca lo asigna sin repetirlo."
+    },
+    {
+      "sceneId": "clave-libro",
+      "startTime": 71.5,
+      "endTime": 78,
+      "notes": "Tres libros de hoy. Primer avance: ningún título se repite, así que el título parece clave. Preguntar si lo es. Segundo avance: llega otro ejemplar de Rayuela, de otra edición, y el título se repite; ya no distingue a los libros. Tercer avance: el código, que la biblioteca asigna sin repetir, sí es clave. Nombrar el término: atributo clave. La conclusión es que no basta mirar los datos de hoy: la unicidad debe valer siempre.",
+      "fragments": [
+        73.5,
+        74.5,
+        75.5,
+        76.5
+      ]
+    },
+    {
+      "sceneId": "reglas-clave",
+      "startTime": 78,
+      "endTime": 84.5,
+      "notes": "La primera fila viene del texto base. Las otras dos son reglas del curso para esta semana: la clave no admite NULL, y cuando ningún atributo ni combinación sirve se propone un identificador y se anota como decisión de diseño. Los tipos de entidad sin clave propia se estudian la próxima semana. En la plantilla del taller PE-1.3 esto es la tabla de claves: clave elegida, razón y candidata descartada; el ejemplo descarta el correo institucional porque los operarios no tienen, que es el control 2.",
+      "fragments": [
+        80,
+        81,
+        82,
+        83
+      ]
+    },
+    {
+      "sceneId": "dominio",
+      "startTime": 84.5,
+      "endTime": 91,
+      "notes": "El dominio es el conjunto de valores permitidos de un atributo simple. En el diccionario se escribe con dos datos: el tipo de valor y su límite. Pedir a la clase el dominio de cada atributo antes de mostrarlo.",
+      "fragments": [
+        86.5,
+        87.5,
+        88.5,
+        89.5
+      ]
+    },
+    {
+      "sceneId": "compuesto-partes",
+      "startTime": 91,
+      "endTime": 96.5,
+      "notes": "Regla de la tarea TA-1.3 y del diccionario del material de la semana: un atributo compuesto no lleva fila propia; se anota una fila por cada una de sus partes. nombre_completo queda como nombres y apellidos, cada parte con su clasificación y su dominio. En el caso de la farmacia les va a tocar con el nombre completo del cliente, la presentación del medicamento y la dirección del proveedor.",
+      "fragments": [
+        93,
+        94,
+        95
+      ]
+    },
+    {
+      "sceneId": "diccionario",
+      "startTime": 96.5,
+      "endTime": 105,
+      "notes": "Es la Tabla 2 del material de la semana. Las filas de cédula y teléfonos ya están completas; la fila de correo se llena en cinco pasos, que son los del ejemplo resuelto: copiar la clasificación, escribir el dominio, decidir si es clave, decidir si admite NULL y revisar la entidad completa. Pedir a la clase la respuesta antes de cada avance. Es el formato de la tarea TA-1.3, que agrega una primera columna, Entidad, porque el caso trae varias entidades.",
+      "fragments": [
+        98.5,
+        99.5,
+        100.5,
+        101.5,
+        102.5,
+        103.5
+      ]
+    },
+    {
+      "sceneId": "decisiones",
+      "startTime": 105,
+      "endTime": 111.5,
+      "notes": "Las tres situaciones del material de la semana, para discutir en parejas antes de revelar. A: cuando un dato empieza a necesitar sus propios datos, pasa a ser entidad; la lámina siguiente lo dibuja. B: no, la unicidad debe valer siempre y no solo con los 80 socios de hoy. C: la antigüedad es derivada del año de fabricación y no se escribe a mano.",
+      "fragments": [
+        107,
+        108,
+        109,
+        110
+      ]
+    },
+    {
+      "sceneId": "proveedor",
+      "startTime": 111.5,
+      "endTime": 118,
+      "notes": "Respuesta a la situación A. Al inicio el proveedor es un óvalo más del producto. Primer avance: la papelería necesita guardar teléfono, dirección y RUC del proveedor; el óvalo ya tiene atributos propios. Segundo avance: el óvalo se vuelve rectángulo, es decir, entidad, porque existe sin depender de un producto. Tercer avance: su clave sería el RUC. La línea que une las dos entidades es una relación, que se estudia la semana 4.",
+      "fragments": [
+        113.5,
+        114.5,
+        115.5,
+        116.5
+      ]
+    },
+    {
+      "sceneId": "requisitos-grupo",
+      "startTime": 118,
+      "endTime": 125.5,
+      "notes": "Prepara el avance GA-1.1 y la práctica de borrador del material de la semana. Un buen párrafo permite que otra persona extraiga las entidades sin preguntar nada. Se prueba así: el borrador pasa a un compañero y este subraya las entidades; si subraya otras o deja alguna sin subrayar, el párrafo necesita una oración más. Cuatro entidades bastan para el primer avance.",
+      "fragments": [
+        120,
+        121,
+        122,
+        123,
+        124
+      ]
+    },
+    {
+      "sceneId": "actividades",
+      "startTime": 125.5,
+      "endTime": 129,
+      "notes": "PE-1.3 se hace en clase con el caso de Talento Humano de ILE. TA-1.3 es autónomo, con el caso de la farmacia. GA-1.1 es grupal y es el primer avance del proyecto: cada grupo elige su propio sistema y un integrante entrega por todos. Las plantillas y las fechas están en Canvas."
+    },
+    {
+      "sceneId": "cierre",
+      "startTime": 129,
+      "endTime": 132.5,
+      "notes": "Volver a la pregunta inicial: se empieza separando lo que existe por sí mismo de lo que solo describe. Tarea para casa: la recuperación sin apuntes del material de la semana. Próxima semana: relaciones entre entidades y entidades débiles."
+    }
+  ],
+  "slideSequences": []
+}
+    </script>
+    </hyperframes-slideshow>undefined

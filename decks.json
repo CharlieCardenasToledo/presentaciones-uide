@@ -14,6 +14,11 @@
         "n": 2,
         "slug": "bd-semana-02",
         "tema": "Esquemas, arquitectura de tres esquemas, independencia de datos y componentes del DBMS"
+      },
+      {
+        "n": 3,
+        "slug": "bd-semana-03",
+        "tema": "Entidades, atributos y claves: del párrafo de requisitos al diccionario de datos"
       }
     ]
   },
