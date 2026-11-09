@@ -52,6 +52,11 @@
         "tema": "Ingeniería de software hoy, ética y descubrimiento inicial del proyecto"
       },
       {
+        "n": 2,
+        "slug": "ins-semana-02",
+        "tema": "Crisis del software, modelos de proceso, requisitos funcionales y no funcionales, historias de usuario y borrador de SRS"
+      },
+      {
         "n": 3,
         "slug": "ins-semana-03",
         "tema": "Manifiesto Ágil, Scrum y XP, criterios de aceptación, validación y backlog priorizado"

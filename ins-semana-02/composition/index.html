@@ -1,0 +1,639 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Semana 2 · Requisitos y modelos de proceso</title>
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      :root {
+        /* Colores tomados del logotipo UIDE: vino #910048 y dorado #E8A920. Sin degradados. */
+        --paper: #ffffff; --ink: #1f1a1d; --muted: #5a5257; --wine: #910048; --wine-deep: #6d0036; --gold: #e8a920;
+        --teal: #0c6b62; --teal-soft: #e3f2f0; --amber: #7a5200; --amber-soft: #fcefc9; --card: #ffffff; --line: #e2dcdf; --tint: #f6f1f3;
+      }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--paper); }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; font-family: system-ui, sans-serif; color: var(--ink); }
+      .slide { position: absolute; inset: 0; }
+      .frame { position: absolute; inset: 0; padding: 92px 120px 150px; display: flex; flex-direction: column; justify-content: center; opacity: 0; background: var(--paper); }
+      .frame::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 22px; background: var(--wine); }
+      .frame::after { content: ""; position: absolute; left: 22px; top: 0; bottom: 0; width: 8px; background: var(--gold); }
+      .dark .frame { background: var(--wine); color: #fff; }
+      .dark .frame::before { background: var(--gold); }
+      .dark .frame::after { display: none; }
+      .logo { position: absolute; top: 44px; right: 96px; height: 92px; width: auto; }
+      .dark .logo { top: 0; right: 96px; height: 150px; padding: 26px 30px 22px; background: #fff; border-radius: 0 0 18px 18px; box-sizing: border-box; }
+      .num { position: absolute; bottom: 52px; left: 120px; font-size: 26px; letter-spacing: 0.14em; color: var(--muted); font-variant-numeric: tabular-nums; }
+      .dark .num { color: #f1d3e0; }
+      .course { font-size: 34px; font-weight: 600; color: var(--gold); margin-bottom: 30px; }
+      .claim { font-family: ui-serif, serif; font-weight: 700; font-size: 74px; line-height: 1.08; letter-spacing: -0.015em; max-width: 1480px; margin-bottom: 44px; }
+      .claim.long { font-size: 62px; max-width: 1640px; }
+      .claim.xl { font-size: 96px; max-width: 1500px; }
+      .lead { font-size: 48px; line-height: 1.25; color: #ffffff; max-width: 1400px; }
+      .lead.dark-ink { color: var(--muted); margin-top: -14px; margin-bottom: 40px; }
+      .byline { font-size: 32px; color: #f6dfe9; margin-top: 70px; }
+      .source { font-size: 30px; color: var(--muted); margin-top: 34px; }
+      .punch { font-family: ui-serif, serif; font-size: 56px; font-weight: 700; color: var(--wine); margin-top: 44px; }
+      .punch.soft { color: var(--ink); font-size: 46px; margin-top: 18px; }
+      .punch.good { color: var(--teal); }
+
+      .steps { list-style: none; display: grid; gap: 18px; max-width: 1500px; }
+      .steps li { display: flex; align-items: center; gap: 30px; font-size: 46px; background: var(--tint); border-radius: 18px; padding: 18px 30px; }
+      .steps b { flex: none; width: 72px; height: 72px; border-radius: 50%; background: var(--wine); color: #fff; display: grid; place-items: center; font-size: 40px; }
+
+      .cards { display: grid; gap: 30px; }
+      .cards.three { grid-template-columns: repeat(3, 1fr); }
+      .cards.two { grid-template-columns: repeat(2, 1fr); }
+      .cards.four { grid-template-columns: repeat(4, 1fr); }
+      .cards.grid2 { grid-template-columns: repeat(2, 1fr); gap: 26px; }
+      .cards.tight { margin-top: 30px; }
+      .card { background: var(--tint); border-radius: 22px; padding: 36px 40px; display: flex; flex-direction: column; gap: 14px; }
+      .card strong { font-size: 48px; line-height: 1.12; font-weight: 800; }
+      .card em { font-style: normal; font-size: 40px; line-height: 1.2; color: var(--muted); }
+      .card .tag, .panel .tag { align-self: flex-start; font-size: 34px; font-weight: 600; color: var(--wine); }
+      .card.file strong { font-family: ui-monospace, monospace; font-size: 46px; }
+      .card.empty, .card.warn { background: var(--amber-soft); }
+      .card.warn strong { color: var(--amber); }
+      .card.pill { align-items: center; text-align: center; padding: 30px 20px; }
+      .card.pill b { width: 68px; height: 68px; border-radius: 50%; background: var(--wine); color: #fff; display: grid; place-items: center; font-size: 38px; }
+      .cards.tall .card { min-height: 300px; }
+      .verdict { margin-top: auto; padding: 14px 18px; border-radius: 12px; background: #fbe3a6; color: var(--amber) !important; font-weight: 700; }
+      .verdict.good { background: #cfe9e5; color: var(--teal) !important; }
+
+      table.data { border-collapse: collapse; width: 100%; background: var(--tint); border-radius: 20px; overflow: hidden; }
+      table.data th { text-align: left; font-size: 30px; letter-spacing: 0.1em; text-transform: uppercase; color: #fff; background: var(--wine-deep); padding: 20px 28px; }
+      table.data td { font-size: 42px; padding: 22px 28px; border-top: 3px solid #ffffff; font-variant-numeric: tabular-nums; }
+      table.data.matrix td { font-size: 40px; padding: 24px 28px; }
+      table.data.matrix b { color: var(--wine); }
+      .chips { display: flex; gap: 22px; margin-top: 36px; flex-wrap: wrap; }
+      .chip { font-size: 40px; font-weight: 700; padding: 16px 28px; border-radius: 999px; background: var(--amber-soft); color: var(--amber); }
+
+      .split { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+      .panel { background: var(--tint); border-radius: 22px; padding: 30px 34px; display: flex; flex-direction: column; gap: 18px; }
+      .panel.good { background: var(--teal-soft); }
+      .panel.good .tag { color: var(--teal); }
+      .box { font-size: 40px; padding: 18px 24px; border-radius: 14px; background: #ffffff; }
+      .box i { font-style: normal; color: var(--amber); font-weight: 700; }
+      .box.strong { background: var(--teal); color: #fff; font-weight: 700; }
+      .box.new { background: var(--teal-soft); color: var(--teal); font-weight: 700; }
+      .schema { font-family: ui-monospace, monospace; font-size: 44px; font-weight: 700; padding: 26px 32px; border-radius: 18px; background: var(--tint); }
+      .schema.main { font-size: 50px; background: var(--wine-deep); color: #fff; }
+      .schema.small { font-size: 40px; background: #ffffff; }
+      .schema u { text-decoration-thickness: 5px; text-underline-offset: 8px; }
+
+      .layers { display: grid; gap: 22px; max-width: 1500px; }
+      .layer { display: flex; align-items: baseline; gap: 34px; padding: 30px 38px; border-radius: 20px; background: var(--wine); color: #fff; }
+      .layer.mid { background: #7f003f; margin-left: 70px; }
+      .layer.low { background: var(--wine-deep); margin-left: 140px; }
+      .layer strong { font-size: 50px; flex: none; width: 430px; }
+      .layer em { font-style: normal; font-size: 40px; color: #ffffff; }
+
+      .timeline { display: grid; gap: 14px; }
+      .timeline .row { display: grid; grid-template-columns: 170px 560px 1fr; align-items: center; gap: 30px; background: var(--tint); border-radius: 16px; padding: 14px 28px; }
+      .timeline b { font-family: ui-serif, serif; font-size: 52px; color: var(--wine); font-variant-numeric: tabular-nums; }
+      .timeline strong { font-size: 42px; }
+      .timeline em { font-style: normal; font-size: 40px; color: var(--muted); }
+
+      iframe.fig { flex: none; width: 1560px; height: 720px; border: 0; background: transparent; align-self: center; margin-top: -24px; }
+
+      /* Transiciones solo al presentar en vivo: el reproductor salta entre
+         puntos de la línea de tiempo y el navegador suaviza el cambio. */
+      html.live .frame { transition: opacity 0.45s ease; }
+      html.live [data-in], html.live [data-f] { transition: opacity 0.5s ease, transform 0.55s cubic-bezier(0.2, 0.7, 0.2, 1); transition-delay: calc(var(--i, 0) * 70ms); }
+      html.live [data-hl] { transition: background-color 0.4s ease, color 0.4s ease; }
+    </style>
+  </head>
+  <body>
+    <script type="application/hyperframes-slideshow+json">
+{
+  "slides": [
+    {
+      "sceneId": "portada",
+      "startTime": 0,
+      "endTime": 3.5,
+      "notes": "Abrir con una pregunta: ¿cuántos de ustedes han entregado un trabajo que cumplía el enunciado pero no era lo que el profesor esperaba? Anotar dos o tres respuestas. No definir nada todavía: la clase empieza por un sistema municipal que fracasó. Tiempos de hoy: una hora de presentación y una hora de práctica con la PE-1.2."
+    },
+    {
+      "sceneId": "caso",
+      "startTime": 3.5,
+      "endTime": 10,
+      "notes": "Dejar el caso a la vista y preguntar antes de avanzar: ¿qué salió mal? Anotar respuestas en la pizarra. Primer avance: el plazo era de 8 meses y se entregó a los 20. Segundo avance: el costo fue el doble. Tercer avance: los funcionarios siguieron con hojas de cálculo porque faltaban dos trámites que se hacen todos los días, y al cambiar una ordenanza nadie pudo modificarlo. Es la exploración de la semana. Pedir que clasifiquen cada síntoma antes de pasar a la lámina siguiente.",
+      "fragments": [
+        5.5,
+        6.5,
+        7.5,
+        8.5
+      ]
+    },
+    {
+      "sceneId": "crisis",
+      "startTime": 10,
+      "endTime": 15.5,
+      "notes": "En octubre de 1968 una conferencia patrocinada por el comité científico de la OTAN se reunió en Garmisch, Alemania, para discutir los problemas del desarrollo de sistemas. Allí se usó la expresión crisis del software. Los enfoques individuales no escalaban hacia sistemas grandes y complejos, que no eran confiables, costaban más de lo esperado y se entregaban con demora. Pedir que ubiquen en las cuatro tarjetas los síntomas del sistema municipal. Fuente: Sommerville (2011), capítulo 1, historia de la ingeniería de software.",
+      "fragments": [
+        12,
+        13,
+        14
+      ]
+    },
+    {
+      "sceneId": "causas",
+      "startTime": 15.5,
+      "endTime": 22,
+      "notes": "Cada fila relaciona un síntoma con su causa probable y con la práctica de la ingeniería que lo atiende. Revelar una columna por avance y pedir que la clase ubique el sistema municipal en cada fila. La lectura crítica: cada respuesta es una práctica de trabajo, no una herramienta. Un repositorio no corrige una estimación optimista.",
+      "fragments": [
+        17.5,
+        18.5,
+        19.5,
+        20.5
+      ]
+    },
+    {
+      "sceneId": "cascada",
+      "startTime": 22,
+      "endTime": 28.5,
+      "notes": "Las cinco fases de Sommerville: análisis y definición de requerimientos, diseño del sistema y del software, implementación y prueba de unidad, integración y prueba del sistema, y operación y mantenimiento. Cada fase se completa y se autoriza con documentos antes de la siguiente. Se atribuye a Royce, 1970. Su propuesta original preveía retroalimentación, pero casi todas las organizaciones lo aplican como estrictamente lineal. Conviene cuando los requisitos están bien comprendidos y es improbable que cambien de forma radical. Fuentes: Sommerville (2011), sección 2.1.1; Pressman y Maxim (2020), sección 2.5.1.",
+      "fragments": [
+        24,
+        25,
+        26,
+        27
+      ]
+    },
+    {
+      "sceneId": "incremental",
+      "startTime": 28.5,
+      "endTime": 35,
+      "notes": "El modelo incremental entrelaza especificación, desarrollo y validación: se diseña una implementación inicial, se expone al comentario del usuario y se desarrolla en versiones sucesivas. Es parte fundamental de los enfoques ágiles y, para la mayoría de los sistemas empresariales, resulta mejor que la cascada. Es menos adecuado para sistemas críticos que necesitan una arquitectura estable planificada de antemano. Su costo: la estructura puede degradarse entre incrementos si no se cuida el diseño. Fuente: Sommerville (2011), sección 2.1.2.",
+      "fragments": [
+        30.5,
+        31.5,
+        32.5,
+        33.5
+      ]
+    },
+    {
+      "sceneId": "espiral",
+      "startTime": 35,
+      "endTime": 41.5,
+      "notes": "Propuesto por Boehm en 1988 como modelo evolutivo dirigido por el riesgo. Cada vuelta tiene cuatro sectores: establecimiento de objetivos, valoración y reducción del riesgo, desarrollo y validación, y planeación de la vuelta siguiente. El criterio central es el riesgo: se invierte primero en lo que más puede hacer fracasar el proyecto, por ejemplo un prototipo de una integración incierta. Útil en proyectos grandes con riesgos técnicos o financieros significativos; exige experiencia para evaluar riesgos. Fuentes: Pressman y Maxim (2020), sección 2.5.3; Sommerville (2011), sección 2.3.3.",
+      "fragments": [
+        37,
+        38,
+        39,
+        40
+      ]
+    },
+    {
+      "sceneId": "comparar",
+      "startTime": 41.5,
+      "endTime": 48,
+      "notes": "Revelar un modelo por avance y pedir que la clase diga en qué situación lo elegiría. Cascada: requisitos estables y comprendidos; su riesgo es descubrir tarde un error de requisito. Incremental: se necesita valor pronto y los requisitos se afinan con el uso; su riesgo es la estructura que se degrada. Espiral: hay riesgos técnicos altos; exige experiencia para evaluar riesgos. Muchos proyectos reales combinan elementos de más de un modelo.",
+      "fragments": [
+        43.5,
+        44.5,
+        45.5,
+        46.5
+      ]
+    },
+    {
+      "sceneId": "elegir",
+      "startTime": 48,
+      "endTime": 55.5,
+      "notes": "Ejemplo resuelto, es la sección II de la plantilla TA-1.2. Pedir el veredicto antes de ver las respuestas. Los tres criterios: estabilidad de los requisitos, riesgo y urgencia de uso. Se descarta la cascada porque el pago es incierto y hay una fecha. Se elige incremental: el primer incremento da valor sin pago; antes del segundo se hace una vuelta corta de prototipo con el banco, tomada del espiral. Se acepta el riesgo de que la estructura se degrade, y se controla con una revisión de diseño al cerrar cada incremento.",
+      "fragments": [
+        50,
+        51,
+        52,
+        53,
+        54
+      ]
+    },
+    {
+      "sceneId": "rfrnf",
+      "startTime": 55.5,
+      "endTime": 61,
+      "notes": "Partir de la frase mezclada y preguntar cuántos requisitos hay. Hay dos. Permitir reservar una cancha es un requisito funcional: un servicio que el sistema ofrece. Ser rápido es un requisito no funcional: una cualidad o restricción que se aplica al sistema como un todo. Los no funcionales fallan cuando se escriben como metas generales que no permiten comprobación objetiva. Fuentes: Sommerville (2011), sección 4.1; Pressman y Maxim (2020), sección 7.2.5.",
+      "fragments": [
+        57.5,
+        58.5,
+        59.5
+      ]
+    },
+    {
+      "sceneId": "medible",
+      "startTime": 61,
+      "endTime": 66.5,
+      "notes": "Mostrar el requisito vago y tacharlo. Para volverlo verificable se pregunta con qué métrica y con qué umbral se comprobará. El resultado dice qué se mide, cuánto y bajo qué condición. Sommerville propone métricas como transacciones por segundo, tiempo de respuesta, disponibilidad y tiempo de capacitación. Un requisito verificable es el que permite diseñar pruebas objetivas. Fuente: Sommerville (2011), sección 4.1.2. Pregunta para la clase: ¿con qué prueba comprobarías este requisito?",
+      "fragments": [
+        63,
+        64,
+        65
+      ]
+    },
+    {
+      "sceneId": "rnfcat",
+      "startTime": 66.5,
+      "endTime": 73,
+      "notes": "Cinco categorías frecuentes con la pregunta que las vuelve medibles. Sommerville agrupa los requisitos no funcionales en requisitos del producto, de la organización y externos; los del producto incluyen rendimiento, fiabilidad y disponibilidad, seguridad y usabilidad. La accesibilidad suele omitirse; escribirla como requisito verificable, por ejemplo el nivel AA de las pautas WCAG, evita tratarla como un detalle de cierre. Es lo que pide la sección IV de la plantilla TA-1.2: tres requisitos no funcionales de categorías distintas.",
+      "fragments": [
+        68.5,
+        69.5,
+        70.5,
+        71.5
+      ]
+    },
+    {
+      "sceneId": "tecnicas",
+      "startTime": 73,
+      "endTime": 78.5,
+      "notes": "La elicitación es el conjunto de técnicas con que el equipo obtiene los requisitos de los stakeholders, y se apoya en el mapa de la semana 1. Entrevistas: dependen de lo que la persona sepa explicar; el conocimiento tácito y la jerga se escapan. Talleres: negocian conflictos, pero necesitan facilitador y coordinación. Observación o etnografía: muestra cómo se trabaja realmente, pero no descubre requisitos de la organización ni innovaciones. Prototipos: los usuarios ven qué tan bien el sistema apoya su trabajo y proponen nuevos requisitos; se pueden hacer en Figma. Pregunta para la clase: ¿qué técnica usarías para negociar dos demandas en conflicto? Fuentes: Sommerville (2011), sección 4.5; Pressman y Maxim (2020), sección 7.3.1.",
+      "fragments": [
+        75,
+        76,
+        77
+      ]
+    },
+    {
+      "sceneId": "entrevista",
+      "startTime": 78.5,
+      "endTime": 85,
+      "notes": "Una buena entrevista se prepara: se define el objetivo, se ordenan las preguntas desde el contexto hacia los problemas y las excepciones, y se prefieren las preguntas abiertas. Preguntar por la última vez que ocurrió algo, no por lo que suele ocurrir, porque se recuerda mejor lo concreto. Cerrar resumiendo lo entendido. Evitar preguntas que sugieren la respuesta. Una entrevista mal conducida produce requisitos que reflejan lo que pensaba el analista y no lo que necesita el usuario. Es el guion de la PE-1.2, con las mismas seis filas de la plantilla; el caso de la plantilla es el de las canchas y el de la actividad es un productor agrícola de Loja.",
+      "fragments": [
+        80.5,
+        81.5,
+        82.5,
+        83.5
+      ]
+    },
+    {
+      "sceneId": "historia",
+      "startTime": 85,
+      "endTime": 92.5,
+      "notes": "La plantilla estándar es Como rol, quiero acción, para beneficio. Sommerville la presenta como as a role, I want to do something. Una historia no es un requisito completo: es una invitación a conversar. Lo que la completa son los criterios de aceptación, que en muchos equipos se redactan con la forma Dado, cuando, entonces. Mostrar primero el caso feliz y después el de excepción: dar el segundo es lo que más suele faltar en las entregas. La PE-1.2 pide tres historias con dos criterios cada una, uno de ellos de excepción.",
+      "fragments": [
+        87,
+        88,
+        89,
+        90,
+        91
+      ]
+    },
+    {
+      "sceneId": "invest",
+      "startTime": 92.5,
+      "endTime": 100,
+      "notes": "INVEST es el criterio para revisar una historia: independiente, negociable, valiosa, estimable, pequeña y verificable. Se muestra un ejemplo resuelto, que es el de la plantilla de la PE-1.2: la historia buscar y pagar falla en la S, porque no cabe en un incremento, y se corrige separándola en dos. Pedir que apliquen otra letra a la historia de la lámina anterior. En la actividad deben anotar qué letra falla en cada historia y cómo la corrigieron; si todas cumplen, escriben ninguna.",
+      "fragments": [
+        94.5,
+        95.5,
+        96.5,
+        97.5,
+        98.5
+      ]
+    },
+    {
+      "sceneId": "moscow",
+      "startTime": 100,
+      "endTime": 105.5,
+      "notes": "MoSCoW es una técnica sencilla para priorizar: debe, debería, podría y no ahora. La prioridad no es una opinión del equipo: se decide con los stakeholders, con el valor para el usuario y el riesgo como criterios. Las fuentes del curso no definen MoSCoW; aparece aquí como técnica de uso común. Pedir que justifiquen en voz alta por qué un requisito va a una caja y no a otra, porque en las actividades cada prioridad lleva una razón.",
+      "fragments": [
+        102,
+        103,
+        104
+      ]
+    },
+    {
+      "sceneId": "srs",
+      "startTime": 105.5,
+      "endTime": 112,
+      "notes": "El SRS es el comunicado oficial acordado de lo que deben implementar los desarrolladores. Incluye los requisitos del usuario y los del sistema; Sommerville cita el estándar IEEE 830 como referencia de estructura. La norma ISO/IEC/IEEE 29148 lo reemplazó. Un borrador no necesita ser exhaustivo: organiza lo que se sabe y muestra lo que falta. Una sección conecta con la primera mitad de la clase: el SRS declara el modelo de proceso elegido y por qué. Es la plantilla de TA-1.2. Fuente: Sommerville (2011), sección 4.2.",
+      "fragments": [
+        107.5,
+        108.5,
+        109.5,
+        110.5
+      ]
+    },
+    {
+      "sceneId": "actividades",
+      "startTime": 112,
+      "endTime": 115.5,
+      "notes": "Las consignas completas, las plantillas y las rúbricas están en Canvas. GA-1.2 vale 1 punto, PE-1.2 vale 2 y TA-1.2 vale 2. GA-1.2 y TA-1.2 cerraron el domingo 8 de noviembre; la PE-1.2 se hace ahora, en la segunda hora, y cierra hoy a las 23:59. El Módulo 2 del curso ASU Inclusive Mindset, Diversity defined, se hace aparte, no tiene calificación propia y su resultado se incorpora a la nota de TA-1.2."
+    },
+    {
+      "sceneId": "cierre",
+      "startTime": 115.5,
+      "endTime": 119,
+      "notes": "Cerrar volviendo a la pregunta inicial: un trabajo que cumple el enunciado pero no es lo que se esperaba se evita entendiendo primero qué construir. Pasar a la práctica de una hora con la PE-1.2: el guion de entrevista, tres historias con criterios y la revisión INVEST. Próxima semana: métodos ágiles, criterios de aceptación y backlog priorizado."
+    }
+  ],
+  "slideSequences": []
+}
+    </script>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="119" data-width="1920" data-height="1080">
+
+      <section id="portada" class="clip slide dark" data-start="0" data-duration="3.5" data-track-index="0" data-label="Portada" data-frags="0">
+        <div class="frame" id="portada-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">01 / 20</span>
+      <p class="course" data-in="0" style="--i:0">LTI_05A_INS · Semana 2</p>
+      <h1 class="claim xl" data-in="1" style="--i:1">Antes de programar hay que entender qué construir</h1>
+      <p class="lead" data-in="2" style="--i:2">Crisis del software, modelos de proceso, requisitos y borrador de SRS</p>
+      <p class="byline" data-in="3" style="--i:3">Ingeniería del Software · Charlie Cárdenas Toledo</p>
+        </div>
+      </section>
+
+      <section id="caso" class="clip slide" data-start="3.5" data-duration="6.5" data-track-index="0" data-label="Un sistema que fracasó" data-frags="3">
+        <div class="frame" id="caso-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">02 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">Un sistema municipal llegó tarde, costó el doble y no se usó</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/sistema-fracaso/sistema-fracaso.html?embed" title="Barras de plazo y costo de un sistema municipal: ocho meses contratados frente a veinte reales, y un costo final del doble. Además faltaban trámites diarios y no se podía cambiar." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="crisis" class="clip slide" data-start="10" data-duration="5.5" data-track-index="0" data-label="La crisis del software" data-frags="2">
+        <div class="frame" id="crisis-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">03 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">La crisis del software se nombró en 1968</h1>
+      <p class="lead dark-ink" data-in="1" style="--i:1">Garmisch, Alemania. Conferencia patrocinada por el comité científico de la OTAN.</p>
+      <div class="cards four" data-f="1">
+        <div class="card"><strong>Tarde</strong><em>Los proyectos se entregaban con demora</em></div>
+        <div class="card"><strong>Más caros</strong><em>Costaban más de lo esperado</em></div>
+        <div class="card"><strong>Poco confiables</strong><em>Fallaban con frecuencia</em></div>
+        <div class="card"><strong>No cumplían</strong><em>No estaban a la altura de lo que esperaban los usuarios</em></div>
+      </div>
+      <p class="punch" data-f="2">Los enfoques individuales no escalaban a sistemas grandes.</p>
+        </div>
+      </section>
+
+      <section id="causas" class="clip slide" data-start="15.5" data-duration="6.5" data-track-index="0" data-label="Causas y respuestas" data-frags="3">
+        <div class="frame" id="causas-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">04 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">Cada síntoma de la crisis tiene una causa y una respuesta</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/sintoma-causa-respuesta/sintoma-causa-respuesta.html?embed" title="Cinco filas con un síntoma, su causa probable y la práctica de ingeniería que lo atiende." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="cascada" class="clip slide" data-start="22" data-duration="6.5" data-track-index="0" data-label="Modelo en cascada" data-frags="3">
+        <div class="frame" id="cascada-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">05 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">En cascada, cada fase termina antes de empezar la siguiente</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/cascada-fases/cascada-fases.html?embed" title="Cinco fases en escalera: requisitos, diseño, implementación y prueba, integración y prueba, operación y mantenimiento." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="incremental" class="clip slide" data-start="28.5" data-duration="6.5" data-track-index="0" data-label="Modelo incremental" data-frags="3">
+        <div class="frame" id="incremental-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">06 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">El incremental entrega por partes y aprende de cada una</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/incremental-partes/incremental-partes.html?embed" title="Tres incrementos sucesivos, cada uno probado y comentado por el usuario: consultar y reservar, pago en línea y recordatorios." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="espiral" class="clip slide" data-start="35" data-duration="6.5" data-track-index="0" data-label="Modelo en espiral" data-frags="3">
+        <div class="frame" id="espiral-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">07 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">El espiral decide por riesgo en cada vuelta</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/espiral-riesgo/espiral-riesgo.html?embed" title="Una espiral de tres vueltas con cuatro sectores numerados: establecer objetivos, valorar y reducir el riesgo, desarrollar y validar, y planificar la vuelta siguiente." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="comparar" class="clip slide" data-start="41.5" data-duration="6.5" data-track-index="0" data-label="Comparar los modelos" data-frags="3">
+        <div class="frame" id="comparar-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">08 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">Los tres modelos responden a situaciones distintas</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/situacion-modelo/situacion-modelo.html?embed" title="Tres situaciones, cada una con el modelo que le conviene y su riesgo principal: cascada, incremental y espiral." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="elegir" class="clip slide" data-start="48" data-duration="7.5" data-track-index="0" data-label="Elegir un modelo" data-frags="4">
+        <div class="frame" id="elegir-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">09 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">Tres criterios deciden qué modelo conviene a un proyecto</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/elegir-modelo/elegir-modelo.html?embed" title="Tres escalas entre cascada, incremental y espiral para el caso de las reservas de canchas: requisitos, riesgo y urgencia. El veredicto es incremental con una vuelta de prototipo del pago." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="rfrnf" class="clip slide" data-start="55.5" data-duration="5.5" data-track-index="0" data-label="Funcional y no funcional" data-frags="2">
+        <div class="frame" id="rfrnf-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">10 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">Un requisito dice qué hace el sistema o cómo lo hace</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="2" src="figuras/frase-dos-requisitos/frase-dos-requisitos.html?embed" title="Una frase con dos requisitos: permitir reservar una cancha es funcional y ser rápido es no funcional." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="medible" class="clip slide" data-start="61" data-duration="5.5" data-track-index="0" data-label="Requisito verificable" data-frags="2">
+        <div class="frame" id="medible-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">11 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">Un requisito se verifica con métrica y umbral</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="2" src="figuras/requisito-verificable/requisito-verificable.html?embed" title="El requisito El sistema debe ser rápido se tacha y se reescribe con métrica, umbral y carga." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="rnfcat" class="clip slide" data-start="66.5" data-duration="6.5" data-track-index="0" data-label="Categorías de RNF" data-frags="3">
+        <div class="frame" id="rnfcat-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">12 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">Cada categoría de requisito no funcional se mide distinto</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/categorias-rnf/categorias-rnf.html?embed" title="Cinco categorías de requisitos no funcionales, cada una con la pregunta que la vuelve medible y un ejemplo." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="tecnicas" class="clip slide" data-start="73" data-duration="5.5" data-track-index="0" data-label="Técnicas de elicitación" data-frags="2">
+        <div class="frame" id="tecnicas-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">13 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">Cada técnica de elicitación descubre algo distinto</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="2" src="figuras/tecnicas-elicitacion/tecnicas-elicitacion.html?embed" title="Cuatro técnicas de elicitación, cuándo usarlas y su riesgo principal: entrevista, taller, observación y prototipo." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="entrevista" class="clip slide" data-start="78.5" data-duration="6.5" data-track-index="0" data-label="Preparar una entrevista" data-frags="3">
+        <div class="frame" id="entrevista-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">14 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">Una buena entrevista va del contexto a las excepciones</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/entrevista-secuencia/entrevista-secuencia.html?embed" title="Seis preguntas ordenadas del contexto al cierre en una entrevista a un productor agrícola, y una pregunta que se debe evitar." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="historia" class="clip slide" data-start="85" data-duration="7.5" data-track-index="0" data-label="Historia de usuario" data-frags="4">
+        <div class="frame" id="historia-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">15 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">Una historia de usuario tiene rol, acción y beneficio</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/historia-criterios/historia-criterios.html?embed" title="Una historia de usuario en tres partes, con un criterio de aceptación principal y uno de excepción." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="invest" class="clip slide" data-start="92.5" data-duration="7.5" data-track-index="0" data-label="Revisión INVEST" data-frags="4">
+        <div class="frame" id="invest-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">16 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">Una historia se revisa con las seis letras de INVEST</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/invest-corregir/invest-corregir.html?embed" title="Una historia que reúne buscar y pagar falla en la letra S, pequeña, y se corrige separándola en dos historias." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="moscow" class="clip slide" data-start="100" data-duration="5.5" data-track-index="0" data-label="Priorizar con MoSCoW" data-frags="2">
+        <div class="frame" id="moscow-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">17 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">MoSCoW separa lo imprescindible de lo deseable</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="2" src="figuras/moscow-cajas/moscow-cajas.html?embed" title="Seis requisitos de las reservas de canchas se clasifican en cuatro cajas: debe, debería, podría y no ahora." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="srs" class="clip slide" data-start="105.5" data-duration="6.5" data-track-index="0" data-label="Borrador de SRS" data-frags="3">
+        <div class="frame" id="srs-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">18 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">Un SRS ordena lo que se sabe y muestra lo que falta</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/srs-secciones/srs-secciones.html?embed" title="Las seis secciones de un borrador de SRS: introducción, descripción general, requisitos funcionales, no funcionales, backlog inicial y pendientes." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="actividades" class="clip slide" data-start="112" data-duration="3.5" data-track-index="0" data-label="Actividades de la semana" data-frags="0">
+        <div class="frame" id="actividades-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">19 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">Esta semana hay tres actividades</h1>
+      <div class="cards three tall">
+        <div class="card" data-in="1" style="--i:1"><span class="tag">GA-1.2 · 1 punto</span><strong>Requisitos priorizados</strong><em>Clasificados, verificables y con prioridad MoSCoW</em></div>
+        <div class="card" data-in="2" style="--i:2"><span class="tag">PE-1.2 · 2 puntos</span><strong>Historias de usuario</strong><em>Guion de entrevista, tres historias con criterios e INVEST</em></div>
+        <div class="card" data-in="3" style="--i:3"><span class="tag">TA-1.2 · 2 puntos</span><strong>Diseño de SRS</strong><em>Borrador de SRS y el Módulo 2 de ASU Inclusive Mindset</em></div>
+      </div>
+        </div>
+      </section>
+
+      <section id="cierre" class="clip slide dark" data-start="115.5" data-duration="3.5" data-track-index="0" data-label="Cierre" data-frags="0">
+        <div class="frame" id="cierre-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">20 / 20</span>
+      <h1 class="claim xl" data-in="0" style="--i:0">Un buen requisito se puede comprobar antes de programar</h1>
+      <p class="lead" data-in="1" style="--i:1">Ahora, la práctica: guion de entrevista, tres historias e INVEST</p>
+      <p class="byline" data-in="2" style="--i:2">Fuentes: Sommerville (2011) · Pressman y Maxim (2020)</p>
+        </div>
+      </section>
+    </div>
+    <script>
+      // Con el motor de HyperFrames (check, Studio) el registro ya existe.
+      // Al presentar, el reproductor mueve esta línea de tiempo directamente.
+      const engineHosted = Object.prototype.hasOwnProperty.call(window, "__timelines");
+      window.__timelines = window.__timelines || {};
+      if (!engineHosted) document.documentElement.classList.add("live");
+
+      // Las figuras incrustadas reenvían las flechas aquí: se les quita el foco y se entrega la tecla
+      // al documento donde el reproductor la escucha, para que las flechas siempre controlen el deck.
+      window.addEventListener("message", (ev) => {
+        const m = ev.data;
+        if (!m || m.type !== "deck-key") return;
+        let w = window;
+        for (;;) {
+          try { if (w.document.activeElement && w.document.activeElement !== w.document.body) w.document.activeElement.blur(); } catch (e) {}
+          if (w === w.parent) break;
+          w = w.parent;
+        }
+        try { w.focus(); w.document.dispatchEvent(new KeyboardEvent("keydown", { key: m.key, bubbles: true, cancelable: true })); } catch (e) {}
+      });
+
+      // El reproductor retrocede de diapositiva en diapositiva. Se reemplaza prev() del controlador para
+      // que teclado, botón y deslizamiento deshagan un avance a la vez: de un avance al anterior y,
+      // desde el primero, al último avance de la diapositiva previa.
+      (function installStepBack() {
+        let w = window, host = null;
+        for (;;) {
+          try { host = w.document.querySelector("hyperframes-slideshow"); } catch (e) {}
+          if (host || w === w.parent) break;
+          w = w.parent;
+        }
+        if (!host) return;
+        const patch = () => {
+          const c = host.controller;
+          if (!c) return false;
+          if (c.__stepBack) return true;
+          c.__stepBack = true;
+          const original = c.prev.bind(c);
+          c.prev = () => {
+            const f = c.frame;
+            if (c.stack.length > 1) return original();
+            if (f.fragmentIndex > 0) c.resumeSlide(f.slideIndex, f.fragmentIndex - 1);
+            else if (f.slideIndex > 0) {
+              const p = f.slideIndex - 1, n = c.show.slides[p].fragments.length;
+              c.resumeSlide(p, n > 0 ? n - 1 : -1);
+            }
+          };
+          return true;
+        };
+        setInterval(patch, 300);
+        patch();
+      })();
+
+      const ENTER = 2;
+      const tl = gsap.timeline({ paused: true });
+      tl.to({}, { duration: 119 }, 0);
+
+      const figSyncs = [];
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      slides.forEach((slide, index) => {
+        const start = Number(slide.dataset.start);
+        const end = start + Number(slide.dataset.duration);
+        const frame = slide.querySelector(".frame");
+        tl.set(frame, { opacity: 1 }, start);
+        if (index < slides.length - 1) tl.set(frame, { opacity: 0 }, end);
+
+        slide.querySelectorAll("[data-in]").forEach((el) => {
+          const i = Number(el.dataset.in);
+          tl.fromTo(el, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, start + 0.12 + i * 0.07);
+        });
+        slide.querySelectorAll("[data-f]").forEach((el) => {
+          const hold = start + ENTER + Number(el.dataset.f);
+          tl.fromTo(el, { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, hold - 0.6);
+        });
+        slide.querySelectorAll("iframe[data-fig]").forEach((el) => {
+          // La figura corre en su propio documento: en vivo anima sola hacia el estado pedido;
+          // con el motor (check, Studio) sigue la línea de tiempo cuadro a cuadro.
+          // El estado se calcula desde el tiempo de la línea de tiempo, así responde igual
+          // al avanzar, al retroceder y al saltar entre diapositivas.
+          const steps = Number(el.dataset.fig);
+          let sent = -1;
+          const wanted = () => {
+            const t = tl.time();
+            let u = 0;
+            for (let step = 1; step <= steps; step++) u += Math.min(1, Math.max(0, (t - (start + ENTER + step - 0.6)) / 0.6));
+            return engineHosted ? u / steps : Math.round(u) / steps;
+          };
+          const send = (force) => {
+            const value = wanted();
+            if (!el.contentWindow || (!force && value === sent)) return;
+            sent = value;
+            el.contentWindow.postMessage({ type: "fig", mode: engineHosted ? "set" : "go", value }, "*");
+          };
+          figSyncs.push(send);
+          el.addEventListener("load", () => send(true));
+        });
+        slide.querySelectorAll("[data-hl]").forEach((el) => {
+          const hold = start + ENTER + Number(el.dataset.hl);
+          tl.to(el, { backgroundColor: "#fbe3a6", color: "#5c3d00", duration: 0.4 }, hold - 0.5);
+        });
+      });
+
+      tl.eventCallback("onUpdate", () => figSyncs.forEach((sync) => sync()));
+      // En vivo el reproductor puede mover la línea de tiempo sin emitir eventos: se revisa en cada tic de GSAP.
+      if (!engineHosted) gsap.ticker.add(() => figSyncs.forEach((sync) => sync()));
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
