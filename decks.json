@@ -50,6 +50,11 @@
         "n": 1,
         "slug": "ins-semana-01",
         "tema": "Ingeniería de software hoy, ética y descubrimiento inicial del proyecto"
+      },
+      {
+        "n": 3,
+        "slug": "ins-semana-03",
+        "tema": "Manifiesto Ágil, Scrum y XP, criterios de aceptación, validación y backlog priorizado"
       }
     ]
   },

@@ -10,6 +10,7 @@ Sitio: https://charliecardenastoledo.github.io/presentaciones-uide/
 | CC05A_IFT200 Estructura, modelado y almacenamiento de BD | 2. Arquitectura de tres esquemas e independencia de datos | [bd-semana-02](https://charliecardenastoledo.github.io/presentaciones-uide/bd-semana-02/) |
 | CC05A_IFT200 Estructura, modelado y almacenamiento de BD | 3. Entidades, atributos y claves | [bd-semana-03](https://charliecardenastoledo.github.io/presentaciones-uide/bd-semana-03/) |
 | LTI_05A_INS Ingeniería del Software | 1. Ingeniería de software hoy, ética y descubrimiento inicial del proyecto | [ins-semana-01](https://charliecardenastoledo.github.io/presentaciones-uide/ins-semana-01/) |
+| LTI_05A_INS Ingeniería del Software | 3. Manifiesto Ágil, criterios de aceptación y backlog priorizado | [ins-semana-03](https://charliecardenastoledo.github.io/presentaciones-uide/ins-semana-03/) |
 | LTI_05U_IHC Interacción Hombre Computadora | 1. HCI como ciencia de sistemas interactivos | [hci-semana-01](https://charliecardenastoledo.github.io/presentaciones-uide/hci-semana-01/) |
 | LTI_05U_ESD Estructura de Datos | 1. Big-O, TDA y representación en memoria | [esd-semana-01](https://charliecardenastoledo.github.io/presentaciones-uide/esd-semana-01/) |
 | LTI_05U_ESD Estructura de Datos | 2. Arreglos y listas, acceso aleatorio y secuencial, invariantes | [esd-semana-02](https://charliecardenastoledo.github.io/presentaciones-uide/esd-semana-02/) |

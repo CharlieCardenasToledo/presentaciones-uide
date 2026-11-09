@@ -1,0 +1,676 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Semana 3 · Ágil, criterios de aceptación y backlog</title>
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      :root {
+        /* Colores tomados del logotipo UIDE: vino #910048 y dorado #E8A920. Sin degradados. */
+        --paper: #ffffff; --ink: #1f1a1d; --muted: #5a5257; --wine: #910048; --wine-deep: #6d0036; --gold: #e8a920;
+        --teal: #0c6b62; --teal-soft: #e3f2f0; --amber: #7a5200; --amber-soft: #fcefc9; --card: #ffffff; --line: #e2dcdf; --tint: #f6f1f3;
+      }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--paper); }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; font-family: system-ui, sans-serif; color: var(--ink); }
+      .slide { position: absolute; inset: 0; }
+      .frame { position: absolute; inset: 0; padding: 92px 120px 150px; display: flex; flex-direction: column; justify-content: center; opacity: 0; background: var(--paper); }
+      .frame::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 22px; background: var(--wine); }
+      .frame::after { content: ""; position: absolute; left: 22px; top: 0; bottom: 0; width: 8px; background: var(--gold); }
+      .dark .frame { background: var(--wine); color: #fff; }
+      .dark .frame::before { background: var(--gold); }
+      .dark .frame::after { display: none; }
+      .logo { position: absolute; top: 44px; right: 96px; height: 92px; width: auto; }
+      .dark .logo { top: 0; right: 96px; height: 150px; padding: 26px 30px 22px; background: #fff; border-radius: 0 0 18px 18px; box-sizing: border-box; }
+      .num { position: absolute; bottom: 52px; left: 120px; font-size: 26px; letter-spacing: 0.14em; color: var(--muted); font-variant-numeric: tabular-nums; }
+      .dark .num { color: #f1d3e0; }
+      .course { font-size: 34px; font-weight: 600; color: var(--gold); margin-bottom: 30px; }
+      .claim { font-family: ui-serif, serif; font-weight: 700; font-size: 74px; line-height: 1.08; letter-spacing: -0.015em; max-width: 1480px; margin-bottom: 44px; }
+      .claim.long { font-size: 62px; max-width: 1640px; }
+      .claim.xl { font-size: 96px; max-width: 1500px; }
+      .lead { font-size: 48px; line-height: 1.25; color: #ffffff; max-width: 1400px; }
+      .lead.dark-ink { color: var(--muted); margin-top: -14px; margin-bottom: 40px; }
+      .byline { font-size: 32px; color: #f6dfe9; margin-top: 70px; }
+      .source { font-size: 30px; color: var(--muted); margin-top: 34px; }
+      .punch { font-family: ui-serif, serif; font-size: 56px; font-weight: 700; color: var(--wine); margin-top: 44px; }
+      .punch.soft { color: var(--ink); font-size: 46px; margin-top: 18px; }
+      .punch.good { color: var(--teal); }
+
+      .steps { list-style: none; display: grid; gap: 18px; max-width: 1500px; }
+      .steps li { display: flex; align-items: center; gap: 30px; font-size: 46px; background: var(--tint); border-radius: 18px; padding: 18px 30px; }
+      .steps b { flex: none; width: 72px; height: 72px; border-radius: 50%; background: var(--wine); color: #fff; display: grid; place-items: center; font-size: 40px; }
+
+      .cards { display: grid; gap: 30px; }
+      .cards.three { grid-template-columns: repeat(3, 1fr); }
+      .cards.two { grid-template-columns: repeat(2, 1fr); }
+      .cards.four { grid-template-columns: repeat(4, 1fr); }
+      .cards.grid2 { grid-template-columns: repeat(2, 1fr); gap: 26px; }
+      .cards.tight { margin-top: 30px; }
+      .card { background: var(--tint); border-radius: 22px; padding: 36px 40px; display: flex; flex-direction: column; gap: 14px; }
+      .card strong { font-size: 48px; line-height: 1.12; font-weight: 800; }
+      .card em { font-style: normal; font-size: 40px; line-height: 1.2; color: var(--muted); }
+      .card .tag, .panel .tag { align-self: flex-start; font-size: 34px; font-weight: 600; color: var(--wine); }
+      .card.file strong { font-family: ui-monospace, monospace; font-size: 46px; }
+      .card.empty, .card.warn { background: var(--amber-soft); }
+      .card.warn strong { color: var(--amber); }
+      .card.pill { align-items: center; text-align: center; padding: 30px 20px; }
+      .card.pill b { width: 68px; height: 68px; border-radius: 50%; background: var(--wine); color: #fff; display: grid; place-items: center; font-size: 38px; }
+      .cards.tall .card { min-height: 300px; }
+      .verdict { margin-top: auto; padding: 14px 18px; border-radius: 12px; background: #fbe3a6; color: var(--amber) !important; font-weight: 700; }
+      .verdict.good { background: #cfe9e5; color: var(--teal) !important; }
+
+      table.data { border-collapse: collapse; width: 100%; background: var(--tint); border-radius: 20px; overflow: hidden; }
+      table.data th { text-align: left; font-size: 30px; letter-spacing: 0.1em; text-transform: uppercase; color: #fff; background: var(--wine-deep); padding: 20px 28px; }
+      table.data td { font-size: 42px; padding: 22px 28px; border-top: 3px solid #ffffff; font-variant-numeric: tabular-nums; }
+      table.data.matrix td { font-size: 40px; padding: 24px 28px; }
+      table.data.matrix b { color: var(--wine); }
+      .chips { display: flex; gap: 22px; margin-top: 36px; flex-wrap: wrap; }
+      .chip { font-size: 40px; font-weight: 700; padding: 16px 28px; border-radius: 999px; background: var(--amber-soft); color: var(--amber); }
+
+      .split { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+      .panel { background: var(--tint); border-radius: 22px; padding: 30px 34px; display: flex; flex-direction: column; gap: 18px; }
+      .panel.good { background: var(--teal-soft); }
+      .panel.good .tag { color: var(--teal); }
+      .box { font-size: 40px; padding: 18px 24px; border-radius: 14px; background: #ffffff; }
+      .box i { font-style: normal; color: var(--amber); font-weight: 700; }
+      .box.strong { background: var(--teal); color: #fff; font-weight: 700; }
+      .box.new { background: var(--teal-soft); color: var(--teal); font-weight: 700; }
+      .schema { font-family: ui-monospace, monospace; font-size: 44px; font-weight: 700; padding: 26px 32px; border-radius: 18px; background: var(--tint); }
+      .schema.main { font-size: 50px; background: var(--wine-deep); color: #fff; }
+      .schema.small { font-size: 40px; background: #ffffff; }
+      .schema u { text-decoration-thickness: 5px; text-underline-offset: 8px; }
+
+      .layers { display: grid; gap: 22px; max-width: 1500px; }
+      .layer { display: flex; align-items: baseline; gap: 34px; padding: 30px 38px; border-radius: 20px; background: var(--wine); color: #fff; }
+      .layer.mid { background: #7f003f; margin-left: 70px; }
+      .layer.low { background: var(--wine-deep); margin-left: 140px; }
+      .layer strong { font-size: 50px; flex: none; width: 430px; }
+      .layer em { font-style: normal; font-size: 40px; color: #ffffff; }
+
+      .timeline { display: grid; gap: 14px; }
+      .timeline .row { display: grid; grid-template-columns: 170px 560px 1fr; align-items: center; gap: 30px; background: var(--tint); border-radius: 16px; padding: 14px 28px; }
+      .timeline b { font-family: ui-serif, serif; font-size: 52px; color: var(--wine); font-variant-numeric: tabular-nums; }
+      .timeline strong { font-size: 42px; }
+      .timeline em { font-style: normal; font-size: 40px; color: var(--muted); }
+
+      iframe.fig { flex: none; width: 1560px; height: 720px; border: 0; background: transparent; align-self: center; margin-top: -24px; }
+
+      /* Transiciones solo al presentar en vivo: el reproductor salta entre
+         puntos de la línea de tiempo y el navegador suaviza el cambio. */
+      html.live .frame { transition: opacity 0.45s ease; }
+      html.live [data-in], html.live [data-f] { transition: opacity 0.5s ease, transform 0.55s cubic-bezier(0.2, 0.7, 0.2, 1); transition-delay: calc(var(--i, 0) * 70ms); }
+      html.live [data-hl] { transition: background-color 0.4s ease, color 0.4s ease; }
+    </style>
+  </head>
+  <body>
+    <script type="application/hyperframes-slideshow+json">
+{
+  "slides": [
+    {
+      "sceneId": "portada",
+      "startTime": 0,
+      "endTime": 3.5,
+      "notes": "Abrir con una pregunta: ¿alguien ha trabajado en un equipo que dijera ser ágil? ¿Qué hacía distinto? Anotar dos o tres respuestas sin corregirlas. No definir nada todavía: la clase empieza por una historia de usuario que nadie entiende igual."
+    },
+    {
+      "sceneId": "ruta",
+      "startTime": 3.5,
+      "endTime": 7,
+      "notes": "Presentar la ruta en un minuto. Primero una historia ambigua, sin teoría; después el Manifiesto, Scrum y XP; luego la decisión entre planes y agilidad; y al final los criterios, la validación y el backlog. El ejemplo resuelto de toda la clase son las reservas de canchas de un municipio; el Marketplace Agrícola queda para las actividades."
+    },
+    {
+      "sceneId": "ambigua",
+      "startTime": 7,
+      "endTime": 13.5,
+      "notes": "Dejar la historia a la vista y preguntar antes de avanzar: ¿cuántas formas hay de entender filtrar, necesito y rápido? Primer avance: cada palabra imprecisa abre una pregunta. Segundo avance: dos programadores, con la misma historia, construyen cosas distintas. Tercer avance: un criterio de aceptación cierra esas decisiones. Es la exploración de la semana; pedir que anoten tres comprobaciones concretas antes de seguir.",
+      "fragments": [
+        9,
+        10,
+        11,
+        12
+      ]
+    },
+    {
+      "sceneId": "manifiesto",
+      "startTime": 13.5,
+      "endTime": 21,
+      "notes": "El Manifiesto Ágil se firmó en 2001. Declara cuatro preferencias y aclara que los elementos de la derecha también tienen valor: se prefiere lo de la izquierda cuando entran en conflicto. Revelar una fila por avance y pedir un ejemplo propio antes de mostrar el de las canchas. La lectura crítica: ser ágil no significa prescindir de documentos ni de planes. Fuente: Pressman y Maxim (2020), capítulo 3.",
+      "fragments": [
+        15.5,
+        16.5,
+        17.5,
+        18.5,
+        19.5
+      ]
+    },
+    {
+      "sceneId": "principios",
+      "startTime": 21,
+      "endTime": 28.5,
+      "notes": "Sommerville resume lo que comparten los métodos ágiles en cinco principios: participación del cliente, entrega incremental, personas y no procesos, aceptación del cambio y mantenimiento de la simplicidad. La figura muestra tres de ellos funcionando juntos: el software se entrega por partes, el cliente revisa cada parte y un cambio de tarifas entra como una historia nueva. Pedir que ubiquen cuál de los principios falló en el sistema municipal de la semana anterior. Fuentes: Sommerville (2011), capítulo 3, sección 3.1; Pressman y Maxim (2020), sección 3.3.1.",
+      "fragments": [
+        23,
+        24,
+        25,
+        26,
+        27
+      ]
+    },
+    {
+      "sceneId": "scrum",
+      "startTime": 28.5,
+      "endTime": 36,
+      "notes": "Scrum organiza el trabajo en sprints de tiempo fijo, de dos a cuatro semanas. Tres roles: el Product Owner prioriza por valor, el Scrum Master facilita y retira obstáculos, el equipo decide cómo construir. Tres artefactos: product backlog, sprint backlog e incremento. La reunión diaria dura como máximo 15 minutos y tiene tres preguntas: qué hice, qué me bloquea y qué haré. Insistir en que Scrum gestiona el trabajo y no prescribe técnicas de programación. Fuente: Pressman y Maxim (2020), sección 3.4.",
+      "fragments": [
+        30.5,
+        31.5,
+        32.5,
+        33.5,
+        34.5
+      ]
+    },
+    {
+      "sceneId": "xp",
+      "startTime": 36,
+      "endTime": 43.5,
+      "notes": "XP atiende la calidad técnica. En el desarrollo guiado por pruebas la prueba se escribe antes que el código: rojo, verde, refactorizar. La refactorización mejora el diseño sin cambiar lo que hace, y por eso la prueba debe seguir pasando. La programación en parejas y la integración continua detectan errores pronto. Scrum y XP no compiten: Scrum ordena el trabajo y XP aporta las disciplinas de ingeniería. Las historias de usuario también vienen de XP. Fuente: Pressman y Maxim (2020), sección 3.5.1.",
+      "fragments": [
+        38,
+        39,
+        40,
+        41,
+        42
+      ]
+    },
+    {
+      "sceneId": "enfoques",
+      "startTime": 43.5,
+      "endTime": 51,
+      "notes": "Primero leer los extremos de cada escala: qué empuja hacia planes y qué hacia agilidad. Después el caso resuelto: software de control de dosis de un equipo médico. Revelar un factor por avance y pedir que digan hacia dónde se mueve antes de verlo. Factores técnicos: sistema crítico y especificación previa. Factores humanos: equipo repartido en dos ciudades. Factores organizacionales: un regulador que exige diseño aprobado. Se elige un desarrollo dirigido por planes y se toma del enfoque ágil la revisión corta de cada módulo con el personal clínico. El riesgo aceptado es que un cambio de reglamento cueste mucho; se controla con una revisión de requisitos antes de cada fase. Fuente: Sommerville (2011), capítulo 3, sección 3.2.",
+      "fragments": [
+        45.5,
+        46.5,
+        47.5,
+        48.5,
+        49.5
+      ]
+    },
+    {
+      "sceneId": "decision",
+      "startTime": 51,
+      "endTime": 58.5,
+      "notes": "Es la sección I de la plantilla TA-1.3. Los mismos cuatro pasos del caso médico se aplican al Marketplace Agrícola; el ejemplo de la plantilla es el de las canchas. No hay una respuesta única: vale cualquier decisión que use los tres grupos de factores y sea coherente con ellos. Pedir que digan en voz alta qué tomarían del otro enfoque.",
+      "fragments": [
+        53,
+        54,
+        55,
+        56,
+        57
+      ]
+    },
+    {
+      "sceneId": "historia-caso",
+      "startTime": 58.5,
+      "endTime": 64,
+      "notes": "Una historia basta para planificar, pero no siempre alcanza para un flujo con varios pasos y varios actores. El caso de uso describe una interacción entre un actor y el sistema: un escenario principal y escenarios alternativos. Se usa una historia para publicar un producto y un caso de uso para el flujo de compra, que involucra al comprador, la pasarela de pagos y el proveedor logístico. Fuente: Sommerville (2011), capítulo 4, sección 4.5.4.",
+      "fragments": [
+        60.5,
+        61.5,
+        62.5
+      ]
+    },
+    {
+      "sceneId": "caso-uso",
+      "startTime": 64,
+      "endTime": 71.5,
+      "notes": "Es la sección II de la plantilla PE-1.3, con el ejemplo de las canchas. Revelar por partes: actor principal, objetivo y precondición; el escenario principal con sus cinco pasos numerados; el escenario alternativo, que parte de uno de los pasos (aquí el 3, porque la cancha elegida ya fue reservada); y la condición con la que finaliza. En la actividad deben hacer lo mismo con el flujo de compra del Marketplace Agrícola. Fuente: Sommerville (2011), capítulo 4, sección 4.5.4.",
+      "fragments": [
+        66,
+        67,
+        68,
+        69,
+        70
+      ]
+    },
+    {
+      "sceneId": "criterio",
+      "startTime": 71.5,
+      "endTime": 75,
+      "notes": "Si no se logra redactar una prueba para un criterio, el requisito sigue siendo ambiguo. Esa es la idea central de lo que viene. Un criterio de aceptación convierte una frase abierta en una comprobación con respuesta sí o no."
+    },
+    {
+      "sceneId": "dado-cuando",
+      "startTime": 75,
+      "endTime": 82.5,
+      "notes": "Formato frecuente: Dado, cuando, entonces. Dado describe el contexto inicial, cuando describe la acción y entonces describe el resultado observable. No es el único formato posible, pero obliga a decir qué se verá. El último avance muestra para qué sirve: con ese criterio, dos personas distintas aplican la misma prueba y llegan al mismo veredicto. Es el formato de la plantilla PE-1.3, columna Criterio Dado, cuando, entonces.",
+      "fragments": [
+        77,
+        78,
+        79,
+        80,
+        81
+      ]
+    },
+    {
+      "sceneId": "cuatro-criterios",
+      "startTime": 82.5,
+      "endTime": 90,
+      "notes": "Un conjunto completo cubre cuatro clases: flujo normal, excepción, límite y no funcional. Si solo se escribe el flujo normal, el equipo implementa el camino feliz y descubre las excepciones en producción. Es el Tipo de la plantilla PE-1.3: tres historias de su PE-1.2 con cuatro criterios cada una, uno de cada tipo. Pedir que clasifiquen en voz alta un criterio nuevo.",
+      "fragments": [
+        84.5,
+        85.5,
+        86.5,
+        87.5,
+        88.5
+      ]
+    },
+    {
+      "sceneId": "reescribir",
+      "startTime": 90,
+      "endTime": 95.5,
+      "notes": "Es una pregunta de la lista de validación de la plantilla PE-1.3: ¿algún criterio usa palabras como rápido o adecuado sin un valor? Un criterio no funcional necesita un número y una condición de carga. Pedir que propongan otra palabra vaga (fácil, seguro, intuitivo) y que la reescriban con un valor medible.",
+      "fragments": [
+        92,
+        93,
+        94
+      ]
+    },
+    {
+      "sceneId": "validacion",
+      "startTime": 95.5,
+      "endTime": 103,
+      "notes": "Validar es comprobar que lo escrito define el sistema que el cliente necesita: el producto correcto. Se distingue de verificar, que comprueba que lo construido cumple lo especificado. Cuatro técnicas: revisiones, prototipos, pruebas de aceptación y, en ágil, la revisión del sprint, donde el Product Owner dice si el incremento responde a la necesidad. Fuente: Sommerville (2011), capítulo 4, sección 4.6.",
+      "fragments": [
+        97.5,
+        98.5,
+        99.5,
+        100.5,
+        101.5
+      ]
+    },
+    {
+      "sceneId": "trazabilidad",
+      "startTime": 103,
+      "endTime": 111.5,
+      "notes": "La trazabilidad es el vínculo documentado entre un requisito, su origen, el diseño, el código y las pruebas. Sirve para auditar que todo requisito se implementó y se probó, y para evaluar el impacto de un cambio antes de aceptarlo. Seguir la cadena con el ejemplo del cobro de la reserva: administrador, RF-05, HU-03, CA-07 y PR-07. Cuando el banco pide un segundo paso de verificación, la cadena muestra qué se afecta. En ágil, el cambio se expresa como una historia nueva que el Product Owner ordena en el backlog. Es la sección IV de la plantilla TA-1.3. Fuente: Pressman y Maxim (2020), capítulo 7, sección 7.2.6.",
+      "fragments": [
+        105,
+        106,
+        107,
+        108,
+        109,
+        110
+      ]
+    },
+    {
+      "sceneId": "backlog",
+      "startTime": 111.5,
+      "endTime": 119,
+      "notes": "El orden del backlog lo decide el Product Owner con el equipo. MoSCoW separa lo imprescindible de lo deseable; dentro de cada grupo se ordena por valor frente a esfuerzo; después se comprueba que el orden respete las dependencias (cancelar y pagar necesitan que se pueda reservar). El sprint 1 toma las primeras historias y tiene un objetivo que se pueda comprobar en la revisión del sprint. Es lo que pide la plantilla TA-1.3 en las secciones II y III. Fuente: Pressman y Maxim (2020), capítulo 3, secciones 3.4.1 y 3.4.2.",
+      "fragments": [
+        113.5,
+        114.5,
+        115.5,
+        116.5,
+        117.5
+      ]
+    },
+    {
+      "sceneId": "practica",
+      "startTime": 119,
+      "endTime": 127.5,
+      "notes": "Quince minutos en parejas con el Marketplace Agrícola, el proyecto del curso. Recorrer las mesas. Errores esperados: criterios que terminan en una intención y no en un resultado observable, criterios no funcionales sin número, un orden que pone el pago antes que la publicación del producto, y un objetivo de sprint que no se puede comprobar.",
+      "fragments": [
+        121,
+        122,
+        123,
+        124,
+        125,
+        126
+      ]
+    },
+    {
+      "sceneId": "actividades",
+      "startTime": 127.5,
+      "endTime": 131,
+      "notes": "Las consignas completas, las plantillas y las rúbricas están en Canvas. PE-1.3 vale 2 puntos y se entrega al terminar la clase del lunes. TA-1.3 vale 2 puntos y cierra el domingo 15 de noviembre. Las dos reutilizan el trabajo de las semanas anteriores: las historias de PE-1.2 y el SRS de TA-1.2. Esta semana no hay GA ni módulo del curso ASU."
+    },
+    {
+      "sceneId": "cierre",
+      "startTime": 131,
+      "endTime": 134.5,
+      "notes": "Cerrar volviendo a la historia del inicio: ahora saben decir qué le faltaba para que dos personas la entendieran igual. Tarea para casa: la recuperación sin apuntes de la semana, con ocho preguntas. Próxima semana: comparar con más detalle el desarrollo planificado y el ágil, Scrum y Kanban, el grooming del backlog y la cultura DevOps."
+    }
+  ],
+  "slideSequences": []
+}
+    </script>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="134.5" data-width="1920" data-height="1080">
+
+      <section id="portada" class="clip slide dark" data-start="0" data-duration="3.5" data-track-index="0" data-label="Portada" data-frags="0">
+        <div class="frame" id="portada-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">01 / 21</span>
+      <p class="course" data-in="0" style="--i:0">LTI_05A_INS · Semana 3</p>
+      <h1 class="claim xl" data-in="1" style="--i:1">Ágil no significa trabajar sin plan</h1>
+      <p class="lead" data-in="2" style="--i:2">Manifiesto Ágil, criterios de aceptación y backlog priorizado</p>
+      <p class="byline" data-in="3" style="--i:3">Ingeniería del Software · Charlie Cárdenas Toledo</p>
+        </div>
+      </section>
+
+      <section id="ruta" class="clip slide" data-start="3.5" data-duration="3.5" data-track-index="0" data-label="Ruta de la clase" data-frags="0">
+        <div class="frame" id="ruta-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">02 / 21</span>
+      <h1 class="claim" data-in="0" style="--i:0">La clase va de una historia ambigua a un backlog priorizado</h1>
+      <ol class="steps">
+        <li data-in="1" style="--i:1"><b>1</b><span>Explorar una historia que nadie entiende igual</span></li>
+        <li data-in="2" style="--i:2"><b>2</b><span>Manifiesto Ágil, Scrum y Extreme Programming</span></li>
+        <li data-in="3" style="--i:3"><b>3</b><span>Decidir entre planes y agilidad</span></li>
+        <li data-in="4" style="--i:4"><b>4</b><span>Casos de uso y criterios de aceptación</span></li>
+        <li data-in="5" style="--i:5"><b>5</b><span>Validar, rastrear y priorizar el backlog</span></li>
+      </ol>
+        </div>
+      </section>
+
+      <section id="ambigua" class="clip slide" data-start="7" data-duration="6.5" data-track-index="0" data-label="Una historia ambigua" data-frags="3">
+        <div class="frame" id="ambigua-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">03 / 21</span>
+      <h1 class="claim" data-in="0" style="--i:0">Una historia corta se entiende de muchas maneras</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/historia-ambigua/historia-ambigua.html?embed" title="La historia Como comprador, quiero filtrar los productos para encontrar lo que necesito rápido. Tres palabras abren preguntas, dos programadores construyen cosas distintas y un criterio de aceptación las resuelve." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="manifiesto" class="clip slide" data-start="13.5" data-duration="7.5" data-track-index="0" data-label="El Manifiesto Ágil" data-frags="4">
+        <div class="frame" id="manifiesto-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">04 / 21</span>
+      <h1 class="claim" data-in="0" style="--i:0">El Manifiesto Ágil prefiere cuatro cosas sin descartar las otras</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/manifiesto-preferencias/manifiesto-preferencias.html?embed" title="Cuatro preferencias del Manifiesto Ágil frente a lo que no se descarta, con un ejemplo de reservas de canchas en cada una." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="principios" class="clip slide" data-start="21" data-duration="7.5" data-track-index="0" data-label="Principios ágiles" data-frags="4">
+        <div class="frame" id="principios-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">05 / 21</span>
+      <h1 class="claim" data-in="0" style="--i:0">Se entrega por partes, con el cliente, y se acepta el cambio</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/entrega-incremental/entrega-incremental.html?embed" title="Tres entregas sucesivas de las reservas de canchas, cada una revisada por el administrador, y un cuarto bloque que representa un cambio de tarifas aceptado." loading="eager"></iframe>
+
+        </div>
+      </section>
+
+      <section id="scrum" class="clip slide" data-start="28.5" data-duration="7.5" data-track-index="0" data-label="Scrum" data-frags="4">
+        <div class="frame" id="scrum-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">06 / 21</span>
+      <h1 class="claim" data-in="0" style="--i:0">Scrum organiza el trabajo en ciclos de tiempo fijo</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/sprint-scrum/sprint-scrum.html?embed" title="Un sprint de Scrum: el product backlog alimenta el sprint backlog, el equipo trabaja con una reunión diaria y el sprint termina con un incremento, una revisión y una retrospectiva." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="xp" class="clip slide" data-start="36" data-duration="7.5" data-track-index="0" data-label="Extreme Programming" data-frags="4">
+        <div class="frame" id="xp-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">07 / 21</span>
+      <h1 class="claim" data-in="0" style="--i:0">Extreme Programming cuida la calidad técnica del código</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/tdd-ciclo/tdd-ciclo.html?embed" title="El ciclo rojo, verde, refactorizar del desarrollo guiado por pruebas, más la programación en parejas y la integración continua." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="enfoques" class="clip slide" data-start="43.5" data-duration="7.5" data-track-index="0" data-label="Planes frente a ágil" data-frags="4">
+        <div class="frame" id="enfoques-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">08 / 21</span>
+      <h1 class="claim" data-in="0" style="--i:0">Los factores del proyecto deciden entre planes y agilidad</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/escala-enfoque/escala-enfoque.html?embed" title="Tres escalas de factores técnicos, humanos y organizacionales entre el enfoque dirigido por planes y el ágil. En el caso del equipo médico los tres marcadores se mueven hacia planes." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="decision" class="clip slide" data-start="51" data-duration="7.5" data-track-index="0" data-label="Decidir para un proyecto" data-frags="4">
+        <div class="frame" id="decision-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">09 / 21</span>
+      <h1 class="claim" data-in="0" style="--i:0">Para el marketplace se repiten cuatro pasos</h1>
+      <div class="timeline">
+        <div class="row" data-f="1"><b>1</b><strong>Factores técnicos</strong><em>¿Los requisitos son estables o cambian?</em></div>
+        <div class="row" data-f="2"><b>2</b><strong>Factores humanos</strong><em>¿Cómo es el equipo y cómo se comunica?</em></div>
+        <div class="row" data-f="3"><b>3</b><strong>Factores organizacionales</strong><em>¿Hay regulador y un cliente disponible?</em></div>
+        <div class="row" data-f="4"><b>4</b><strong>La decisión</strong><em>Qué enfoque y qué se toma del otro</em></div>
+      </div>
+        </div>
+      </section>
+
+      <section id="historia-caso" class="clip slide" data-start="58.5" data-duration="5.5" data-track-index="0" data-label="Historia y caso de uso" data-frags="2">
+        <div class="frame" id="historia-caso-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">10 / 21</span>
+      <h1 class="claim" data-in="0" style="--i:0">Una historia planifica y un caso de uso detalla el flujo</h1>
+      <div class="cards two tall">
+        <div class="card" data-f="1"><span class="tag">Historia de usuario</span><strong>Una frase: Como, quiero, para</strong><em>Una pieza de valor que cabe en un sprint; sirve para planificar y ordenar el backlog</em></div>
+        <div class="card" data-f="2"><span class="tag">Caso de uso</span><strong>Actor, objetivo y escenarios</strong><em>Un objetivo completo con varios pasos; sirve para entender un flujo como el de compra</em></div>
+      </div>
+        </div>
+      </section>
+
+      <section id="caso-uso" class="clip slide" data-start="64" data-duration="7.5" data-track-index="0" data-label="Caso de uso" data-frags="4">
+        <div class="frame" id="caso-uso-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">11 / 21</span>
+      <h1 class="claim" data-in="0" style="--i:0">Un caso de uso tiene un escenario principal y alternativos</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/caso-uso-reserva/caso-uso-reserva.html?embed" title="El caso de uso Reservar una cancha: actor, objetivo, precondición, cinco pasos del escenario principal, un escenario alternativo en el paso 3 y la condición de fin." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="criterio" class="clip slide dark" data-start="71.5" data-duration="3.5" data-track-index="0" data-label="El criterio de aceptación" data-frags="0">
+        <div class="frame" id="criterio-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">12 / 21</span>
+      <h1 class="claim xl" data-in="0" style="--i:0">Si no se puede escribir la prueba, el requisito sigue siendo ambiguo</h1>
+      <p class="lead" data-in="1" style="--i:1">Un criterio de aceptación convierte una frase en una comprobación.</p>
+        </div>
+      </section>
+
+      <section id="dado-cuando" class="clip slide" data-start="75" data-duration="7.5" data-track-index="0" data-label="Dado, cuando, entonces" data-frags="4">
+        <div class="frame" id="dado-cuando-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">13 / 21</span>
+      <h1 class="claim" data-in="0" style="--i:0">Un criterio de aceptación dice Dado, cuando, entonces</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/dado-cuando-entonces/dado-cuando-entonces.html?embed" title="Un criterio de aceptación para reservar una cancha: dado que está libre, cuando el administrador la reserva, entonces el sistema confirma. Debajo, la prueba de aceptación con respuesta sí o no." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="cuatro-criterios" class="clip slide" data-start="82.5" data-duration="7.5" data-track-index="0" data-label="Cuatro tipos de criterio" data-frags="4">
+        <div class="frame" id="cuatro-criterios-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">14 / 21</span>
+      <h1 class="claim" data-in="0" style="--i:0">Cada historia necesita cuatro criterios, uno de cada tipo</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/cuatro-criterios/cuatro-criterios.html?embed" title="Cuatro criterios de aceptación de la historia Reservar una cancha: flujo normal, excepción, límite y no funcional." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="reescribir" class="clip slide" data-start="90" data-duration="5.5" data-track-index="0" data-label="Un criterio vago" data-frags="2">
+        <div class="frame" id="reescribir-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">15 / 21</span>
+      <h1 class="claim" data-in="0" style="--i:0">Una palabra vaga se reemplaza por un valor medible</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="2" src="figuras/reescribir-criterio/reescribir-criterio.html?embed" title="El criterio El calendario debe cargar rápido se tacha porque no se puede comprobar y se reescribe con 100 administradores y menos de 2 segundos." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="validacion" class="clip slide" data-start="95.5" data-duration="7.5" data-track-index="0" data-label="Validar requisitos" data-frags="4">
+        <div class="frame" id="validacion-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">16 / 21</span>
+      <h1 class="claim" data-in="0" style="--i:0">Validar es comprobar que se construye el producto correcto</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/validacion-filtros/validacion-filtros.html?embed" title="Un requisito escrito pasa por cuatro técnicas: revisión de requisitos, prototipo, pruebas de aceptación y revisión del sprint. Cada una detecta un tipo de defecto." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="trazabilidad" class="clip slide" data-start="103" data-duration="8.5" data-track-index="0" data-label="Trazabilidad" data-frags="5">
+        <div class="frame" id="trazabilidad-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">17 / 21</span>
+      <h1 class="claim" data-in="0" style="--i:0">La trazabilidad une el origen de un requisito con su prueba</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="5" src="figuras/cadena-trazabilidad/cadena-trazabilidad.html?embed" title="La cadena stakeholder, requisito, historia, criterios y prueba. Cuando cambia el requisito se marcan los tres eslabones siguientes y aparece una historia nueva." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="backlog" class="clip slide" data-start="111.5" data-duration="7.5" data-track-index="0" data-label="Priorizar el backlog" data-frags="4">
+        <div class="frame" id="backlog-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">18 / 21</span>
+      <h1 class="claim" data-in="0" style="--i:0">El backlog se ordena por valor, esfuerzo y dependencias</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/priorizar-backlog/priorizar-backlog.html?embed" title="Cinco historias de las reservas de canchas se clasifican con MoSCoW, se ordenan por valor frente a esfuerzo y se comprueban sus dependencias; las dos primeras forman el sprint 1." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="practica" class="clip slide" data-start="119" data-duration="8.5" data-track-index="0" data-label="Práctica guiada" data-frags="5">
+        <div class="frame" id="practica-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">19 / 21</span>
+      <h1 class="claim" data-in="0" style="--i:0">Ahora, en parejas: el backlog del marketplace agrícola</h1>
+      <div class="timeline">
+        <div class="row" data-f="1"><b>1</b><strong>Tres historias</strong><em>Toma tres historias de tu PE-1.2</em></div>
+        <div class="row" data-f="2"><b>2</b><strong>Cuatro criterios</strong><em>Uno de cada tipo para cada historia</em></div>
+        <div class="row" data-f="3"><b>3</b><strong>MoSCoW</strong><em>Clasifica cinco historias y justifica</em></div>
+        <div class="row" data-f="4"><b>4</b><strong>Valor y esfuerzo</strong><em>Ordénalas respetando las dependencias</em></div>
+        <div class="row" data-f="5"><b>5</b><strong>Sprint 1</strong><em>Un objetivo que se pueda comprobar</em></div>
+      </div>
+        </div>
+      </section>
+
+      <section id="actividades" class="clip slide" data-start="127.5" data-duration="3.5" data-track-index="0" data-label="Actividades" data-frags="0">
+        <div class="frame" id="actividades-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">20 / 21</span>
+      <h1 class="claim" data-in="0" style="--i:0">Dos actividades calificadas cierran la semana</h1>
+      <div class="cards two tall">
+        <div class="card" data-in="1" style="--i:1"><span class="tag">PE-1.3 · 2 puntos</span><strong>Criterios de aceptación</strong><em>Criterios de tres historias, caso de uso del flujo de compra y lista de validación</em></div>
+        <div class="card" data-in="2" style="--i:2"><span class="tag">TA-1.3 · 2 puntos</span><strong>Backlog priorizado</strong><em>Backlog de diez historias trazable, sprint 1 y justificación del enfoque</em></div>
+      </div>
+        </div>
+      </section>
+
+      <section id="cierre" class="clip slide dark" data-start="131" data-duration="3.5" data-track-index="0" data-label="Cierre" data-frags="0">
+        <div class="frame" id="cierre-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">21 / 21</span>
+      <h1 class="claim xl" data-in="0" style="--i:0">Con criterios claros y un backlog trazable, se puede cambiar sin perder el rumbo</h1>
+      <p class="lead" data-in="1" style="--i:1">Próxima semana: planes frente a ágil, Scrum y Kanban, y cultura DevOps</p>
+      <p class="byline" data-in="2" style="--i:2">Fuentes: Pressman y Maxim (2020) · Sommerville (2011)</p>
+        </div>
+      </section>
+    </div>
+    <script>
+      // Con el motor de HyperFrames (check, Studio) el registro ya existe.
+      // Al presentar, el reproductor mueve esta línea de tiempo directamente.
+      const engineHosted = Object.prototype.hasOwnProperty.call(window, "__timelines");
+      window.__timelines = window.__timelines || {};
+      if (!engineHosted) document.documentElement.classList.add("live");
+
+      // Las figuras incrustadas reenvían las flechas aquí: se les quita el foco y se entrega la tecla
+      // al documento donde el reproductor la escucha, para que las flechas siempre controlen el deck.
+      window.addEventListener("message", (ev) => {
+        const m = ev.data;
+        if (!m || m.type !== "deck-key") return;
+        let w = window;
+        for (;;) {
+          try { if (w.document.activeElement && w.document.activeElement !== w.document.body) w.document.activeElement.blur(); } catch (e) {}
+          if (w === w.parent) break;
+          w = w.parent;
+        }
+        try { w.focus(); w.document.dispatchEvent(new KeyboardEvent("keydown", { key: m.key, bubbles: true, cancelable: true })); } catch (e) {}
+      });
+
+      // El reproductor retrocede de diapositiva en diapositiva. Se reemplaza prev() del controlador para
+      // que teclado, botón y deslizamiento deshagan un avance a la vez: de un avance al anterior y,
+      // desde el primero, al último avance de la diapositiva previa.
+      (function installStepBack() {
+        let w = window, host = null;
+        for (;;) {
+          try { host = w.document.querySelector("hyperframes-slideshow"); } catch (e) {}
+          if (host || w === w.parent) break;
+          w = w.parent;
+        }
+        if (!host) return;
+        const patch = () => {
+          const c = host.controller;
+          if (!c) return false;
+          if (c.__stepBack) return true;
+          c.__stepBack = true;
+          const original = c.prev.bind(c);
+          c.prev = () => {
+            const f = c.frame;
+            if (c.stack.length > 1) return original();
+            if (f.fragmentIndex > 0) c.resumeSlide(f.slideIndex, f.fragmentIndex - 1);
+            else if (f.slideIndex > 0) {
+              const p = f.slideIndex - 1, n = c.show.slides[p].fragments.length;
+              c.resumeSlide(p, n > 0 ? n - 1 : -1);
+            }
+          };
+          return true;
+        };
+        setInterval(patch, 300);
+        patch();
+      })();
+
+      const ENTER = 2;
+      const tl = gsap.timeline({ paused: true });
+      tl.to({}, { duration: 134.5 }, 0);
+
+      const figSyncs = [];
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      slides.forEach((slide, index) => {
+        const start = Number(slide.dataset.start);
+        const end = start + Number(slide.dataset.duration);
+        const frame = slide.querySelector(".frame");
+        tl.set(frame, { opacity: 1 }, start);
+        if (index < slides.length - 1) tl.set(frame, { opacity: 0 }, end);
+
+        slide.querySelectorAll("[data-in]").forEach((el) => {
+          const i = Number(el.dataset.in);
+          tl.fromTo(el, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, start + 0.12 + i * 0.07);
+        });
+        slide.querySelectorAll("[data-f]").forEach((el) => {
+          const hold = start + ENTER + Number(el.dataset.f);
+          tl.fromTo(el, { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, hold - 0.6);
+        });
+        slide.querySelectorAll("iframe[data-fig]").forEach((el) => {
+          // La figura corre en su propio documento: en vivo anima sola hacia el estado pedido;
+          // con el motor (check, Studio) sigue la línea de tiempo cuadro a cuadro.
+          // El estado se calcula desde el tiempo de la línea de tiempo, así responde igual
+          // al avanzar, al retroceder y al saltar entre diapositivas.
+          const steps = Number(el.dataset.fig);
+          let sent = -1;
+          const wanted = () => {
+            const t = tl.time();
+            let u = 0;
+            for (let step = 1; step <= steps; step++) u += Math.min(1, Math.max(0, (t - (start + ENTER + step - 0.6)) / 0.6));
+            return engineHosted ? u / steps : Math.round(u) / steps;
+          };
+          const send = (force) => {
+            const value = wanted();
+            if (!el.contentWindow || (!force && value === sent)) return;
+            sent = value;
+            el.contentWindow.postMessage({ type: "fig", mode: engineHosted ? "set" : "go", value }, "*");
+          };
+          figSyncs.push(send);
+          el.addEventListener("load", () => send(true));
+        });
+        slide.querySelectorAll("[data-hl]").forEach((el) => {
+          const hold = start + ENTER + Number(el.dataset.hl);
+          tl.to(el, { backgroundColor: "#fbe3a6", color: "#5c3d00", duration: 0.4 }, hold - 0.5);
+        });
+      });
+
+      tl.eventCallback("onUpdate", () => figSyncs.forEach((sync) => sync()));
+      // En vivo el reproductor puede mover la línea de tiempo sin emitir eventos: se revisa en cada tic de GSAP.
+      if (!engineHosted) gsap.ticker.add(() => figSyncs.forEach((sync) => sync()));
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

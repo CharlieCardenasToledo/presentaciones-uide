@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Caso de uso: reservar una cancha</title>
+<style>
+:root{--wine:#910048;--wine-deep:#6d0036;--gold:#e8a920;--teal:#0c6b62;--amber:#7a5200;--ink:#1f1a1d;--muted:#5a5257;--tint:#f6f1f3;--red:#b3261e}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:transparent;font-family:system-ui,"Segoe UI",sans-serif;color:var(--ink);overflow:hidden}
+#st{position:absolute;left:0;top:0;width:1560px;height:720px;transform-origin:0 0}
+.b{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border-radius:16px;padding:6px 14px;font-weight:700;font-size:32px;line-height:1.15;background:var(--tint);color:var(--ink)}
+.b small{display:block;font-size:24px;font-weight:600;margin-top:4px}
+.t{position:absolute;font-size:34px;font-weight:700;line-height:1.2}
+.pill{position:absolute;display:flex;align-items:center;justify-content:center;height:52px;padding:0 20px;border-radius:26px;color:#fff;font:800 24px/1 ui-monospace,Consolas,monospace;white-space:nowrap;opacity:0;z-index:5}
+.ln{position:absolute;background:#cfc6ca}
+
+</style></head><body>
+<div id="st">
+<div id="ac" class="b" style="left:30px;top:30px;width:330px;height:130px;opacity:0;"><span style="font-size:32px">Administrador de canchas</span><small style="font-weight:600">actor principal</small></div>
+<div id="ar" class="t" style="left:375px;top:70px;width:60px;text-align:center;opacity:0;font-size:52px;color:var(--wine)">→</div>
+<div id="ov" class="b" style="left:450px;top:20px;width:620px;height:150px;opacity:0;border-radius:75px;background:var(--wine);color:#fff"><span style="font-size:40px">Reservar una cancha</span><small style="font-weight:600;font-size:26px">caso de uso</small></div>
+<div id="ob" class="b" style="left:1100px;top:40px;width:430px;height:110px;opacity:0;background:#e3f2f0;text-align:left;align-items:flex-start;padding:10px 22px"><span style="color:var(--teal);font-size:24px">Objetivo</span><span style="font-size:27px;font-weight:600">Dejar una cancha reservada para una fecha y hora</span></div>
+<div id="pr" class="b" style="left:30px;top:190px;width:1500px;height:58px;opacity:0;font-size:28px;font-weight:600;color:var(--muted)">Precondición: el administrador inició sesión y hay canchas registradas</div>
+<div id="p0" class="b" style="left:30px;top:275px;width:285px;height:110px;opacity:0;font-size:26px;background:#fff;border:3px solid var(--wine)">1. Elige fecha y hora</div>
+<div id="p1" class="b" style="left:335px;top:275px;width:285px;height:110px;opacity:0;font-size:26px;background:#fff;border:3px solid var(--wine)">2. El sistema muestra las canchas libres</div>
+<div id="p2" class="b" style="left:640px;top:275px;width:285px;height:110px;opacity:0;font-size:26px;background:#fff;border:3px solid var(--wine)">3. Elige una cancha</div>
+<div id="p3" class="b" style="left:945px;top:275px;width:285px;height:110px;opacity:0;font-size:26px;background:#fff;border:3px solid var(--wine)">4. Confirma la reserva</div>
+<div id="p4" class="b" style="left:1250px;top:275px;width:285px;height:110px;opacity:0;font-size:26px;background:#fff;border:3px solid var(--wine)">5. El sistema la registra y envía la confirmación</div>
+<div id="ln" style="position:absolute;left:780px;top:388px;width:5px;height:44px;background:var(--gold);opacity:0"></div>
+<div id="alt" class="b" style="left:480px;top:432px;width:605px;height:96px;opacity:0;background:#fcefc9;color:var(--amber);font-size:24px">3a. La cancha ya fue reservada por otra persona: el sistema avisa y propone las canchas libres más cercanas en horario</div>
+<div id="fi" class="b" style="left:30px;top:545px;width:1500px;height:66px;opacity:0;background:var(--teal);color:#fff;font-size:30px">Finaliza cuando: la reserva queda registrada y el administrador recibe la confirmación</div>
+<div id="k0" class="t" style="left:30px;top:640px;width:1500px;opacity:0;color:var(--wine-deep);font-size:32px">Un caso de uso describe una interacción completa con el sistema</div>
+<div id="k1" class="t" style="left:30px;top:640px;width:1500px;opacity:0;color:var(--wine-deep);font-size:32px">Actor, objetivo y precondición: de dónde se parte</div>
+<div id="k2" class="t" style="left:30px;top:640px;width:1500px;opacity:0;color:var(--wine-deep);font-size:32px">El escenario principal: cinco pasos, todo sale bien</div>
+<div id="k3" class="t" style="left:30px;top:640px;width:1500px;opacity:0;color:var(--wine-deep);font-size:32px">El escenario alternativo parte de uno de los pasos</div>
+<div id="k4" class="t" style="left:30px;top:640px;width:1500px;opacity:0;color:var(--teal);font-size:32px">Y dice cuándo termina el caso</div>
+</div>
+<script>
+const N = 4;
+const st = document.getElementById("st");
+function fit() { const k = Math.min(innerWidth / 1560, innerHeight / 720); st.style.transform = "scale(" + k + ")"; }
+fit(); addEventListener("resize", fit);
+const $ = (s) => document.querySelector(s);
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const ease = (t) => { t = clamp(t, 0, 1); return t * t * (3 - 2 * t); };
+const win = (s, a, b) => ease((s - a) / (b - a));
+const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+const mix = (a, b, t) => { const x = hex(a), y = hex(b); return "rgb(" + x.map((v, i) => Math.round(v + (y[i] - v) * t)).join(",") + ")"; };
+function lit(el, base, color, t, fg0, fg1) { el.style.background = mix(base, color, t); el.style.color = mix(fg0 || "#1f1a1d", fg1 || "#ffffff", t); }
+function put(el, x, y, a) { el.style.transform = "translate(" + x + "px," + y + "px)"; el.style.opacity = String(a); }
+function route(k, pts) { for (let i = 0; i < pts.length - 1; i++) { if (k <= pts[i + 1][0]) { const t = ease((k - pts[i][0]) / (pts[i + 1][0] - pts[i][0])); return [pts[i][1] + (pts[i + 1][1] - pts[i][1]) * t, pts[i][2] + (pts[i + 1][2] - pts[i][2]) * t]; } } const l = pts[pts.length - 1]; return [l[1], l[2]]; }
+
+function caps(s, n, pref) { for (let k = 0; k <= n; k++) { const a = win(s, k - 0.5, k) * (k < n ? 1 - win(s, k, k + 0.5) : 1); put($("#" + pref + k), 0, 0, clamp(a, 0, 1)); } }
+function rect(el, r) { el.style.left = r[0] + "px"; el.style.top = r[1] + "px"; el.style.width = r[2] + "px"; el.style.height = r[3] + "px"; }
+function show(el, a, dy) { put(el, 0, (1 - a) * (dy === undefined ? 24 : dy), a); }
+
+let u = 0, target = 0, frame = 0, timer = 0, last = 0;
+function draw() { 
+const s = u * N;
+const a1 = win(s, 0, 1), a3 = win(s, 2, 3), a4 = win(s, 3, 4);
+show($("#ac"), a1, 20); put($("#ar"), 0, 0, a1); show($("#ov"), a1, 20); show($("#ob"), a1, 20); show($("#pr"), a1, 20);
+for (let i = 0; i < 5; i++) show($("#p" + i), win(s, 1 + 0.1 * i, 1.5 + 0.1 * i), 20);
+lit($("#p2"), "#ffffff", "#e8a920", a3, "#1f1a1d", "#1f1a1d");
+put($("#ln"), 0, 0, a3); show($("#alt"), a3, 20);
+show($("#fi"), a4, 20);
+caps(s, 4, "k");
+ }
+function loop() {
+  clearTimeout(timer); cancelAnimationFrame(frame);
+  const now = performance.now();
+  const dt = last ? Math.min((now - last) / 1000, 1) : 1 / 60; last = now;
+  const speed = 1 / (N * 1.6);
+  u = target > u ? Math.min(target, u + dt * speed) : Math.max(target, u - dt * speed * 2);
+  draw();
+  if (u !== target) { frame = requestAnimationFrame(loop); timer = setTimeout(loop, 80); } else { frame = 0; timer = 0; last = 0; }
+}
+const run = () => { if (!frame && !timer) { last = 0; loop(); } };
+const go = (v) => { target = clamp(v, 0, 1); run(); };
+window.__fig = { set(v) { u = target = clamp(v, 0, 1); draw(); }, go, get u() { return u; } };
+addEventListener("message", (e) => { const m = e.data; if (!m || m.type !== "fig") return; if (m.mode === "set") window.__fig.set(Number(m.value)); else go(Number(m.value)); });
+if (window.parent !== window) {
+  const KEYMAP = { ArrowRight: "ArrowRight", PageDown: "ArrowRight", " ": "ArrowRight", Enter: "ArrowRight", ArrowLeft: "ArrowLeft", PageUp: "ArrowLeft", Backspace: "ArrowLeft" };
+  addEventListener("keydown", (e) => { const k = KEYMAP[e.key]; if (!k) return; e.preventDefault(); e.stopImmediatePropagation(); parent.postMessage({ type: "deck-key", key: k }, "*"); }, true);
+} else {
+  addEventListener("click", () => go(target >= 1 ? 0 : Math.min(1, Math.round(target * N + 1) / N)));
+}
+draw();
+</script></body></html>
