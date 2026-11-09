@@ -145,10 +145,10 @@
       ]
     },
     {
-      "sceneId": "principios",
+      "sceneId": "scrum",
       "startTime": 21,
       "endTime": 28.5,
-      "notes": "Sommerville resume lo que comparten los métodos ágiles en cinco principios: participación del cliente, entrega incremental, personas y no procesos, aceptación del cambio y mantenimiento de la simplicidad. La figura muestra tres de ellos funcionando juntos: el software se entrega por partes, el cliente revisa cada parte y un cambio de tarifas entra como una historia nueva. Pedir que ubiquen cuál de los principios falló en el sistema municipal de la semana anterior. Fuentes: Sommerville (2011), capítulo 3, sección 3.1; Pressman y Maxim (2020), sección 3.3.1.",
+      "notes": "Scrum organiza el trabajo en sprints de tiempo fijo, de dos a cuatro semanas. Tres roles: el Product Owner prioriza por valor, el Scrum Master facilita y retira obstáculos, el equipo decide cómo construir. Tres artefactos: product backlog, sprint backlog e incremento. La reunión diaria dura como máximo 15 minutos y tiene tres preguntas: qué hice, qué me bloquea y qué haré. Insistir en que Scrum gestiona el trabajo y no prescribe técnicas de programación. Fuente: Pressman y Maxim (2020), sección 3.4.",
       "fragments": [
         23,
         24,
@@ -158,10 +158,10 @@
       ]
     },
     {
-      "sceneId": "scrum",
+      "sceneId": "xp",
       "startTime": 28.5,
       "endTime": 36,
-      "notes": "Scrum organiza el trabajo en sprints de tiempo fijo, de dos a cuatro semanas. Tres roles: el Product Owner prioriza por valor, el Scrum Master facilita y retira obstáculos, el equipo decide cómo construir. Tres artefactos: product backlog, sprint backlog e incremento. La reunión diaria dura como máximo 15 minutos y tiene tres preguntas: qué hice, qué me bloquea y qué haré. Insistir en que Scrum gestiona el trabajo y no prescribe técnicas de programación. Fuente: Pressman y Maxim (2020), sección 3.4.",
+      "notes": "XP atiende la calidad técnica. En el desarrollo guiado por pruebas la prueba se escribe antes que el código: rojo, verde, refactorizar. La refactorización mejora el diseño sin cambiar lo que hace, y por eso la prueba debe seguir pasando. La programación en parejas y la integración continua detectan errores pronto. Scrum y XP no compiten: Scrum ordena el trabajo y XP aporta las disciplinas de ingeniería. Las historias de usuario también vienen de XP. Fuente: Pressman y Maxim (2020), sección 3.5.1.",
       "fragments": [
         30.5,
         31.5,
@@ -171,10 +171,10 @@
       ]
     },
     {
-      "sceneId": "xp",
+      "sceneId": "enfoques",
       "startTime": 36,
       "endTime": 43.5,
-      "notes": "XP atiende la calidad técnica. En el desarrollo guiado por pruebas la prueba se escribe antes que el código: rojo, verde, refactorizar. La refactorización mejora el diseño sin cambiar lo que hace, y por eso la prueba debe seguir pasando. La programación en parejas y la integración continua detectan errores pronto. Scrum y XP no compiten: Scrum ordena el trabajo y XP aporta las disciplinas de ingeniería. Las historias de usuario también vienen de XP. Fuente: Pressman y Maxim (2020), sección 3.5.1.",
+      "notes": "Primero leer los extremos de cada escala: qué empuja hacia planes y qué hacia agilidad. Después el caso resuelto: software de control de dosis de un equipo médico. Revelar un factor por avance y pedir que digan hacia dónde se mueve antes de verlo. Factores técnicos: sistema crítico y especificación previa. Factores humanos: equipo repartido en dos ciudades. Factores organizacionales: un regulador que exige diseño aprobado. Se elige un desarrollo dirigido por planes y se toma del enfoque ágil la revisión corta de cada módulo con el personal clínico. El riesgo aceptado es que un cambio de reglamento cueste mucho; se controla con una revisión de requisitos antes de cada fase. Cerrar pidiendo que repitan estos pasos con el Marketplace Agrícola: es la sección I de la plantilla TA-1.3, y no hay una respuesta única. Fuente: Sommerville (2011), capítulo 3, sección 3.2.",
       "fragments": [
         38,
         39,
@@ -184,174 +184,134 @@
       ]
     },
     {
-      "sceneId": "enfoques",
+      "sceneId": "historia-caso",
       "startTime": 43.5,
-      "endTime": 51,
-      "notes": "Primero leer los extremos de cada escala: qué empuja hacia planes y qué hacia agilidad. Después el caso resuelto: software de control de dosis de un equipo médico. Revelar un factor por avance y pedir que digan hacia dónde se mueve antes de verlo. Factores técnicos: sistema crítico y especificación previa. Factores humanos: equipo repartido en dos ciudades. Factores organizacionales: un regulador que exige diseño aprobado. Se elige un desarrollo dirigido por planes y se toma del enfoque ágil la revisión corta de cada módulo con el personal clínico. El riesgo aceptado es que un cambio de reglamento cueste mucho; se controla con una revisión de requisitos antes de cada fase. Fuente: Sommerville (2011), capítulo 3, sección 3.2.",
+      "endTime": 49,
+      "notes": "Una historia basta para planificar, pero no siempre alcanza para un flujo con varios pasos y varios actores. El caso de uso describe una interacción entre un actor y el sistema: un escenario principal y escenarios alternativos. Se usa una historia para publicar un producto y un caso de uso para el flujo de compra, que involucra al comprador, la pasarela de pagos y el proveedor logístico. Fuente: Sommerville (2011), capítulo 4, sección 4.5.4.",
       "fragments": [
         45.5,
         46.5,
-        47.5,
-        48.5,
-        49.5
-      ]
-    },
-    {
-      "sceneId": "decision",
-      "startTime": 51,
-      "endTime": 58.5,
-      "notes": "Es la sección I de la plantilla TA-1.3. Los mismos cuatro pasos del caso médico se aplican al Marketplace Agrícola; el ejemplo de la plantilla es el de las canchas. No hay una respuesta única: vale cualquier decisión que use los tres grupos de factores y sea coherente con ellos. Pedir que digan en voz alta qué tomarían del otro enfoque.",
-      "fragments": [
-        53,
-        54,
-        55,
-        56,
-        57
-      ]
-    },
-    {
-      "sceneId": "historia-caso",
-      "startTime": 58.5,
-      "endTime": 64,
-      "notes": "Una historia basta para planificar, pero no siempre alcanza para un flujo con varios pasos y varios actores. El caso de uso describe una interacción entre un actor y el sistema: un escenario principal y escenarios alternativos. Se usa una historia para publicar un producto y un caso de uso para el flujo de compra, que involucra al comprador, la pasarela de pagos y el proveedor logístico. Fuente: Sommerville (2011), capítulo 4, sección 4.5.4.",
-      "fragments": [
-        60.5,
-        61.5,
-        62.5
+        47.5
       ]
     },
     {
       "sceneId": "caso-uso",
-      "startTime": 64,
-      "endTime": 71.5,
+      "startTime": 49,
+      "endTime": 56.5,
       "notes": "Es la sección II de la plantilla PE-1.3, con el ejemplo de las canchas. Revelar por partes: actor principal, objetivo y precondición; el escenario principal con sus cinco pasos numerados; el escenario alternativo, que parte de uno de los pasos (aquí el 3, porque la cancha elegida ya fue reservada); y la condición con la que finaliza. En la actividad deben hacer lo mismo con el flujo de compra del Marketplace Agrícola. Fuente: Sommerville (2011), capítulo 4, sección 4.5.4.",
       "fragments": [
-        66,
-        67,
-        68,
-        69,
-        70
+        51,
+        52,
+        53,
+        54,
+        55
       ]
     },
     {
       "sceneId": "criterio",
-      "startTime": 71.5,
-      "endTime": 75,
+      "startTime": 56.5,
+      "endTime": 60,
       "notes": "Si no se logra redactar una prueba para un criterio, el requisito sigue siendo ambiguo. Esa es la idea central de lo que viene. Un criterio de aceptación convierte una frase abierta en una comprobación con respuesta sí o no."
     },
     {
       "sceneId": "dado-cuando",
-      "startTime": 75,
-      "endTime": 82.5,
+      "startTime": 60,
+      "endTime": 67.5,
       "notes": "Formato frecuente: Dado, cuando, entonces. Dado describe el contexto inicial, cuando describe la acción y entonces describe el resultado observable. No es el único formato posible, pero obliga a decir qué se verá. El último avance muestra para qué sirve: con ese criterio, dos personas distintas aplican la misma prueba y llegan al mismo veredicto. Es el formato de la plantilla PE-1.3, columna Criterio Dado, cuando, entonces.",
       "fragments": [
-        77,
-        78,
-        79,
-        80,
-        81
+        62,
+        63,
+        64,
+        65,
+        66
       ]
     },
     {
       "sceneId": "cuatro-criterios",
-      "startTime": 82.5,
-      "endTime": 90,
+      "startTime": 67.5,
+      "endTime": 75,
       "notes": "Un conjunto completo cubre cuatro clases: flujo normal, excepción, límite y no funcional. Si solo se escribe el flujo normal, el equipo implementa el camino feliz y descubre las excepciones en producción. Es el Tipo de la plantilla PE-1.3: tres historias de su PE-1.2 con cuatro criterios cada una, uno de cada tipo. Pedir que clasifiquen en voz alta un criterio nuevo.",
       "fragments": [
-        84.5,
-        85.5,
-        86.5,
-        87.5,
-        88.5
+        69.5,
+        70.5,
+        71.5,
+        72.5,
+        73.5
       ]
     },
     {
       "sceneId": "reescribir",
-      "startTime": 90,
-      "endTime": 95.5,
+      "startTime": 75,
+      "endTime": 80.5,
       "notes": "Es una pregunta de la lista de validación de la plantilla PE-1.3: ¿algún criterio usa palabras como rápido o adecuado sin un valor? Un criterio no funcional necesita un número y una condición de carga. Pedir que propongan otra palabra vaga (fácil, seguro, intuitivo) y que la reescriban con un valor medible.",
       "fragments": [
-        92,
-        93,
-        94
+        77,
+        78,
+        79
       ]
     },
     {
       "sceneId": "validacion",
-      "startTime": 95.5,
-      "endTime": 103,
+      "startTime": 80.5,
+      "endTime": 88,
       "notes": "Validar es comprobar que lo escrito define el sistema que el cliente necesita: el producto correcto. Se distingue de verificar, que comprueba que lo construido cumple lo especificado. Cuatro técnicas: revisiones, prototipos, pruebas de aceptación y, en ágil, la revisión del sprint, donde el Product Owner dice si el incremento responde a la necesidad. Fuente: Sommerville (2011), capítulo 4, sección 4.6.",
       "fragments": [
-        97.5,
-        98.5,
-        99.5,
-        100.5,
-        101.5
+        82.5,
+        83.5,
+        84.5,
+        85.5,
+        86.5
       ]
     },
     {
       "sceneId": "trazabilidad",
-      "startTime": 103,
-      "endTime": 111.5,
+      "startTime": 88,
+      "endTime": 96.5,
       "notes": "La trazabilidad es el vínculo documentado entre un requisito, su origen, el diseño, el código y las pruebas. Sirve para auditar que todo requisito se implementó y se probó, y para evaluar el impacto de un cambio antes de aceptarlo. Seguir la cadena con el ejemplo del cobro de la reserva: administrador, RF-05, HU-03, CA-07 y PR-07. Cuando el banco pide un segundo paso de verificación, la cadena muestra qué se afecta. En ágil, el cambio se expresa como una historia nueva que el Product Owner ordena en el backlog. Es la sección IV de la plantilla TA-1.3. Fuente: Pressman y Maxim (2020), capítulo 7, sección 7.2.6.",
       "fragments": [
-        105,
-        106,
-        107,
-        108,
-        109,
-        110
+        90,
+        91,
+        92,
+        93,
+        94,
+        95
       ]
     },
     {
       "sceneId": "backlog",
-      "startTime": 111.5,
-      "endTime": 119,
+      "startTime": 96.5,
+      "endTime": 104,
       "notes": "El orden del backlog lo decide el Product Owner con el equipo. MoSCoW separa lo imprescindible de lo deseable; dentro de cada grupo se ordena por valor frente a esfuerzo; después se comprueba que el orden respete las dependencias (cancelar y pagar necesitan que se pueda reservar). El sprint 1 toma las primeras historias y tiene un objetivo que se pueda comprobar en la revisión del sprint. Es lo que pide la plantilla TA-1.3 en las secciones II y III. Fuente: Pressman y Maxim (2020), capítulo 3, secciones 3.4.1 y 3.4.2.",
       "fragments": [
-        113.5,
-        114.5,
-        115.5,
-        116.5,
-        117.5
-      ]
-    },
-    {
-      "sceneId": "practica",
-      "startTime": 119,
-      "endTime": 127.5,
-      "notes": "Quince minutos en parejas con el Marketplace Agrícola, el proyecto del curso. Recorrer las mesas. Errores esperados: criterios que terminan en una intención y no en un resultado observable, criterios no funcionales sin número, un orden que pone el pago antes que la publicación del producto, y un objetivo de sprint que no se puede comprobar.",
-      "fragments": [
-        121,
-        122,
-        123,
-        124,
-        125,
-        126
+        98.5,
+        99.5,
+        100.5,
+        101.5,
+        102.5
       ]
     },
     {
       "sceneId": "actividades",
-      "startTime": 127.5,
-      "endTime": 131,
+      "startTime": 104,
+      "endTime": 107.5,
       "notes": "Las consignas completas, las plantillas y las rúbricas están en Canvas. PE-1.3 vale 2 puntos y se entrega al terminar la clase del lunes. TA-1.3 vale 2 puntos y cierra el domingo 15 de noviembre. Las dos reutilizan el trabajo de las semanas anteriores: las historias de PE-1.2 y el SRS de TA-1.2. Esta semana no hay GA ni módulo del curso ASU."
     },
     {
       "sceneId": "cierre",
-      "startTime": 131,
-      "endTime": 134.5,
+      "startTime": 107.5,
+      "endTime": 111,
       "notes": "Cerrar volviendo a la historia del inicio: ahora saben decir qué le faltaba para que dos personas la entendieran igual. Tarea para casa: la recuperación sin apuntes de la semana, con ocho preguntas. Próxima semana: comparar con más detalle el desarrollo planificado y el ágil, Scrum y Kanban, el grooming del backlog y la cultura DevOps."
     }
   ],
   "slideSequences": []
 }
     </script>
-    <div id="root" data-composition-id="main" data-start="0" data-duration="134.5" data-width="1920" data-height="1080">
+    <div id="root" data-composition-id="main" data-start="0" data-duration="111" data-width="1920" data-height="1080">
 
       <section id="portada" class="clip slide dark" data-start="0" data-duration="3.5" data-track-index="0" data-label="Portada" data-frags="0">
         <div class="frame" id="portada-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">01 / 21</span>
+          <span class="num">01 / 18</span>
       <p class="course" data-in="0" style="--i:0">LTI_05A_INS · Semana 3</p>
       <h1 class="claim xl" data-in="1" style="--i:1">Ágil no significa trabajar sin plan</h1>
       <p class="lead" data-in="2" style="--i:2">Manifiesto Ágil, criterios de aceptación y backlog priorizado</p>
@@ -362,7 +322,7 @@
       <section id="ruta" class="clip slide" data-start="3.5" data-duration="3.5" data-track-index="0" data-label="Ruta de la clase" data-frags="0">
         <div class="frame" id="ruta-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">02 / 21</span>
+          <span class="num">02 / 18</span>
       <h1 class="claim" data-in="0" style="--i:0">La clase va de una historia ambigua a un backlog priorizado</h1>
       <ol class="steps">
         <li data-in="1" style="--i:1"><b>1</b><span>Explorar una historia que nadie entiende igual</span></li>
@@ -377,7 +337,7 @@
       <section id="ambigua" class="clip slide" data-start="7" data-duration="6.5" data-track-index="0" data-label="Una historia ambigua" data-frags="3">
         <div class="frame" id="ambigua-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">03 / 21</span>
+          <span class="num">03 / 18</span>
       <h1 class="claim" data-in="0" style="--i:0">Una historia corta se entiende de muchas maneras</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/historia-ambigua/historia-ambigua.html?embed" title="La historia Como comprador, quiero filtrar los productos para encontrar lo que necesito rápido. Tres palabras abren preguntas, dos programadores construyen cosas distintas y un criterio de aceptación las resuelve." loading="eager"></iframe>
         </div>
@@ -386,67 +346,43 @@
       <section id="manifiesto" class="clip slide" data-start="13.5" data-duration="7.5" data-track-index="0" data-label="El Manifiesto Ágil" data-frags="4">
         <div class="frame" id="manifiesto-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">04 / 21</span>
+          <span class="num">04 / 18</span>
       <h1 class="claim" data-in="0" style="--i:0">El Manifiesto Ágil prefiere cuatro cosas sin descartar las otras</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/manifiesto-preferencias/manifiesto-preferencias.html?embed" title="Cuatro preferencias del Manifiesto Ágil frente a lo que no se descarta, con un ejemplo de reservas de canchas en cada una." loading="eager"></iframe>
         </div>
       </section>
 
-      <section id="principios" class="clip slide" data-start="21" data-duration="7.5" data-track-index="0" data-label="Principios ágiles" data-frags="4">
-        <div class="frame" id="principios-frame">
-          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">05 / 21</span>
-      <h1 class="claim" data-in="0" style="--i:0">Se entrega por partes, con el cliente, y se acepta el cambio</h1>
-      <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/entrega-incremental/entrega-incremental.html?embed" title="Tres entregas sucesivas de las reservas de canchas, cada una revisada por el administrador, y un cuarto bloque que representa un cambio de tarifas aceptado." loading="eager"></iframe>
-
-        </div>
-      </section>
-
-      <section id="scrum" class="clip slide" data-start="28.5" data-duration="7.5" data-track-index="0" data-label="Scrum" data-frags="4">
+      <section id="scrum" class="clip slide" data-start="21" data-duration="7.5" data-track-index="0" data-label="Scrum" data-frags="4">
         <div class="frame" id="scrum-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">06 / 21</span>
+          <span class="num">05 / 18</span>
       <h1 class="claim" data-in="0" style="--i:0">Scrum organiza el trabajo en ciclos de tiempo fijo</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/sprint-scrum/sprint-scrum.html?embed" title="Un sprint de Scrum: el product backlog alimenta el sprint backlog, el equipo trabaja con una reunión diaria y el sprint termina con un incremento, una revisión y una retrospectiva." loading="eager"></iframe>
         </div>
       </section>
 
-      <section id="xp" class="clip slide" data-start="36" data-duration="7.5" data-track-index="0" data-label="Extreme Programming" data-frags="4">
+      <section id="xp" class="clip slide" data-start="28.5" data-duration="7.5" data-track-index="0" data-label="Extreme Programming" data-frags="4">
         <div class="frame" id="xp-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">07 / 21</span>
+          <span class="num">06 / 18</span>
       <h1 class="claim" data-in="0" style="--i:0">Extreme Programming cuida la calidad técnica del código</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/tdd-ciclo/tdd-ciclo.html?embed" title="El ciclo rojo, verde, refactorizar del desarrollo guiado por pruebas, más la programación en parejas y la integración continua." loading="eager"></iframe>
         </div>
       </section>
 
-      <section id="enfoques" class="clip slide" data-start="43.5" data-duration="7.5" data-track-index="0" data-label="Planes frente a ágil" data-frags="4">
+      <section id="enfoques" class="clip slide" data-start="36" data-duration="7.5" data-track-index="0" data-label="Planes frente a ágil" data-frags="4">
         <div class="frame" id="enfoques-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">08 / 21</span>
+          <span class="num">07 / 18</span>
       <h1 class="claim" data-in="0" style="--i:0">Los factores del proyecto deciden entre planes y agilidad</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/escala-enfoque/escala-enfoque.html?embed" title="Tres escalas de factores técnicos, humanos y organizacionales entre el enfoque dirigido por planes y el ágil. En el caso del equipo médico los tres marcadores se mueven hacia planes." loading="eager"></iframe>
         </div>
       </section>
 
-      <section id="decision" class="clip slide" data-start="51" data-duration="7.5" data-track-index="0" data-label="Decidir para un proyecto" data-frags="4">
-        <div class="frame" id="decision-frame">
-          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">09 / 21</span>
-      <h1 class="claim" data-in="0" style="--i:0">Para el marketplace se repiten cuatro pasos</h1>
-      <div class="timeline">
-        <div class="row" data-f="1"><b>1</b><strong>Factores técnicos</strong><em>¿Los requisitos son estables o cambian?</em></div>
-        <div class="row" data-f="2"><b>2</b><strong>Factores humanos</strong><em>¿Cómo es el equipo y cómo se comunica?</em></div>
-        <div class="row" data-f="3"><b>3</b><strong>Factores organizacionales</strong><em>¿Hay regulador y un cliente disponible?</em></div>
-        <div class="row" data-f="4"><b>4</b><strong>La decisión</strong><em>Qué enfoque y qué se toma del otro</em></div>
-      </div>
-        </div>
-      </section>
-
-      <section id="historia-caso" class="clip slide" data-start="58.5" data-duration="5.5" data-track-index="0" data-label="Historia y caso de uso" data-frags="2">
+      <section id="historia-caso" class="clip slide" data-start="43.5" data-duration="5.5" data-track-index="0" data-label="Historia y caso de uso" data-frags="2">
         <div class="frame" id="historia-caso-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">10 / 21</span>
+          <span class="num">08 / 18</span>
       <h1 class="claim" data-in="0" style="--i:0">Una historia planifica y un caso de uso detalla el flujo</h1>
       <div class="cards two tall">
         <div class="card" data-f="1"><span class="tag">Historia de usuario</span><strong>Una frase: Como, quiero, para</strong><em>Una pieza de valor que cabe en un sprint; sirve para planificar y ordenar el backlog</em></div>
@@ -455,97 +391,82 @@
         </div>
       </section>
 
-      <section id="caso-uso" class="clip slide" data-start="64" data-duration="7.5" data-track-index="0" data-label="Caso de uso" data-frags="4">
+      <section id="caso-uso" class="clip slide" data-start="49" data-duration="7.5" data-track-index="0" data-label="Caso de uso" data-frags="4">
         <div class="frame" id="caso-uso-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">11 / 21</span>
+          <span class="num">09 / 18</span>
       <h1 class="claim" data-in="0" style="--i:0">Un caso de uso tiene un escenario principal y alternativos</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/caso-uso-reserva/caso-uso-reserva.html?embed" title="El caso de uso Reservar una cancha: actor, objetivo, precondición, cinco pasos del escenario principal, un escenario alternativo en el paso 3 y la condición de fin." loading="eager"></iframe>
         </div>
       </section>
 
-      <section id="criterio" class="clip slide dark" data-start="71.5" data-duration="3.5" data-track-index="0" data-label="El criterio de aceptación" data-frags="0">
+      <section id="criterio" class="clip slide dark" data-start="56.5" data-duration="3.5" data-track-index="0" data-label="El criterio de aceptación" data-frags="0">
         <div class="frame" id="criterio-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">12 / 21</span>
+          <span class="num">10 / 18</span>
       <h1 class="claim xl" data-in="0" style="--i:0">Si no se puede escribir la prueba, el requisito sigue siendo ambiguo</h1>
       <p class="lead" data-in="1" style="--i:1">Un criterio de aceptación convierte una frase en una comprobación.</p>
         </div>
       </section>
 
-      <section id="dado-cuando" class="clip slide" data-start="75" data-duration="7.5" data-track-index="0" data-label="Dado, cuando, entonces" data-frags="4">
+      <section id="dado-cuando" class="clip slide" data-start="60" data-duration="7.5" data-track-index="0" data-label="Dado, cuando, entonces" data-frags="4">
         <div class="frame" id="dado-cuando-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">13 / 21</span>
+          <span class="num">11 / 18</span>
       <h1 class="claim" data-in="0" style="--i:0">Un criterio de aceptación dice Dado, cuando, entonces</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/dado-cuando-entonces/dado-cuando-entonces.html?embed" title="Un criterio de aceptación para reservar una cancha: dado que está libre, cuando el administrador la reserva, entonces el sistema confirma. Debajo, la prueba de aceptación con respuesta sí o no." loading="eager"></iframe>
         </div>
       </section>
 
-      <section id="cuatro-criterios" class="clip slide" data-start="82.5" data-duration="7.5" data-track-index="0" data-label="Cuatro tipos de criterio" data-frags="4">
+      <section id="cuatro-criterios" class="clip slide" data-start="67.5" data-duration="7.5" data-track-index="0" data-label="Cuatro tipos de criterio" data-frags="4">
         <div class="frame" id="cuatro-criterios-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">14 / 21</span>
+          <span class="num">12 / 18</span>
       <h1 class="claim" data-in="0" style="--i:0">Cada historia necesita cuatro criterios, uno de cada tipo</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/cuatro-criterios/cuatro-criterios.html?embed" title="Cuatro criterios de aceptación de la historia Reservar una cancha: flujo normal, excepción, límite y no funcional." loading="eager"></iframe>
         </div>
       </section>
 
-      <section id="reescribir" class="clip slide" data-start="90" data-duration="5.5" data-track-index="0" data-label="Un criterio vago" data-frags="2">
+      <section id="reescribir" class="clip slide" data-start="75" data-duration="5.5" data-track-index="0" data-label="Un criterio vago" data-frags="2">
         <div class="frame" id="reescribir-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">15 / 21</span>
+          <span class="num">13 / 18</span>
       <h1 class="claim" data-in="0" style="--i:0">Una palabra vaga se reemplaza por un valor medible</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="2" src="figuras/reescribir-criterio/reescribir-criterio.html?embed" title="El criterio El calendario debe cargar rápido se tacha porque no se puede comprobar y se reescribe con 100 administradores y menos de 2 segundos." loading="eager"></iframe>
         </div>
       </section>
 
-      <section id="validacion" class="clip slide" data-start="95.5" data-duration="7.5" data-track-index="0" data-label="Validar requisitos" data-frags="4">
+      <section id="validacion" class="clip slide" data-start="80.5" data-duration="7.5" data-track-index="0" data-label="Validar requisitos" data-frags="4">
         <div class="frame" id="validacion-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">16 / 21</span>
+          <span class="num">14 / 18</span>
       <h1 class="claim" data-in="0" style="--i:0">Validar es comprobar que se construye el producto correcto</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/validacion-filtros/validacion-filtros.html?embed" title="Un requisito escrito pasa por cuatro técnicas: revisión de requisitos, prototipo, pruebas de aceptación y revisión del sprint. Cada una detecta un tipo de defecto." loading="eager"></iframe>
         </div>
       </section>
 
-      <section id="trazabilidad" class="clip slide" data-start="103" data-duration="8.5" data-track-index="0" data-label="Trazabilidad" data-frags="5">
+      <section id="trazabilidad" class="clip slide" data-start="88" data-duration="8.5" data-track-index="0" data-label="Trazabilidad" data-frags="5">
         <div class="frame" id="trazabilidad-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">17 / 21</span>
+          <span class="num">15 / 18</span>
       <h1 class="claim" data-in="0" style="--i:0">La trazabilidad une el origen de un requisito con su prueba</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="5" src="figuras/cadena-trazabilidad/cadena-trazabilidad.html?embed" title="La cadena stakeholder, requisito, historia, criterios y prueba. Cuando cambia el requisito se marcan los tres eslabones siguientes y aparece una historia nueva." loading="eager"></iframe>
         </div>
       </section>
 
-      <section id="backlog" class="clip slide" data-start="111.5" data-duration="7.5" data-track-index="0" data-label="Priorizar el backlog" data-frags="4">
+      <section id="backlog" class="clip slide" data-start="96.5" data-duration="7.5" data-track-index="0" data-label="Priorizar el backlog" data-frags="4">
         <div class="frame" id="backlog-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">18 / 21</span>
+          <span class="num">16 / 18</span>
       <h1 class="claim" data-in="0" style="--i:0">El backlog se ordena por valor, esfuerzo y dependencias</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/priorizar-backlog/priorizar-backlog.html?embed" title="Cinco historias de las reservas de canchas se clasifican con MoSCoW, se ordenan por valor frente a esfuerzo y se comprueban sus dependencias; las dos primeras forman el sprint 1." loading="eager"></iframe>
         </div>
       </section>
 
-      <section id="practica" class="clip slide" data-start="119" data-duration="8.5" data-track-index="0" data-label="Práctica guiada" data-frags="5">
-        <div class="frame" id="practica-frame">
-          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">19 / 21</span>
-      <h1 class="claim" data-in="0" style="--i:0">Ahora, en parejas: el backlog del marketplace agrícola</h1>
-      <div class="timeline">
-        <div class="row" data-f="1"><b>1</b><strong>Tres historias</strong><em>Toma tres historias de tu PE-1.2</em></div>
-        <div class="row" data-f="2"><b>2</b><strong>Cuatro criterios</strong><em>Uno de cada tipo para cada historia</em></div>
-        <div class="row" data-f="3"><b>3</b><strong>MoSCoW</strong><em>Clasifica cinco historias y justifica</em></div>
-        <div class="row" data-f="4"><b>4</b><strong>Valor y esfuerzo</strong><em>Ordénalas respetando las dependencias</em></div>
-        <div class="row" data-f="5"><b>5</b><strong>Sprint 1</strong><em>Un objetivo que se pueda comprobar</em></div>
-      </div>
-        </div>
-      </section>
-
-      <section id="actividades" class="clip slide" data-start="127.5" data-duration="3.5" data-track-index="0" data-label="Actividades" data-frags="0">
+      <section id="actividades" class="clip slide" data-start="104" data-duration="3.5" data-track-index="0" data-label="Actividades" data-frags="0">
         <div class="frame" id="actividades-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">20 / 21</span>
+          <span class="num">17 / 18</span>
       <h1 class="claim" data-in="0" style="--i:0">Dos actividades calificadas cierran la semana</h1>
       <div class="cards two tall">
         <div class="card" data-in="1" style="--i:1"><span class="tag">PE-1.3 · 2 puntos</span><strong>Criterios de aceptación</strong><em>Criterios de tres historias, caso de uso del flujo de compra y lista de validación</em></div>
@@ -554,10 +475,10 @@
         </div>
       </section>
 
-      <section id="cierre" class="clip slide dark" data-start="131" data-duration="3.5" data-track-index="0" data-label="Cierre" data-frags="0">
+      <section id="cierre" class="clip slide dark" data-start="107.5" data-duration="3.5" data-track-index="0" data-label="Cierre" data-frags="0">
         <div class="frame" id="cierre-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">21 / 21</span>
+          <span class="num">18 / 18</span>
       <h1 class="claim xl" data-in="0" style="--i:0">Con criterios claros y un backlog trazable, se puede cambiar sin perder el rumbo</h1>
       <p class="lead" data-in="1" style="--i:1">Próxima semana: planes frente a ágil, Scrum y Kanban, y cultura DevOps</p>
       <p class="byline" data-in="2" style="--i:2">Fuentes: Pressman y Maxim (2020) · Sommerville (2011)</p>
@@ -619,7 +540,7 @@
 
       const ENTER = 2;
       const tl = gsap.timeline({ paused: true });
-      tl.to({}, { duration: 134.5 }, 0);
+      tl.to({}, { duration: 111 }, 0);
 
       const figSyncs = [];
       const slides = Array.from(document.querySelectorAll(".slide"));

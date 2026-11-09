@@ -63,10 +63,10 @@
       ]
     },
     {
-      "sceneId": "principios",
+      "sceneId": "scrum",
       "startTime": 21,
       "endTime": 28.5,
-      "notes": "Sommerville resume lo que comparten los métodos ágiles en cinco principios: participación del cliente, entrega incremental, personas y no procesos, aceptación del cambio y mantenimiento de la simplicidad. La figura muestra tres de ellos funcionando juntos: el software se entrega por partes, el cliente revisa cada parte y un cambio de tarifas entra como una historia nueva. Pedir que ubiquen cuál de los principios falló en el sistema municipal de la semana anterior. Fuentes: Sommerville (2011), capítulo 3, sección 3.1; Pressman y Maxim (2020), sección 3.3.1.",
+      "notes": "Scrum organiza el trabajo en sprints de tiempo fijo, de dos a cuatro semanas. Tres roles: el Product Owner prioriza por valor, el Scrum Master facilita y retira obstáculos, el equipo decide cómo construir. Tres artefactos: product backlog, sprint backlog e incremento. La reunión diaria dura como máximo 15 minutos y tiene tres preguntas: qué hice, qué me bloquea y qué haré. Insistir en que Scrum gestiona el trabajo y no prescribe técnicas de programación. Fuente: Pressman y Maxim (2020), sección 3.4.",
       "fragments": [
         23,
         24,
@@ -76,10 +76,10 @@
       ]
     },
     {
-      "sceneId": "scrum",
+      "sceneId": "xp",
       "startTime": 28.5,
       "endTime": 36,
-      "notes": "Scrum organiza el trabajo en sprints de tiempo fijo, de dos a cuatro semanas. Tres roles: el Product Owner prioriza por valor, el Scrum Master facilita y retira obstáculos, el equipo decide cómo construir. Tres artefactos: product backlog, sprint backlog e incremento. La reunión diaria dura como máximo 15 minutos y tiene tres preguntas: qué hice, qué me bloquea y qué haré. Insistir en que Scrum gestiona el trabajo y no prescribe técnicas de programación. Fuente: Pressman y Maxim (2020), sección 3.4.",
+      "notes": "XP atiende la calidad técnica. En el desarrollo guiado por pruebas la prueba se escribe antes que el código: rojo, verde, refactorizar. La refactorización mejora el diseño sin cambiar lo que hace, y por eso la prueba debe seguir pasando. La programación en parejas y la integración continua detectan errores pronto. Scrum y XP no compiten: Scrum ordena el trabajo y XP aporta las disciplinas de ingeniería. Las historias de usuario también vienen de XP. Fuente: Pressman y Maxim (2020), sección 3.5.1.",
       "fragments": [
         30.5,
         31.5,
@@ -89,10 +89,10 @@
       ]
     },
     {
-      "sceneId": "xp",
+      "sceneId": "enfoques",
       "startTime": 36,
       "endTime": 43.5,
-      "notes": "XP atiende la calidad técnica. En el desarrollo guiado por pruebas la prueba se escribe antes que el código: rojo, verde, refactorizar. La refactorización mejora el diseño sin cambiar lo que hace, y por eso la prueba debe seguir pasando. La programación en parejas y la integración continua detectan errores pronto. Scrum y XP no compiten: Scrum ordena el trabajo y XP aporta las disciplinas de ingeniería. Las historias de usuario también vienen de XP. Fuente: Pressman y Maxim (2020), sección 3.5.1.",
+      "notes": "Primero leer los extremos de cada escala: qué empuja hacia planes y qué hacia agilidad. Después el caso resuelto: software de control de dosis de un equipo médico. Revelar un factor por avance y pedir que digan hacia dónde se mueve antes de verlo. Factores técnicos: sistema crítico y especificación previa. Factores humanos: equipo repartido en dos ciudades. Factores organizacionales: un regulador que exige diseño aprobado. Se elige un desarrollo dirigido por planes y se toma del enfoque ágil la revisión corta de cada módulo con el personal clínico. El riesgo aceptado es que un cambio de reglamento cueste mucho; se controla con una revisión de requisitos antes de cada fase. Cerrar pidiendo que repitan estos pasos con el Marketplace Agrícola: es la sección I de la plantilla TA-1.3, y no hay una respuesta única. Fuente: Sommerville (2011), capítulo 3, sección 3.2.",
       "fragments": [
         38,
         39,
@@ -102,162 +102,122 @@
       ]
     },
     {
-      "sceneId": "enfoques",
+      "sceneId": "historia-caso",
       "startTime": 43.5,
-      "endTime": 51,
-      "notes": "Primero leer los extremos de cada escala: qué empuja hacia planes y qué hacia agilidad. Después el caso resuelto: software de control de dosis de un equipo médico. Revelar un factor por avance y pedir que digan hacia dónde se mueve antes de verlo. Factores técnicos: sistema crítico y especificación previa. Factores humanos: equipo repartido en dos ciudades. Factores organizacionales: un regulador que exige diseño aprobado. Se elige un desarrollo dirigido por planes y se toma del enfoque ágil la revisión corta de cada módulo con el personal clínico. El riesgo aceptado es que un cambio de reglamento cueste mucho; se controla con una revisión de requisitos antes de cada fase. Fuente: Sommerville (2011), capítulo 3, sección 3.2.",
+      "endTime": 49,
+      "notes": "Una historia basta para planificar, pero no siempre alcanza para un flujo con varios pasos y varios actores. El caso de uso describe una interacción entre un actor y el sistema: un escenario principal y escenarios alternativos. Se usa una historia para publicar un producto y un caso de uso para el flujo de compra, que involucra al comprador, la pasarela de pagos y el proveedor logístico. Fuente: Sommerville (2011), capítulo 4, sección 4.5.4.",
       "fragments": [
         45.5,
         46.5,
-        47.5,
-        48.5,
-        49.5
-      ]
-    },
-    {
-      "sceneId": "decision",
-      "startTime": 51,
-      "endTime": 58.5,
-      "notes": "Es la sección I de la plantilla TA-1.3. Los mismos cuatro pasos del caso médico se aplican al Marketplace Agrícola; el ejemplo de la plantilla es el de las canchas. No hay una respuesta única: vale cualquier decisión que use los tres grupos de factores y sea coherente con ellos. Pedir que digan en voz alta qué tomarían del otro enfoque.",
-      "fragments": [
-        53,
-        54,
-        55,
-        56,
-        57
-      ]
-    },
-    {
-      "sceneId": "historia-caso",
-      "startTime": 58.5,
-      "endTime": 64,
-      "notes": "Una historia basta para planificar, pero no siempre alcanza para un flujo con varios pasos y varios actores. El caso de uso describe una interacción entre un actor y el sistema: un escenario principal y escenarios alternativos. Se usa una historia para publicar un producto y un caso de uso para el flujo de compra, que involucra al comprador, la pasarela de pagos y el proveedor logístico. Fuente: Sommerville (2011), capítulo 4, sección 4.5.4.",
-      "fragments": [
-        60.5,
-        61.5,
-        62.5
+        47.5
       ]
     },
     {
       "sceneId": "caso-uso",
-      "startTime": 64,
-      "endTime": 71.5,
+      "startTime": 49,
+      "endTime": 56.5,
       "notes": "Es la sección II de la plantilla PE-1.3, con el ejemplo de las canchas. Revelar por partes: actor principal, objetivo y precondición; el escenario principal con sus cinco pasos numerados; el escenario alternativo, que parte de uno de los pasos (aquí el 3, porque la cancha elegida ya fue reservada); y la condición con la que finaliza. En la actividad deben hacer lo mismo con el flujo de compra del Marketplace Agrícola. Fuente: Sommerville (2011), capítulo 4, sección 4.5.4.",
       "fragments": [
-        66,
-        67,
-        68,
-        69,
-        70
+        51,
+        52,
+        53,
+        54,
+        55
       ]
     },
     {
       "sceneId": "criterio",
-      "startTime": 71.5,
-      "endTime": 75,
+      "startTime": 56.5,
+      "endTime": 60,
       "notes": "Si no se logra redactar una prueba para un criterio, el requisito sigue siendo ambiguo. Esa es la idea central de lo que viene. Un criterio de aceptación convierte una frase abierta en una comprobación con respuesta sí o no."
     },
     {
       "sceneId": "dado-cuando",
-      "startTime": 75,
-      "endTime": 82.5,
+      "startTime": 60,
+      "endTime": 67.5,
       "notes": "Formato frecuente: Dado, cuando, entonces. Dado describe el contexto inicial, cuando describe la acción y entonces describe el resultado observable. No es el único formato posible, pero obliga a decir qué se verá. El último avance muestra para qué sirve: con ese criterio, dos personas distintas aplican la misma prueba y llegan al mismo veredicto. Es el formato de la plantilla PE-1.3, columna Criterio Dado, cuando, entonces.",
       "fragments": [
-        77,
-        78,
-        79,
-        80,
-        81
+        62,
+        63,
+        64,
+        65,
+        66
       ]
     },
     {
       "sceneId": "cuatro-criterios",
-      "startTime": 82.5,
-      "endTime": 90,
+      "startTime": 67.5,
+      "endTime": 75,
       "notes": "Un conjunto completo cubre cuatro clases: flujo normal, excepción, límite y no funcional. Si solo se escribe el flujo normal, el equipo implementa el camino feliz y descubre las excepciones en producción. Es el Tipo de la plantilla PE-1.3: tres historias de su PE-1.2 con cuatro criterios cada una, uno de cada tipo. Pedir que clasifiquen en voz alta un criterio nuevo.",
       "fragments": [
-        84.5,
-        85.5,
-        86.5,
-        87.5,
-        88.5
+        69.5,
+        70.5,
+        71.5,
+        72.5,
+        73.5
       ]
     },
     {
       "sceneId": "reescribir",
-      "startTime": 90,
-      "endTime": 95.5,
+      "startTime": 75,
+      "endTime": 80.5,
       "notes": "Es una pregunta de la lista de validación de la plantilla PE-1.3: ¿algún criterio usa palabras como rápido o adecuado sin un valor? Un criterio no funcional necesita un número y una condición de carga. Pedir que propongan otra palabra vaga (fácil, seguro, intuitivo) y que la reescriban con un valor medible.",
       "fragments": [
-        92,
-        93,
-        94
+        77,
+        78,
+        79
       ]
     },
     {
       "sceneId": "validacion",
-      "startTime": 95.5,
-      "endTime": 103,
+      "startTime": 80.5,
+      "endTime": 88,
       "notes": "Validar es comprobar que lo escrito define el sistema que el cliente necesita: el producto correcto. Se distingue de verificar, que comprueba que lo construido cumple lo especificado. Cuatro técnicas: revisiones, prototipos, pruebas de aceptación y, en ágil, la revisión del sprint, donde el Product Owner dice si el incremento responde a la necesidad. Fuente: Sommerville (2011), capítulo 4, sección 4.6.",
       "fragments": [
-        97.5,
-        98.5,
-        99.5,
-        100.5,
-        101.5
+        82.5,
+        83.5,
+        84.5,
+        85.5,
+        86.5
       ]
     },
     {
       "sceneId": "trazabilidad",
-      "startTime": 103,
-      "endTime": 111.5,
+      "startTime": 88,
+      "endTime": 96.5,
       "notes": "La trazabilidad es el vínculo documentado entre un requisito, su origen, el diseño, el código y las pruebas. Sirve para auditar que todo requisito se implementó y se probó, y para evaluar el impacto de un cambio antes de aceptarlo. Seguir la cadena con el ejemplo del cobro de la reserva: administrador, RF-05, HU-03, CA-07 y PR-07. Cuando el banco pide un segundo paso de verificación, la cadena muestra qué se afecta. En ágil, el cambio se expresa como una historia nueva que el Product Owner ordena en el backlog. Es la sección IV de la plantilla TA-1.3. Fuente: Pressman y Maxim (2020), capítulo 7, sección 7.2.6.",
       "fragments": [
-        105,
-        106,
-        107,
-        108,
-        109,
-        110
+        90,
+        91,
+        92,
+        93,
+        94,
+        95
       ]
     },
     {
       "sceneId": "backlog",
-      "startTime": 111.5,
-      "endTime": 119,
+      "startTime": 96.5,
+      "endTime": 104,
       "notes": "El orden del backlog lo decide el Product Owner con el equipo. MoSCoW separa lo imprescindible de lo deseable; dentro de cada grupo se ordena por valor frente a esfuerzo; después se comprueba que el orden respete las dependencias (cancelar y pagar necesitan que se pueda reservar). El sprint 1 toma las primeras historias y tiene un objetivo que se pueda comprobar en la revisión del sprint. Es lo que pide la plantilla TA-1.3 en las secciones II y III. Fuente: Pressman y Maxim (2020), capítulo 3, secciones 3.4.1 y 3.4.2.",
       "fragments": [
-        113.5,
-        114.5,
-        115.5,
-        116.5,
-        117.5
-      ]
-    },
-    {
-      "sceneId": "practica",
-      "startTime": 119,
-      "endTime": 127.5,
-      "notes": "Quince minutos en parejas con el Marketplace Agrícola, el proyecto del curso. Recorrer las mesas. Errores esperados: criterios que terminan en una intención y no en un resultado observable, criterios no funcionales sin número, un orden que pone el pago antes que la publicación del producto, y un objetivo de sprint que no se puede comprobar.",
-      "fragments": [
-        121,
-        122,
-        123,
-        124,
-        125,
-        126
+        98.5,
+        99.5,
+        100.5,
+        101.5,
+        102.5
       ]
     },
     {
       "sceneId": "actividades",
-      "startTime": 127.5,
-      "endTime": 131,
+      "startTime": 104,
+      "endTime": 107.5,
       "notes": "Las consignas completas, las plantillas y las rúbricas están en Canvas. PE-1.3 vale 2 puntos y se entrega al terminar la clase del lunes. TA-1.3 vale 2 puntos y cierra el domingo 15 de noviembre. Las dos reutilizan el trabajo de las semanas anteriores: las historias de PE-1.2 y el SRS de TA-1.2. Esta semana no hay GA ni módulo del curso ASU."
     },
     {
       "sceneId": "cierre",
-      "startTime": 131,
-      "endTime": 134.5,
+      "startTime": 107.5,
+      "endTime": 111,
       "notes": "Cerrar volviendo a la historia del inicio: ahora saben decir qué le faltaba para que dos personas la entendieran igual. Tarea para casa: la recuperación sin apuntes de la semana, con ocho preguntas. Próxima semana: comparar con más detalle el desarrollo planificado y el ágil, Scrum y Kanban, el grooming del backlog y la cultura DevOps."
     }
   ],
