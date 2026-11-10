@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Los operadores del KLM</title>
+<style>
+:root{--wine:#910048;--wine-deep:#6d0036;--gold:#e8a920;--teal:#0c6b62;--amber:#7a5200;--ink:#1f1a1d;--muted:#5a5257;--tint:#f6f1f3;--red:#b3261e}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:transparent;font-family:system-ui,"Segoe UI",sans-serif;color:var(--ink);overflow:hidden}
+#st{position:absolute;left:0;top:0;width:1560px;height:720px;transform-origin:0 0}
+.b{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border-radius:16px;padding:6px 14px;font-weight:700;font-size:32px;line-height:1.15;background:var(--tint);color:var(--ink)}
+.b small{display:block;font-size:24px;font-weight:600;margin-top:4px}
+.t{position:absolute;font-size:34px;font-weight:700;line-height:1.2}
+.pill{position:absolute;display:flex;align-items:center;justify-content:center;height:52px;padding:0 20px;border-radius:26px;color:#fff;font:800 24px/1 ui-monospace,Consolas,monospace;white-space:nowrap;opacity:0;z-index:5}
+.ln{position:absolute;background:#cfc6ca}
+
+</style></head><body>
+<div id="st">
+<div id="o0" class="b" style="left:30px;top:20px;width:470px;height:235px;opacity:0;"><span style="font-size:62px;font-weight:800;color:#910048;line-height:1">K</span><span style="font-size:27px;margin:8px 0;line-height:1.2">Pulsar una tecla o un botón</span><span style="font-size:32px;font-weight:800;font-family:ui-monospace,Consolas,monospace">tK = 0,28 s</span><small style="font-weight:600;font-size:24px;color:var(--muted)">de 0,08 a 1,20 s según la habilidad</small></div>
+<div id="o1" class="b" style="left:545px;top:20px;width:470px;height:235px;opacity:0;"><span style="font-size:62px;font-weight:800;color:#910048;line-height:1">P</span><span style="font-size:27px;margin:8px 0;line-height:1.2">Apuntar con el mouse a un objetivo de la pantalla</span><span style="font-size:32px;font-weight:800;font-family:ui-monospace,Consolas,monospace">tP = 1,10 s</span><small style="font-weight:600;font-size:24px;color:var(--muted)">no incluye el clic</small></div>
+<div id="o2" class="b" style="left:1060px;top:20px;width:470px;height:235px;opacity:0;"><span style="font-size:62px;font-weight:800;color:#910048;line-height:1">H</span><span style="font-size:27px;margin:8px 0;line-height:1.2">Llevar la mano del teclado al mouse, o al revés</span><span style="font-size:32px;font-weight:800;font-family:ui-monospace,Consolas,monospace">tH = 0,40 s</span></div>
+<div id="o3" class="b" style="left:30px;top:285px;width:470px;height:235px;opacity:0;"><span style="font-size:62px;font-weight:800;color:#910048;line-height:1">D</span><span style="font-size:27px;margin:8px 0;line-height:1.2">Dibujar segmentos de línea recta con el mouse</span><span style="font-size:32px;font-weight:800;font-family:ui-monospace,Consolas,monospace">0,9 nD + 0,16 lD</span><small style="font-weight:600;font-size:24px;color:var(--muted)">nD segmentos y lD cm</small></div>
+<div id="o4" class="b" style="left:545px;top:285px;width:470px;height:235px;opacity:0;"><span style="font-size:62px;font-weight:800;color:#7a5200;line-height:1">M</span><span style="font-size:27px;margin:8px 0;line-height:1.2">Preparación mental para ejecutar acciones físicas</span><span style="font-size:32px;font-weight:800;font-family:ui-monospace,Consolas,monospace">tM = 1,35 s</span><small style="font-weight:600;font-size:24px;color:var(--muted)">un promedio</small></div>
+<div id="o5" class="b" style="left:1060px;top:285px;width:470px;height:235px;opacity:0;"><span style="font-size:62px;font-weight:800;color:#0c6b62;line-height:1">R</span><span style="font-size:27px;margin:8px 0;line-height:1.2">Espera de la respuesta del sistema</span><span style="font-size:32px;font-weight:800;font-family:ui-monospace,Consolas,monospace">t segundos</span><small style="font-weight:600;font-size:24px;color:var(--muted)">solo si hay que esperar</small></div>
+<div id="k0" class="t" style="left:30px;top:560px;width:1500px;opacity:0;color:var(--wine-deep);font-size:33px">El KLM suma el tiempo de seis operadores</div>
+<div id="k1" class="t" style="left:30px;top:560px;width:1500px;opacity:0;color:var(--wine-deep);font-size:33px">Tres motores: teclas, apuntar con el mouse y cambiar de dispositivo</div>
+<div id="k2" class="t" style="left:30px;top:560px;width:1500px;opacity:0;color:var(--wine-deep);font-size:33px">Dibujar con el mouse y la preparación mental</div>
+<div id="k3" class="t" style="left:30px;top:560px;width:1500px;opacity:0;color:var(--teal);font-size:33px">Y la espera de la respuesta del sistema</div>
+</div>
+<script>
+const N = 3;
+const st = document.getElementById("st");
+function fit() { const k = Math.min(innerWidth / 1560, innerHeight / 720); st.style.transform = "scale(" + k + ")"; }
+fit(); addEventListener("resize", fit);
+const $ = (s) => document.querySelector(s);
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const ease = (t) => { t = clamp(t, 0, 1); return t * t * (3 - 2 * t); };
+const win = (s, a, b) => ease((s - a) / (b - a));
+const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+const mix = (a, b, t) => { const x = hex(a), y = hex(b); return "rgb(" + x.map((v, i) => Math.round(v + (y[i] - v) * t)).join(",") + ")"; };
+function lit(el, base, color, t, fg0, fg1) { el.style.background = mix(base, color, t); el.style.color = mix(fg0 || "#1f1a1d", fg1 || "#ffffff", t); }
+function put(el, x, y, a) { el.style.transform = "translate(" + x + "px," + y + "px)"; el.style.opacity = String(a); }
+function route(k, pts) { for (let i = 0; i < pts.length - 1; i++) { if (k <= pts[i + 1][0]) { const t = ease((k - pts[i][0]) / (pts[i + 1][0] - pts[i][0])); return [pts[i][1] + (pts[i + 1][1] - pts[i][1]) * t, pts[i][2] + (pts[i + 1][2] - pts[i][2]) * t]; } } const l = pts[pts.length - 1]; return [l[1], l[2]]; }
+
+function caps(s, n, pref) { for (let k = 0; k <= n; k++) { const a = win(s, k - 0.5, k) * (k < n ? 1 - win(s, k, k + 0.5) : 1); put($("#" + pref + k), 0, 0, clamp(a, 0, 1)); } }
+function rect(el, r) { el.style.left = r[0] + "px"; el.style.top = r[1] + "px"; el.style.width = r[2] + "px"; el.style.height = r[3] + "px"; }
+function show(el, a, dy) { put(el, 0, (1 - a) * (dy === undefined ? 24 : dy), a); }
+
+let u = 0, target = 0, frame = 0, timer = 0, last = 0;
+function draw() { 
+const s = u * N;
+for (let i = 0; i < 3; i++) show($("#o" + i), win(s, 0 + i * 0.1, 0.8 + i * 0.1), 22);
+show($("#o3"), win(s, 1, 1.8), 22); show($("#o4"), win(s, 1.15, 1.9), 22); show($("#o5"), win(s, 2, 3), 22);
+caps(s, 3, "k");
+ }
+function loop() {
+  clearTimeout(timer); cancelAnimationFrame(frame);
+  const now = performance.now();
+  const dt = last ? Math.min((now - last) / 1000, 1) : 1 / 60; last = now;
+  const speed = 1 / (N * 1.6);
+  u = target > u ? Math.min(target, u + dt * speed) : Math.max(target, u - dt * speed * 2);
+  draw();
+  if (u !== target) { frame = requestAnimationFrame(loop); timer = setTimeout(loop, 80); } else { frame = 0; timer = 0; last = 0; }
+}
+const run = () => { if (!frame && !timer) { last = 0; loop(); } };
+const go = (v) => { target = clamp(v, 0, 1); run(); };
+window.__fig = { set(v) { u = target = clamp(v, 0, 1); draw(); }, go, get u() { return u; } };
+addEventListener("message", (e) => { const m = e.data; if (!m || m.type !== "fig") return; if (m.mode === "set") window.__fig.set(Number(m.value)); else go(Number(m.value)); });
+if (window.parent !== window) {
+  const KEYMAP = { ArrowRight: "ArrowRight", PageDown: "ArrowRight", " ": "ArrowRight", Enter: "ArrowRight", ArrowLeft: "ArrowLeft", PageUp: "ArrowLeft", Backspace: "ArrowLeft" };
+  addEventListener("keydown", (e) => { const k = KEYMAP[e.key]; if (!k) return; e.preventDefault(); e.stopImmediatePropagation(); parent.postMessage({ type: "deck-key", key: k }, "*"); }, true);
+} else {
+  addEventListener("click", () => go(target >= 1 ? 0 : Math.min(1, Math.round(target * N + 1) / N)));
+}
+draw();
+</script></body></html>

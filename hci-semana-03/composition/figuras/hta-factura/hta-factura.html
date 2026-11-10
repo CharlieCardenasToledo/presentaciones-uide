@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Descomposición de una tarea</title>
+<style>
+:root{--wine:#910048;--wine-deep:#6d0036;--gold:#e8a920;--teal:#0c6b62;--amber:#7a5200;--ink:#1f1a1d;--muted:#5a5257;--tint:#f6f1f3;--red:#b3261e}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:transparent;font-family:system-ui,"Segoe UI",sans-serif;color:var(--ink);overflow:hidden}
+#st{position:absolute;left:0;top:0;width:1560px;height:720px;transform-origin:0 0}
+.b{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border-radius:16px;padding:6px 14px;font-weight:700;font-size:32px;line-height:1.15;background:var(--tint);color:var(--ink)}
+.b small{display:block;font-size:24px;font-weight:600;margin-top:4px}
+.t{position:absolute;font-size:34px;font-weight:700;line-height:1.2}
+.pill{position:absolute;display:flex;align-items:center;justify-content:center;height:52px;padding:0 20px;border-radius:26px;color:#fff;font:800 24px/1 ui-monospace,Consolas,monospace;white-space:nowrap;opacity:0;z-index:5}
+.ln{position:absolute;background:#cfc6ca}
+
+</style></head><body>
+<div id="st">
+<div id="n0" class="b" style="left:500px;top:15px;width:560px;height:70px;opacity:0;background:var(--wine-deep);color:#fff;font-size:24px">0. Pagar la factura de la luz</div>
+<div id="n1" class="b" style="left:60px;top:130px;width:440px;height:70px;opacity:0;background:var(--wine);color:#fff;font-size:24px">1. Entrar a la aplicación</div>
+<div id="n2" class="b" style="left:560px;top:130px;width:440px;height:70px;opacity:0;background:var(--wine);color:#fff;font-size:24px">2. Identificar la factura</div>
+<div id="n3" class="b" style="left:1060px;top:130px;width:440px;height:70px;opacity:0;background:var(--wine);color:#fff;font-size:24px">3. Confirmar el pago</div>
+<div id="n11" class="b" style="left:60px;top:270px;width:210px;height:88px;opacity:0;background:var(--tint);color:var(--ink);font-size:24px">1.1 Abrir la aplicación</div>
+<div id="n12" class="b" style="left:290px;top:270px;width:210px;height:88px;opacity:0;background:var(--tint);color:var(--ink);font-size:24px">1.2 Iniciar sesión</div>
+<div id="n21" class="b" style="left:560px;top:270px;width:210px;height:88px;opacity:0;background:var(--tint);color:var(--ink);font-size:24px">2.1 Elegir el servicio de luz</div>
+<div id="n22" class="b" style="left:790px;top:270px;width:210px;height:88px;opacity:0;background:var(--tint);color:var(--ink);font-size:24px">2.2 Escribir el número de contrato</div>
+<div id="l0" class="ln" style="left:780px;top:85px;width:4px;height:23px;opacity:0"></div>
+<div id="l1" class="ln" style="left:280px;top:108px;width:1000px;height:4px;opacity:0"></div>
+<div id="l1a" class="ln" style="left:280px;top:108px;width:4px;height:22px;opacity:0"></div>
+<div id="l1b" class="ln" style="left:780px;top:108px;width:4px;height:22px;opacity:0"></div>
+<div id="l1c" class="ln" style="left:1280px;top:108px;width:4px;height:22px;opacity:0"></div>
+<div id="m1" class="ln" style="left:280px;top:200px;width:4px;height:22px;opacity:0"></div>
+<div id="m2" class="ln" style="left:165px;top:222px;width:230px;height:4px;opacity:0"></div>
+<div id="m3" class="ln" style="left:165px;top:222px;width:4px;height:48px;opacity:0"></div>
+<div id="m4" class="ln" style="left:395px;top:222px;width:4px;height:48px;opacity:0"></div>
+<div id="m5" class="ln" style="left:780px;top:200px;width:4px;height:22px;opacity:0"></div>
+<div id="m6" class="ln" style="left:665px;top:222px;width:230px;height:4px;opacity:0"></div>
+<div id="m7" class="ln" style="left:665px;top:222px;width:4px;height:48px;opacity:0"></div>
+<div id="m8" class="ln" style="left:895px;top:222px;width:4px;height:48px;opacity:0"></div>
+<div id="pl0" class="b" style="left:60px;top:372px;width:700px;height:70px;opacity:0;background:#fcefc9;color:var(--amber);font-size:27px"><b>Plan 0:</b> hacer 1, luego 2, luego 3</div>
+<div id="pl1" class="b" style="left:800px;top:372px;width:700px;height:70px;opacity:0;background:#fcefc9;color:var(--amber);font-size:27px"><b>Plan 1:</b> hacer 1.1 y luego 1.2</div>
+<div id="lg" class="b" style="left:60px;top:462px;width:700px;height:66px;opacity:0;background:var(--gold);color:#1f1a1d;font-size:26px">Operador: una submeta que no se analiza más</div>
+<div id="rs" class="b" style="left:800px;top:462px;width:700px;height:66px;opacity:0;background:#e3f2f0;color:var(--teal);font-size:24px"><b>Regla de selección en 1.2:</b> si el sensor de huella funciona, la huella; si no, la clave</div>
+<div id="k0" class="t" style="left:30px;top:590px;width:1500px;opacity:0;color:var(--wine-deep);font-size:32px">Descomponer una tarea: pagar la factura de la luz en la aplicación del banco</div>
+<div id="k1" class="t" style="left:30px;top:590px;width:1500px;opacity:0;color:var(--wine-deep);font-size:32px">Se parte de la meta principal</div>
+<div id="k2" class="t" style="left:30px;top:590px;width:1500px;opacity:0;color:var(--wine-deep);font-size:32px">La meta se divide en submetas</div>
+<div id="k3" class="t" style="left:30px;top:590px;width:1500px;opacity:0;color:var(--wine-deep);font-size:32px">Las submetas se dividen hasta donde haga falta</div>
+<div id="k4" class="t" style="left:30px;top:590px;width:1500px;opacity:0;color:var(--wine-deep);font-size:32px">El plan dice en qué orden se cumplen</div>
+<div id="k5" class="t" style="left:30px;top:590px;width:1500px;opacity:0;color:var(--teal);font-size:32px">Las hojas son operadores; si hay dos métodos, una regla elige</div>
+</div>
+<script>
+const N = 5;
+const st = document.getElementById("st");
+function fit() { const k = Math.min(innerWidth / 1560, innerHeight / 720); st.style.transform = "scale(" + k + ")"; }
+fit(); addEventListener("resize", fit);
+const $ = (s) => document.querySelector(s);
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const ease = (t) => { t = clamp(t, 0, 1); return t * t * (3 - 2 * t); };
+const win = (s, a, b) => ease((s - a) / (b - a));
+const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+const mix = (a, b, t) => { const x = hex(a), y = hex(b); return "rgb(" + x.map((v, i) => Math.round(v + (y[i] - v) * t)).join(",") + ")"; };
+function lit(el, base, color, t, fg0, fg1) { el.style.background = mix(base, color, t); el.style.color = mix(fg0 || "#1f1a1d", fg1 || "#ffffff", t); }
+function put(el, x, y, a) { el.style.transform = "translate(" + x + "px," + y + "px)"; el.style.opacity = String(a); }
+function route(k, pts) { for (let i = 0; i < pts.length - 1; i++) { if (k <= pts[i + 1][0]) { const t = ease((k - pts[i][0]) / (pts[i + 1][0] - pts[i][0])); return [pts[i][1] + (pts[i + 1][1] - pts[i][1]) * t, pts[i][2] + (pts[i + 1][2] - pts[i][2]) * t]; } } const l = pts[pts.length - 1]; return [l[1], l[2]]; }
+
+function caps(s, n, pref) { for (let k = 0; k <= n; k++) { const a = win(s, k - 0.5, k) * (k < n ? 1 - win(s, k, k + 0.5) : 1); put($("#" + pref + k), 0, 0, clamp(a, 0, 1)); } }
+function rect(el, r) { el.style.left = r[0] + "px"; el.style.top = r[1] + "px"; el.style.width = r[2] + "px"; el.style.height = r[3] + "px"; }
+function show(el, a, dy) { put(el, 0, (1 - a) * (dy === undefined ? 24 : dy), a); }
+
+let u = 0, target = 0, frame = 0, timer = 0, last = 0;
+function draw() { 
+const s = u * N;
+const a1 = win(s, 0, 1), a2 = win(s, 1, 2), a3 = win(s, 2, 3), a4 = win(s, 3, 4), a5 = win(s, 4, 5);
+show($("#n0"), a1, 18); put($("#l0"), 0, 0, a2);
+["n1", "n2", "n3"].forEach((id, i) => show($("#" + id), win(s, 1 + i * 0.1, 1.8 + i * 0.1), 18));
+["l1", "l1a", "l1b", "l1c"].forEach((id) => put($("#" + id), 0, 0, a2));
+["n11", "n12", "n21", "n22"].forEach((id, i) => show($("#" + id), win(s, 2 + i * 0.08, 2.76 + i * 0.08), 18));
+["m1", "m2", "m3", "m4", "m5", "m6", "m7", "m8"].forEach((id) => put($("#" + id), 0, 0, a3));
+show($("#pl0"), a4, 16); show($("#pl1"), win(s, 3.2, 4), 16);
+["n11", "n21", "n22", "n3"].forEach((id) => { const e = $("#" + id); lit(e, id === "n3" ? "#910048" : "#f6f1f3", "#e8a920", a5, id === "n3" ? "#ffffff" : "#1f1a1d", "#1f1a1d"); });
+show($("#lg"), a5, 16); show($("#rs"), win(s, 4.2, 5), 16);
+caps(s, 5, "k");
+ }
+function loop() {
+  clearTimeout(timer); cancelAnimationFrame(frame);
+  const now = performance.now();
+  const dt = last ? Math.min((now - last) / 1000, 1) : 1 / 60; last = now;
+  const speed = 1 / (N * 1.6);
+  u = target > u ? Math.min(target, u + dt * speed) : Math.max(target, u - dt * speed * 2);
+  draw();
+  if (u !== target) { frame = requestAnimationFrame(loop); timer = setTimeout(loop, 80); } else { frame = 0; timer = 0; last = 0; }
+}
+const run = () => { if (!frame && !timer) { last = 0; loop(); } };
+const go = (v) => { target = clamp(v, 0, 1); run(); };
+window.__fig = { set(v) { u = target = clamp(v, 0, 1); draw(); }, go, get u() { return u; } };
+addEventListener("message", (e) => { const m = e.data; if (!m || m.type !== "fig") return; if (m.mode === "set") window.__fig.set(Number(m.value)); else go(Number(m.value)); });
+if (window.parent !== window) {
+  const KEYMAP = { ArrowRight: "ArrowRight", PageDown: "ArrowRight", " ": "ArrowRight", Enter: "ArrowRight", ArrowLeft: "ArrowLeft", PageUp: "ArrowLeft", Backspace: "ArrowLeft" };
+  addEventListener("keydown", (e) => { const k = KEYMAP[e.key]; if (!k) return; e.preventDefault(); e.stopImmediatePropagation(); parent.postMessage({ type: "deck-key", key: k }, "*"); }, true);
+} else {
+  addEventListener("click", () => go(target >= 1 ? 0 : Math.min(1, Math.round(target * N + 1) / N)));
+}
+draw();
+</script></body></html>

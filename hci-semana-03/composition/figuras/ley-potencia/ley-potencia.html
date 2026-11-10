@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>La ley de la potencia de la práctica</title>
+<style>
+:root{--wine:#910048;--wine-deep:#6d0036;--gold:#e8a920;--teal:#0c6b62;--amber:#7a5200;--ink:#1f1a1d;--muted:#5a5257;--tint:#f6f1f3;--red:#b3261e}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:transparent;font-family:system-ui,"Segoe UI",sans-serif;color:var(--ink);overflow:hidden}
+#st{position:absolute;left:0;top:0;width:1560px;height:720px;transform-origin:0 0}
+.b{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border-radius:16px;padding:6px 14px;font-weight:700;font-size:32px;line-height:1.15;background:var(--tint);color:var(--ink)}
+.b small{display:block;font-size:24px;font-weight:600;margin-top:4px}
+.t{position:absolute;font-size:34px;font-weight:700;line-height:1.2}
+.pill{position:absolute;display:flex;align-items:center;justify-content:center;height:52px;padding:0 20px;border-radius:26px;color:#fff;font:800 24px/1 ui-monospace,Consolas,monospace;white-space:nowrap;opacity:0;z-index:5}
+.ln{position:absolute;background:#cfc6ca}
+
+</style></head><body>
+<div id="st">
+<svg id="sv" width="1560" height="720" viewBox="0 0 1560 720" style="position:absolute;left:0;top:0;pointer-events:none">
+<path d="M100 480H1460M100 480V45" stroke="#1f1a1d" stroke-width="3" fill="none"/>
+<text x="1460" y="512" font-size="24" fill="#5a5257" text-anchor="end">número de intentos</text><text x="108" y="36" font-size="24" fill="#5a5257">tiempo (s)</text>
+<path id="cv" d="M113 80.0 L126 197.2 L139 249.1 L152 280.0 L165 301.1 L178 316.7 L191 328.8 L204 338.6 L217 346.7 L230 353.5 L243 359.4 L256 364.5 L269 369.1 L282 373.1 L295 376.7 L308 380.0 L321 383.0 L334 385.7 L347 388.2 L360 390.6 L373 392.7 L386 394.7 L399 396.6 L412 398.4 L425 400.0 L438 401.6 L451 403.0 L464 404.4 L477 405.7 L490 407.0 L503 408.2 L516 409.3 L529 410.4 L542 411.4 L555 412.4 L568 413.3 L581 414.2 L594 415.1 L607 415.9 L620 416.8 L633 417.5 L646 418.3 L659 419.0 L672 419.7 L685 420.4 L698 421.0 L711 421.7 L724 422.3 L737 422.9 L750 423.4 L763 424.0 L776 424.5 L789 425.1 L802 425.6 L815 426.1 L828 426.5 L841 427.0 L854 427.5 L867 427.9 L880 428.4 L893 428.8 L906 429.2 L919 429.6 L932 430.0 L945 430.4 L958 430.8 L971 431.1 L984 431.5 L997 431.8 L1010 432.2 L1023 432.5 L1036 432.9 L1049 433.2 L1062 433.5 L1075 433.8 L1088 434.1 L1101 434.4 L1114 434.7 L1127 435.0 L1140 435.3 L1153 435.6 L1166 435.8 L1179 436.1 L1192 436.4 L1205 436.6 L1218 436.9 L1231 437.1 L1244 437.4 L1257 437.6 L1270 437.8 L1283 438.1 L1296 438.3 L1309 438.5 L1322 438.7 L1335 439.0 L1348 439.2 L1361 439.4 L1374 439.6 L1387 439.8 L1400 440.0" stroke="#910048" stroke-width="7" fill="none" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
+<circle id="pt0" cx="113" cy="80" r="11" fill="#e8a920" stroke="#1f1a1d" stroke-width="3" opacity="0"/>
+<text id="pl0" x="131" y="70" font-size="26" font-weight="700" fill="#1f1a1d" text-anchor="start" opacity="0">intento 1: 20 s</text>
+<circle id="pt1" cx="152" cy="280" r="11" fill="#e8a920" stroke="#1f1a1d" stroke-width="3" opacity="0"/>
+<text id="pl1" x="170" y="270" font-size="26" font-weight="700" fill="#1f1a1d" text-anchor="start" opacity="0">intento 4: 10 s</text>
+<circle id="pt2" cx="308" cy="380" r="11" fill="#e8a920" stroke="#1f1a1d" stroke-width="3" opacity="0"/>
+<text id="pl2" x="326" y="370" font-size="26" font-weight="700" fill="#1f1a1d" text-anchor="start" opacity="0">intento 16: 5 s</text>
+<circle id="pt3" cx="1400" cy="440" r="11" fill="#e8a920" stroke="#1f1a1d" stroke-width="3" opacity="0"/>
+<text id="pl3" x="1386" y="422" font-size="26" font-weight="700" fill="#1f1a1d" text-anchor="end" opacity="0">intento 100: 2 s</text>
+</svg>
+<div id="ch" class="b" style="left:100px;top:530px;width:1360px;height:66px;opacity:0;background:#fcefc9;color:var(--amber);font-size:30px">Cada vez que la práctica se cuadruplica, el tiempo se divide entre 2</div>
+<div id="k0" class="t" style="left:30px;top:625px;width:1500px;opacity:0;color:var(--wine-deep);font-size:32px">La práctica reduce el tiempo, pero cada vez menos</div>
+<div id="k1" class="t" style="left:30px;top:625px;width:1500px;opacity:0;color:var(--wine-deep);font-size:32px">Un ejemplo: el primer intento tarda 20 s</div>
+<div id="k2" class="t" style="left:30px;top:625px;width:1500px;opacity:0;color:var(--wine-deep);font-size:32px">Los intentos 1, 4, 16 y 100</div>
+<div id="k3" class="t" style="left:30px;top:625px;width:1500px;opacity:0;color:var(--teal);font-size:32px">Por eso el aprendizaje temprano es el que más pesa</div>
+</div>
+<script>
+const N = 3;
+const st = document.getElementById("st");
+function fit() { const k = Math.min(innerWidth / 1560, innerHeight / 720); st.style.transform = "scale(" + k + ")"; }
+fit(); addEventListener("resize", fit);
+const $ = (s) => document.querySelector(s);
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const ease = (t) => { t = clamp(t, 0, 1); return t * t * (3 - 2 * t); };
+const win = (s, a, b) => ease((s - a) / (b - a));
+const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+const mix = (a, b, t) => { const x = hex(a), y = hex(b); return "rgb(" + x.map((v, i) => Math.round(v + (y[i] - v) * t)).join(",") + ")"; };
+function lit(el, base, color, t, fg0, fg1) { el.style.background = mix(base, color, t); el.style.color = mix(fg0 || "#1f1a1d", fg1 || "#ffffff", t); }
+function put(el, x, y, a) { el.style.transform = "translate(" + x + "px," + y + "px)"; el.style.opacity = String(a); }
+function route(k, pts) { for (let i = 0; i < pts.length - 1; i++) { if (k <= pts[i + 1][0]) { const t = ease((k - pts[i][0]) / (pts[i + 1][0] - pts[i][0])); return [pts[i][1] + (pts[i + 1][1] - pts[i][1]) * t, pts[i][2] + (pts[i + 1][2] - pts[i][2]) * t]; } } const l = pts[pts.length - 1]; return [l[1], l[2]]; }
+
+function caps(s, n, pref) { for (let k = 0; k <= n; k++) { const a = win(s, k - 0.5, k) * (k < n ? 1 - win(s, k, k + 0.5) : 1); put($("#" + pref + k), 0, 0, clamp(a, 0, 1)); } }
+function rect(el, r) { el.style.left = r[0] + "px"; el.style.top = r[1] + "px"; el.style.width = r[2] + "px"; el.style.height = r[3] + "px"; }
+function show(el, a, dy) { put(el, 0, (1 - a) * (dy === undefined ? 24 : dy), a); }
+
+let u = 0, target = 0, frame = 0, timer = 0, last = 0;
+function draw() { 
+const s = u * N;
+$("#cv").style.strokeDashoffset = String(1 - win(s, 0, 1));
+for (let k = 0; k < 4; k++) { const a = win(s, 1 + k * 0.08, 1.7 + k * 0.08); $("#pt" + k).setAttribute("opacity", String(a)); $("#pl" + k).setAttribute("opacity", String(a)); }
+show($("#ch"), win(s, 2, 3), 14);
+caps(s, 3, "k");
+ }
+function loop() {
+  clearTimeout(timer); cancelAnimationFrame(frame);
+  const now = performance.now();
+  const dt = last ? Math.min((now - last) / 1000, 1) : 1 / 60; last = now;
+  const speed = 1 / (N * 1.6);
+  u = target > u ? Math.min(target, u + dt * speed) : Math.max(target, u - dt * speed * 2);
+  draw();
+  if (u !== target) { frame = requestAnimationFrame(loop); timer = setTimeout(loop, 80); } else { frame = 0; timer = 0; last = 0; }
+}
+const run = () => { if (!frame && !timer) { last = 0; loop(); } };
+const go = (v) => { target = clamp(v, 0, 1); run(); };
+window.__fig = { set(v) { u = target = clamp(v, 0, 1); draw(); }, go, get u() { return u; } };
+addEventListener("message", (e) => { const m = e.data; if (!m || m.type !== "fig") return; if (m.mode === "set") window.__fig.set(Number(m.value)); else go(Number(m.value)); });
+if (window.parent !== window) {
+  const KEYMAP = { ArrowRight: "ArrowRight", PageDown: "ArrowRight", " ": "ArrowRight", Enter: "ArrowRight", ArrowLeft: "ArrowLeft", PageUp: "ArrowLeft", Backspace: "ArrowLeft" };
+  addEventListener("keydown", (e) => { const k = KEYMAP[e.key]; if (!k) return; e.preventDefault(); e.stopImmediatePropagation(); parent.postMessage({ type: "deck-key", key: k }, "*"); }, true);
+} else {
+  addEventListener("click", () => go(target >= 1 ? 0 : Math.min(1, Math.round(target * N + 1) / N)));
+}
+draw();
+</script></body></html>

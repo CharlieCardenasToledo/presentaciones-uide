@@ -1,0 +1,566 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Semana 2 · Factores humanos avanzados</title>
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      :root {
+        /* Colores tomados del logotipo UIDE: vino #910048 y dorado #E8A920. Sin degradados. */
+        --paper: #ffffff; --ink: #1f1a1d; --muted: #5a5257; --wine: #910048; --wine-deep: #6d0036; --gold: #e8a920;
+        --teal: #0c6b62; --teal-soft: #e3f2f0; --amber: #7a5200; --amber-soft: #fcefc9; --card: #ffffff; --line: #e2dcdf; --tint: #f6f1f3;
+      }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--paper); }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; font-family: system-ui, sans-serif; color: var(--ink); }
+      .slide { position: absolute; inset: 0; }
+      .frame { position: absolute; inset: 0; padding: 92px 120px 150px; display: flex; flex-direction: column; justify-content: center; opacity: 0; background: var(--paper); }
+      .frame::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 22px; background: var(--wine); }
+      .frame::after { content: ""; position: absolute; left: 22px; top: 0; bottom: 0; width: 8px; background: var(--gold); }
+      .dark .frame { background: var(--wine); color: #fff; }
+      .dark .frame::before { background: var(--gold); }
+      .dark .frame::after { display: none; }
+      .logo { position: absolute; top: 44px; right: 96px; height: 92px; width: auto; }
+      .dark .logo { top: 0; right: 96px; height: 150px; padding: 26px 30px 22px; background: #fff; border-radius: 0 0 18px 18px; box-sizing: border-box; }
+      .num { position: absolute; bottom: 52px; left: 120px; font-size: 26px; letter-spacing: 0.14em; color: var(--muted); font-variant-numeric: tabular-nums; }
+      .dark .num { color: #f1d3e0; }
+      .course { font-size: 34px; font-weight: 600; color: var(--gold); margin-bottom: 30px; }
+      .claim { font-family: ui-serif, serif; font-weight: 700; font-size: 74px; line-height: 1.08; letter-spacing: -0.015em; max-width: 1480px; margin-bottom: 44px; }
+      .claim.long { font-size: 62px; max-width: 1640px; }
+      .claim.xl { font-size: 96px; max-width: 1500px; }
+      .lead { font-size: 48px; line-height: 1.25; color: #ffffff; max-width: 1400px; }
+      .lead.dark-ink { color: var(--muted); margin-top: -14px; margin-bottom: 40px; }
+      .byline { font-size: 32px; color: #f6dfe9; margin-top: 70px; }
+      .source { font-size: 30px; color: var(--muted); margin-top: 34px; }
+      .punch { font-family: ui-serif, serif; font-size: 56px; font-weight: 700; color: var(--wine); margin-top: 44px; }
+      .punch.soft { color: var(--ink); font-size: 46px; margin-top: 18px; }
+      .punch.good { color: var(--teal); }
+
+      .steps { list-style: none; display: grid; gap: 18px; max-width: 1500px; }
+      .steps li { display: flex; align-items: center; gap: 30px; font-size: 46px; background: var(--tint); border-radius: 18px; padding: 18px 30px; }
+      .steps b { flex: none; width: 72px; height: 72px; border-radius: 50%; background: var(--wine); color: #fff; display: grid; place-items: center; font-size: 40px; }
+
+      .cards { display: grid; gap: 30px; }
+      .cards.three { grid-template-columns: repeat(3, 1fr); }
+      .cards.two { grid-template-columns: repeat(2, 1fr); }
+      .cards.four { grid-template-columns: repeat(4, 1fr); }
+      .cards.grid2 { grid-template-columns: repeat(2, 1fr); gap: 26px; }
+      .cards.tight { margin-top: 30px; }
+      .card { background: var(--tint); border-radius: 22px; padding: 36px 40px; display: flex; flex-direction: column; gap: 14px; }
+      .card strong { font-size: 48px; line-height: 1.12; font-weight: 800; }
+      .card em { font-style: normal; font-size: 40px; line-height: 1.2; color: var(--muted); }
+      .card .tag, .panel .tag { align-self: flex-start; font-size: 34px; font-weight: 600; color: var(--wine); }
+      .card.file strong { font-family: ui-monospace, monospace; font-size: 46px; }
+      .card.empty, .card.warn { background: var(--amber-soft); }
+      .card.warn strong { color: var(--amber); }
+      .card.pill { align-items: center; text-align: center; padding: 30px 20px; }
+      .card.pill b { width: 68px; height: 68px; border-radius: 50%; background: var(--wine); color: #fff; display: grid; place-items: center; font-size: 38px; }
+      .cards.tall .card { min-height: 300px; }
+      .verdict { margin-top: auto; padding: 14px 18px; border-radius: 12px; background: #fbe3a6; color: var(--amber) !important; font-weight: 700; }
+      .verdict.good { background: #cfe9e5; color: var(--teal) !important; }
+
+      table.data { border-collapse: collapse; width: 100%; background: var(--tint); border-radius: 20px; overflow: hidden; }
+      table.data th { text-align: left; font-size: 30px; letter-spacing: 0.1em; text-transform: uppercase; color: #fff; background: var(--wine-deep); padding: 20px 28px; }
+      table.data td { font-size: 42px; padding: 22px 28px; border-top: 3px solid #ffffff; font-variant-numeric: tabular-nums; }
+      table.data.matrix td { font-size: 40px; padding: 24px 28px; }
+      table.data.matrix b { color: var(--wine); }
+      .chips { display: flex; gap: 22px; margin-top: 36px; flex-wrap: wrap; }
+      .chip { font-size: 40px; font-weight: 700; padding: 16px 28px; border-radius: 999px; background: var(--amber-soft); color: var(--amber); }
+
+      .split { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+      .panel { background: var(--tint); border-radius: 22px; padding: 30px 34px; display: flex; flex-direction: column; gap: 18px; }
+      .panel.good { background: var(--teal-soft); }
+      .panel.good .tag { color: var(--teal); }
+      .box { font-size: 40px; padding: 18px 24px; border-radius: 14px; background: #ffffff; }
+      .box i { font-style: normal; color: var(--amber); font-weight: 700; }
+      .box.strong { background: var(--teal); color: #fff; font-weight: 700; }
+      .box.new { background: var(--teal-soft); color: var(--teal); font-weight: 700; }
+      .schema { font-family: ui-monospace, monospace; font-size: 44px; font-weight: 700; padding: 26px 32px; border-radius: 18px; background: var(--tint); }
+      .schema.main { font-size: 50px; background: var(--wine-deep); color: #fff; }
+      .schema.small { font-size: 40px; background: #ffffff; }
+      .schema u { text-decoration-thickness: 5px; text-underline-offset: 8px; }
+
+      .layers { display: grid; gap: 22px; max-width: 1500px; }
+      .layer { display: flex; align-items: baseline; gap: 34px; padding: 30px 38px; border-radius: 20px; background: var(--wine); color: #fff; }
+      .layer.mid { background: #7f003f; margin-left: 70px; }
+      .layer.low { background: var(--wine-deep); margin-left: 140px; }
+      .layer strong { font-size: 50px; flex: none; width: 430px; }
+      .layer em { font-style: normal; font-size: 40px; color: #ffffff; }
+
+      .timeline { display: grid; gap: 14px; }
+      .timeline .row { display: grid; grid-template-columns: 170px 560px 1fr; align-items: center; gap: 30px; background: var(--tint); border-radius: 16px; padding: 14px 28px; }
+      .timeline b { font-family: ui-serif, serif; font-size: 52px; color: var(--wine); font-variant-numeric: tabular-nums; }
+      .timeline strong { font-size: 42px; }
+      .timeline em { font-style: normal; font-size: 40px; color: var(--muted); }
+
+      iframe.fig { flex: none; width: 1560px; height: 720px; border: 0; background: transparent; align-self: center; margin-top: -24px; }
+
+      /* Transiciones solo al presentar en vivo: el reproductor salta entre
+         puntos de la línea de tiempo y el navegador suaviza el cambio. */
+      html.live .frame { transition: opacity 0.45s ease; }
+      html.live [data-in], html.live [data-f] { transition: opacity 0.5s ease, transform 0.55s cubic-bezier(0.2, 0.7, 0.2, 1); transition-delay: calc(var(--i, 0) * 70ms); }
+      html.live [data-hl] { transition: background-color 0.4s ease, color 0.4s ease; }
+    </style>
+  </head>
+  <body>
+    <script type="application/hyperframes-slideshow+json">
+{
+  "slides": [
+    {
+      "sceneId": "portada",
+      "startTime": 0,
+      "endTime": 3.5,
+      "notes": "Abrir con el caso de Marcela, sin teoría. Preguntar quién ha ignorado una alarma o una notificación que casi nunca significa nada. La clase tiene dos bloques de presentación con la PE-1.2 en medio: antes de la práctica, el caso, la atención limitada, los recursos múltiples, la conciencia situacional, el error y las interrupciones; después, la detección de señales y la cognición distribuida. Casi no hay fórmulas: las ideas se explican con dibujos, y el cálculo de d′ solo aparece una vez, con el ejemplo del detector de humo."
+    },
+    {
+      "sceneId": "caso",
+      "startTime": 3.5,
+      "endTime": 11,
+      "notes": "Es la exploración de la semana. Son las tres de la madrugada en cuidados intermedios. Marcela, enfermera con ocho años de experiencia, programa una bomba de infusión: leer la prescripción, convertir unidades y digitar cifras en un teclado pequeño; dura unos cinco minutos. A mitad suena la alarma de otra cama, que ya sonó once veces y ninguna fue grave, y un familiar le pregunta por el horario de visitas. Una hora después, una colega nota un cero de más en la dosis. La alarma número doce sí era real: el paciente intentó levantarse, se arrancó el sensor al caer y nadie acudió durante seis minutos. Pedir que anoten en la pizarra por qué ocurrieron las dos fallas y si alguna se explica solo con que Marcela fue descuidada. Retomar las respuestas al final.",
+      "fragments": [
+        5.5,
+        6.5,
+        7.5,
+        8.5,
+        9.5
+      ]
+    },
+    {
+      "sceneId": "doble-tarea",
+      "startTime": 11,
+      "endTime": 18.5,
+      "notes": "Wickens y Carswell (2006): la atención es un recurso limitado, que elige qué se percibe y limita qué tareas se pueden hacer a la vez. MacKenzie propone una prueba simple: medir a la persona haciendo las dos tareas por separado y luego juntas; si cae el desempeño, la tarea exige atención. Escribir en el teclado la exige, caminar casi no. Dos tareas a la vez terminan de una de tres formas: paralelo perfecto, concurrente degradado o serial estricto, como el piloto que no revisa el altímetro. Demostración rápida en el aula: un voluntario recita el abecedario mientras otro le pide que diga números pares; luego el abecedario mientras dibuja un círculo. Comparar cuál degradó más.",
+      "fragments": [
+        13,
+        14,
+        15,
+        16,
+        17
+      ]
+    },
+    {
+      "sceneId": "recursos",
+      "startTime": 18.5,
+      "endTime": 27,
+      "notes": "El resultado no es aleatorio: depende de la similitud de las tareas, su demanda y su estructura. El modelo de recursos múltiples dice que no hay un solo depósito de atención sino cuatro dimensiones: la etapa (percepción o respuesta), la modalidad (visual o auditiva), el código (espacial o verbal) y el canal visual (focal o ambiental). Dos tareas chocan cuanto más recursos comparten. Conducir y leer un mensaje comparten la etapa y la modalidad visual; conducir y escuchar la ruta comparten solo la etapa. Primero se predice por los recursos y después por la demanda: escuchar un audiolibro casi no afecta la conducción, mantener una conversación sí. En el caso, Marcela programaba con la vista, las manos y cifras en la memoria verbal, y la pregunta del familiar compartió la etapa de respuesta y el código verbal. Fuente: Wickens y Carswell (2006); Oury y Ritter (2021).",
+      "fragments": [
+        20.5,
+        21.5,
+        22.5,
+        23.5,
+        24.5,
+        25.5
+      ]
+    },
+    {
+      "sceneId": "conciencia",
+      "startTime": 27,
+      "endTime": 33.5,
+      "notes": "La carga mental explica que las tareas se estorben; falta explicar qué se pierde. Oury y Ritter describen la conciencia situacional como la capacidad de percibir la información útil, comprender su significado y predecir los estados futuros del sistema: tres niveles, cada uno apoyado en el anterior. En el análisis de desastres aéreos de Jones y Endsley (1996), cerca del 75 % de las fallas fue de percepción, cerca del 20 % de comprensión y menos del 5 % de proyección. Por tipo de falla: atencional 35 %, memoria de trabajo 8,4 % y modelo mental 18 %. Son un orden de magnitud de un análisis de desastres aéreos, no una ley para todo sistema.",
+      "fragments": [
+        29,
+        30,
+        31,
+        32
+      ]
+    },
+    {
+      "sceneId": "errores",
+      "startTime": 33.5,
+      "endTime": 42,
+      "notes": "Wickens y Carswell clasifican el error según la etapa del procesamiento en que nace. La equivocación es un error de las primeras etapas: se actúa mal porque no se entendió la situación. El desliz ocurre cuando la intención es correcta pero sale otra acción, y suele resultar de un mal diseño combinado con un operador experto en modo automático. La falla de memoria de trabajo hace olvidar o confundir lo que se retenía, y el lapsus de memoria prospectiva hace olvidar una acción prevista, un error de omisión. Es una simplificación para el análisis, porque los autores distinguen además errores basados en el conocimiento y en reglas. Para distinguir un desliz de una equivocación se pregunta qué quería hacer la persona. Cada tipo se corrige distinto.",
+      "fragments": [
+        35.5,
+        36.5,
+        37.5,
+        38.5,
+        39.5,
+        40.5
+      ]
+    },
+    {
+      "sceneId": "interrupciones",
+      "startTime": 42,
+      "endTime": 48.5,
+      "notes": "Es el ejemplo resuelto de la transferencia bancaria desde el teléfono, que se resuelve en la pizarra. Seis pasos; entra una llamada de dos minutos entre los pasos 3 y 4. Al volver, la persona recorre otra vez los tres niveles: percibe el campo del monto vacío, debe comprender si la cuenta quedó completa y proyectar que la confirmación es la última revisión. Ahí nacen los errores: un lapsus, un desliz o una equivocación. En la programación de bombas médicas, los errores fueron 7 % más frecuentes cuando hubo más de dos interrupciones durante una tarea de unos cinco minutos. La razón es un costo de reactivación. Fuente: Oury y Ritter (2021).",
+      "fragments": [
+        44,
+        45,
+        46,
+        47
+      ]
+    },
+    {
+      "sceneId": "pe",
+      "startTime": 48.5,
+      "endTime": 57,
+      "notes": "La práctica se hace en parejas: una persona ejecuta y la otra cronometra, interrumpe y anota. Cuidar que cada pareja acuerde la regla de conteo de errores antes de empezar y que use una lista distinta de 10 códigos por condición. Condición A, tarea sola. Condición B, doble tarea: contar en voz alta hacia atrás de tres en tres desde 200. Condición C, dos interrupciones con una pregunta fija. Después clasifican tres errores y explican la condición B con las dimensiones de los recursos múltiples. Pedir al final el total del grupo por condición en la pizarra. Si un grupo obtiene un resultado distinto del esperado, no es un error del estudio: se discute como efecto de la práctica y de la demanda de la tarea.",
+      "fragments": [
+        50.5,
+        51.5,
+        52.5,
+        53.5,
+        54.5,
+        55.5
+      ]
+    },
+    {
+      "sceneId": "matriz",
+      "startTime": 57,
+      "endTime": 64.5,
+      "notes": "Segundo bloque, después de la práctica. La teoría de detección de señales modela decisiones binarias bajo incertidumbre. Hay dos estados del mundo, señal presente o solo ruido, y dos respuestas, sí o no. De su cruce salen cuatro clases: acierto, omisión, falsa alarma y rechazo correcto. Con dos tasas basta: la de aciertos, sobre todos los eventos reales, y la de falsas alarmas, sobre todos los momentos sin evento. La trampa de lectura: la tasa de falsas alarmas se cuenta sobre los momentos sin evento, que son muchísimos, no sobre las veces que la alarma sonó. Fuente: Reeves (2019); Parasuraman y Wisdom (1985).",
+      "fragments": [
+        59,
+        60,
+        61,
+        62,
+        63
+      ]
+    },
+    {
+      "sceneId": "campanas",
+      "startTime": 64.5,
+      "endTime": 72,
+      "notes": "Es la parte que más cuesta, y se explica solo con el dibujo. Dos campanas: la de solo ruido y la de señal más ruido. d′ es qué tan separadas están: si están lejos, el sistema distingue bien; si se encimaran, distingue mal. La línea de corte decide desde qué evidencia se responde sí; a su derecha responde sí y a su izquierda responde no. Las falsas alarmas son la cola del ruido que queda a la derecha de la línea, y las omisiones, la cola de la señal que queda a la izquierda. El criterio c dice si la línea está a mitad de camino entre las campanas o corrida: a la izquierda, liberal; a la derecha, conservador. Mover la línea no cambia d′: cambia el criterio. Mejorar el sensor o la señal sí cambia d′. Es una decisión de diseño. Fuente: Parasuraman y Wisdom (1985); Reeves (2019).",
+      "fragments": [
+        66.5,
+        67.5,
+        68.5,
+        69.5,
+        70.5
+      ]
+    },
+    {
+      "sceneId": "humo",
+      "startTime": 72,
+      "endTime": 78.5,
+      "notes": "Ejemplo resuelto: un año en una oficina con 10 incendios reales y 90 situaciones sin fuego que podían activar el detector. Con fuego, sonó 9 veces (aciertos) y no sonó 1 vez (omisión). Sin fuego, sonó 9 veces (falsas alarmas) y no sonó 81 veces (rechazos correctos). Tasa de aciertos 9 de 10, es decir 0,90; tasa de falsas alarmas 9 de 90, es decir 0,10. Con la tabla de puntuaciones z: z(0,90) = 1,28 y z(0,10) = −1,28, así que d′ = 1,28 − (−1,28) = 2,56, una buena separación. El corte queda a 1,28 del ruido, que es justo la mitad de d′, así que no hay sesgo: c = 0. Si la empresa baja el umbral del sensor, mueve el criterio hacia lo liberal: suben los aciertos y las falsas alarmas, el personal empieza a ignorarlo y d′ no cambia. Para subir d′ hace falta un sensor que distinga mejor el humo de una tostadora del de un incendio. Las cifras son de ejemplo.",
+      "fragments": [
+        74,
+        75,
+        76,
+        77
+      ]
+    },
+    {
+      "sceneId": "alarma",
+      "startTime": 78.5,
+      "endTime": 85,
+      "notes": "Es la trampa de lectura aplicada al caso. En el turno hubo 12 alarmas, 11 falsas y 1 real; además 2 eventos reales no activaron la alarma y hubo 98 periodos sin evento en los que no sonó. La matriz completa: 1 acierto, 2 omisiones, 11 falsas alarmas y 98 rechazos correctos. La tasa de aciertos es 1 de 3, cerca de 0,30; la tasa de falsas alarmas es 11 de 109, es decir 0,10. De ahí d′ = 0,76 y c = 0,90. Aunque 11 de 12 alarmas fueron falsas, el criterio es conservador: el problema es que d′ es bajo, no que la alarma sea liberal. Bajar el volumen no cambia d′; hay que mejorar la señal, por ejemplo combinando varias mediciones del paciente. Marcela no perdió capacidad de oír la alarma: once falsas alarmas le enseñaron a exigir más evidencia antes de levantarse, que es el decremento de vigilancia. Las cifras del caso son de ejemplo, no de una fuente.",
+      "fragments": [
+        80.5,
+        81.5,
+        82.5,
+        83.5
+      ]
+    },
+    {
+      "sceneId": "speed-bugs",
+      "startTime": 85,
+      "endTime": 91.5,
+      "notes": "Los modelos anteriores miran a una persona; en el hospital la dosis la decidió un médico, la escribió una prescripción, la programó una enfermera, la ejecutó una bomba y la revisó una colega. La cognición distribuida parte de esa observación: la unidad de análisis es la red de personas y tecnologías, no una cabeza sola. Ejemplo clásico de Hutchins: antes del aterrizaje, los pilotos buscan en una tabla las velocidades mínimas seguras y las marcan con cursores, los speed bugs, en el borde del indicador de velocidad. Así recordar varias velocidades se vuelve una tarea perceptiva. Fuente: Wright, Fields y Harrison (2000). Pedir que cada estudiante diga un recurso que hoy guarda en su memoria y que podría estar en un objeto.",
+      "fragments": [
+        87,
+        88,
+        89,
+        90
+      ]
+    },
+    {
+      "sceneId": "recursos-info",
+      "startTime": 91.5,
+      "endTime": 99,
+      "notes": "Wright, Fields y Harrison identifican seis estructuras de información que guían la acción: plan, objetivo, posibilidades, historia, relaciones acción-efecto y estado. Cada una puede estar en la cabeza de alguien o en el mundo, en un artefacto. Revelar de a dos y pedir ejemplos propios. La pregunta de diseño es qué recurso conviene sacar de la cabeza y poner en el mundo. En el caso, el avance de la programación estaba solo en la memoria de Marcela; una bomba que mostrara el paso completado habría puesto la historia en el mundo. Distribuir la información ayuda solo si cada recurso queda donde la persona puede usarlo sin quitar recursos a la tarea principal: con el head-up display, más de dos segundos con la mirada fuera de la vía es el valor crítico (Pauzie, 2015). Es la base de la TA-1.2.",
+      "fragments": [
+        93.5,
+        94.5,
+        95.5,
+        96.5,
+        97.5
+      ]
+    },
+    {
+      "sceneId": "actividades",
+      "startTime": 99,
+      "endTime": 102.5,
+      "notes": "Las consignas completas, las plantillas y las rúbricas están en Canvas. PE-1.2 se hizo en clase, en parejas. TA-1.2 es individual: elegir un sistema de transporte, salud o industria distinto del hospital del caso, ubicar los seis recursos, clasificar tres errores, analizar una alarma con sus cuatro casillas, las dos tasas y d′, y proponer un cambio que ponga en el mundo un recurso que hoy depende de la memoria. Recordar las fechas de entrega de Canvas."
+    },
+    {
+      "sceneId": "cierre",
+      "startTime": 102.5,
+      "endTime": 106,
+      "notes": "Volver al caso del inicio: ahora saben por qué las dos fallas del turno no se explican solo con descuido. La primera nació de la carga mental, las interrupciones y el tipo de error; la segunda, de una alarma con d′ bajo que enseñó a exigir más evidencia. Próxima semana: modelos predictivos del desempeño, con GOMS y KLM."
+    }
+  ],
+  "slideSequences": []
+}
+    </script>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="106" data-width="1920" data-height="1080">
+
+      <section id="portada" class="clip slide dark" data-start="0" data-duration="3.5" data-track-index="0" data-label="Portada" data-frags="0">
+        <div class="frame" id="portada-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">01 / 16</span>
+      <p class="course" data-in="0" style="--i:0">LTI_05U_IHC · Semana 2</p>
+      <h1 class="claim xl" data-in="1" style="--i:1">Recibir la señal no basta: hay que poder atenderla</h1>
+      <p class="lead" data-in="2" style="--i:2">Carga mental, error humano, detección de señales y cognición distribuida</p>
+      <p class="byline" data-in="3" style="--i:3">Interacción Hombre Computadora · Charlie Cárdenas Toledo</p>
+        </div>
+      </section>
+
+      <section id="caso" class="clip slide" data-start="3.5" data-duration="7.5" data-track-index="0" data-label="El turno de Marcela" data-frags="4">
+        <div class="frame" id="caso-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">02 / 16</span>
+      <h1 class="claim" data-in="0" style="--i:0">Una enfermera, una bomba y una alarma número doce</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/marcela-turno/marcela-turno.html?embed" title="El turno de Marcela: programa una bomba de infusión, recibe dos interrupciones, la dosis queda con un cero de más y la alarma real número doce no recibe atención." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="doble-tarea" class="clip slide" data-start="11" data-duration="7.5" data-track-index="0" data-label="Dos tareas a la vez" data-frags="4">
+        <div class="frame" id="doble-tarea-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">03 / 16</span>
+      <h1 class="claim" data-in="0" style="--i:0">Dos tareas a la vez pueden terminar de tres formas</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/formas-doble-tarea/formas-doble-tarea.html?embed" title="La prueba de la doble tarea y las tres formas de resultado: paralelo perfecto, concurrente degradado y serial estricto, cada una con dos barras de desempeño y un ejemplo." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="recursos" class="clip slide" data-start="18.5" data-duration="8.5" data-track-index="0" data-label="Recursos múltiples" data-frags="5">
+        <div class="frame" id="recursos-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">04 / 16</span>
+      <h1 class="claim" data-in="0" style="--i:0">Dos tareas chocan cuando comparten recursos</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="5" src="figuras/recursos-multiples/recursos-multiples.html?embed" title="Tabla con las cuatro dimensiones del modelo de recursos múltiples para conducir, leer un mensaje y escuchar la ruta, con los recursos compartidos resaltados." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="conciencia" class="clip slide" data-start="27" data-duration="6.5" data-track-index="0" data-label="Conciencia situacional" data-frags="3">
+        <div class="frame" id="conciencia-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">05 / 16</span>
+      <h1 class="claim" data-in="0" style="--i:0">La conciencia situacional tiene tres niveles</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/conciencia-situacional/conciencia-situacional.html?embed" title="Los tres niveles de la conciencia situacional con la proporción de fallas en cada uno: percepción cerca de 75 por ciento, comprensión cerca de 20 por ciento y proyección menos de 5 por ciento, y la proporción por tipo de falla." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="errores" class="clip slide" data-start="33.5" data-duration="8.5" data-track-index="0" data-label="Tipos de error" data-frags="5">
+        <div class="frame" id="errores-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">06 / 16</span>
+      <h1 class="claim" data-in="0" style="--i:0">Los errores se clasifican por la etapa en que nacen</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="5" src="figuras/tipos-error/tipos-error.html?embed" title="Cuatro tipos de error humano con un ejemplo de la bomba de infusión: equivocación, desliz, falla de memoria de trabajo y lapsus." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="interrupciones" class="clip slide" data-start="42" data-duration="6.5" data-track-index="0" data-label="Interrupciones" data-frags="3">
+        <div class="frame" id="interrupciones-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">07 / 16</span>
+      <h1 class="claim" data-in="0" style="--i:0">Cada interrupción obliga a reconstruir la situación</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/interrupciones/interrupciones.html?embed" title="Una transferencia bancaria en seis pasos con una llamada entre el paso 3 y el 4, los tres niveles que hay que reconstruir al volver, tres errores posibles y el dato de 7 por ciento más errores con más de dos interrupciones." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="pe" class="clip slide" data-start="48.5" data-duration="8.5" data-track-index="0" data-label="Práctica PE-1.2" data-frags="5">
+        <div class="frame" id="pe-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">08 / 16</span>
+      <h1 class="claim" data-in="0" style="--i:0">Ahora, en parejas: la práctica PE-1.2</h1>
+      <div class="timeline">
+        <div class="row" data-f="1"><b>1</b><strong>Acuerden qué es un error</strong><em>El mismo criterio en las tres condiciones</em></div>
+        <div class="row" data-f="2"><b>2</b><strong>Condición A</strong><em>Copiar 10 códigos, sin distracción</em></div>
+        <div class="row" data-f="3"><b>3</b><strong>Condición B</strong><em>Copiar y contar hacia atrás de tres en tres</em></div>
+        <div class="row" data-f="4"><b>4</b><strong>Condición C</strong><em>Copiar con dos interrupciones</em></div>
+        <div class="row" data-f="5"><b>5</b><strong>Clasifiquen y expliquen</strong><em>Tres errores y recursos compartidos</em></div>
+      </div>
+        </div>
+      </section>
+
+      <section id="matriz" class="clip slide" data-start="57" data-duration="7.5" data-track-index="0" data-label="Cuatro resultados de una alarma" data-frags="4">
+        <div class="frame" id="matriz-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">09 / 16</span>
+      <h1 class="claim" data-in="0" style="--i:0">Cuatro cosas pueden pasar con una alarma</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/matriz-alarma/matriz-alarma.html?embed" title="Matriz de cuatro casillas de una alarma: acierto, omisión, falsa alarma y rechazo correcto, y las dos tasas que se calculan de ella." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="campanas" class="clip slide" data-start="64.5" data-duration="7.5" data-track-index="0" data-label="Sensibilidad y criterio" data-frags="4">
+        <div class="frame" id="campanas-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">10 / 16</span>
+      <h1 class="claim" data-in="0" style="--i:0">Sensibilidad y criterio son dos cosas distintas</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/campanas-corte/campanas-corte.html?embed" title="Dos campanas, una de solo ruido y otra de señal más ruido, con la distancia d′ entre ellas, una línea de corte y las zonas de falsas alarmas y omisiones." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="humo" class="clip slide" data-start="72" data-duration="6.5" data-track-index="0" data-label="Detector de humo" data-frags="3">
+        <div class="frame" id="humo-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">11 / 16</span>
+      <h1 class="claim" data-in="0" style="--i:0">Un detector de humo: la matriz paso a paso</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/humo-ejemplo/humo-ejemplo.html?embed" title="Matriz de un detector de humo con 9 aciertos, 1 omisión, 9 falsas alarmas y 81 rechazos correctos; tasas de 0,90 y 0,10; d prima de 2,56 y c igual a 0." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="alarma" class="clip slide" data-start="78.5" data-duration="6.5" data-track-index="0" data-label="La alarma de Marcela" data-frags="3">
+        <div class="frame" id="alarma-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">12 / 16</span>
+      <h1 class="claim" data-in="0" style="--i:0">La alarma de Marcela: el problema no era el criterio</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/alarma-turno/alarma-turno.html?embed" title="Matriz de la alarma del turno de Marcela con 1 acierto, 2 omisiones, 11 falsas alarmas y 98 rechazos correctos; d prima bajo de 0,76 y c de 0,90, conservador." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="speed-bugs" class="clip slide" data-start="85" data-duration="6.5" data-track-index="0" data-label="Speed bugs" data-frags="3">
+        <div class="frame" id="speed-bugs-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">13 / 16</span>
+      <h1 class="claim" data-in="0" style="--i:0">Poner información en el mundo: los speed bugs</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/speed-bugs/speed-bugs.html?embed" title="Un indicador de velocidad con dos marcadores, speed bugs, en el borde; sin ellos el piloto debe recordar las velocidades mínimas, con ellos solo mira dónde está la aguja." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="recursos-info" class="clip slide" data-start="91.5" data-duration="7.5" data-track-index="0" data-label="Seis recursos de información" data-frags="4">
+        <div class="frame" id="recursos-info-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">14 / 16</span>
+      <h1 class="claim" data-in="0" style="--i:0">Seis recursos de información, en la cabeza o en el mundo</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/seis-recursos/seis-recursos.html?embed" title="Los seis recursos de información: plan, objetivo, posibilidades, historia, acción-efecto y estado, cada uno con un ejemplo en la cabeza y otro en el mundo." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="actividades" class="clip slide" data-start="99" data-duration="3.5" data-track-index="0" data-label="Actividades de la semana" data-frags="0">
+        <div class="frame" id="actividades-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">15 / 16</span>
+      <h1 class="claim" data-in="0" style="--i:0">Esta semana hay dos actividades</h1>
+      <div class="cards two tall">
+        <div class="card" data-in="1" style="--i:1"><span class="tag">PE-1.2</span><strong>Microestudio de carga mental e interrupciones</strong><em>Tres condiciones, errores clasificados y recursos compartidos</em></div>
+        <div class="card" data-in="2" style="--i:2"><span class="tag">TA-1.2</span><strong>Error humano y cognición distribuida</strong><em>Un sistema real: seis recursos, tres errores, una alarma y un cambio</em></div>
+      </div>
+        </div>
+      </section>
+
+      <section id="cierre" class="clip slide dark" data-start="102.5" data-duration="3.5" data-track-index="0" data-label="Cierre" data-frags="0">
+        <div class="frame" id="cierre-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">16 / 16</span>
+      <h1 class="claim xl" data-in="0" style="--i:0">Una señal que casi nunca significa algo deja de atenderse</h1>
+      <p class="lead" data-in="1" style="--i:1">Próxima semana: modelos predictivos del desempeño, GOMS y KLM</p>
+      <p class="byline" data-in="2" style="--i:2">Fuentes: Wickens y Carswell (2006) · Oury y Ritter (2021) · Reeves (2019) · Parasuraman y Wisdom (1985) · Wright, Fields y Harrison (2000)</p>
+        </div>
+      </section>
+    </div>
+    <script>
+      // Con el motor de HyperFrames (check, Studio) el registro ya existe.
+      // Al presentar, el reproductor mueve esta línea de tiempo directamente.
+      const engineHosted = Object.prototype.hasOwnProperty.call(window, "__timelines");
+      window.__timelines = window.__timelines || {};
+      if (!engineHosted) document.documentElement.classList.add("live");
+
+      // Las figuras incrustadas reenvían las flechas aquí: se les quita el foco y se entrega la tecla
+      // al documento donde el reproductor la escucha, para que las flechas siempre controlen el deck.
+      window.addEventListener("message", (ev) => {
+        const m = ev.data;
+        if (!m || m.type !== "deck-key") return;
+        let w = window;
+        for (;;) {
+          try { if (w.document.activeElement && w.document.activeElement !== w.document.body) w.document.activeElement.blur(); } catch (e) {}
+          if (w === w.parent) break;
+          w = w.parent;
+        }
+        try { w.focus(); w.document.dispatchEvent(new KeyboardEvent("keydown", { key: m.key, bubbles: true, cancelable: true })); } catch (e) {}
+      });
+
+      // El reproductor retrocede de diapositiva en diapositiva. Se reemplaza prev() del controlador para
+      // que teclado, botón y deslizamiento deshagan un avance a la vez: de un avance al anterior y,
+      // desde el primero, al último avance de la diapositiva previa.
+      (function installStepBack() {
+        let w = window, host = null;
+        for (;;) {
+          try { host = w.document.querySelector("hyperframes-slideshow"); } catch (e) {}
+          if (host || w === w.parent) break;
+          w = w.parent;
+        }
+        if (!host) return;
+        const patch = () => {
+          const c = host.controller;
+          if (!c) return false;
+          if (c.__stepBack) return true;
+          c.__stepBack = true;
+          const original = c.prev.bind(c);
+          c.prev = () => {
+            const f = c.frame;
+            if (c.stack.length > 1) return original();
+            if (f.fragmentIndex > 0) c.resumeSlide(f.slideIndex, f.fragmentIndex - 1);
+            else if (f.slideIndex > 0) {
+              const p = f.slideIndex - 1, n = c.show.slides[p].fragments.length;
+              c.resumeSlide(p, n > 0 ? n - 1 : -1);
+            }
+          };
+          return true;
+        };
+        setInterval(patch, 300);
+        patch();
+      })();
+
+      const ENTER = 2;
+      const tl = gsap.timeline({ paused: true });
+      tl.to({}, { duration: 106 }, 0);
+
+      const figSyncs = [];
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      slides.forEach((slide, index) => {
+        const start = Number(slide.dataset.start);
+        const end = start + Number(slide.dataset.duration);
+        const frame = slide.querySelector(".frame");
+        tl.set(frame, { opacity: 1 }, start);
+        if (index < slides.length - 1) tl.set(frame, { opacity: 0 }, end);
+
+        slide.querySelectorAll("[data-in]").forEach((el) => {
+          const i = Number(el.dataset.in);
+          tl.fromTo(el, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, start + 0.12 + i * 0.07);
+        });
+        slide.querySelectorAll("[data-f]").forEach((el) => {
+          const hold = start + ENTER + Number(el.dataset.f);
+          tl.fromTo(el, { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, hold - 0.6);
+        });
+        slide.querySelectorAll("iframe[data-fig]").forEach((el) => {
+          // La figura corre en su propio documento: en vivo anima sola hacia el estado pedido;
+          // con el motor (check, Studio) sigue la línea de tiempo cuadro a cuadro.
+          // El estado se calcula desde el tiempo de la línea de tiempo, así responde igual
+          // al avanzar, al retroceder y al saltar entre diapositivas.
+          const steps = Number(el.dataset.fig);
+          let sent = -1;
+          const wanted = () => {
+            const t = tl.time();
+            let u = 0;
+            for (let step = 1; step <= steps; step++) u += Math.min(1, Math.max(0, (t - (start + ENTER + step - 0.6)) / 0.6));
+            return engineHosted ? u / steps : Math.round(u) / steps;
+          };
+          const send = (force) => {
+            const value = wanted();
+            if (!el.contentWindow || (!force && value === sent)) return;
+            sent = value;
+            el.contentWindow.postMessage({ type: "fig", mode: engineHosted ? "set" : "go", value }, "*");
+          };
+          figSyncs.push(send);
+          el.addEventListener("load", () => send(true));
+        });
+        slide.querySelectorAll("[data-hl]").forEach((el) => {
+          const hold = start + ENTER + Number(el.dataset.hl);
+          tl.to(el, { backgroundColor: "#fbe3a6", color: "#5c3d00", duration: 0.4 }, hold - 0.5);
+        });
+      });
+
+      tl.eventCallback("onUpdate", () => figSyncs.forEach((sync) => sync()));
+      // En vivo el reproductor puede mover la línea de tiempo sin emitir eventos: se revisa en cada tic de GSAP.
+      if (!engineHosted) gsap.ticker.add(() => figSyncs.forEach((sync) => sync()));
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

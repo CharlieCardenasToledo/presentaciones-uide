@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LTI_05U_IHC · Semana 3: GOMS, KLM y aprendizaje de habilidades</title>
+    <script>
+      // El modo público se distingue en la pestaña del navegador.
+      if (new URLSearchParams(location.search).get("mode") === "audience") {
+        document.title = "LTI_05U_IHC · Semana 3: GOMS, KLM y aprendizaje de habilidades" + " (pantalla del público)";
+      }
+    </script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { height: 100%; background: #0a0a0a; overflow: hidden; }
+      hyperframes-slideshow { display: block; position: relative; width: 100vw; height: 100vh; }
+      hyperframes-player { position: absolute; inset: 0; }
+    </style>
+    <script src="../vendor/hyperframes-player.global.js"></script>
+    <script src="../vendor/hyperframes-slideshow.global.js"></script>
+  </head>
+  <body>
+    <hyperframes-slideshow tabindex="0" notes-storage-key="hci-semana-03">
+      <hyperframes-player interactive src="composition/index.html"></hyperframes-player>
+      <script type="application/hyperframes-slideshow+json">
+{
+  "slides": [
+    {
+      "sceneId": "portada",
+      "startTime": 0,
+      "endTime": 3.5,
+      "notes": "Abrir con el caso, sin teoría. La clase se divide en dos bloques de presentación con la PE-1.3 en medio: antes de la práctica, el caso de la farmacia, la descomposición de tareas, GOMS y el KLM; después, la validación, la sensibilidad, el aprendizaje de habilidades y los límites. Pedir que anoten sus respuestas al caso para retomarlas al final."
+    },
+    {
+      "sceneId": "farmacia",
+      "startTime": 3.5,
+      "endTime": 10,
+      "notes": "Es la exploración de la semana. Sin términos técnicos: pedir que digan qué programa es más rápido para Rosa, cuál para Daniela y qué datos faltarían, y anotar las respuestas en la pizarra para retomarlas al final. Primer avance: programa A, se teclea el código de seis dígitos y se pulsa Enter. Segundo avance: programa B, se elige la categoría y el producto en menús con el mouse. Tercer avance: Rosa lleva tres años con el programa A y no mira los códigos; Daniela entró la semana pasada y busca cada código en una lista impresa. Probar los dos programas con todo el personal estorbaría las ventas y el gerente debe decidir esta semana.",
+      "fragments": [
+        5.5,
+        6.5,
+        7.5,
+        8.5
+      ]
+    },
+    {
+      "sceneId": "operadoras",
+      "startTime": 10,
+      "endTime": 16.5,
+      "notes": "Ejemplo de Ritter, Baxter y Churchill (2014): Gray y sus colegas compararon, con un análisis de la tarea, la interfaz nueva de los operadores telefónicos de larga distancia con la anterior. El análisis predijo que la nueva sería más lenta, la prueba empírica lo confirmó y la diferencia habría costado a la empresa unos dos millones de dólares al año. Los autores precisan que la comparación funciona cuando los dos diseños son razonablemente distintos. No dar cifras de tiempo: la fuente no las trae en este pasaje.",
+      "fragments": [
+        12,
+        13,
+        14,
+        15
+      ]
+    },
+    {
+      "sceneId": "hta",
+      "startTime": 16.5,
+      "endTime": 25,
+      "notes": "Es el ejemplo resuelto de la descomposición: pagar la factura de la luz desde la aplicación del banco. Revelar un nivel por avance y pedir que digan qué viene antes de verlo. Meta 0, submetas 1 a 3, submetas 1.1, 1.2, 2.1 y 2.2, y el plan que ordena cada nivel. Los operadores son las submetas que no se analizarán más: abrir la aplicación, elegir el servicio, escribir el número de contrato y pulsar confirmar. Iniciar sesión tiene dos métodos, así que lleva una regla de selección. Después, descomponer en la pizarra el registro de un producto para Daniela. Fuente: Ritter, Baxter y Churchill (2014), capítulo 11.",
+      "fragments": [
+        18.5,
+        19.5,
+        20.5,
+        21.5,
+        22.5,
+        23.5
+      ]
+    },
+    {
+      "sceneId": "goms",
+      "startTime": 25,
+      "endTime": 33.5,
+      "notes": "El HTA dice qué submetas hay, pero no cuánto tarda cada una. GOMS son las iniciales de metas, operadores, métodos y reglas de selección. En la farmacia: la meta es registrar un producto, los métodos son teclear el código o elegirlo en el menú, y una regla razonable es que si la cajera recuerda el código lo teclea. GOMS se centra en la conducta experta y sin errores. Es una familia de cuatro técnicas: CMN-GOMS, NGOMSL, CPM-GOMS y el modelo a nivel de teclas, que es una versión simplificada. Esta semana se calcula solo el KLM. Fuentes: Ritter, Baxter y Churchill (2014); MacKenzie (2013).",
+      "fragments": [
+        27,
+        28,
+        29,
+        30,
+        31,
+        32
+      ]
+    },
+    {
+      "sceneId": "operadores",
+      "startTime": 33.5,
+      "endTime": 40,
+      "notes": "Card, Moran y Newell (1980) propusieron el KLM para predecir cuánto tarda una persona experta en hacer una tarea con un sistema interactivo. Predice solo el tiempo de ejecución; la adquisición queda fuera, por eso las tareas son rutinas que la persona ya sabe hacer. Seis operadores: cuatro motores (K, P, H, D), uno mental (M) y uno de respuesta del sistema (R). Una tecla modificadora como Ctrl o Mayús cuenta como una K aparte. El valor de K depende de la habilidad: de 0,08 a 1,20 s. En la práctica se usa tK = 0,28 s, tP = 1,10 s, tH = 0,40 s y tM = 1,35 s; en los ejemplos resueltos de hoy, tK = 0,20 s. La calculadora KLM interactiva de la página 3.2 sirve para comprobar las cuentas.",
+      "fragments": [
+        35.5,
+        36.5,
+        37.5,
+        38.5
+      ]
+    },
+    {
+      "sceneId": "ubicar-m",
+      "startTime": 40,
+      "endTime": 47.5,
+      "notes": "Es la parte que más cuesta. Se guarda un documento con otro nombre usando el menú. Primero las acciones físicas, después cada una con su operador, después la regla 0 inserta una M delante de cada K que no sea parte del nombre y de cada P. Por último, las reglas 1 a 4: cada clic ya estaba anticipado por el apuntado, así que se borran esas dos M, y la M delante de Enter se conserva porque cierra una cadena variable. Resultado: H M P K M P K H 8K M K. Tres ayudas: un argumento como el código o el nombre no lleva M propia; un clic anticipado no necesita pensamiento nuevo; el Enter que cierra una cadena variable conserva su M.",
+      "fragments": [
+        42,
+        43,
+        44,
+        45,
+        46
+      ]
+    },
+    {
+      "sceneId": "reglas-m",
+      "startTime": 47.5,
+      "endTime": 56,
+      "notes": "Resumen de las cinco reglas de Card, Moran y Newell (1980) para ubicar las M. Regla 0: insertar. Reglas 1 a 4: borrar o conservar. Una nota de criterio: en la farmacia se cuenta una M delante de cada elección del menú; si alguien propone tratar el producto elegido como argumento, el modelo tendría una M menos. No es un error: es otra convención, y el criterio de codificación también se declara. Por eso la plantilla de la práctica pide justificar cada M que se conserva o se borra.",
+      "fragments": [
+        49.5,
+        50.5,
+        51.5,
+        52.5,
+        53.5,
+        54.5
+      ]
+    },
+    {
+      "sceneId": "guardar",
+      "startTime": 56,
+      "endTime": 62.5,
+      "notes": "Se completa el ejemplo resuelto de guardar con otro nombre, con tK = 0,20 s. Método 1, con atajo: M 3K 8K M K, que son 2 M y 12 K, es decir 5,10 s. Método 2, con menú: H M P K M P K H 8K M K, que son 3 M, 2 P, 11 K y 2 H, es decir 9,25 s. El atajo es 4,15 s más rápido para una persona que lo conoce, y la diferencia viene de una M adicional, dos P y dos H del menú, menos una K.",
+      "fragments": [
+        58,
+        59,
+        60,
+        61
+      ]
+    },
+    {
+      "sceneId": "farmacia-klm",
+      "startTime": 62.5,
+      "endTime": 70,
+      "notes": "Se cierra el primer bloque con el cálculo de la farmacia para Rosa, con tK = 0,20 s. Programa A: 6K M K, con 1 M y 7 K, 2,75 s. Programa B: H M P K M P K, con 1 H, 2 M, 2 P y 2 K, 5,70 s. El programa A ahorra 2,95 s por producto; con 300 productos al día son 885 s, es decir 14,75 minutos. Volver a las respuestas que se anotaron al inicio. Es el ejemplo de la plantilla de la TA-1.3, por eso la tarea de la TA debe ser otra distinta.",
+      "fragments": [
+        64.5,
+        65.5,
+        66.5,
+        67.5,
+        68.5
+      ]
+    },
+    {
+      "sceneId": "pe",
+      "startTime": 70,
+      "endTime": 78.5,
+      "notes": "La práctica se hace en parejas. Cada pareja elige una de las tres tareas de la consigna, descompone, codifica con las M justificadas, calcula con tK = 0,28 s, tP = 1,10 s, tH = 0,40 s y tM = 1,35 s, y mide con cronómetro a dos personas que dominen los dos métodos: cuatro intentos por método y persona, el primero se descarta y se promedian los otros tres. Antes de que midan, revisar que las M estén justificadas y que el nombre y la palabra cambien en cada intento. Al final pedir el error de predicción de cada pareja en la pizarra. Si el error es muy grande, revisar primero la codificación antes de culpar al modelo.",
+      "fragments": [
+        72,
+        73,
+        74,
+        75,
+        76,
+        77
+      ]
+    },
+    {
+      "sceneId": "error",
+      "startTime": 78.5,
+      "endTime": 85,
+      "notes": "Segundo bloque, después de la práctica. Un modelo solo sirve si se sabe cuánto se equivoca. Card, Moran y Newell observaron 1 280 interacciones de 28 usuarios con 10 sistemas y 14 tareas; todos eran expertos. El error fue cercano al 21 % para tareas individuales, y de 5 % a 6 % al sumar varias tareas. En esta asignatura el error de predicción es (predicho menos medido) dividido entre medido; un error negativo indica que el modelo se queda corto. Datos de ejemplo de la farmacia: Rosa registró diez productos con cada programa; promedio medido, 3,1 s con el A y 6,2 s con el B. Importa más que el orden y la proporción se mantengan que el error absoluto. Fuente: Card, Moran y Newell (1980).",
+      "fragments": [
+        80.5,
+        81.5,
+        82.5,
+        83.5
+      ]
+    },
+    {
+      "sceneId": "sensibilidad",
+      "startTime": 85,
+      "endTime": 92.5,
+      "notes": "Los parámetros del KLM son promedios, y el análisis de sensibilidad pregunta cuánto cambia la conclusión si se mueven. En la farmacia, la diferencia entre los programas es 3,95 menos 5 tK; con tK = 0,28 s gana A; con 0,75 s gana A por poco; con 1,20 s gana B; empatan con tK = 0,79 s. Con la calculadora, mover tK en vivo y ver dónde cruzan las dos rectas. Discutir qué tK corresponde a teclear códigos de seis dígitos que se conocen de memoria. Card, Moran y Newell lo aplicaron a una tarea de edición con tres métodos, según la distancia en palabras; MacKenzie (2013) muestra el ejemplo de la negrita y la fuente Arial.",
+      "fragments": [
+        87,
+        88,
+        89,
+        90,
+        91
+      ]
+    },
+    {
+      "sceneId": "fases",
+      "startTime": 92.5,
+      "endTime": 100,
+      "notes": "Las predicciones para Rosa y Daniela difieren porque la práctica cambia la tarea. Ritter, Baxter y Churchill definen el aprendizaje como el cambio del desempeño con la práctica: más rápido, menos esfuerzo, menos errores. Hammond (1987), siguiendo a Fitts y Posner, describe tres fases: temprana o cognitiva (entender la tarea, mediación verbal, ensayo y mucha retroalimentación), intermedia o asociativa (se prueban patrones y se eliminan acciones inadecuadas) y final o autónoma (procesos cada vez más automáticos y menos accesibles a la conciencia).",
+      "fragments": [
+        94.5,
+        95.5,
+        96.5,
+        97.5,
+        98.5
+      ]
+    },
+    {
+      "sceneId": "potencia",
+      "startTime": 100,
+      "endTime": 106.5,
+      "notes": "La mejora no es lineal: es una ley de rendimientos decrecientes. En la diapositiva no se muestra la fórmula, solo la idea; para quien la pida: T = a P elevado a menos b, donde a es el tiempo del primer intento y b la pendiente, y en escala logarítmica es una recta. Curva de ejemplo con a = 20 s y b = 0,5: el primer intento tarda 20 s, el cuarto 10 s, el decimosexto 5 s y el centésimo 2 s; cada vez que la práctica se cuadruplica el tiempo se divide entre 2. Ritter, Baxter y Churchill señalan que el exponente suele estar entre 0,1 y 0,5. Consecuencia de diseño: el aprendizaje temprano es muy importante. La pregunta de estimar cuántos productos necesita Daniela para acercarse a Rosa se resuelve en la práctica autónoma, no aquí. Fuentes: Hammond (1987); Ritter, Baxter y Churchill (2014).",
+      "fragments": [
+        102,
+        103,
+        104,
+        105
+      ]
+    },
+    {
+      "sceneId": "limites",
+      "startTime": 106.5,
+      "endTime": 113,
+      "notes": "Frente a la curva de aprendizaje, el KLM fija un solo punto: el de la persona experta. Sus autores declaran cuatro restricciones: persona experta, tarea unitaria rutinaria, método especificado en detalle y desempeño sin errores. Predice solo el tiempo de ejecución; deja fuera los errores, el aprendizaje, la funcionalidad y el recuerdo. MacKenzie llama a la M el talón de Aquiles del modelo: un solo valor de 1,35 s para todos los procesos mentales. Ritter y colegas añaden que la interfaz debe estar implementada o descrita con detalle, y que su fortaleza es comparar métodos alternativos para una misma tarea. En la farmacia, el modelo describe bien a Rosa y mal a Daniela.",
+      "fragments": [
+        108.5,
+        109.5,
+        110.5,
+        111.5
+      ]
+    },
+    {
+      "sceneId": "actividades",
+      "startTime": 113,
+      "endTime": 116.5,
+      "notes": "Las consignas completas, las plantillas y las rúbricas están en Canvas. PE-1.3 se hizo en clase, en parejas. TA-1.3 es individual y debe usar una tarea distinta de la PE-1.3, con tK justificado, los tiempos recalculados con un segundo valor de tK y los límites explicados con las fases del aprendizaje y las restricciones del KLM, con al menos una lectura en APA. El punto de empate se muestra en clase pero no se pide en la TA. GA-1.1 es la ficha de una página del grupo de tres: sistema, tarea descompuesta, pregunta que se responde con mediciones y al menos dos métricas con unidad y procedimiento. Los grupos de tres y el sistema del proyecto deben quedar definidos esta semana. Recordar las fechas de entrega de Canvas."
+    },
+    {
+      "sceneId": "cierre",
+      "startTime": 116.5,
+      "endTime": 120,
+      "notes": "Volver a las respuestas del inicio: ahora saben qué programa es más rápido para Rosa, por qué la respuesta para Daniela es otra y qué datos faltaban. Un modelo predictivo estima sin esperar a los usuarios, pero vale para quien ya domina la tarea, y por eso hay que decir para quién. Próxima semana: la ley de Fitts y la medición del apuntado."
+    }
+  ],
+  "slideSequences": []
+}
+    </script>
+    </hyperframes-slideshow>undefined
