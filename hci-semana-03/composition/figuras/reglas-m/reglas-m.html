@@ -13,20 +13,16 @@ html,body{margin:0;height:100%;background:transparent;font-family:system-ui,"Seg
 
 </style></head><body>
 <div id="st">
-<div id="r0" style="position:absolute;left:0;top:15px;width:1560px;height:94px;opacity:0"><div class="b" style="left:30px;top:0;width:190px;height:94px;background:var(--wine);color:#fff;font-size:30px">Regla 0</div><div class="b" style="left:235px;top:0;width:790px;height:94px;font-size:24px;line-height:1.2;text-align:left;align-items:flex-start;padding-left:20px">Inserta una M delante de toda K que no sea parte de una cadena de argumento y de toda P que selecciona un comando</div><div class="b" style="left:1040px;top:0;width:490px;height:94px;font-size:24px;line-height:1.2;background:#e3f2f0;color:var(--teal);font-family:ui-monospace,Consolas,monospace">H P K  →  H M P M K</div></div>
-<div id="r1" style="position:absolute;left:0;top:119px;width:1560px;height:94px;opacity:0"><div class="b" style="left:30px;top:0;width:190px;height:94px;background:var(--wine);color:#fff;font-size:30px">Regla 1</div><div class="b" style="left:235px;top:0;width:790px;height:94px;font-size:24px;line-height:1.2;text-align:left;align-items:flex-start;padding-left:20px">Borra la M si el operador que sigue está totalmente anticipado por el anterior</div><div class="b" style="left:1040px;top:0;width:490px;height:94px;font-size:24px;line-height:1.2;background:#e3f2f0;color:var(--teal);font-family:ui-monospace,Consolas,monospace">P M K  →  P K</div></div>
-<div id="r2" style="position:absolute;left:0;top:223px;width:1560px;height:94px;opacity:0"><div class="b" style="left:30px;top:0;width:190px;height:94px;background:var(--wine);color:#fff;font-size:30px">Regla 2</div><div class="b" style="left:235px;top:0;width:790px;height:94px;font-size:24px;line-height:1.2;text-align:left;align-items:flex-start;padding-left:20px">Si una cadena de M K forma una unidad cognitiva, deja solo la primera M</div><div class="b" style="left:1040px;top:0;width:490px;height:94px;font-size:24px;line-height:1.2;background:#e3f2f0;color:var(--teal);font-family:ui-monospace,Consolas,monospace">M K M K M K  →  M 3K</div></div>
-<div id="r3" style="position:absolute;left:0;top:327px;width:1560px;height:94px;opacity:0"><div class="b" style="left:30px;top:0;width:190px;height:94px;background:var(--wine);color:#fff;font-size:30px">Regla 3</div><div class="b" style="left:235px;top:0;width:790px;height:94px;font-size:24px;line-height:1.2;text-align:left;align-items:flex-start;padding-left:20px">Borra la M delante de una K que es un terminador redundante</div><div class="b" style="left:1040px;top:0;width:490px;height:94px;font-size:24px;line-height:1.2;background:#e3f2f0;color:var(--teal);font-family:ui-monospace,Consolas,monospace">El RETURN que cierra un comando justo después de su argumento</div></div>
-<div id="r4" style="position:absolute;left:0;top:431px;width:1560px;height:94px;opacity:0"><div class="b" style="left:30px;top:0;width:190px;height:94px;background:var(--wine);color:#fff;font-size:30px">Regla 4</div><div class="b" style="left:235px;top:0;width:790px;height:94px;font-size:24px;line-height:1.2;text-align:left;align-items:flex-start;padding-left:20px">Borra la M delante de una K que termina una cadena constante; la conserva si termina una cadena variable</div><div class="b" style="left:1040px;top:0;width:490px;height:94px;font-size:24px;line-height:1.2;background:#e3f2f0;color:var(--teal);font-family:ui-monospace,Consolas,monospace">El Enter de un código que cambia en cada producto conserva su M</div></div>
-<div id="k0" class="t" style="left:30px;top:560px;width:1500px;opacity:0;color:var(--wine-deep);font-size:32px">Las reglas de Card, Moran y Newell para ubicar las M</div>
-<div id="k1" class="t" style="left:30px;top:560px;width:1500px;opacity:0;color:var(--wine-deep);font-size:32px">Regla 0: dónde se insertan las M</div>
-<div id="k2" class="t" style="left:30px;top:560px;width:1500px;opacity:0;color:var(--wine-deep);font-size:32px">Regla 1: un clic ya anticipado no lleva M</div>
-<div id="k3" class="t" style="left:30px;top:560px;width:1500px;opacity:0;color:var(--wine-deep);font-size:32px">Regla 2: una unidad cognitiva lleva una sola M</div>
-<div id="k4" class="t" style="left:30px;top:560px;width:1500px;opacity:0;color:var(--wine-deep);font-size:32px">Regla 3: un terminador redundante no lleva M</div>
-<div id="k5" class="t" style="left:30px;top:560px;width:1500px;opacity:0;color:var(--teal);font-size:32px">Regla 4: el Enter de una cadena variable conserva su M</div>
+<div id="r0" style="position:absolute;left:0;top:25px;width:1560px;height:140px;opacity:0"><div class="b" style="left:30px;top:0;width:210px;height:140px;background:var(--wine);color:#fff;font-size:34px">Regla 0</div><div class="b" style="left:255px;top:0;width:760px;height:140px;font-size:30px;line-height:1.2;text-align:left;align-items:flex-start;padding-left:24px">Pon una M antes de cada comando que hay que elegir y antes de empezar a teclear un dato</div><div class="b" style="left:1030px;top:0;width:500px;height:140px;font-size:28px;line-height:1.2;background:#e3f2f0;color:var(--teal);font-family:ui-monospace,Consolas,monospace">H P K  →  H M P M K</div></div>
+<div id="r1" style="position:absolute;left:0;top:190px;width:1560px;height:140px;opacity:0"><div class="b" style="left:30px;top:0;width:210px;height:140px;background:var(--wine);color:#fff;font-size:34px">Regla 2</div><div class="b" style="left:255px;top:0;width:760px;height:140px;font-size:30px;line-height:1.2;text-align:left;align-items:flex-start;padding-left:24px">Una cadena que ya sabes de memoria lleva una sola M</div><div class="b" style="left:1030px;top:0;width:500px;height:140px;font-size:28px;line-height:1.2;background:#e3f2f0;color:var(--teal);font-family:ui-monospace,Consolas,monospace">M K M K M K  →  M 3K</div></div>
+<div id="r2" style="position:absolute;left:0;top:355px;width:1560px;height:140px;opacity:0"><div class="b" style="left:30px;top:0;width:210px;height:140px;background:var(--wine);color:#fff;font-size:34px">Regla 4</div><div class="b" style="left:255px;top:0;width:760px;height:140px;font-size:30px;line-height:1.2;text-align:left;align-items:flex-start;padding-left:24px">El Enter de algo que cambia en cada intento conserva su M</div><div class="b" style="left:1030px;top:0;width:500px;height:140px;font-size:28px;line-height:1.2;background:#e3f2f0;color:var(--teal);font-family:ui-monospace,Consolas,monospace">M K tras un nombre nuevo</div></div>
+<div id="k0" class="t" style="left:30px;top:545px;width:1500px;opacity:0;color:var(--wine-deep);font-size:32px">Tres reglas bastan para ubicar las M en esta práctica</div>
+<div id="k1" class="t" style="left:30px;top:545px;width:1500px;opacity:0;color:var(--wine-deep);font-size:32px">Regla 0: dónde se insertan las M</div>
+<div id="k2" class="t" style="left:30px;top:545px;width:1500px;opacity:0;color:var(--wine-deep);font-size:32px">Regla 2: una cadena conocida lleva una sola M</div>
+<div id="k3" class="t" style="left:30px;top:545px;width:1500px;opacity:0;color:var(--teal);font-size:32px">Regla 4: el Enter de lo que cambia conserva su M</div>
 </div>
 <script>
-const N = 5;
+const N = 3;
 const st = document.getElementById("st");
 function fit() { const k = Math.min(innerWidth / 1560, innerHeight / 720); st.style.transform = "scale(" + k + ")"; }
 fit(); addEventListener("resize", fit);
@@ -47,8 +43,8 @@ function show(el, a, dy) { put(el, 0, (1 - a) * (dy === undefined ? 24 : dy), a)
 let u = 0, target = 0, frame = 0, timer = 0, last = 0;
 function draw() { 
 const s = u * N;
-for (let i = 0; i < 5; i++) show($("#r" + i), win(s, i + 1 - 1, i + 1 - 0.2), 18);
-caps(s, 5, "k");
+for (let i = 0; i < 3; i++) show($("#r" + i), win(s, i + 1 - 1, i + 1 - 0.2), 18);
+caps(s, 3, "k");
  }
 function loop() {
   clearTimeout(timer); cancelAnimationFrame(frame);

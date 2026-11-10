@@ -11,22 +11,93 @@ html,body{margin:0;height:100%;background:transparent;font-family:system-ui,"Seg
 .pill{position:absolute;display:flex;align-items:center;justify-content:center;height:52px;padding:0 20px;border-radius:26px;color:#fff;font:800 24px/1 ui-monospace,Consolas,monospace;white-space:nowrap;opacity:0;z-index:5}
 .ln{position:absolute;background:#cfc6ca}
 
+.cod{position:absolute;background:#1f1a1d;color:#e9e4e7;border-radius:12px;font:600 22px/1.45 ui-monospace,Consolas,monospace;padding:12px 18px;white-space:pre;overflow:hidden;opacity:0;text-align:left}
+.cod .k{color:#e8a920}.cod .s{color:#7fd6c8}.cod .c{color:#a79ea4}.cod .e{color:#ff8a80}.cod .n{color:#f6c1d9}
+.win{position:absolute;border-radius:12px;border:2px solid #cfc6ca;background:#fff;overflow:hidden;opacity:0;text-align:left}
+.win .bar{height:36px;background:#ece6e9;display:flex;align-items:center;padding:0 12px;gap:7px;font-size:20px;font-weight:700;color:#5a5257}
+.win .bar i{width:12px;height:12px;border-radius:50%;background:#c9bfc4;display:inline-block}
+.win .bd{padding:6px 14px;font-size:22px;line-height:1.45}
+code.m{font-family:ui-monospace,Consolas,monospace;font-size:21px;background:#1f1a1d;color:#e8a920;padding:2px 9px;border-radius:6px;font-weight:600}
+.ph{position:absolute;width:268px;height:568px;border-radius:52px;background:linear-gradient(145deg,#d6d3cd,#a4a198 55%,#cfccc5);padding:3px;box-shadow:0 8px 0 rgba(0,0,0,.12);opacity:0}
+.bz{width:100%;height:100%;border-radius:49px;background:#000;padding:6px}
+.sc{position:relative;width:100%;height:100%;border-radius:43px;overflow:hidden;background:#fff;font-family:-apple-system,"SF Pro Text","Segoe UI",system-ui,sans-serif;color:#111;text-align:left}
+.isl{position:absolute;top:9px;left:50%;margin-left:-38px;width:76px;height:23px;border-radius:13px;background:#000;z-index:40}
+.sb{position:absolute;top:14px;left:0;right:0;height:22px;display:flex;justify-content:space-between;align-items:center;padding:0 18px 0 28px;font-size:14px;z-index:35;color:#000}
+.sb .si svg{height:11px;width:auto}
+.ph.osc .sb{color:#fff}
+.sb .si{display:flex;gap:4px;align-items:center}
+.hi{position:absolute;bottom:7px;left:50%;margin-left:-55px;width:110px;height:5px;border-radius:3px;background:#000;z-index:35}
+.ph.osc .hi{background:#fff}
+.wh{position:absolute;top:0;left:0;right:0;height:100px;background:#f7f7f7;border-bottom:1px solid #d6d6d6;display:flex;align-items:flex-end;gap:8px;padding:0 12px 9px;z-index:10}
+.wh .bk{font-size:34px;color:#15a05f;line-height:.8;margin-right:-2px}
+.wh .av{width:36px;height:36px;border-radius:50%;background:#9fc4b6;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:17px;flex:none}
+.wh .nm{flex:1;line-height:1.15;font-size:17px;font-weight:600}
+.wh .nm small{display:block;font-size:12px;color:#6d6d6d;font-weight:400}
+.wh .ac{display:flex;gap:16px;color:#15a05f;align-items:center;padding-bottom:2px}
+.wc{position:absolute;top:100px;bottom:62px;left:0;right:0;background-color:#efeae2;background-image:radial-gradient(rgba(0,0,0,.045) 1.2px,transparent 1.4px);background-size:15px 15px;padding:12px 10px;display:flex;flex-direction:column;gap:6px}
+.wc .dia{align-self:center;background:#fff;border-radius:8px;font-size:11.5px;padding:3px 9px;color:#555;box-shadow:0 1px 0 rgba(0,0,0,.1);margin-bottom:4px}
+.bu{position:relative;max-width:78%;padding:6px 9px 3px;border-radius:9px;font-size:15.5px;line-height:1.28;box-shadow:0 1px 0 rgba(0,0,0,.13)}
+.bu.r{background:#fff;align-self:flex-start;border-top-left-radius:2px}
+.bu.s{background:#d9fdd3;align-self:flex-end;border-top-right-radius:2px}
+.bu i{display:block;text-align:right;font-style:normal;font-size:11px;color:#667781;margin-top:1px}
+.bu.s i b{color:#53bdeb;font-weight:700}
+.wi{position:absolute;bottom:0;left:0;right:0;height:62px;background:#f7f7f7;border-top:1px solid #d6d6d6;display:flex;align-items:flex-start;gap:9px;padding:8px 10px 0;color:#15a05f}
+.wi .pl{font-size:28px;line-height:1;color:#15a05f;padding-top:0}
+.wi .cm{flex:1;background:#fff;border:1px solid #d6d6d6;border-radius:19px;padding:6px 12px;font-size:16px;color:#9a9a9a}
+.bk-h{position:absolute;top:0;left:0;right:0;height:98px;background:#78b928;color:#fff;padding:56px 14px 0;display:flex;align-items:center}
+.bk-h .ar{font-size:26px;line-height:1;width:34px}
+.bk-h b{flex:1;text-align:center;font-size:18px;font-weight:600;margin-right:34px}
+.bk-b{position:absolute;top:98px;left:0;right:0;bottom:0;background:#fff;padding:12px 14px;color:#444}
+.bk-b .lb{text-align:center;font-size:14px;color:#555;margin-bottom:8px}
+.bk-b .mo{position:relative;background:#f4f4f4;border-radius:14px;text-align:center;font-size:36px;font-weight:500;color:#9b9b9b;padding:9px 0 10px}
+.bk-b .mo.ok{color:#3a3a3a}
+.bk-b .mo i{position:absolute;left:-5px;right:-5px;top:-5px;bottom:-5px;border:3px solid #b3261e;border-radius:18px;opacity:0}
+.bk-b .tt{font-size:14.5px;color:#444;margin:9px 0 4px}
+.bk-b .sel{display:flex;align-items:center;gap:8px;border:1.5px solid #c4c4c4;border-radius:12px;padding:6px 9px;font-size:14.5px;color:#555}
+.bk-b .sel svg{flex:none}
+.bk-b .sel span{flex:1;white-space:nowrap;overflow:hidden}
+.bk-b .mt{background:#f4f4f4;border-radius:12px;padding:9px 12px;font-size:14.5px;color:#555}
+.bk-b .co{margin-top:12px;background:#78b928;color:#fff;text-align:center;border-radius:22px;padding:10px;font-size:16.5px;font-weight:600;opacity:.5}
+.bk-b .co.ok{opacity:1}
+.bk-n{position:absolute;left:0;right:0;bottom:0;height:64px;background:#fff;border-top:1px solid #ececec;display:flex;justify-content:space-around;align-items:flex-start;padding:6px 0 0;font-size:11px;color:#444;text-align:center;line-height:1.1}
+.bk-n div{display:flex;flex-direction:column;align-items:center;gap:2px;width:70px}
+.bk-n .ci{width:44px;height:44px;border-radius:50%;background:#6bb21d;margin-top:-18px;border:4px solid #fff;display:flex;align-items:center;justify-content:center}
+.nb{position:absolute;left:9px;right:9px;background:rgba(246,246,248,.88);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.7);border-radius:24px;padding:10px 12px 11px;display:flex;gap:10px;align-items:flex-start;box-shadow:0 8px 20px rgba(0,0,0,.30);z-index:38;opacity:0}
+.nb .ic{flex:none;position:relative;width:38px;height:38px;border-radius:9px;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px;margin-top:1px}
+.nb .cv{background:#e72429}.nb .wp{background:#25d366}
+.nb .tx{flex:1;line-height:1.2}
+.nb b{display:block;font-size:15px;font-weight:700}
+.nb .su{display:block;font-size:15px;font-weight:700}
+.nb p{margin:1px 0 0;font-size:15px;color:#222;font-weight:400}
+.nb em{font-style:normal;font-size:12.5px;color:#7a7a80;margin-top:1px}
+.ch{position:absolute;top:0;left:0;right:0;height:98px;background:#0f2d4a;color:#fff;padding:58px 16px 0;display:flex;align-items:center;gap:12px}
+.ch .bk{font-size:30px;line-height:.8}
+.ch b{display:block;font-size:17px}
+.ch small{display:block;font-size:12.5px;color:#bcc9d6;margin-top:1px}
+.cb{position:absolute;top:98px;left:0;right:0;bottom:0;background:#fff;padding:18px 16px;font-size:16px}
+.cb h4{margin:0;font-size:22px;font-weight:700;line-height:1.15;color:#2d3b45}
+.cb .pt{font-size:14px;color:#556572;margin:6px 0 14px}
+.cb .fila2{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #e1e5e8;padding:11px 0;font-size:15px;color:#2d3b45}
+.cb .fila2 span{color:#556572;font-size:13.5px}
+.cb .falta{background:#fbe3e1;color:#b3261e;font-weight:700;border-radius:14px;padding:3px 11px;font-size:13.5px}
+.cb .bloq{margin-top:20px;background:#e8ebed;color:#556572;text-align:center;border-radius:8px;padding:12px;font-size:15px;font-weight:600}
+
 </style></head><body>
 <div id="st">
-<div id="r0" class="b" style="left:30px;top:15px;width:735px;height:156px;opacity:0;text-align:left;align-items:flex-start;justify-content:center;padding:14px 24px;"><span style="font-size:30px;font-weight:800;color:var(--wine)">Plan</span><span style="font-size:24px;margin-top:6px"><b>En la cabeza:</b> Los pasos de programar la bomba, aprendidos de memoria</span><span style="font-size:24px;margin-top:4px;color:var(--teal)"><b>En el mundo:</b> La lista de verificación impresa de una cabina</span></div>
-<div id="r1" class="b" style="left:795px;top:15px;width:735px;height:156px;opacity:0;text-align:left;align-items:flex-start;justify-content:center;padding:14px 24px;"><span style="font-size:30px;font-weight:800;color:var(--wine)">Objetivo</span><span style="font-size:24px;margin-top:6px"><b>En la cabeza:</b> La dosis que se quiere administrar</span><span style="font-size:24px;margin-top:4px;color:var(--teal)"><b>En el mundo:</b> El speed bug que marca la velocidad mínima</span></div>
-<div id="r2" class="b" style="left:30px;top:183px;width:735px;height:156px;opacity:0;text-align:left;align-items:flex-start;justify-content:center;padding:14px 24px;"><span style="font-size:30px;font-weight:800;color:var(--wine)">Posibilidades</span><span style="font-size:24px;margin-top:6px"><b>En la cabeza:</b> Los atajos que la persona conoce</span><span style="font-size:24px;margin-top:4px;color:var(--teal)"><b>En el mundo:</b> Los botones y menús visibles en la pantalla</span></div>
-<div id="r3" class="b" style="left:795px;top:183px;width:735px;height:156px;opacity:0;text-align:left;align-items:flex-start;justify-content:center;padding:14px 24px;"><span style="font-size:30px;font-weight:800;color:var(--wine)">Historia</span><span style="font-size:24px;margin-top:6px"><b>En la cabeza:</b> Recordar en qué paso se iba</span><span style="font-size:24px;margin-top:4px;color:var(--teal)"><b>En el mundo:</b> El botón Atrás o los ítems tachados de una lista</span></div>
-<div id="r4" class="b" style="left:30px;top:351px;width:735px;height:156px;opacity:0;text-align:left;align-items:flex-start;justify-content:center;padding:14px 24px;"><span style="font-size:30px;font-weight:800;color:var(--wine)">Acción-efecto</span><span style="font-size:24px;margin-top:6px"><b>En la cabeza:</b> Saber que iniciar empieza la infusión</span><span style="font-size:24px;margin-top:4px;color:var(--teal)"><b>En el mundo:</b> Un mensaje que explica qué hará el botón</span></div>
-<div id="r5" class="b" style="left:795px;top:351px;width:735px;height:156px;opacity:0;text-align:left;align-items:flex-start;justify-content:center;padding:14px 24px;"><span style="font-size:30px;font-weight:800;color:var(--wine)">Estado</span><span style="font-size:24px;margin-top:6px"><b>En la cabeza:</b> Recordar la cifra que se digitó</span><span style="font-size:24px;margin-top:4px;color:var(--teal)"><b>En el mundo:</b> La dosis visible en la pantalla de la bomba</span></div>
+<div id="r0" class="b" style="left:30px;top:15px;width:735px;height:156px;opacity:0;text-align:left;align-items:flex-start;justify-content:center;padding:14px 24px;"><span style="font-size:30px;font-weight:800;color:var(--wine)">Plan</span><span style="font-size:24px;margin-top:6px"><b>En la cabeza:</b> Los pasos de una transferencia, de memoria</span><span style="font-size:24px;margin-top:4px;color:var(--teal)"><b>En el mundo:</b> El asistente de la app que los muestra uno a uno</span></div>
+<div id="r1" class="b" style="left:795px;top:15px;width:735px;height:156px;opacity:0;text-align:left;align-items:flex-start;justify-content:center;padding:14px 24px;"><span style="font-size:30px;font-weight:800;color:var(--wine)">Objetivo</span><span style="font-size:24px;margin-top:6px"><b>En la cabeza:</b> El monto que se quiere enviar</span><span style="font-size:24px;margin-top:4px;color:var(--teal)"><b>En el mundo:</b> El mensaje de Sofi abierto al lado</span></div>
+<div id="r2" class="b" style="left:30px;top:183px;width:735px;height:156px;opacity:0;text-align:left;align-items:flex-start;justify-content:center;padding:14px 24px;"><span style="font-size:30px;font-weight:800;color:var(--wine)">Posibilidades</span><span style="font-size:24px;margin-top:6px"><b>En la cabeza:</b> Las opciones que la persona recuerda</span><span style="font-size:24px;margin-top:4px;color:var(--teal)"><b>En el mundo:</b> Los botones y menús visibles en la pantalla</span></div>
+<div id="r3" class="b" style="left:795px;top:183px;width:735px;height:156px;opacity:0;text-align:left;align-items:flex-start;justify-content:center;padding:14px 24px;"><span style="font-size:30px;font-weight:800;color:var(--wine)">Historia</span><span style="font-size:24px;margin-top:6px"><b>En la cabeza:</b> Recordar en qué paso se iba</span><span style="font-size:24px;margin-top:4px;color:var(--teal)"><b>En el mundo:</b> La barra de progreso: paso 3 de 6</span></div>
+<div id="r4" class="b" style="left:30px;top:351px;width:735px;height:156px;opacity:0;text-align:left;align-items:flex-start;justify-content:center;padding:14px 24px;"><span style="font-size:30px;font-weight:800;color:var(--wine)">Acción-efecto</span><span style="font-size:24px;margin-top:6px"><b>En la cabeza:</b> Saber qué pasa al pulsar Confirmar</span><span style="font-size:24px;margin-top:4px;color:var(--teal)"><b>En el mundo:</b> Un aviso: Enviarás $50 a Sofi. ¿Confirmar?</span></div>
+<div id="r5" class="b" style="left:795px;top:351px;width:735px;height:156px;opacity:0;text-align:left;align-items:flex-start;justify-content:center;padding:14px 24px;"><span style="font-size:30px;font-weight:800;color:var(--wine)">Estado</span><span style="font-size:24px;margin-top:6px"><b>En la cabeza:</b> Recordar el monto que se digitó</span><span style="font-size:24px;margin-top:4px;color:var(--teal)"><b>En el mundo:</b> El monto visible en la pantalla de confirmación</span></div>
 <div id="pd" class="b" style="left:30px;top:525px;width:1500px;height:64px;opacity:0;background:var(--wine);color:#fff;font-size:29px">Pregunta de diseño: ¿qué recurso conviene sacar de la cabeza y poner en el mundo?</div>
 <div id="k0" class="t" style="left:30px;top:620px;width:1500px;opacity:0;color:var(--wine-deep);font-size:31px">Seis recursos de información guían la acción</div>
 <div id="k1" class="t" style="left:30px;top:620px;width:1500px;opacity:0;color:var(--wine-deep);font-size:31px">Plan y objetivo</div>
 <div id="k2" class="t" style="left:30px;top:620px;width:1500px;opacity:0;color:var(--wine-deep);font-size:31px">Posibilidades e historia</div>
 <div id="k3" class="t" style="left:30px;top:620px;width:1500px;opacity:0;color:var(--wine-deep);font-size:31px">Acción-efecto y estado</div>
-<div id="k4" class="t" style="left:30px;top:620px;width:1500px;opacity:0;color:var(--teal);font-size:31px">En el caso, el avance de la programación solo estaba en la memoria de Marcela</div>
-<div id="q0" class="t" style="left:30px;top:668px;width:1500px;opacity:0;color:var(--amber);font-size:30px">Pregunta: ¿Dónde estaba el plan de Marcela?</div>
-<div id="q1" class="t" style="left:30px;top:668px;width:1500px;opacity:0;color:var(--amber);font-size:30px">Pregunta: ¿Qué posibilidades mostraba la bomba?</div>
+<div id="k4" class="t" style="left:30px;top:620px;width:1500px;opacity:0;color:var(--teal);font-size:31px">En el caso, el avance de la transferencia solo estaba en la memoria de Mateo</div>
+<div id="q0" class="t" style="left:30px;top:668px;width:1500px;opacity:0;color:var(--amber);font-size:30px">Pregunta: ¿Dónde estaba el plan de Mateo?</div>
+<div id="q1" class="t" style="left:30px;top:668px;width:1500px;opacity:0;color:var(--amber);font-size:30px">Pregunta: ¿Qué posibilidades mostraba la app?</div>
 <div id="q2" class="t" style="left:30px;top:668px;width:1500px;opacity:0;color:var(--amber);font-size:30px">Pregunta: ¿Qué recurso solo vivía en su cabeza?</div>
 <div id="q3" class="t" style="left:30px;top:668px;width:1500px;opacity:0;color:var(--amber);font-size:30px">Pregunta: ¿Cómo lo pondrían en el mundo?</div>
 <div id="q4" class="t" style="left:30px;top:668px;width:1500px;opacity:0;color:var(--amber);font-size:30px"></div>

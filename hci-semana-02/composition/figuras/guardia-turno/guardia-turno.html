@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>La noche antes de la entrega</title>
+<style>
+:root{--wine:#910048;--wine-deep:#6d0036;--gold:#e8a920;--teal:#0c6b62;--amber:#7a5200;--ink:#1f1a1d;--muted:#5a5257;--tint:#f6f1f3;--red:#b3261e}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:transparent;font-family:system-ui,"Segoe UI",sans-serif;color:var(--ink);overflow:hidden}
+#st{position:absolute;left:0;top:0;width:1560px;height:720px;transform-origin:0 0}
+.b{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border-radius:16px;padding:6px 14px;font-weight:700;font-size:32px;line-height:1.15;background:var(--tint);color:var(--ink)}
+.b small{display:block;font-size:24px;font-weight:600;margin-top:4px}
+.t{position:absolute;font-size:34px;font-weight:700;line-height:1.2}
+.pill{position:absolute;display:flex;align-items:center;justify-content:center;height:52px;padding:0 20px;border-radius:26px;color:#fff;font:800 24px/1 ui-monospace,Consolas,monospace;white-space:nowrap;opacity:0;z-index:5}
+.ln{position:absolute;background:#cfc6ca}
+
+.cod{position:absolute;background:#1f1a1d;color:#e9e4e7;border-radius:12px;font:600 22px/1.45 ui-monospace,Consolas,monospace;padding:12px 18px;white-space:pre;overflow:hidden;opacity:0;text-align:left}
+.cod .k{color:#e8a920}.cod .s{color:#7fd6c8}.cod .c{color:#a79ea4}.cod .e{color:#ff8a80}.cod .n{color:#f6c1d9}
+.win{position:absolute;border-radius:12px;border:2px solid #cfc6ca;background:#fff;overflow:hidden;opacity:0;text-align:left}
+.win .bar{height:36px;background:#ece6e9;display:flex;align-items:center;padding:0 12px;gap:7px;font-size:20px;font-weight:700;color:#5a5257}
+.win .bar i{width:12px;height:12px;border-radius:50%;background:#c9bfc4;display:inline-block}
+.win .bd{padding:6px 14px;font-size:22px;line-height:1.45}
+code.m{font-family:ui-monospace,Consolas,monospace;font-size:21px;background:#1f1a1d;color:#e8a920;padding:2px 9px;border-radius:6px;font-weight:600}
+.ph{position:absolute;width:268px;height:568px;border-radius:52px;background:linear-gradient(145deg,#d6d3cd,#a4a198 55%,#cfccc5);padding:3px;box-shadow:0 8px 0 rgba(0,0,0,.12);opacity:0}
+.bz{width:100%;height:100%;border-radius:49px;background:#000;padding:6px}
+.sc{position:relative;width:100%;height:100%;border-radius:43px;overflow:hidden;background:#fff;font-family:-apple-system,"SF Pro Text","Segoe UI",system-ui,sans-serif;color:#111;text-align:left}
+.isl{position:absolute;top:9px;left:50%;margin-left:-38px;width:76px;height:23px;border-radius:13px;background:#000;z-index:40}
+.sb{position:absolute;top:14px;left:0;right:0;height:22px;display:flex;justify-content:space-between;align-items:center;padding:0 18px 0 28px;font-size:14px;z-index:35;color:#000}
+.sb .si svg{height:11px;width:auto}
+.ph.osc .sb{color:#fff}
+.sb .si{display:flex;gap:4px;align-items:center}
+.hi{position:absolute;bottom:7px;left:50%;margin-left:-55px;width:110px;height:5px;border-radius:3px;background:#000;z-index:35}
+.ph.osc .hi{background:#fff}
+.wh{position:absolute;top:0;left:0;right:0;height:100px;background:#f7f7f7;border-bottom:1px solid #d6d6d6;display:flex;align-items:flex-end;gap:8px;padding:0 12px 9px;z-index:10}
+.wh .bk{font-size:34px;color:#15a05f;line-height:.8;margin-right:-2px}
+.wh .av{width:36px;height:36px;border-radius:50%;background:#9fc4b6;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:17px;flex:none}
+.wh .nm{flex:1;line-height:1.15;font-size:17px;font-weight:600}
+.wh .nm small{display:block;font-size:12px;color:#6d6d6d;font-weight:400}
+.wh .ac{display:flex;gap:16px;color:#15a05f;align-items:center;padding-bottom:2px}
+.wc{position:absolute;top:100px;bottom:62px;left:0;right:0;background-color:#efeae2;background-image:radial-gradient(rgba(0,0,0,.045) 1.2px,transparent 1.4px);background-size:15px 15px;padding:12px 10px;display:flex;flex-direction:column;gap:6px}
+.wc .dia{align-self:center;background:#fff;border-radius:8px;font-size:11.5px;padding:3px 9px;color:#555;box-shadow:0 1px 0 rgba(0,0,0,.1);margin-bottom:4px}
+.bu{position:relative;max-width:78%;padding:6px 9px 3px;border-radius:9px;font-size:15.5px;line-height:1.28;box-shadow:0 1px 0 rgba(0,0,0,.13)}
+.bu.r{background:#fff;align-self:flex-start;border-top-left-radius:2px}
+.bu.s{background:#d9fdd3;align-self:flex-end;border-top-right-radius:2px}
+.bu i{display:block;text-align:right;font-style:normal;font-size:11px;color:#667781;margin-top:1px}
+.bu.s i b{color:#53bdeb;font-weight:700}
+.wi{position:absolute;bottom:0;left:0;right:0;height:62px;background:#f7f7f7;border-top:1px solid #d6d6d6;display:flex;align-items:flex-start;gap:9px;padding:8px 10px 0;color:#15a05f}
+.wi .pl{font-size:28px;line-height:1;color:#15a05f;padding-top:0}
+.wi .cm{flex:1;background:#fff;border:1px solid #d6d6d6;border-radius:19px;padding:6px 12px;font-size:16px;color:#9a9a9a}
+.bk-h{position:absolute;top:0;left:0;right:0;height:98px;background:#78b928;color:#fff;padding:56px 14px 0;display:flex;align-items:center}
+.bk-h .ar{font-size:26px;line-height:1;width:34px}
+.bk-h b{flex:1;text-align:center;font-size:18px;font-weight:600;margin-right:34px}
+.bk-b{position:absolute;top:98px;left:0;right:0;bottom:0;background:#fff;padding:12px 14px;color:#444}
+.bk-b .lb{text-align:center;font-size:14px;color:#555;margin-bottom:8px}
+.bk-b .mo{position:relative;background:#f4f4f4;border-radius:14px;text-align:center;font-size:36px;font-weight:500;color:#9b9b9b;padding:9px 0 10px}
+.bk-b .mo.ok{color:#3a3a3a}
+.bk-b .mo i{position:absolute;left:-5px;right:-5px;top:-5px;bottom:-5px;border:3px solid #b3261e;border-radius:18px;opacity:0}
+.bk-b .tt{font-size:14.5px;color:#444;margin:9px 0 4px}
+.bk-b .sel{display:flex;align-items:center;gap:8px;border:1.5px solid #c4c4c4;border-radius:12px;padding:6px 9px;font-size:14.5px;color:#555}
+.bk-b .sel svg{flex:none}
+.bk-b .sel span{flex:1;white-space:nowrap;overflow:hidden}
+.bk-b .mt{background:#f4f4f4;border-radius:12px;padding:9px 12px;font-size:14.5px;color:#555}
+.bk-b .co{margin-top:12px;background:#78b928;color:#fff;text-align:center;border-radius:22px;padding:10px;font-size:16.5px;font-weight:600;opacity:.5}
+.bk-b .co.ok{opacity:1}
+.bk-n{position:absolute;left:0;right:0;bottom:0;height:64px;background:#fff;border-top:1px solid #ececec;display:flex;justify-content:space-around;align-items:flex-start;padding:6px 0 0;font-size:11px;color:#444;text-align:center;line-height:1.1}
+.bk-n div{display:flex;flex-direction:column;align-items:center;gap:2px;width:70px}
+.bk-n .ci{width:44px;height:44px;border-radius:50%;background:#6bb21d;margin-top:-18px;border:4px solid #fff;display:flex;align-items:center;justify-content:center}
+.nb{position:absolute;left:9px;right:9px;background:rgba(246,246,248,.88);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.7);border-radius:24px;padding:10px 12px 11px;display:flex;gap:10px;align-items:flex-start;box-shadow:0 8px 20px rgba(0,0,0,.30);z-index:38;opacity:0}
+.nb .ic{flex:none;position:relative;width:38px;height:38px;border-radius:9px;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px;margin-top:1px}
+.nb .cv{background:#e72429}.nb .wp{background:#25d366}
+.nb .tx{flex:1;line-height:1.2}
+.nb b{display:block;font-size:15px;font-weight:700}
+.nb .su{display:block;font-size:15px;font-weight:700}
+.nb p{margin:1px 0 0;font-size:15px;color:#222;font-weight:400}
+.nb em{font-style:normal;font-size:12.5px;color:#7a7a80;margin-top:1px}
+.ch{position:absolute;top:0;left:0;right:0;height:98px;background:#0f2d4a;color:#fff;padding:58px 16px 0;display:flex;align-items:center;gap:12px}
+.ch .bk{font-size:30px;line-height:.8}
+.ch b{display:block;font-size:17px}
+.ch small{display:block;font-size:12.5px;color:#bcc9d6;margin-top:1px}
+.cb{position:absolute;top:98px;left:0;right:0;bottom:0;background:#fff;padding:18px 16px;font-size:16px}
+.cb h4{margin:0;font-size:22px;font-weight:700;line-height:1.15;color:#2d3b45}
+.cb .pt{font-size:14px;color:#556572;margin:6px 0 14px}
+.cb .fila2{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #e1e5e8;padding:11px 0;font-size:15px;color:#2d3b45}
+.cb .fila2 span{color:#556572;font-size:13.5px}
+.cb .falta{background:#fbe3e1;color:#b3261e;font-weight:700;border-radius:14px;padding:3px 11px;font-size:13.5px}
+.cb .bloq{margin-top:20px;background:#e8ebed;color:#556572;text-align:center;border-radius:8px;padding:12px;font-size:15px;font-weight:600}
+
+</style></head><body>
+<div id="st">
+<div id="p0" class="ph" style="left:150px;top:6px"><div class="bz"><div class="sc"><div class="isl"></div><div class="sb"><b>5:02</b><span class="si"><svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg width="17" height="12" viewBox="0 0 17 12" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M1.2 4.2a10 10 0 0 1 14.6 0"/><path d="M3.9 7a6.2 6.2 0 0 1 9.2 0"/><path d="M6.6 9.7a2.4 2.4 0 0 1 3.8 0"/></svg><svg width="27" height="13" viewBox="0 0 27 13"><rect x="0.5" y="0.5" width="22" height="12" rx="3.6" fill="none" stroke="currentColor" opacity=".45"/><rect x="2" y="2" width="19" height="9" rx="2.3" fill="currentColor"/><rect x="24" y="4.2" width="2" height="4.6" rx="1" fill="currentColor" opacity=".5"/></svg></span></div><div class="wh"><span class="bk">‹</span><div class="av">S</div><div class="nm">Sofi<small>en línea</small></div><div class="ac"><svg width="27" height="20" viewBox="0 0 27 20" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="17" height="14" rx="4"/><path d="M20 8.2l6-3.2v10l-6-3.2z" fill="currentColor" stroke-linejoin="round"/></svg><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M5.5 3.5h3l1.8 4.6-2 1.4a12 12 0 0 0 6.2 6.2l1.4-2 4.6 1.8v3a2 2 0 0 1-2.2 2A17 17 0 0 1 3.5 5.7a2 2 0 0 1 2-2.2z"/></svg></div></div><div class="wc"><div class="dia">HOY</div><div class="bu r">Mateo, transfiéreme $50 por tu parte del proyecto<i>5:01</i></div><div class="bu r">Cuenta: 2200145873<i>5:01</i></div><div class="bu s">Ya lo hago<i>5:02 <b>✓✓</b></i></div></div><div class="wi"><span class="pl">+</span><span class="cm">Mensaje</span><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 7.5h3l1.6-2.2h6.8L17 7.5h3a1 1 0 0 1 1 1V18a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8.5a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.2" r="3.6"/></svg><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5.2 11.5a6.8 6.8 0 0 0 13.6 0M12 18.5V21"/></svg></div><div class="hi"></div></div></div></div>
+<div id="p1" class="ph osc" style="left:646px;top:6px"><div class="bz"><div class="sc"><div class="isl"></div><div class="sb"><b>5:02</b><span class="si"><svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg width="17" height="12" viewBox="0 0 17 12" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M1.2 4.2a10 10 0 0 1 14.6 0"/><path d="M3.9 7a6.2 6.2 0 0 1 9.2 0"/><path d="M6.6 9.7a2.4 2.4 0 0 1 3.8 0"/></svg><svg width="27" height="13" viewBox="0 0 27 13"><rect x="0.5" y="0.5" width="22" height="12" rx="3.6" fill="none" stroke="currentColor" opacity=".45"/><rect x="2" y="2" width="19" height="9" rx="2.3" fill="currentColor"/><rect x="24" y="4.2" width="2" height="4.6" rx="1" fill="currentColor" opacity=".5"/></svg></span></div><div id="bk1"><div class="bk-h"><span class="ar">←</span><b>Transferir dinero</b></div><div class="bk-b"><div class="lb">Ingresa el monto a transferir</div><div class="mo" id="mon1">$0,00<i id="ring"></i></div><div class="tt">Desde</div><div class="sel"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6bb21d" stroke-width="1.7" stroke-linejoin="round"><path d="M5 12c0-3 3-5.5 7-5.5 1.4 0 2.6.3 3.6.8l2.4-1.3-.6 3C18.4 10 19 11 19 12v2.5a2 2 0 0 1-2 2h-1l-.5 1.5h-2L13 16.5h-2l-.5 1.5h-2L8 16.5C6 15.8 5 14 5 12z"/><circle cx="14.5" cy="11" r=".8" fill="#6bb21d"/></svg><span>Cuenta de ahorros · 29XXXXX323</span><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#666" stroke-width="1.8" stroke-linecap="round"><path d="M3 6l5 5 5-5"/></svg></div><div class="tt">Para</div><div class="sel"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6bb21d" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="8" r="3.6"/><path d="M5 19c1-3 4-4.4 7-4.4s6 1.4 7 4.4"/></svg><span>Sofi Pérez · 2200145873</span><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#666" stroke-width="1.8" stroke-linecap="round"><path d="M3 6l5 5 5-5"/></svg></div><div class="tt">Motivo</div><div class="mt">Proyecto integrador</div><div class="co" id="cont1">Continuar</div></div><div class="bk-n"><div><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.7" stroke-linejoin="round"><path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z"/></svg>Inicio</div><div><span class="ci"><svg width="26" height="26" viewBox="0 0 26 26"><path d="M7.5 5.5h5.2v9.2h7.3v5.8H7.5z" fill="#fff" stroke="#fff" stroke-width="2.4" stroke-linejoin="round"/></svg></span><span style="color:#5a9a14;margin-top:-2px">Menú</span></div><div><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="8" r="3.6"/><path d="M5 19c1-3 4-4.4 7-4.4s6 1.4 7 4.4"/></svg>Perfil</div></div></div><div id="n0" class="nb" style="top:44px"><span class="ic cv">C</span><div class="tx"><b>Canvas</b><p>Tu entrega cierra en 30 minutos</p></div><em>ahora</em></div><div id="n1" class="nb" style="top:118px"><span class="ic wp">W</span><div class="tx"><b>Grupo del proyecto</b><p>Dani: ¿ya subiste tu parte?</p></div><em>ahora</em></div><div class="hi"></div></div></div></div>
+<div id="p2" class="ph osc" style="left:1142px;top:6px"><div class="bz"><div class="sc"><div class="isl"></div><div class="sb"><b>6:01</b><span class="si"><svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg width="17" height="12" viewBox="0 0 17 12" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M1.2 4.2a10 10 0 0 1 14.6 0"/><path d="M3.9 7a6.2 6.2 0 0 1 9.2 0"/><path d="M6.6 9.7a2.4 2.4 0 0 1 3.8 0"/></svg><svg width="27" height="13" viewBox="0 0 27 13"><rect x="0.5" y="0.5" width="22" height="12" rx="3.6" fill="none" stroke="currentColor" opacity=".45"/><rect x="2" y="2" width="19" height="9" rx="2.3" fill="currentColor"/><rect x="24" y="4.2" width="2" height="4.6" rx="1" fill="currentColor" opacity=".5"/></svg></span></div><div class="ch"><span class="bk">‹</span><div><b>Tarea</b><small>Proyecto integrador</small></div></div><div class="cb"><h4>Informe del proyecto integrador</h4><div class="pt">10 pts</div><div class="fila2">Estado<span class="falta">Falta</span></div><div class="fila2">Fecha de entrega<span>13 de nov. a las 6:00</span></div><div class="fila2">Intentos<span>0</span></div><div class="bloq">Esta tarea ya no recibe entregas</div></div><div class="hi"></div></div></div></div>
+<div id="k0" class="t" style="left:30px;top:590px;width:1500px;opacity:0;color:var(--wine-deep);font-size:31px">Cinco de la madrugada: Mateo termina el proyecto que cierra a las seis</div>
+<div id="k1" class="t" style="left:30px;top:590px;width:1500px;opacity:0;color:var(--wine-deep);font-size:31px">Tiene que transferirle a Sofi su parte, desde el celular</div>
+<div id="k2" class="t" style="left:30px;top:590px;width:1500px;opacity:0;color:var(--wine-deep);font-size:31px">A mitad de la tarea llegan dos notificaciones: la número doce es de Canvas</div>
+<div id="k3" class="t" style="left:30px;top:590px;width:1500px;opacity:0;color:var(--wine-deep);font-size:31px">Una hora después aparece la primera falla: escribió $500 en vez de $50</div>
+<div id="k4" class="t" style="left:30px;top:590px;width:1500px;opacity:0;color:var(--teal);font-size:31px">Y la segunda: el aviso de Canvas era real y la entrega cerró sin subir</div>
+<div id="q0" class="t" style="left:30px;top:650px;width:1500px;opacity:0;color:var(--amber);font-size:30px">Pregunta: ¿Qué creen que va a salir mal?</div>
+<div id="q1" class="t" style="left:30px;top:650px;width:1500px;opacity:0;color:var(--amber);font-size:30px">Pregunta: ¿Qué le pide la tarea a su atención?</div>
+<div id="q2" class="t" style="left:30px;top:650px;width:1500px;opacity:0;color:var(--amber);font-size:30px">Pregunta: ¿Qué hacen esas notificaciones con lo que estaba retenido?</div>
+<div id="q3" class="t" style="left:30px;top:650px;width:1500px;opacity:0;color:var(--amber);font-size:30px">Pregunta: ¿Fue descuido de Mateo?</div>
+<div id="q4" class="t" style="left:30px;top:650px;width:1500px;opacity:0;color:var(--amber);font-size:30px">Pregunta: ¿Por qué ignoró el aviso real?</div>
+</div>
+<script>
+const N = 4;
+const st = document.getElementById("st");
+function fit() { const k = Math.min(innerWidth / 1560, innerHeight / 720); st.style.transform = "scale(" + k + ")"; }
+fit(); addEventListener("resize", fit);
+const $ = (s) => document.querySelector(s);
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const ease = (t) => { t = clamp(t, 0, 1); return t * t * (3 - 2 * t); };
+const win = (s, a, b) => ease((s - a) / (b - a));
+const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+const mix = (a, b, t) => { const x = hex(a), y = hex(b); return "rgb(" + x.map((v, i) => Math.round(v + (y[i] - v) * t)).join(",") + ")"; };
+function lit(el, base, color, t, fg0, fg1) { el.style.background = mix(base, color, t); el.style.color = mix(fg0 || "#1f1a1d", fg1 || "#ffffff", t); }
+function put(el, x, y, a) { el.style.transform = "translate(" + x + "px," + y + "px)"; el.style.opacity = String(a); }
+function route(k, pts) { for (let i = 0; i < pts.length - 1; i++) { if (k <= pts[i + 1][0]) { const t = ease((k - pts[i][0]) / (pts[i + 1][0] - pts[i][0])); return [pts[i][1] + (pts[i + 1][1] - pts[i][1]) * t, pts[i][2] + (pts[i + 1][2] - pts[i][2]) * t]; } } const l = pts[pts.length - 1]; return [l[1], l[2]]; }
+
+function caps(s, n, pref) { for (let k = 0; k <= n; k++) { const a = win(s, k - 0.5, k) * (k < n ? 1 - win(s, k, k + 0.5) : 1); const el = $("#" + pref + k); if (el) put(el, 0, 0, clamp(a, 0, 1)); } }
+function rect(el, r) { el.style.left = r[0] + "px"; el.style.top = r[1] + "px"; el.style.width = r[2] + "px"; el.style.height = r[3] + "px"; }
+function show(el, a, dy) { put(el, 0, (1 - a) * (dy === undefined ? 24 : dy), a); }
+
+let u = 0, target = 0, frame = 0, timer = 0, last = 0;
+function draw() { 
+const s = u * N;
+show($("#p0"), win(s, 0, 0.8), 18); show($("#p1"), win(s, 0.15, 1), 18);
+const a0 = win(s, 1, 1.7), a1 = win(s, 1.2, 1.9), fuera = win(s, 2, 2.5);
+$("#n0").style.opacity = String(a0 * (1 - fuera)); $("#n0").style.transform = "translateY(" + ((1 - a0) * -30) + "px)";
+$("#n1").style.opacity = String(a1 * (1 - fuera)); $("#n1").style.transform = "translateY(" + ((1 - a1) * -30) + "px)";
+const monto = win(s, 2, 3);
+$("#mon1").firstChild.nodeValue = monto > 0.5 ? "$500,00" : "$0,00";
+$("#mon1").className = "mo" + (monto > 0.5 ? " ok" : ""); $("#cont1").className = "co" + (monto > 0.5 ? " ok" : "");
+$("#ring").style.opacity = String(win(s, 2.3, 3));
+show($("#p2"), win(s, 3, 4), 18);
+caps(s, 4, "k"); caps(s, 4, "q");
+ }
+function loop() {
+  clearTimeout(timer); cancelAnimationFrame(frame);
+  const now = performance.now();
+  const dt = last ? Math.min((now - last) / 1000, 1) : 1 / 60; last = now;
+  const speed = 1 / (N * 1.6);
+  u = target > u ? Math.min(target, u + dt * speed) : Math.max(target, u - dt * speed * 2);
+  draw();
+  if (u !== target) { frame = requestAnimationFrame(loop); timer = setTimeout(loop, 80); } else { frame = 0; timer = 0; last = 0; }
+}
+const run = () => { if (!frame && !timer) { last = 0; loop(); } };
+const go = (v) => { target = clamp(v, 0, 1); run(); };
+window.__fig = { set(v) { u = target = clamp(v, 0, 1); draw(); }, go, get u() { return u; } };
+addEventListener("message", (e) => { const m = e.data; if (!m || m.type !== "fig") return; if (m.mode === "set") window.__fig.set(Number(m.value)); else go(Number(m.value)); });
+if (window.parent !== window) {
+  const KEYMAP = { ArrowRight: "ArrowRight", PageDown: "ArrowRight", " ": "ArrowRight", Enter: "ArrowRight", ArrowLeft: "ArrowLeft", PageUp: "ArrowLeft", Backspace: "ArrowLeft" };
+  addEventListener("keydown", (e) => { const k = KEYMAP[e.key]; if (!k) return; e.preventDefault(); e.stopImmediatePropagation(); parent.postMessage({ type: "deck-key", key: k }, "*"); }, true);
+} else {
+  addEventListener("click", () => go(target >= 1 ? 0 : Math.min(1, Math.round(target * N + 1) / N)));
+}
+draw();
+</script></body></html>
