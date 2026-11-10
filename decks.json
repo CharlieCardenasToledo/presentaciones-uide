@@ -73,6 +73,16 @@
         "n": 1,
         "slug": "hci-semana-01",
         "tema": "HCI como ciencia de sistemas interactivos: bucle, latencia, modos, métricas y paradigmas"
+      },
+      {
+        "n": 2,
+        "slug": "hci-semana-02",
+        "tema": "Carga mental, error humano, interrupciones, detección de señales y cognición distribuida"
+      },
+      {
+        "n": 3,
+        "slug": "hci-semana-03",
+        "tema": "Descomposición de tareas, GOMS, modelo a nivel de teclas, error de predicción y aprendizaje de habilidades"
       }
     ]
   },
