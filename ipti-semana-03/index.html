@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PP_08_IPTI · Semana 3: Invocación remota, eventos y teorema CAP</title>
+    <script>
+      // El modo público se distingue en la pestaña del navegador.
+      if (new URLSearchParams(location.search).get("mode") === "audience") {
+        document.title = "PP_08_IPTI · Semana 3: Invocación remota, eventos y teorema CAP" + " (pantalla del público)";
+      }
+    </script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { height: 100%; background: #0a0a0a; overflow: hidden; }
+      hyperframes-slideshow { display: block; position: relative; width: 100vw; height: 100vh; }
+      hyperframes-player { position: absolute; inset: 0; }
+    </style>
+    <script src="../vendor/hyperframes-player.global.js"></script>
+    <script src="../vendor/hyperframes-slideshow.global.js"></script>
+  </head>
+  <body>
+    <hyperframes-slideshow tabindex="0" notes-storage-key="ipti-semana-03">
+      <hyperframes-player interactive src="composition/index.html"></hyperframes-player>
+      <script type="application/hyperframes-slideshow+json">
+{
+  "slides": [
+    {
+      "sceneId": "portada",
+      "startTime": 0,
+      "endTime": 3.5,
+      "notes": "Clase de dos horas, de 16:00 a 18:00. Primer bloque de presentación, la práctica PE-S3 en medio, segundo bloque y presentación de la TA-S3 al final. Abrir con el caso, sin teoría. La semana anterior cerró con una conclusión: el contrato de un servicio se diseña según la tolerancia a la latencia de cada consumidor. Esa conclusión suponía que la comunicación entre servicios es predecible, y esta semana se pone en duda."
+    },
+    {
+      "sceneId": "caso",
+      "startTime": 3.5,
+      "endTime": 10,
+      "notes": "Es el reto inicial del material de la semana y el caso que se resuelve durante toda la clase. Un docente publica la calificación de una evaluación en Canvas. El sistema académico institucional, que emite los reportes oficiales, debe recibirla. Durante una ventana de mantenimiento de la red entre ambos sistemas, el docente publica cuarenta calificaciones: Canvas las registra, pero el sistema académico nunca las recibe. Si la integración es una llamada directa del tipo registrarNota(), ¿qué debe hacer Canvas cuando la llamada expira sin respuesta: reintentar y arriesgarse a duplicar, o descartar y perder? No se responde todavía. Pedir que anoten su respuesta para retomarla al cierre.",
+      "fragments": [
+        5.5,
+        6.5,
+        7.5,
+        8.5
+      ]
+    },
+    {
+      "sceneId": "exploracion",
+      "startTime": 10,
+      "endTime": 16.5,
+      "notes": "Es la actividad de exploración del material de la semana, sin la herramienta Miro: se hace hablando y en la pizarra. Pedir que enumeren lo que ocurre desde que el docente publica una nota hasta que el estudiante la ve en su reporte oficial, redactado en pasado: calificación publicada, nota enviada, nota consolidada, reporte emitido. Después mostrar la diferencia con una intención, registrar calificación, que todavía puede no ocurrir. Por último dibujar la barrera donde el proceso cruza de un sistema a otro y preguntar qué pasa con lo que viene después si la comunicación se corta justo ahí. Las secciones siguientes ponen nombre a esa distinción entre hecho e intención.",
+      "fragments": [
+        12,
+        13,
+        14,
+        15
+      ]
+    },
+    {
+      "sceneId": "rpc",
+      "startTime": 16.5,
+      "endTime": 23,
+      "notes": "Las tecnologías de invocación remota de los años noventa se apoyan en la llamada a procedimiento remoto, RPC, presente en la literatura desde la década de 1970. El modelo intenta que una petición a un servicio remoto tenga la misma apariencia que una llamada a una función local; Kleppmann lo llama transparencia de localización. DCOM es la versión de Microsoft, con activación remota de objetos; CORBA es el estándar abierto multiplataforma, con interfaces declaradas en IDL y un intermediario llamado ORB; Java RMI invoca métodos sobre objetos de otra máquina virtual de Java. Tres implementaciones de la misma apuesta. Fuentes: Kleppmann (2017), capítulo 4; Richards y Ford (2020).",
+      "fragments": [
+        18.5,
+        19.5,
+        20.5,
+        21.5
+      ]
+    },
+    {
+      "sceneId": "diferencias",
+      "startTime": 23,
+      "endTime": 32.5,
+      "notes": "Kleppmann sostiene que el enfoque está viciado en su fundamento: una petición de red difiere de una llamada local en cinco aspectos que ninguna capa de abstracción puede borrar. Primero, la predecibilidad: una llamada local falla por causas bajo control del programa; la de red puede perderse o encontrar la máquina lenta o inaccesible. Segundo, un cuarto desenlace: además de devolver resultado, lanzar excepción o no retornar, puede expirar sin respuesta, y el emisor no sabe si la operación se ejecutó. Tercero, el reintento: si lo perdido fue la respuesta, reintentar ejecuta la acción dos veces. Cuarto, la latencia variable, de menos de un milisegundo a varios segundos. Quinto, el paso de parámetros: en red todo se codifica en bytes. Richards y Ford agrupan estos supuestos en las falacias de la computación distribuida: la red es confiable, la latencia es cero, el ancho de banda es infinito. Fuentes: Kleppmann (2017), capítulo 4; Richards y Ford (2020), capítulo 9.",
+      "fragments": [
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31
+      ]
+    },
+    {
+      "sceneId": "timeout",
+      "startTime": 32.5,
+      "endTime": 40,
+      "notes": "Aquí está el corazón del problema. Canvas llama a registrarNota() y no recibe respuesta. Caso uno: la petición se perdió en la red y la nota no se registró. Caso dos: la nota sí se registró y lo que se perdió fue la confirmación. Caso tres: el servidor estaba lento y la nota se registrará dentro de un rato. Para Canvas los tres casos son idénticos: ve silencio. El timeout informa solo de la ausencia de respuesta dentro de una ventana de tiempo, no del estado del servidor. Pedir que digan en cuál de los tres casos es seguro reintentar. Esta traza es la base de la primera parte de la PE-S3. Fuente: Kleppmann (2017), capítulo 4.",
+      "fragments": [
+        34.5,
+        35.5,
+        36.5,
+        37.5,
+        38.5
+      ]
+    },
+    {
+      "sceneId": "reintento",
+      "startTime": 40,
+      "endTime": 47.5,
+      "notes": "Si el problema es que reintentar puede duplicar, la respuesta de ingeniería es diseñar la operación como idempotente: asociar a cada petición un identificador único que el receptor usa para descartar ejecuciones repetidas, en lugar de confiar en el timeout como evidencia de no ejecución. Sin identificador, el primer envío queda registrado, la confirmación se pierde, Canvas reintenta y la nota de Ana queda dos veces. Con identificador, por ejemplo asignatura, estudiante, evaluación y versión, el receptor reconoce que ya aplicó ese evento y lo descarta. Este es el campo que la PE-S3 pide identificar. Fuentes: Kleppmann (2017); guía de la semana.",
+      "fragments": [
+        42,
+        43,
+        44,
+        45,
+        46
+      ]
+    },
+    {
+      "sceneId": "comando-evento",
+      "startTime": 47.5,
+      "endTime": 54,
+      "notes": "Si la llamada remota no puede garantizar que el destinatario responda, la alternativa de diseño es dejar de esperar respuesta: el emisor no invoca a nadie, solo registra que algo ocurrió y continúa. Un evento es el registro inmutable de un hecho que ocurrió en un punto del tiempo. La distinción decisiva es entre comando y evento. Un comando expresa la intención de una acción futura, PublicarCalificacion, y el sistema puede rechazarlo si viola una regla de negocio. Un evento expresa un hecho consumado, CalificacionPublicada, que ningún consumidor puede rechazar porque ya forma parte de la historia. Por eso, con un evento, el sistema académico puede estar caído sin bloquear al docente. Fuente: Kleppmann (2017), capítulo 11.",
+      "fragments": [
+        49.5,
+        50.5,
+        51.5,
+        52.5
+      ]
+    },
+    {
+      "sceneId": "broker",
+      "startTime": 54,
+      "endTime": 62.5,
+      "notes": "El componente que conserva y distribuye los eventos es el broker de mensajes. Kleppmann distingue dos familias. Los brokers tradicionales, como JMS o AMQP con RabbitMQ, eliminan el mensaje una vez entregado. Los brokers basados en logs particionados y persistentes, como Apache Kafka, conservan los mensajes en disco y permiten a un consumidor reposicionar su puntero de lectura. Eso responde la pregunta del caso: Canvas publica CalificacionPublicada en el log; si el sistema académico está caído, los hechos esperan; cuando vuelve, retoma desde donde se quedó y aplica las cuarenta notas. El docente nunca se bloqueó. Fuente: Kleppmann (2017), capítulo 11.",
+      "fragments": [
+        56,
+        57,
+        58,
+        59,
+        60,
+        61
+      ]
+    },
+    {
+      "sceneId": "comparacion",
+      "startTime": 62.5,
+      "endTime": 70,
+      "notes": "Cierre del primer bloque: los mismos dos sistemas integrados de dos maneras, en tres situaciones. Si el sistema académico está caído: con invocación directa el docente no puede publicar; con evento publica igual. Si la llamada expira: con invocación Canvas no sabe si se registró; con evento solo confirma que el hecho quedó en el log. Si el envío se repite: con invocación el reintento puede duplicar; con evento el identificador permite descartar repetidos. Y cada enfoque tiene un precio: con el evento, el reporte oficial muestra la nota con retraso. Ese precio se acepta de forma deliberada y se documenta, no se descubre en producción. Esta tabla es el modelo de la comparación que piden en la práctica, con otro caso. Volver a las respuestas anotadas al inicio.",
+      "fragments": [
+        64.5,
+        65.5,
+        66.5,
+        67.5,
+        68.5
+      ]
+    },
+    {
+      "sceneId": "pe",
+      "startTime": 70,
+      "endTime": 77.5,
+      "notes": "La práctica es individual y se entrega completada al final de la clase. Tiempo sugerido: unos 40 minutos. Cada estudiante elige uno de tres casos distintos del de Canvas: un pago aprobado que debe llegar a contabilidad, un resultado de laboratorio que debe llegar a la historia clínica, o un pedido pagado que debe llegar a bodega. Con su caso, hace lo mismo que se hizo en la clase: cuenta qué ve el emisor en las tres situaciones de un timeout, diseña un evento con un campo que evite el duplicado, compara las dos formas en tres criterios y decide qué enfoque recomienda y qué precio acepta. Ya no hay que dibujar topologías ni usar herramientas externas: el ejemplo resuelto de la plantilla es el caso de Canvas. Recorrer el aula y revisar que el nombre del evento esté en pasado.",
+      "fragments": [
+        72,
+        73,
+        74,
+        75,
+        76
+      ]
+    },
+    {
+      "sceneId": "topologias",
+      "startTime": 77.5,
+      "endTime": 85,
+      "notes": "Segundo bloque, después de la práctica. Richards y Ford describen dos topologías para organizar el flujo de eventos entre procesadores. En la topología broker no hay un componente central: el flujo se propaga en cadena por publicación y suscripción, y cada procesador emite en difusión un evento que anuncia lo que hizo, sin saber quién reaccionará. Ventaja: desacoplamiento extremo, alta escalabilidad y buena capacidad evolutiva. Costo: se pierde el control centralizado y el manejo de errores se vuelve complejo; si un procesador falla a mitad de la cadena, los demás siguen sin enterarse. En la topología mediador un componente central orquesta el flujo y envía comandos punto a punto a procesadores específicos, que devuelven confirmación. Ventaja: control total, mejor manejo de errores y mayor consistencia. Costo: acopla al mediador con los procesadores y puede ser cuello de botella. Para la notificación de calificaciones sirve el broker, porque es una difusión y no un proceso de varios pasos. Fuente: Richards y Ford (2020), capítulo 14.",
+      "fragments": [
+        79.5,
+        80.5,
+        81.5,
+        82.5,
+        83.5
+      ]
+    },
+    {
+      "sceneId": "cqrs",
+      "startTime": 85,
+      "endTime": 92.5,
+      "notes": "Dos ideas que llevan el evento más lejos. Event Sourcing lo lleva al modelo de persistencia: en lugar de modificar el estado, todos los cambios se registran como una secuencia de eventos inmutables, y el estado actual se obtiene procesando ese historial. Ejemplo: NotaPublicada con 8,0 y NotaCorregida con 8,5 dan como estado actual 8,5, y el historial conserva cómo se llegó. CQRS, Command Query Responsibility Segregation, separa la ruta de escritura de la de lectura: las escrituras se registran como eventos en el log y consumidores independientes arman, de forma asíncrona, vistas optimizadas para consultar. La consecuencia inevitable de esa asincronía es que la vista puede quedar un momento desactualizada respecto al log. Es una consistencia eventual, y es el puente hacia el teorema CAP. Fuente: Kleppmann (2017), capítulo 11.",
+      "fragments": [
+        87,
+        88,
+        89,
+        90,
+        91
+      ]
+    },
+    {
+      "sceneId": "cap",
+      "startTime": 92.5,
+      "endTime": 102,
+      "notes": "La desactualización de la vista no es un defecto corregible con mejor código: es un límite formal. El teorema CAP, de Brewer y formalizado por Gilbert y Lynch en 2002, dice que un sistema de datos distribuido sobre una red no confiable no puede garantizar a la vez consistencia, entendida como linealizabilidad, disponibilidad y tolerancia a particiones. Kleppmann califica de engañosa la lectura popular de elegir dos de tres: la tolerancia a particiones no es elegible, porque las particiones son fallos físicos inevitables, y mientras la red funciona el sistema ofrece consistencia y disponibilidad. La disyuntiva aparece solo cuando la red se parte. Entonces un sistema CP privilegia la linealizabilidad: el nodo aislado rechaza peticiones y deja de estar disponible. Un sistema AP privilegia la disponibilidad: cada réplica responde con sus datos locales, que pueden estar obsoletos. Fuente: Kleppmann (2017), capítulo 9.",
+      "fragments": [
+        94.5,
+        95.5,
+        96.5,
+        97.5,
+        98.5,
+        99.5,
+        100.5
+      ]
+    },
+    {
+      "sceneId": "cap-casos",
+      "startTime": 102,
+      "endTime": 108.5,
+      "notes": "La consistencia eventual es la garantía de los sistemas AP: si las escrituras se detienen, todas las réplicas convergen al mismo valor. Describe con precisión la vista de CQRS. Para la consolidación de notas se acepta: el estudiante ve la nota en Canvas antes que en el reporte oficial y ese retraso es tolerable frente a bloquear al docente. La linealizabilidad, en cambio, es indispensable donde leer un dato obsoleto produce un fallo grave: elegir un líder único para evitar el split-brain y, en la UIDE, la restricción de unicidad de la cédula al matricularse, porque dos matrículas con la misma cédula no son aceptables. Y la linealizabilidad cuesta rendimiento todo el tiempo, no solo durante las fallas. Es el modelo para la última parte de la TA-S3, donde cada estudiante elige otro proceso de la UIDE. Fuente: Kleppmann (2017), capítulo 9.",
+      "fragments": [
+        104,
+        105,
+        106,
+        107
+      ]
+    },
+    {
+      "sceneId": "actividades",
+      "startTime": 108.5,
+      "endTime": 112,
+      "notes": "Las consignas completas, las plantillas y las rúbricas están en Canvas. La PE-S3 se hizo en clase, de forma individual. La TA-S3 es individual y se entrega en PDF: completa un cuadro con DCOM, CORBA y Java RMI, otro con Event-Driven, CQRS y Event Sourcing, compara broker y mediador, explica por qué elegir dos de tres no describe una decisión real y clasifica como CP o AP un proceso de la UIDE distinto de las calificaciones, con una referencia en APA. Recordar las fechas de entrega de Canvas."
+    },
+    {
+      "sceneId": "cierre",
+      "startTime": 112,
+      "endTime": 115.5,
+      "notes": "Volver a las respuestas del inicio. Con el vocabulario de la semana: Canvas no debe invocar al sistema académico, sino publicar el hecho CalificacionPublicada en un log persistente; el identificador único del evento impide que el reintento duplique una nota, y la institución acepta consistencia eventual: el reporte oficial muestra la nota con retraso. Ese precio se acepta de forma deliberada y se documenta. La elección entre invocación remota y evento no se decide por la modernidad de la herramienta, sino por qué disponibilidad se quiere desacoplar. Próxima semana: infraestructura computacional de servidores."
+    }
+  ],
+  "slideSequences": []
+}
+    </script>
+    </hyperframes-slideshow>undefined

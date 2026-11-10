@@ -96,6 +96,11 @@
         "n": 2,
         "slug": "ipti-semana-02",
         "tema": "SOA, contratos REST, gRPC y AsyncAPI, versionado y origen de los microservicios"
+      },
+      {
+        "n": 3,
+        "slug": "ipti-semana-03",
+        "tema": "Invocación remota, arquitecturas dirigidas por eventos y teorema CAP"
       }
     ]
   },

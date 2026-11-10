@@ -18,6 +18,7 @@ Sitio: https://charliecardenastoledo.github.io/presentaciones-uide/
 | LTI_05U_ESD Estructura de Datos | 1. Big-O, TDA y representación en memoria | [esd-semana-01](https://charliecardenastoledo.github.io/presentaciones-uide/esd-semana-01/) |
 | LTI_05U_ESD Estructura de Datos | 2. Arreglos y listas, acceso aleatorio y secuencial, invariantes | [esd-semana-02](https://charliecardenastoledo.github.io/presentaciones-uide/esd-semana-02/) |
 | PP_08_IPTI Arquitectura e Integración de Plataformas de TI | 2. Contratos de API, SOA y microservicios | [ipti-semana-02](https://charliecardenastoledo.github.io/presentaciones-uide/ipti-semana-02/) |
+| PP_08_IPTI Arquitectura e Integración de Plataformas de TI | 3. Invocación remota, eventos y teorema CAP | [ipti-semana-03](https://charliecardenastoledo.github.io/presentaciones-uide/ipti-semana-03/) |
 | CC05A_IFT202 Fundamentos de la Seguridad | 1. Principios de ciberseguridad: tríada CIA, riesgo y ética | [ift202-semana-01](https://charliecardenastoledo.github.io/presentaciones-uide/ift202-semana-01/) |
 | CC05A_IFT202 Fundamentos de la Seguridad | 2. Introducción al marco NIST: funciones, perfiles y niveles | [ift202-semana-02](https://charliecardenastoledo.github.io/presentaciones-uide/ift202-semana-02/) |
 

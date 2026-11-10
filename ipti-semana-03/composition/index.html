@@ -1,0 +1,589 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Semana 3 · Modelos predictivos del desempeño</title>
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      :root {
+        /* Colores tomados del logotipo UIDE: vino #910048 y dorado #E8A920. Sin degradados. */
+        --paper: #ffffff; --ink: #1f1a1d; --muted: #5a5257; --wine: #910048; --wine-deep: #6d0036; --gold: #e8a920;
+        --teal: #0c6b62; --teal-soft: #e3f2f0; --amber: #7a5200; --amber-soft: #fcefc9; --card: #ffffff; --line: #e2dcdf; --tint: #f6f1f3;
+      }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--paper); }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; font-family: system-ui, sans-serif; color: var(--ink); }
+      .slide { position: absolute; inset: 0; }
+      .frame { position: absolute; inset: 0; padding: 92px 120px 150px; display: flex; flex-direction: column; justify-content: center; opacity: 0; background: var(--paper); }
+      .frame::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 22px; background: var(--wine); }
+      .frame::after { content: ""; position: absolute; left: 22px; top: 0; bottom: 0; width: 8px; background: var(--gold); }
+      .dark .frame { background: var(--wine); color: #fff; }
+      .dark .frame::before { background: var(--gold); }
+      .dark .frame::after { display: none; }
+      .logo { position: absolute; top: 44px; right: 96px; height: 92px; width: auto; }
+      .dark .logo { top: 0; right: 96px; height: 150px; padding: 26px 30px 22px; background: #fff; border-radius: 0 0 18px 18px; box-sizing: border-box; }
+      .num { position: absolute; bottom: 52px; left: 120px; font-size: 26px; letter-spacing: 0.14em; color: var(--muted); font-variant-numeric: tabular-nums; }
+      .dark .num { color: #f1d3e0; }
+      .course { font-size: 34px; font-weight: 600; color: var(--gold); margin-bottom: 30px; }
+      .claim { font-family: ui-serif, serif; font-weight: 700; font-size: 74px; line-height: 1.08; letter-spacing: -0.015em; max-width: 1480px; margin-bottom: 44px; }
+      .claim.long { font-size: 62px; max-width: 1640px; }
+      .claim.xl { font-size: 96px; max-width: 1500px; }
+      .lead { font-size: 48px; line-height: 1.25; color: #ffffff; max-width: 1400px; }
+      .lead.dark-ink { color: var(--muted); margin-top: -14px; margin-bottom: 40px; }
+      .byline { font-size: 32px; color: #f6dfe9; margin-top: 70px; }
+      .source { font-size: 30px; color: var(--muted); margin-top: 34px; }
+      .punch { font-family: ui-serif, serif; font-size: 56px; font-weight: 700; color: var(--wine); margin-top: 44px; }
+      .punch.soft { color: var(--ink); font-size: 46px; margin-top: 18px; }
+      .punch.good { color: var(--teal); }
+
+      .steps { list-style: none; display: grid; gap: 18px; max-width: 1500px; }
+      .steps li { display: flex; align-items: center; gap: 30px; font-size: 46px; background: var(--tint); border-radius: 18px; padding: 18px 30px; }
+      .steps b { flex: none; width: 72px; height: 72px; border-radius: 50%; background: var(--wine); color: #fff; display: grid; place-items: center; font-size: 40px; }
+
+      .cards { display: grid; gap: 30px; }
+      .cards.three { grid-template-columns: repeat(3, 1fr); }
+      .cards.two { grid-template-columns: repeat(2, 1fr); }
+      .cards.four { grid-template-columns: repeat(4, 1fr); }
+      .cards.grid2 { grid-template-columns: repeat(2, 1fr); gap: 26px; }
+      .cards.tight { margin-top: 30px; }
+      .card { background: var(--tint); border-radius: 22px; padding: 36px 40px; display: flex; flex-direction: column; gap: 14px; }
+      .card strong { font-size: 48px; line-height: 1.12; font-weight: 800; }
+      .card em { font-style: normal; font-size: 40px; line-height: 1.2; color: var(--muted); }
+      .card .tag, .panel .tag { align-self: flex-start; font-size: 34px; font-weight: 600; color: var(--wine); }
+      .card.file strong { font-family: ui-monospace, monospace; font-size: 46px; }
+      .card.empty, .card.warn { background: var(--amber-soft); }
+      .card.warn strong { color: var(--amber); }
+      .card.pill { align-items: center; text-align: center; padding: 30px 20px; }
+      .card.pill b { width: 68px; height: 68px; border-radius: 50%; background: var(--wine); color: #fff; display: grid; place-items: center; font-size: 38px; }
+      .cards.tall .card { min-height: 300px; }
+      .verdict { margin-top: auto; padding: 14px 18px; border-radius: 12px; background: #fbe3a6; color: var(--amber) !important; font-weight: 700; }
+      .verdict.good { background: #cfe9e5; color: var(--teal) !important; }
+
+      table.data { border-collapse: collapse; width: 100%; background: var(--tint); border-radius: 20px; overflow: hidden; }
+      table.data th { text-align: left; font-size: 30px; letter-spacing: 0.1em; text-transform: uppercase; color: #fff; background: var(--wine-deep); padding: 20px 28px; }
+      table.data td { font-size: 42px; padding: 22px 28px; border-top: 3px solid #ffffff; font-variant-numeric: tabular-nums; }
+      table.data.matrix td { font-size: 40px; padding: 24px 28px; }
+      table.data.matrix b { color: var(--wine); }
+      .chips { display: flex; gap: 22px; margin-top: 36px; flex-wrap: wrap; }
+      .chip { font-size: 40px; font-weight: 700; padding: 16px 28px; border-radius: 999px; background: var(--amber-soft); color: var(--amber); }
+
+      .split { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+      .panel { background: var(--tint); border-radius: 22px; padding: 30px 34px; display: flex; flex-direction: column; gap: 18px; }
+      .panel.good { background: var(--teal-soft); }
+      .panel.good .tag { color: var(--teal); }
+      .box { font-size: 40px; padding: 18px 24px; border-radius: 14px; background: #ffffff; }
+      .box i { font-style: normal; color: var(--amber); font-weight: 700; }
+      .box.strong { background: var(--teal); color: #fff; font-weight: 700; }
+      .box.new { background: var(--teal-soft); color: var(--teal); font-weight: 700; }
+      .schema { font-family: ui-monospace, monospace; font-size: 44px; font-weight: 700; padding: 26px 32px; border-radius: 18px; background: var(--tint); }
+      .schema.main { font-size: 50px; background: var(--wine-deep); color: #fff; }
+      .schema.small { font-size: 40px; background: #ffffff; }
+      .schema u { text-decoration-thickness: 5px; text-underline-offset: 8px; }
+
+      .layers { display: grid; gap: 22px; max-width: 1500px; }
+      .layer { display: flex; align-items: baseline; gap: 34px; padding: 30px 38px; border-radius: 20px; background: var(--wine); color: #fff; }
+      .layer.mid { background: #7f003f; margin-left: 70px; }
+      .layer.low { background: var(--wine-deep); margin-left: 140px; }
+      .layer strong { font-size: 50px; flex: none; width: 430px; }
+      .layer em { font-style: normal; font-size: 40px; color: #ffffff; }
+
+      .timeline { display: grid; gap: 14px; }
+      .timeline .row { display: grid; grid-template-columns: 170px 560px 1fr; align-items: center; gap: 30px; background: var(--tint); border-radius: 16px; padding: 14px 28px; }
+      .timeline b { font-family: ui-serif, serif; font-size: 52px; color: var(--wine); font-variant-numeric: tabular-nums; }
+      .timeline strong { font-size: 42px; }
+      .timeline em { font-style: normal; font-size: 40px; color: var(--muted); }
+
+      iframe.fig { flex: none; width: 1560px; height: 720px; border: 0; background: transparent; align-self: center; margin-top: -24px; }
+
+      /* Transiciones solo al presentar en vivo: el reproductor salta entre
+         puntos de la línea de tiempo y el navegador suaviza el cambio. */
+      html.live .frame { transition: opacity 0.45s ease; }
+      html.live [data-in], html.live [data-f] { transition: opacity 0.5s ease, transform 0.55s cubic-bezier(0.2, 0.7, 0.2, 1); transition-delay: calc(var(--i, 0) * 70ms); }
+      html.live [data-hl] { transition: background-color 0.4s ease, color 0.4s ease; }
+    </style>
+  </head>
+  <body>
+    <script type="application/hyperframes-slideshow+json">
+{
+  "slides": [
+    {
+      "sceneId": "portada",
+      "startTime": 0,
+      "endTime": 3.5,
+      "notes": "Clase de dos horas, de 16:00 a 18:00. Primer bloque de presentación, la práctica PE-S3 en medio, segundo bloque y presentación de la TA-S3 al final. Abrir con el caso, sin teoría. La semana anterior cerró con una conclusión: el contrato de un servicio se diseña según la tolerancia a la latencia de cada consumidor. Esa conclusión suponía que la comunicación entre servicios es predecible, y esta semana se pone en duda."
+    },
+    {
+      "sceneId": "caso",
+      "startTime": 3.5,
+      "endTime": 10,
+      "notes": "Es el reto inicial del material de la semana y el caso que se resuelve durante toda la clase. Un docente publica la calificación de una evaluación en Canvas. El sistema académico institucional, que emite los reportes oficiales, debe recibirla. Durante una ventana de mantenimiento de la red entre ambos sistemas, el docente publica cuarenta calificaciones: Canvas las registra, pero el sistema académico nunca las recibe. Si la integración es una llamada directa del tipo registrarNota(), ¿qué debe hacer Canvas cuando la llamada expira sin respuesta: reintentar y arriesgarse a duplicar, o descartar y perder? No se responde todavía. Pedir que anoten su respuesta para retomarla al cierre.",
+      "fragments": [
+        5.5,
+        6.5,
+        7.5,
+        8.5
+      ]
+    },
+    {
+      "sceneId": "exploracion",
+      "startTime": 10,
+      "endTime": 16.5,
+      "notes": "Es la actividad de exploración del material de la semana, sin la herramienta Miro: se hace hablando y en la pizarra. Pedir que enumeren lo que ocurre desde que el docente publica una nota hasta que el estudiante la ve en su reporte oficial, redactado en pasado: calificación publicada, nota enviada, nota consolidada, reporte emitido. Después mostrar la diferencia con una intención, registrar calificación, que todavía puede no ocurrir. Por último dibujar la barrera donde el proceso cruza de un sistema a otro y preguntar qué pasa con lo que viene después si la comunicación se corta justo ahí. Las secciones siguientes ponen nombre a esa distinción entre hecho e intención.",
+      "fragments": [
+        12,
+        13,
+        14,
+        15
+      ]
+    },
+    {
+      "sceneId": "rpc",
+      "startTime": 16.5,
+      "endTime": 23,
+      "notes": "Las tecnologías de invocación remota de los años noventa se apoyan en la llamada a procedimiento remoto, RPC, presente en la literatura desde la década de 1970. El modelo intenta que una petición a un servicio remoto tenga la misma apariencia que una llamada a una función local; Kleppmann lo llama transparencia de localización. DCOM es la versión de Microsoft, con activación remota de objetos; CORBA es el estándar abierto multiplataforma, con interfaces declaradas en IDL y un intermediario llamado ORB; Java RMI invoca métodos sobre objetos de otra máquina virtual de Java. Tres implementaciones de la misma apuesta. Fuentes: Kleppmann (2017), capítulo 4; Richards y Ford (2020).",
+      "fragments": [
+        18.5,
+        19.5,
+        20.5,
+        21.5
+      ]
+    },
+    {
+      "sceneId": "diferencias",
+      "startTime": 23,
+      "endTime": 32.5,
+      "notes": "Kleppmann sostiene que el enfoque está viciado en su fundamento: una petición de red difiere de una llamada local en cinco aspectos que ninguna capa de abstracción puede borrar. Primero, la predecibilidad: una llamada local falla por causas bajo control del programa; la de red puede perderse o encontrar la máquina lenta o inaccesible. Segundo, un cuarto desenlace: además de devolver resultado, lanzar excepción o no retornar, puede expirar sin respuesta, y el emisor no sabe si la operación se ejecutó. Tercero, el reintento: si lo perdido fue la respuesta, reintentar ejecuta la acción dos veces. Cuarto, la latencia variable, de menos de un milisegundo a varios segundos. Quinto, el paso de parámetros: en red todo se codifica en bytes. Richards y Ford agrupan estos supuestos en las falacias de la computación distribuida: la red es confiable, la latencia es cero, el ancho de banda es infinito. Fuentes: Kleppmann (2017), capítulo 4; Richards y Ford (2020), capítulo 9.",
+      "fragments": [
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31
+      ]
+    },
+    {
+      "sceneId": "timeout",
+      "startTime": 32.5,
+      "endTime": 40,
+      "notes": "Aquí está el corazón del problema. Canvas llama a registrarNota() y no recibe respuesta. Caso uno: la petición se perdió en la red y la nota no se registró. Caso dos: la nota sí se registró y lo que se perdió fue la confirmación. Caso tres: el servidor estaba lento y la nota se registrará dentro de un rato. Para Canvas los tres casos son idénticos: ve silencio. El timeout informa solo de la ausencia de respuesta dentro de una ventana de tiempo, no del estado del servidor. Pedir que digan en cuál de los tres casos es seguro reintentar. Esta traza es la base de la primera parte de la PE-S3. Fuente: Kleppmann (2017), capítulo 4.",
+      "fragments": [
+        34.5,
+        35.5,
+        36.5,
+        37.5,
+        38.5
+      ]
+    },
+    {
+      "sceneId": "reintento",
+      "startTime": 40,
+      "endTime": 47.5,
+      "notes": "Si el problema es que reintentar puede duplicar, la respuesta de ingeniería es diseñar la operación como idempotente: asociar a cada petición un identificador único que el receptor usa para descartar ejecuciones repetidas, en lugar de confiar en el timeout como evidencia de no ejecución. Sin identificador, el primer envío queda registrado, la confirmación se pierde, Canvas reintenta y la nota de Ana queda dos veces. Con identificador, por ejemplo asignatura, estudiante, evaluación y versión, el receptor reconoce que ya aplicó ese evento y lo descarta. Este es el campo que la PE-S3 pide identificar. Fuentes: Kleppmann (2017); guía de la semana.",
+      "fragments": [
+        42,
+        43,
+        44,
+        45,
+        46
+      ]
+    },
+    {
+      "sceneId": "comando-evento",
+      "startTime": 47.5,
+      "endTime": 54,
+      "notes": "Si la llamada remota no puede garantizar que el destinatario responda, la alternativa de diseño es dejar de esperar respuesta: el emisor no invoca a nadie, solo registra que algo ocurrió y continúa. Un evento es el registro inmutable de un hecho que ocurrió en un punto del tiempo. La distinción decisiva es entre comando y evento. Un comando expresa la intención de una acción futura, PublicarCalificacion, y el sistema puede rechazarlo si viola una regla de negocio. Un evento expresa un hecho consumado, CalificacionPublicada, que ningún consumidor puede rechazar porque ya forma parte de la historia. Por eso, con un evento, el sistema académico puede estar caído sin bloquear al docente. Fuente: Kleppmann (2017), capítulo 11.",
+      "fragments": [
+        49.5,
+        50.5,
+        51.5,
+        52.5
+      ]
+    },
+    {
+      "sceneId": "broker",
+      "startTime": 54,
+      "endTime": 62.5,
+      "notes": "El componente que conserva y distribuye los eventos es el broker de mensajes. Kleppmann distingue dos familias. Los brokers tradicionales, como JMS o AMQP con RabbitMQ, eliminan el mensaje una vez entregado. Los brokers basados en logs particionados y persistentes, como Apache Kafka, conservan los mensajes en disco y permiten a un consumidor reposicionar su puntero de lectura. Eso responde la pregunta del caso: Canvas publica CalificacionPublicada en el log; si el sistema académico está caído, los hechos esperan; cuando vuelve, retoma desde donde se quedó y aplica las cuarenta notas. El docente nunca se bloqueó. Fuente: Kleppmann (2017), capítulo 11.",
+      "fragments": [
+        56,
+        57,
+        58,
+        59,
+        60,
+        61
+      ]
+    },
+    {
+      "sceneId": "comparacion",
+      "startTime": 62.5,
+      "endTime": 70,
+      "notes": "Cierre del primer bloque: los mismos dos sistemas integrados de dos maneras, en tres situaciones. Si el sistema académico está caído: con invocación directa el docente no puede publicar; con evento publica igual. Si la llamada expira: con invocación Canvas no sabe si se registró; con evento solo confirma que el hecho quedó en el log. Si el envío se repite: con invocación el reintento puede duplicar; con evento el identificador permite descartar repetidos. Y cada enfoque tiene un precio: con el evento, el reporte oficial muestra la nota con retraso. Ese precio se acepta de forma deliberada y se documenta, no se descubre en producción. Esta tabla es el modelo de la comparación que piden en la práctica, con otro caso. Volver a las respuestas anotadas al inicio.",
+      "fragments": [
+        64.5,
+        65.5,
+        66.5,
+        67.5,
+        68.5
+      ]
+    },
+    {
+      "sceneId": "pe",
+      "startTime": 70,
+      "endTime": 77.5,
+      "notes": "La práctica es individual y se entrega completada al final de la clase. Tiempo sugerido: unos 40 minutos. Cada estudiante elige uno de tres casos distintos del de Canvas: un pago aprobado que debe llegar a contabilidad, un resultado de laboratorio que debe llegar a la historia clínica, o un pedido pagado que debe llegar a bodega. Con su caso, hace lo mismo que se hizo en la clase: cuenta qué ve el emisor en las tres situaciones de un timeout, diseña un evento con un campo que evite el duplicado, compara las dos formas en tres criterios y decide qué enfoque recomienda y qué precio acepta. Ya no hay que dibujar topologías ni usar herramientas externas: el ejemplo resuelto de la plantilla es el caso de Canvas. Recorrer el aula y revisar que el nombre del evento esté en pasado.",
+      "fragments": [
+        72,
+        73,
+        74,
+        75,
+        76
+      ]
+    },
+    {
+      "sceneId": "topologias",
+      "startTime": 77.5,
+      "endTime": 85,
+      "notes": "Segundo bloque, después de la práctica. Richards y Ford describen dos topologías para organizar el flujo de eventos entre procesadores. En la topología broker no hay un componente central: el flujo se propaga en cadena por publicación y suscripción, y cada procesador emite en difusión un evento que anuncia lo que hizo, sin saber quién reaccionará. Ventaja: desacoplamiento extremo, alta escalabilidad y buena capacidad evolutiva. Costo: se pierde el control centralizado y el manejo de errores se vuelve complejo; si un procesador falla a mitad de la cadena, los demás siguen sin enterarse. En la topología mediador un componente central orquesta el flujo y envía comandos punto a punto a procesadores específicos, que devuelven confirmación. Ventaja: control total, mejor manejo de errores y mayor consistencia. Costo: acopla al mediador con los procesadores y puede ser cuello de botella. Para la notificación de calificaciones sirve el broker, porque es una difusión y no un proceso de varios pasos. Fuente: Richards y Ford (2020), capítulo 14.",
+      "fragments": [
+        79.5,
+        80.5,
+        81.5,
+        82.5,
+        83.5
+      ]
+    },
+    {
+      "sceneId": "cqrs",
+      "startTime": 85,
+      "endTime": 92.5,
+      "notes": "Dos ideas que llevan el evento más lejos. Event Sourcing lo lleva al modelo de persistencia: en lugar de modificar el estado, todos los cambios se registran como una secuencia de eventos inmutables, y el estado actual se obtiene procesando ese historial. Ejemplo: NotaPublicada con 8,0 y NotaCorregida con 8,5 dan como estado actual 8,5, y el historial conserva cómo se llegó. CQRS, Command Query Responsibility Segregation, separa la ruta de escritura de la de lectura: las escrituras se registran como eventos en el log y consumidores independientes arman, de forma asíncrona, vistas optimizadas para consultar. La consecuencia inevitable de esa asincronía es que la vista puede quedar un momento desactualizada respecto al log. Es una consistencia eventual, y es el puente hacia el teorema CAP. Fuente: Kleppmann (2017), capítulo 11.",
+      "fragments": [
+        87,
+        88,
+        89,
+        90,
+        91
+      ]
+    },
+    {
+      "sceneId": "cap",
+      "startTime": 92.5,
+      "endTime": 102,
+      "notes": "La desactualización de la vista no es un defecto corregible con mejor código: es un límite formal. El teorema CAP, de Brewer y formalizado por Gilbert y Lynch en 2002, dice que un sistema de datos distribuido sobre una red no confiable no puede garantizar a la vez consistencia, entendida como linealizabilidad, disponibilidad y tolerancia a particiones. Kleppmann califica de engañosa la lectura popular de elegir dos de tres: la tolerancia a particiones no es elegible, porque las particiones son fallos físicos inevitables, y mientras la red funciona el sistema ofrece consistencia y disponibilidad. La disyuntiva aparece solo cuando la red se parte. Entonces un sistema CP privilegia la linealizabilidad: el nodo aislado rechaza peticiones y deja de estar disponible. Un sistema AP privilegia la disponibilidad: cada réplica responde con sus datos locales, que pueden estar obsoletos. Fuente: Kleppmann (2017), capítulo 9.",
+      "fragments": [
+        94.5,
+        95.5,
+        96.5,
+        97.5,
+        98.5,
+        99.5,
+        100.5
+      ]
+    },
+    {
+      "sceneId": "cap-casos",
+      "startTime": 102,
+      "endTime": 108.5,
+      "notes": "La consistencia eventual es la garantía de los sistemas AP: si las escrituras se detienen, todas las réplicas convergen al mismo valor. Describe con precisión la vista de CQRS. Para la consolidación de notas se acepta: el estudiante ve la nota en Canvas antes que en el reporte oficial y ese retraso es tolerable frente a bloquear al docente. La linealizabilidad, en cambio, es indispensable donde leer un dato obsoleto produce un fallo grave: elegir un líder único para evitar el split-brain y, en la UIDE, la restricción de unicidad de la cédula al matricularse, porque dos matrículas con la misma cédula no son aceptables. Y la linealizabilidad cuesta rendimiento todo el tiempo, no solo durante las fallas. Es el modelo para la última parte de la TA-S3, donde cada estudiante elige otro proceso de la UIDE. Fuente: Kleppmann (2017), capítulo 9.",
+      "fragments": [
+        104,
+        105,
+        106,
+        107
+      ]
+    },
+    {
+      "sceneId": "actividades",
+      "startTime": 108.5,
+      "endTime": 112,
+      "notes": "Las consignas completas, las plantillas y las rúbricas están en Canvas. La PE-S3 se hizo en clase, de forma individual. La TA-S3 es individual y se entrega en PDF: completa un cuadro con DCOM, CORBA y Java RMI, otro con Event-Driven, CQRS y Event Sourcing, compara broker y mediador, explica por qué elegir dos de tres no describe una decisión real y clasifica como CP o AP un proceso de la UIDE distinto de las calificaciones, con una referencia en APA. Recordar las fechas de entrega de Canvas."
+    },
+    {
+      "sceneId": "cierre",
+      "startTime": 112,
+      "endTime": 115.5,
+      "notes": "Volver a las respuestas del inicio. Con el vocabulario de la semana: Canvas no debe invocar al sistema académico, sino publicar el hecho CalificacionPublicada en un log persistente; el identificador único del evento impide que el reintento duplique una nota, y la institución acepta consistencia eventual: el reporte oficial muestra la nota con retraso. Ese precio se acepta de forma deliberada y se documenta. La elección entre invocación remota y evento no se decide por la modernidad de la herramienta, sino por qué disponibilidad se quiere desacoplar. Próxima semana: infraestructura computacional de servidores."
+    }
+  ],
+  "slideSequences": []
+}
+    </script>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="115.5" data-width="1920" data-height="1080">
+
+      <section id="portada" class="clip slide dark" data-start="0" data-duration="3.5" data-track-index="0" data-label="Portada" data-frags="0">
+        <div class="frame" id="portada-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">01 / 17</span>
+      <p class="course" data-in="0" style="--i:0">PP_08_IPTI · Semana 3</p>
+      <h1 class="claim xl" data-in="1" style="--i:1">De la llamada que finge ser local al evento que nadie espera</h1>
+      <p class="lead" data-in="2" style="--i:2">Invocación remota, arquitecturas dirigidas por eventos y teorema CAP</p>
+      <p class="byline" data-in="3" style="--i:3">Arquitectura e Integración de Plataformas de TI · Charlie Cárdenas Toledo</p>
+        </div>
+      </section>
+
+      <section id="caso" class="clip slide" data-start="3.5" data-duration="6.5" data-track-index="0" data-label="El caso de las 40 notas" data-frags="3">
+        <div class="frame" id="caso-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">02 / 17</span>
+      <h1 class="claim" data-in="0" style="--i:0">Cuarenta calificaciones que nunca llegaron</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/caso-notas/caso-notas.html?embed" title="Canvas publica 40 calificaciones durante un mantenimiento de la red y el sistema académico recibe 0; la pregunta es si reintentar y arriesgar duplicar o descartar y perder." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="exploracion" class="clip slide" data-start="10" data-duration="6.5" data-track-index="0" data-label="Exploración: línea de hechos" data-frags="3">
+        <div class="frame" id="exploracion-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">03 / 17</span>
+      <h1 class="claim" data-in="0" style="--i:0">Antes de la teoría: los hechos y las intenciones de una nota</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/linea-hechos/linea-hechos.html?embed" title="Línea de tiempo con cuatro hechos en pasado, una intención todavía no ocurrida y una barrera donde la red separa a los dos sistemas." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="rpc" class="clip slide" data-start="16.5" data-duration="6.5" data-track-index="0" data-label="Llamada remota clásica" data-frags="3">
+        <div class="frame" id="rpc-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">04 / 17</span>
+      <h1 class="claim" data-in="0" style="--i:0">La llamada remota quiso parecerse a una llamada local</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/local-vs-remota/local-vs-remota.html?embed" title="Dos llamadas con el mismo código, registrarNota, una dentro del programa y otra a otro sistema a través de una red que puede fallar; DCOM, CORBA y Java RMI intentaron esconder esa red." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="diferencias" class="clip slide" data-start="23" data-duration="9.5" data-track-index="0" data-label="Cinco diferencias" data-frags="6">
+        <div class="frame" id="diferencias-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">05 / 17</span>
+      <h1 class="claim" data-in="0" style="--i:0">Una llamada de red no es una llamada local más lenta</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="6" src="figuras/cinco-diferencias/cinco-diferencias.html?embed" title="Cinco diferencias entre una llamada local y una remota: es imprevisible, tiene un cuarto desenlace, el reintento es riesgoso, la latencia varía y los datos viajan como bytes; juntas desmienten las falacias de la computación distribuida." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="timeout" class="clip slide" data-start="32.5" data-duration="7.5" data-track-index="0" data-label="Un timeout no dice qué pasó" data-frags="4">
+        <div class="frame" id="timeout-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">06 / 17</span>
+      <h1 class="claim" data-in="0" style="--i:0">Un timeout no dice qué pasó</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/timeout-tres-casos/timeout-tres-casos.html?embed" title="Tres casos distintos, petición perdida, respuesta perdida y servidor lento, que para el emisor se ven igual: la llamada expira sin respuesta." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="reintento" class="clip slide" data-start="40" data-duration="7.5" data-track-index="0" data-label="El identificador evita el duplicado" data-frags="4">
+        <div class="frame" id="reintento-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">07 / 17</span>
+      <h1 class="claim" data-in="0" style="--i:0">Reintentar sin identificador duplica la nota</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/reintento-id/reintento-id.html?embed" title="Dos columnas: sin identificador el reintento duplica la nota de Ana; con un identificador único en cada evento el receptor descarta el reintento." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="comando-evento" class="clip slide" data-start="47.5" data-duration="6.5" data-track-index="0" data-label="Comando y evento" data-frags="3">
+        <div class="frame" id="comando-evento-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">08 / 17</span>
+      <h1 class="claim" data-in="0" style="--i:0">Un comando pide; un evento cuenta lo que ya pasó</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/comando-evento/comando-evento.html?embed" title="Comando PublicarCalificacion, una intención que puede rechazarse, frente al evento CalificacionPublicada, un hecho consumado que nadie puede rechazar." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="broker" class="clip slide" data-start="54" data-duration="8.5" data-track-index="0" data-label="Un log conserva los hechos" data-frags="5">
+        <div class="frame" id="broker-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">09 / 17</span>
+      <h1 class="claim" data-in="0" style="--i:0">Un log persistente conserva los hechos hasta que el otro sistema vuelve</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="5" src="figuras/broker-log/broker-log.html?embed" title="Canvas publica eventos en un log del broker; el sistema académico cae, el docente sigue publicando, y al volver el sistema lee desde donde se quedó y aplica las 40 notas." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="comparacion" class="clip slide" data-start="62.5" data-duration="7.5" data-track-index="0" data-label="Dos formas, dos precios" data-frags="4">
+        <div class="frame" id="comparacion-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">10 / 17</span>
+      <h1 class="claim" data-in="0" style="--i:0">Dos formas de integrar los mismos sistemas, dos precios</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/comparacion/comparacion.html?embed" title="Tabla de tres situaciones, sistema caído, llamada que expira y envío repetido, con lo que pasa con invocación directa y con un evento en un log, y el precio de cada enfoque." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="pe" class="clip slide" data-start="70" data-duration="7.5" data-track-index="0" data-label="Práctica PE-S3" data-frags="4">
+        <div class="frame" id="pe-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">11 / 17</span>
+      <h1 class="claim" data-in="0" style="--i:0">Ahora, individualmente: la práctica PE-S3</h1>
+      <div class="timeline">
+        <div class="row" data-f="1"><b>1</b><strong>Elijan un caso</strong><em>Pago, resultado de laboratorio o pedido</em></div>
+        <div class="row" data-f="2"><b>2</b><strong>Qué ve el emisor</strong><em>Las tres situaciones de un timeout</em></div>
+        <div class="row" data-f="3"><b>3</b><strong>Diseñen el evento</strong><em>Nombre en pasado y campo contra el duplicado</em></div>
+        <div class="row" data-f="4"><b>4</b><strong>Comparen y decidan</strong><em>Tres criterios y el precio que aceptan</em></div>
+      </div>
+        </div>
+      </section>
+
+      <section id="topologias" class="clip slide" data-start="77.5" data-duration="7.5" data-track-index="0" data-label="Broker y mediador" data-frags="4">
+        <div class="frame" id="topologias-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">12 / 17</span>
+      <h1 class="claim" data-in="0" style="--i:0">Dos maneras de organizar el flujo de eventos</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/topologias/topologias.html?embed" title="Topología broker, sin control central y con un canal de eventos que otros procesadores escuchan, frente a topología mediador, con un componente central que envía comandos y espera confirmación." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="cqrs" class="clip slide" data-start="85" data-duration="7.5" data-track-index="0" data-label="Event Sourcing y CQRS" data-frags="4">
+        <div class="frame" id="cqrs-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">13 / 17</span>
+      <h1 class="claim" data-in="0" style="--i:0">Event Sourcing y CQRS llevan el evento más lejos</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/eventos-cqrs/eventos-cqrs.html?embed" title="Event Sourcing: el estado actual 8,5 se calcula repasando los eventos NotaPublicada y NotaCorregida. CQRS: una ruta escribe en el log y otra, aparte, arma una vista para consultar que puede ir atrasada." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="cap" class="clip slide" data-start="92.5" data-duration="9.5" data-track-index="0" data-label="Teorema CAP" data-frags="6">
+        <div class="frame" id="cap-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">14 / 17</span>
+      <h1 class="claim" data-in="0" style="--i:0">Cuando la red se parte hay que decidir: CP o AP</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="6" src="figuras/cap-particion/cap-particion.html?embed" title="Dos nodos con una copia de la nota de Ana; la red entre ellos se parte, una copia se actualiza, y el nodo aislado debe rechazar la consulta, CP, o responder con un dato viejo, AP." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="cap-casos" class="clip slide" data-start="102" data-duration="6.5" data-track-index="0" data-label="Dónde basta la consistencia eventual" data-frags="3">
+        <div class="frame" id="cap-casos-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">15 / 17</span>
+      <h1 class="claim" data-in="0" style="--i:0">Cada proceso decide cuánto retraso acepta</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/cap-casos/cap-casos.html?embed" title="Consolidar notas acepta consistencia eventual, AP; la cédula única al matricular exige linealizabilidad, CP; y la linealizabilidad cuesta rendimiento todo el tiempo." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="actividades" class="clip slide" data-start="108.5" data-duration="3.5" data-track-index="0" data-label="Actividades de la semana" data-frags="0">
+        <div class="frame" id="actividades-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">16 / 17</span>
+      <h1 class="claim" data-in="0" style="--i:0">Esta semana hay dos actividades</h1>
+      <div class="cards two tall">
+        <div class="card" data-in="1" style="--i:1"><span class="tag">PE-S3 · 2,25 puntos</span><strong>Invocación remota frente a eventos</strong><em>Un caso propio: qué ve el emisor, el evento con su identificador y la decisión</em></div>
+        <div class="card" data-in="2" style="--i:2"><span class="tag">TA-S3 · 2,25 puntos</span><strong>Cuadro comparativo</strong><em>Tecnologías clásicas, enfoques con eventos, broker y mediador, y una decisión CP o AP</em></div>
+      </div>
+        </div>
+      </section>
+
+      <section id="cierre" class="clip slide dark" data-start="112" data-duration="3.5" data-track-index="0" data-label="Cierre" data-frags="0">
+        <div class="frame" id="cierre-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">17 / 17</span>
+      <h1 class="claim xl" data-in="0" style="--i:0">Se publica el hecho y se acepta el retraso, de forma deliberada</h1>
+      <p class="lead" data-in="1" style="--i:1">Próxima semana: infraestructura computacional de servidores</p>
+      <p class="byline" data-in="2" style="--i:2">Fuentes: Kleppmann (2017) · Richards y Ford (2020) · Newman (2021)</p>
+        </div>
+      </section>
+    </div>
+    <script>
+      // Con el motor de HyperFrames (check, Studio) el registro ya existe.
+      // Al presentar, el reproductor mueve esta línea de tiempo directamente.
+      const engineHosted = Object.prototype.hasOwnProperty.call(window, "__timelines");
+      window.__timelines = window.__timelines || {};
+      if (!engineHosted) document.documentElement.classList.add("live");
+
+      // Las figuras incrustadas reenvían las flechas aquí: se les quita el foco y se entrega la tecla
+      // al documento donde el reproductor la escucha, para que las flechas siempre controlen el deck.
+      window.addEventListener("message", (ev) => {
+        const m = ev.data;
+        if (!m || m.type !== "deck-key") return;
+        let w = window;
+        for (;;) {
+          try { if (w.document.activeElement && w.document.activeElement !== w.document.body) w.document.activeElement.blur(); } catch (e) {}
+          if (w === w.parent) break;
+          w = w.parent;
+        }
+        try { w.focus(); w.document.dispatchEvent(new KeyboardEvent("keydown", { key: m.key, bubbles: true, cancelable: true })); } catch (e) {}
+      });
+
+      // El reproductor retrocede de diapositiva en diapositiva. Se reemplaza prev() del controlador para
+      // que teclado, botón y deslizamiento deshagan un avance a la vez: de un avance al anterior y,
+      // desde el primero, al último avance de la diapositiva previa.
+      (function installStepBack() {
+        let w = window, host = null;
+        for (;;) {
+          try { host = w.document.querySelector("hyperframes-slideshow"); } catch (e) {}
+          if (host || w === w.parent) break;
+          w = w.parent;
+        }
+        if (!host) return;
+        const patch = () => {
+          const c = host.controller;
+          if (!c) return false;
+          if (c.__stepBack) return true;
+          c.__stepBack = true;
+          const original = c.prev.bind(c);
+          c.prev = () => {
+            const f = c.frame;
+            if (c.stack.length > 1) return original();
+            if (f.fragmentIndex > 0) c.resumeSlide(f.slideIndex, f.fragmentIndex - 1);
+            else if (f.slideIndex > 0) {
+              const p = f.slideIndex - 1, n = c.show.slides[p].fragments.length;
+              c.resumeSlide(p, n > 0 ? n - 1 : -1);
+            }
+          };
+          return true;
+        };
+        setInterval(patch, 300);
+        patch();
+      })();
+
+      const ENTER = 2;
+      const tl = gsap.timeline({ paused: true });
+      tl.to({}, { duration: 115.5 }, 0);
+
+      const figSyncs = [];
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      slides.forEach((slide, index) => {
+        const start = Number(slide.dataset.start);
+        const end = start + Number(slide.dataset.duration);
+        const frame = slide.querySelector(".frame");
+        tl.set(frame, { opacity: 1 }, start);
+        if (index < slides.length - 1) tl.set(frame, { opacity: 0 }, end);
+
+        slide.querySelectorAll("[data-in]").forEach((el) => {
+          const i = Number(el.dataset.in);
+          tl.fromTo(el, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, start + 0.12 + i * 0.07);
+        });
+        slide.querySelectorAll("[data-f]").forEach((el) => {
+          const hold = start + ENTER + Number(el.dataset.f);
+          tl.fromTo(el, { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, hold - 0.6);
+        });
+        slide.querySelectorAll("iframe[data-fig]").forEach((el) => {
+          // La figura corre en su propio documento: en vivo anima sola hacia el estado pedido;
+          // con el motor (check, Studio) sigue la línea de tiempo cuadro a cuadro.
+          // El estado se calcula desde el tiempo de la línea de tiempo, así responde igual
+          // al avanzar, al retroceder y al saltar entre diapositivas.
+          const steps = Number(el.dataset.fig);
+          let sent = -1;
+          const wanted = () => {
+            const t = tl.time();
+            let u = 0;
+            for (let step = 1; step <= steps; step++) u += Math.min(1, Math.max(0, (t - (start + ENTER + step - 0.6)) / 0.6));
+            return engineHosted ? u / steps : Math.round(u) / steps;
+          };
+          const send = (force) => {
+            const value = wanted();
+            if (!el.contentWindow || (!force && value === sent)) return;
+            sent = value;
+            el.contentWindow.postMessage({ type: "fig", mode: engineHosted ? "set" : "go", value }, "*");
+          };
+          figSyncs.push(send);
+          el.addEventListener("load", () => send(true));
+        });
+        slide.querySelectorAll("[data-hl]").forEach((el) => {
+          const hold = start + ENTER + Number(el.dataset.hl);
+          tl.to(el, { backgroundColor: "#fbe3a6", color: "#5c3d00", duration: 0.4 }, hold - 0.5);
+        });
+      });
+
+      tl.eventCallback("onUpdate", () => figSyncs.forEach((sync) => sync()));
+      // En vivo el reproductor puede mover la línea de tiempo sin emitir eventos: se revisa en cada tic de GSAP.
+      if (!engineHosted) gsap.ticker.add(() => figSyncs.forEach((sync) => sync()));
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

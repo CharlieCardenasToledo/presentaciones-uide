@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Topologías broker y mediador</title>
+<style>
+:root{--wine:#910048;--wine-deep:#6d0036;--gold:#e8a920;--teal:#0c6b62;--amber:#7a5200;--ink:#1f1a1d;--muted:#5a5257;--tint:#f6f1f3;--red:#b3261e}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:transparent;font-family:system-ui,"Segoe UI",sans-serif;color:var(--ink);overflow:hidden}
+#st{position:absolute;left:0;top:0;width:1560px;height:720px;transform-origin:0 0}
+.b{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border-radius:16px;padding:6px 14px;font-weight:700;font-size:32px;line-height:1.15;background:var(--tint);color:var(--ink)}
+.b small{display:block;font-size:24px;font-weight:600;margin-top:4px}
+.t{position:absolute;font-size:34px;font-weight:700;line-height:1.2}
+.pill{position:absolute;display:flex;align-items:center;justify-content:center;height:52px;padding:0 20px;border-radius:26px;color:#fff;font:800 24px/1 ui-monospace,Consolas,monospace;white-space:nowrap;opacity:0;z-index:5}
+.ln{position:absolute;background:#cfc6ca}
+
+.cod{position:absolute;background:#1f1a1d;color:#e9e4e7;border-radius:12px;font:600 22px/1.45 ui-monospace,Consolas,monospace;padding:12px 18px;white-space:pre;overflow:hidden;opacity:0;text-align:left}
+.cod .k{color:#e8a920}.cod .s{color:#7fd6c8}.cod .c{color:#a79ea4}.cod .e{color:#ff8a80}.cod .n{color:#f6c1d9}
+.win{position:absolute;border-radius:12px;border:2px solid #cfc6ca;background:#fff;overflow:hidden;opacity:0;text-align:left}
+.win .bar{height:36px;background:#ece6e9;display:flex;align-items:center;padding:0 12px;gap:7px;font-size:20px;font-weight:700;color:#5a5257}
+.win .bar i{width:12px;height:12px;border-radius:50%;background:#c9bfc4;display:inline-block}
+.win .bd{padding:4px 14px;font-size:22px}
+.tr{display:flex;gap:12px;padding:7px 8px;border-bottom:1px solid #e4dde0;font-size:22px;font-weight:600;text-align:left;align-items:center}
+.tr.h{font-weight:800;color:#5a5257;font-size:19px;letter-spacing:.04em}
+.tr span:nth-child(1){flex:2.4}.tr span:nth-child(2){flex:2.2}.tr span:nth-child(3){flex:1}
+.fila{position:absolute;opacity:0;background:#fff;border:2px solid #e4dde0;border-radius:8px}
+.fila.mal{background:#f3c4c0;color:#b3261e;border-color:#b3261e}.fila.bien{background:#e3f2f0;color:#0c6b62;border-color:#0c6b62}
+.note{box-shadow:4px 6px 0 rgba(0,0,0,.14);border-radius:4px}
+code.m{font-family:ui-monospace,Consolas,monospace;font-size:20px;background:#1f1a1d;color:#ff8a80;padding:3px 10px;border-radius:6px;margin-top:6px;display:inline-block;font-weight:600}
+
+</style></head><body>
+<div id="st">
+<svg width="1560" height="720" viewBox="0 0 1560 720" style="position:absolute;left:0;top:0;pointer-events:none"><g id="b1" opacity="0"><line x1="155" y1="110" x2="155.0" y2="212.0" stroke="#910048" stroke-width="5"/><polygon points="155,220 147.2,203.8 162.8,203.8" fill="#910048"/></g><g id="b2" opacity="0"><line x1="385" y1="220" x2="385.0" y2="118.0" stroke="#0c6b62" stroke-width="5"/><polygon points="385,110 392.8,126.2 377.2,126.2" fill="#0c6b62"/></g><g id="b3" opacity="0"><line x1="615" y1="220" x2="615.0" y2="118.0" stroke="#0c6b62" stroke-width="5"/><polygon points="615,110 622.8,126.2 607.2,126.2" fill="#0c6b62"/></g><g id="m1" opacity="0"><line x1="1150" y1="150" x2="937.4" y2="237.0" stroke="#910048" stroke-width="5"/><polygon points="930,240 942.0,226.6 948.0,241.1" fill="#910048"/></g><g id="m2" opacity="0"><line x1="1150" y1="150" x2="1150.0" y2="232.0" stroke="#910048" stroke-width="5"/><polygon points="1150,240 1142.2,223.8 1157.8,223.8" fill="#910048"/></g><g id="m3" opacity="0"><line x1="1150" y1="150" x2="1362.6" y2="237.0" stroke="#910048" stroke-width="5"/><polygon points="1370,240 1352.0,241.1 1358.0,226.6" fill="#910048"/></g></svg>
+<div id="bt" class="b" style="left:30px;top:10px;width:735px;height:50px;opacity:0;background:transparent;color:#910048;font-size:28px;letter-spacing:.08em">TOPOLOGÍA BROKER</div>
+<div id="mt" class="b" style="left:795px;top:10px;width:735px;height:50px;opacity:0;background:transparent;color:#0c6b62;font-size:28px;letter-spacing:.08em">TOPOLOGÍA MEDIADOR</div>
+<div id="bp0" class="b" style="left:60px;top:60px;width:190px;height:60px;opacity:0;font-size:25px">Procesador 1</div>
+<div id="bp1" class="b" style="left:290px;top:60px;width:190px;height:60px;opacity:0;font-size:25px">Procesador 2</div>
+<div id="bp2" class="b" style="left:520px;top:60px;width:190px;height:60px;opacity:0;font-size:25px">Procesador 3</div>
+<div id="bb" class="b" style="left:60px;top:225px;width:650px;height:70px;opacity:0;background:#910048;color:#fff;font-size:28px">Canal de eventos (broker)</div>
+<div id="bl" class="b" style="left:40px;top:305px;width:700px;height:60px;opacity:0;background:transparent;font-size:24px;color:var(--muted);font-weight:600">Cada procesador publica lo que hizo, por ejemplo NotaPublicada, y otros reaccionan</div>
+<div id="mm" class="b" style="left:1010px;top:66px;width:280px;height:80px;opacity:0;background:#0c6b62;color:#fff;font-size:30px">Mediador</div>
+<div id="mp0" class="b" style="left:825px;top:245px;width:210px;height:70px;opacity:0;font-size:25px">Procesador 1</div>
+<div id="mp1" class="b" style="left:1060px;top:245px;width:210px;height:70px;opacity:0;font-size:25px">Procesador 2</div>
+<div id="mp2" class="b" style="left:1295px;top:245px;width:210px;height:70px;opacity:0;font-size:25px">Procesador 3</div>
+<div id="ml" class="b" style="left:800px;top:325px;width:730px;height:60px;opacity:0;background:transparent;font-size:24px;color:var(--muted);font-weight:600">Envía comandos como RegistrarNota y espera la confirmación de cada uno</div>
+<div id="ba" class="b" style="left:30px;top:400px;width:735px;height:130px;opacity:0;text-align:left;align-items:flex-start;justify-content:center;padding:14px 24px;background:#fcefc9;color:#7a5200;font-size:26px">Sin control central: escala bien y evoluciona fácil, pero un fallo a mitad de la cadena pasa inadvertido</div>
+<div id="ma" class="b" style="left:795px;top:400px;width:735px;height:130px;opacity:0;text-align:left;align-items:flex-start;justify-content:center;padding:14px 24px;background:#e3f2f0;color:#0c6b62;font-size:26px">Control total del flujo y mejor manejo de errores, pero acopla y puede ser cuello de botella</div>
+<div id="k0" class="t" style="left:30px;top:560px;width:1500px;opacity:0;color:var(--wine-deep);font-size:31px">Dos maneras de organizar el flujo de eventos entre procesadores</div>
+<div id="k1" class="t" style="left:30px;top:560px;width:1500px;opacity:0;color:var(--wine-deep);font-size:31px">Broker: cada procesador publica lo que hizo, sin saber quién reacciona</div>
+<div id="k2" class="t" style="left:30px;top:560px;width:1500px;opacity:0;color:var(--wine-deep);font-size:31px">Sin control central: escala bien, pero los errores son difíciles de seguir</div>
+<div id="k3" class="t" style="left:30px;top:560px;width:1500px;opacity:0;color:var(--wine-deep);font-size:31px">Mediador: un componente central envía comandos y espera confirmación</div>
+<div id="k4" class="t" style="left:30px;top:560px;width:1500px;opacity:0;color:var(--teal);font-size:31px">Con control total: los errores se manejan mejor, a costa de un posible cuello de botella</div>
+<div id="q0" class="t" style="left:30px;top:640px;width:1500px;opacity:0;color:var(--amber);font-size:30px">Pregunta: ¿Quién sabe en qué paso va el proceso?</div>
+<div id="q1" class="t" style="left:30px;top:640px;width:1500px;opacity:0;color:var(--amber);font-size:30px">Pregunta: ¿Qué pasa si falla el procesador 2?</div>
+<div id="q2" class="t" style="left:30px;top:640px;width:1500px;opacity:0;color:var(--amber);font-size:30px">Pregunta: ¿Qué se pierde al no tener control central?</div>
+<div id="q3" class="t" style="left:30px;top:640px;width:1500px;opacity:0;color:var(--amber);font-size:30px">Pregunta: ¿Quién sabe ahora en qué paso va el proceso?</div>
+<div id="q4" class="t" style="left:30px;top:640px;width:1500px;opacity:0;color:var(--amber);font-size:30px">Pregunta: ¿Qué pasa si el mediador se cae?</div>
+</div>
+<script>
+const N = 4;
+const st = document.getElementById("st");
+function fit() { const k = Math.min(innerWidth / 1560, innerHeight / 720); st.style.transform = "scale(" + k + ")"; }
+fit(); addEventListener("resize", fit);
+const $ = (s) => document.querySelector(s);
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const ease = (t) => { t = clamp(t, 0, 1); return t * t * (3 - 2 * t); };
+const win = (s, a, b) => ease((s - a) / (b - a));
+const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+const mix = (a, b, t) => { const x = hex(a), y = hex(b); return "rgb(" + x.map((v, i) => Math.round(v + (y[i] - v) * t)).join(",") + ")"; };
+function lit(el, base, color, t, fg0, fg1) { el.style.background = mix(base, color, t); el.style.color = mix(fg0 || "#1f1a1d", fg1 || "#ffffff", t); }
+function put(el, x, y, a) { el.style.transform = "translate(" + x + "px," + y + "px)"; el.style.opacity = String(a); }
+function route(k, pts) { for (let i = 0; i < pts.length - 1; i++) { if (k <= pts[i + 1][0]) { const t = ease((k - pts[i][0]) / (pts[i + 1][0] - pts[i][0])); return [pts[i][1] + (pts[i + 1][1] - pts[i][1]) * t, pts[i][2] + (pts[i + 1][2] - pts[i][2]) * t]; } } const l = pts[pts.length - 1]; return [l[1], l[2]]; }
+
+function caps(s, n, pref) { for (let k = 0; k <= n; k++) { const a = win(s, k - 0.5, k) * (k < n ? 1 - win(s, k, k + 0.5) : 1); const el = $("#" + pref + k); if (el) put(el, 0, 0, clamp(a, 0, 1)); } }
+function show(el, a, dy) { put(el, 0, (1 - a) * (dy === undefined ? 24 : dy), a); }
+function so(id, a) { $("#" + id).setAttribute("opacity", String(a)); }
+
+let u = 0, target = 0, frame = 0, timer = 0, last = 0;
+function draw() { 
+const s = u * N;
+show($("#bt"), win(s, 0, 0.5), 8); show($("#mt"), win(s, 2, 2.5), 8);
+['bp0','bp1','bp2'].forEach((id, i) => show($("#" + id), win(s, 0.05 + i * 0.1, 0.8 + i * 0.05), 12));
+show($("#bb"), win(s, 0.3, 1), 12); show($("#bl"), win(s, 0.6, 1), 8);
+so("b1", win(s, 0.6, 1)); so("b2", win(s, 0.8, 1)); so("b3", win(s, 0.9, 1));
+show($("#ba"), win(s, 1, 2), 14);
+show($("#mm"), win(s, 2, 2.8), 12);
+['mp0','mp1','mp2'].forEach((id, i) => show($("#" + id), win(s, 2.1 + i * 0.1, 2.9 + i * 0.05), 12));
+so("m1", win(s, 2.4, 3)); so("m2", win(s, 2.5, 3)); so("m3", win(s, 2.6, 3)); show($("#ml"), win(s, 2.6, 3), 8);
+show($("#ma"), win(s, 3, 4), 14);
+caps(s, 4, "k"); caps(s, 4, "q");
+ }
+function loop() {
+  clearTimeout(timer); cancelAnimationFrame(frame);
+  const now = performance.now();
+  const dt = last ? Math.min((now - last) / 1000, 1) : 1 / 60; last = now;
+  const speed = 1 / (N * 1.6);
+  u = target > u ? Math.min(target, u + dt * speed) : Math.max(target, u - dt * speed * 2);
+  draw();
+  if (u !== target) { frame = requestAnimationFrame(loop); timer = setTimeout(loop, 80); } else { frame = 0; timer = 0; last = 0; }
+}
+const run = () => { if (!frame && !timer) { last = 0; loop(); } };
+const go = (v) => { target = clamp(v, 0, 1); run(); };
+window.__fig = { set(v) { u = target = clamp(v, 0, 1); draw(); }, go, get u() { return u; } };
+addEventListener("message", (e) => { const m = e.data; if (!m || m.type !== "fig") return; if (m.mode === "set") window.__fig.set(Number(m.value)); else go(Number(m.value)); });
+if (window.parent !== window) {
+  const KEYMAP = { ArrowRight: "ArrowRight", PageDown: "ArrowRight", " ": "ArrowRight", Enter: "ArrowRight", ArrowLeft: "ArrowLeft", PageUp: "ArrowLeft", Backspace: "ArrowLeft" };
+  addEventListener("keydown", (e) => { const k = KEYMAP[e.key]; if (!k) return; e.preventDefault(); e.stopImmediatePropagation(); parent.postMessage({ type: "deck-key", key: k }, "*"); }, true);
+} else {
+  addEventListener("click", () => go(target >= 1 ? 0 : Math.min(1, Math.round(target * N + 1) / N)));
+}
+draw();
+</script></body></html>
