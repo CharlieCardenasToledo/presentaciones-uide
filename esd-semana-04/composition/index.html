@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Semana 4 · Búsqueda, invariantes y micro-benchmarks</title>
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      :root {
+        /* Colores tomados del logotipo UIDE: vino #910048 y dorado #E8A920. Sin degradados. */
+        --paper: #ffffff; --ink: #1f1a1d; --muted: #5a5257; --wine: #910048; --wine-deep: #6d0036; --gold: #e8a920;
+        --teal: #0c6b62; --teal-soft: #e3f2f0; --amber: #7a5200; --amber-soft: #fcefc9; --card: #ffffff; --line: #e2dcdf; --tint: #f6f1f3;
+      }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--paper); }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; font-family: system-ui, sans-serif; color: var(--ink); }
+      .slide { position: absolute; inset: 0; }
+      .frame { position: absolute; inset: 0; padding: 92px 120px 150px; display: flex; flex-direction: column; justify-content: center; opacity: 0; background: var(--paper); }
+      .frame::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 22px; background: var(--wine); }
+      .frame::after { content: ""; position: absolute; left: 22px; top: 0; bottom: 0; width: 8px; background: var(--gold); }
+      .dark .frame { background: var(--wine); color: #fff; }
+      .dark .frame::before { background: var(--gold); }
+      .dark .frame::after { display: none; }
+      .logo { position: absolute; top: 44px; right: 96px; height: 92px; width: auto; }
+      .dark .logo { top: 0; right: 96px; height: 150px; padding: 26px 30px 22px; background: #fff; border-radius: 0 0 18px 18px; box-sizing: border-box; }
+      .num { position: absolute; bottom: 52px; left: 120px; font-size: 26px; letter-spacing: 0.14em; color: var(--muted); font-variant-numeric: tabular-nums; }
+      .dark .num { color: #f1d3e0; }
+      .course { font-size: 34px; font-weight: 600; color: var(--gold); margin-bottom: 30px; }
+      .claim { font-family: ui-serif, serif; font-weight: 700; font-size: 74px; line-height: 1.08; letter-spacing: -0.015em; max-width: 1480px; margin-bottom: 44px; }
+      .claim.long { font-size: 62px; max-width: 1640px; }
+      .claim.xl { font-size: 96px; max-width: 1500px; }
+      .lead { font-size: 48px; line-height: 1.25; color: #ffffff; max-width: 1400px; }
+      .lead.dark-ink { color: var(--muted); margin-top: -14px; margin-bottom: 40px; }
+      .byline { font-size: 32px; color: #f6dfe9; margin-top: 70px; }
+      .source { font-size: 30px; color: var(--muted); margin-top: 34px; }
+      .punch { font-family: ui-serif, serif; font-size: 56px; font-weight: 700; color: var(--wine); margin-top: 44px; }
+      .punch.soft { color: var(--ink); font-size: 46px; margin-top: 18px; }
+      .punch.good { color: var(--teal); }
+
+      .steps { list-style: none; display: grid; gap: 18px; max-width: 1500px; }
+      .steps li { display: flex; align-items: center; gap: 30px; font-size: 46px; background: var(--tint); border-radius: 18px; padding: 18px 30px; }
+      .steps b { flex: none; width: 72px; height: 72px; border-radius: 50%; background: var(--wine); color: #fff; display: grid; place-items: center; font-size: 40px; }
+
+      .cards { display: grid; gap: 30px; }
+      .cards.three { grid-template-columns: repeat(3, 1fr); }
+      .cards.two { grid-template-columns: repeat(2, 1fr); }
+      .cards.four { grid-template-columns: repeat(4, 1fr); }
+      .cards.grid2 { grid-template-columns: repeat(2, 1fr); gap: 26px; }
+      .cards.tight { margin-top: 30px; }
+      .card { background: var(--tint); border-radius: 22px; padding: 36px 40px; display: flex; flex-direction: column; gap: 14px; }
+      .card strong { font-size: 48px; line-height: 1.12; font-weight: 800; }
+      .card em { font-style: normal; font-size: 40px; line-height: 1.2; color: var(--muted); }
+      .card .tag, .panel .tag { align-self: flex-start; font-size: 34px; font-weight: 600; color: var(--wine); }
+      .card.file strong { font-family: ui-monospace, monospace; font-size: 46px; }
+      .card.empty, .card.warn { background: var(--amber-soft); }
+      .card.warn strong { color: var(--amber); }
+      .card.pill { align-items: center; text-align: center; padding: 30px 20px; }
+      .card.pill b { width: 68px; height: 68px; border-radius: 50%; background: var(--wine); color: #fff; display: grid; place-items: center; font-size: 38px; }
+      .cards.tall .card { min-height: 300px; }
+      .verdict { margin-top: auto; padding: 14px 18px; border-radius: 12px; background: #fbe3a6; color: var(--amber) !important; font-weight: 700; }
+      .verdict.good { background: #cfe9e5; color: var(--teal) !important; }
+
+      table.data { border-collapse: collapse; width: 100%; background: var(--tint); border-radius: 20px; overflow: hidden; }
+      table.data th { text-align: left; font-size: 30px; letter-spacing: 0.1em; text-transform: uppercase; color: #fff; background: var(--wine-deep); padding: 20px 28px; }
+      table.data td { font-size: 42px; padding: 22px 28px; border-top: 3px solid #ffffff; font-variant-numeric: tabular-nums; }
+      table.data.matrix td { font-size: 40px; padding: 24px 28px; }
+      table.data.matrix b { color: var(--wine); }
+      .chips { display: flex; gap: 22px; margin-top: 36px; flex-wrap: wrap; }
+      .chip { font-size: 40px; font-weight: 700; padding: 16px 28px; border-radius: 999px; background: var(--amber-soft); color: var(--amber); }
+
+      .split { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+      .panel { background: var(--tint); border-radius: 22px; padding: 30px 34px; display: flex; flex-direction: column; gap: 18px; }
+      .panel.good { background: var(--teal-soft); }
+      .panel.good .tag { color: var(--teal); }
+      .box { font-size: 40px; padding: 18px 24px; border-radius: 14px; background: #ffffff; }
+      .box i { font-style: normal; color: var(--amber); font-weight: 700; }
+      .box.strong { background: var(--teal); color: #fff; font-weight: 700; }
+      .box.new { background: var(--teal-soft); color: var(--teal); font-weight: 700; }
+      .schema { font-family: ui-monospace, monospace; font-size: 44px; font-weight: 700; padding: 26px 32px; border-radius: 18px; background: var(--tint); }
+      .schema.main { font-size: 50px; background: var(--wine-deep); color: #fff; }
+      .schema.small { font-size: 40px; background: #ffffff; }
+      .schema u { text-decoration-thickness: 5px; text-underline-offset: 8px; }
+
+      .layers { display: grid; gap: 22px; max-width: 1500px; }
+      .layer { display: flex; align-items: baseline; gap: 34px; padding: 30px 38px; border-radius: 20px; background: var(--wine); color: #fff; }
+      .layer.mid { background: #7f003f; margin-left: 70px; }
+      .layer.low { background: var(--wine-deep); margin-left: 140px; }
+      .layer strong { font-size: 50px; flex: none; width: 430px; }
+      .layer em { font-style: normal; font-size: 40px; color: #ffffff; }
+
+      .timeline { display: grid; gap: 14px; }
+      .timeline .row { display: grid; grid-template-columns: 170px 560px 1fr; align-items: center; gap: 30px; background: var(--tint); border-radius: 16px; padding: 14px 28px; }
+      .timeline b { font-family: ui-serif, serif; font-size: 52px; color: var(--wine); font-variant-numeric: tabular-nums; }
+      .timeline strong { font-size: 42px; }
+      .timeline em { font-style: normal; font-size: 40px; color: var(--muted); }
+
+      img.shot { flex: none; height: 640px; width: auto; align-self: center; margin-top: -10px; }
+      iframe.fig { flex: none; width: 1560px; height: 720px; border: 0; background: transparent; align-self: center; margin-top: -24px; }
+
+      /* Transiciones solo al presentar en vivo: el reproductor salta entre
+         puntos de la línea de tiempo y el navegador suaviza el cambio. */
+      html.live .frame { transition: opacity 0.45s ease; }
+      html.live [data-in], html.live [data-f] { transition: opacity 0.5s ease, transform 0.55s cubic-bezier(0.2, 0.7, 0.2, 1); transition-delay: calc(var(--i, 0) * 70ms); }
+      html.live [data-hl] { transition: background-color 0.4s ease, color 0.4s ease; }
+    </style>
+  </head>
+  <body>
+    <script type="application/hyperframes-slideshow+json">
+{
+  "slides": [
+    {
+      "sceneId": "portada",
+      "startTime": 0,
+      "endTime": 3.5,
+      "notes": "Abrir con una pregunta: el registro de matrícula de la universidad guarda un millón de números y alguien pregunta si el suyo está. ¿Cuántos registros tendrá que mirar el programa? Recoger dos o tres respuestas sin corregirlas. La clase termina con dos búsquedas escritas, sus invariantes y una medición que comprueba su costo."
+    },
+    {
+      "sceneId": "ruta",
+      "startTime": 3.5,
+      "endTime": 7,
+      "notes": "Presentar la ruta en un minuto. Es la misma secuencia del material de la semana: primero el caso de la matrícula, después las dos búsquedas, la invariante que las vigila, el micro-benchmark que mide su costo y la gráfica que lo muestra."
+    },
+    {
+      "sceneId": "matricula",
+      "startTime": 7,
+      "endTime": 13.5,
+      "notes": "Es la exploración del material de la semana. El registro guarda un millón de números de matrícula, ordenados. Primer avance: las dos propuestas corren a la vez. La izquierda revisa de uno en uno y llega al final del millón; la derecha abre por la mitad y se queda con una mitad cada vez, y llega a un solo registro en unas veinte revisiones. Antes de avanzar, preguntar cuántas revisiones creen que hará la segunda. Segundo avance: aparece una lista sin ordenar y se busca el 15; el centro es 61 y 15 es menor, así que la propuesta se queda con la izquierda. Preguntar si hizo bien. Tercer avance: descartó la mitad donde estaba el 15. Para que la segunda propuesta funcione la lista debe estar ordenada. Todavía sin nombres técnicos.",
+      "fragments": [
+        9,
+        10,
+        11,
+        12
+      ]
+    },
+    {
+      "sceneId": "idea",
+      "startTime": 13.5,
+      "endTime": 17,
+      "notes": "Aquí aparecen los nombres técnicos. Buscar es encontrar la posición de un elemento en un conjunto, o saber que no está (Joyanes, 2008). La propuesta 1 es la búsqueda lineal, o secuencial; la propuesta 2 es la búsqueda binaria, que aprovecha el orden."
+    },
+    {
+      "sceneId": "busqueda-1983",
+      "startTime": 17,
+      "endTime": 24.5,
+      "notes": "Es la Figura 1 del material de la semana, en cinco estados con una lista ordenada de once números y la clave 1983. Al entrar: la misma lista para las dos búsquedas. Primer avance: la lineal revisa de uno en uno y llega al índice 6 con siete comparaciones. Segundo avance: la binaria abre por el centro, 1898 en el índice 5; como 1983 es mayor, descarta la izquierda. Tercer avance: el centro de lo que queda es 2446, mayor, y se descarta la derecha. Cuarto avance: el centro es 1983 y la encuentra con tres comparaciones. Antes de cada avance, preguntar qué número mirará la binaria ahora. En este curso se cuenta una comparación con el centro por vuelta, como Joyanes.",
+      "fragments": [
+        19,
+        20,
+        21,
+        22,
+        23
+      ]
+    },
+    {
+      "sceneId": "codigo",
+      "startTime": 24.5,
+      "endTime": 31,
+      "notes": "El código es el del material de la semana. A la izquierda se resalta la línea que se ejecuta; a la derecha, la misma lista con los tres marcadores bajo, centro y alto, y lo que queda fuera del intervalo se apaga. Vuelta 1: centro = 5, a[5] = 1898 es menor que 1983, así que bajo = 6. Vuelta 2: centro = 8, a[8] = 2446 es mayor, así que alto = 7. Vuelta 3: centro = 6 y a[6] es la clave, la función devuelve 6. En Python las posiciones empiezan en 0. Antes de cada avance, pedir a la clase los valores de bajo, alto y centro de la siguiente vuelta; es lo que van a hacer en el ejercicio de trazar con la clave 1500.",
+      "fragments": [
+        26.5,
+        27.5,
+        28.5,
+        29.5
+      ]
+    },
+    {
+      "sceneId": "invariante-idea",
+      "startTime": 31,
+      "endTime": 34.5,
+      "notes": "La semana 2 definió la invariante como lo que debe cumplirse siempre. Para una búsqueda es una frase sobre el bucle. En la lineal: antes de mirar la posición i, la clave no está entre las posiciones 0 e i - 1. En la binaria: si la clave está en la lista, está entre bajo y alto. Joyanes señala que pensar en invariantes antes de codificar hace probable tener pocos errores."
+    },
+    {
+      "sceneId": "invariante-1500",
+      "startTime": 34.5,
+      "endTime": 43,
+      "notes": "Es el ejercicio de trazar, con una clave que no está: el 1500. Al entrar: el intervalo es toda la lista y la invariante es cierta porque la clave, si está, está en algún lugar de ella. Cada vuelta compara con el centro, descarta una mitad que no puede contener la clave y el recuadro verde se encoge: alto = 4, alto = 1, bajo = 1 y bajo = 2. Cuarta vuelta: bajo = 2 queda mayor que alto = 1 y el intervalo está vacío. Por la invariante, si la clave estuviera tendría que estar en un intervalo vacío, así que no está y la función devuelve -1. Fueron cuatro comparaciones. Antes de cada avance, preguntar qué valor tomará bajo o alto.",
+      "fragments": [
+        36.5,
+        37.5,
+        38.5,
+        39.5,
+        40.5,
+        41.5
+      ]
+    },
+    {
+      "sceneId": "bucle-infinito",
+      "startTime": 43,
+      "endTime": 50.5,
+      "notes": "Es la versión con error del material de la semana. Es igual a la binaria salvo en una línea: alto = centro en lugar de alto = centro - 1. Se prueba con la lista [1, 3] y la clave 2. Primer avance: vuelta 1, centro = 0, a[0] = 1 es menor que 2, bajo = 1. Segundo avance: vuelta 2, centro = 1, a[1] = 3 es mayor, alto = centro = 1; los valores no cambiaron. Tercer avance: la vuelta 3 es idéntica a la 2 y el bucle no termina nunca. La invariante se conserva, porque la clave, si estuviera, seguiría entre bajo y alto; lo que se rompe es que el intervalo se reduzca. La comprobación con assert lo detecta con el mensaje que se ve. Cuarto avance: con alto = centro - 1, alto pasa a 0, bajo es mayor y la función devuelve -1. Una invariante no basta si el bucle no termina.",
+      "fragments": [
+        45,
+        46,
+        47,
+        48,
+        49
+      ]
+    },
+    {
+      "sceneId": "micro-idea",
+      "startTime": 50.5,
+      "endTime": 54,
+      "notes": "Hasta aquí el costo se predijo con Big-O. Ahora se comprueba con una medición. Un micro-benchmark mide el tiempo de una operación con un script para contrastarlo con el Big-O que se predice; en este curso el tiempo medido, en segundos, es el indicador del número de pasos. Cronometrar una sola vez no basta."
+    },
+    {
+      "sceneId": "una-medicion",
+      "startTime": 54,
+      "endTime": 60.5,
+      "notes": "Es la situación B del material de la semana. Una compañera mide la lineal una vez con n = 1 000 y otra vez con n = 1 000 000, y la segunda tarda menos. Concluye que la lineal es más rápida con listas grandes. Antes de avanzar, pedir a la clase que busque el error. Primer avance: se muestran las claves; la primera medición buscó una clave ausente, que obliga a recorrer toda la lista, y la segunda buscó el tercer elemento, que termina enseguida. Segundo avance: con la misma clave ausente en las dos, el tiempo se multiplica por 1 000 al multiplicar n por 1 000, que es lo que predice O(n). Los valores son de ejemplo, para mostrar el error de diseño; las mediciones reales las hacen ellos en PE-1.4.",
+      "fragments": [
+        56,
+        57,
+        58,
+        59
+      ]
+    },
+    {
+      "sceneId": "cinco-pasos",
+      "startTime": 60.5,
+      "endTime": 69,
+      "notes": "Son los cinco pasos de la Figura 2 del material de la semana, cada uno con la línea de código que lo hace. Preparar: los datos se construyen fuera de la medición. Calentar: una corrida cuyo resultado no se usa. Repetir y cronometrar: al menos 30 veces, y en bloque cuando la operación dura menos de un microsegundo. Mediana: no se deja engañar por un valor extremo. Comparar: se repite con otro tamaño y se calcula el cociente. En Python se usa time.perf_counter, un reloj de alta resolución, y statistics.median. Antes de cada avance, preguntar qué creen que falla si se omite ese paso.",
+      "fragments": [
+        62.5,
+        63.5,
+        64.5,
+        65.5,
+        66.5,
+        67.5
+      ]
+    },
+    {
+      "sceneId": "claves",
+      "startTime": 69,
+      "endTime": 74.5,
+      "notes": "La práctica PE-1.4 mide dos claves por búsqueda: la del medio y una ausente mayor que todas. Antes de cada avance, pedir la predicción: si n se multiplica por 1 000, ¿cuánto debería crecer el tiempo? Primer avance: la lineal con la clave del medio o con la ausente recorre la mitad o toda la lista, así que el cociente esperado ronda 1 000. Segundo avance: la binaria con la clave del medio la encuentra en la primera comparación y el cociente ronda 1; con la clave ausente pasa de unas 10 comparaciones a unas 20 y el cociente ronda 2. Estos valores son la referencia para la columna Cociente que predice su Big-O de la práctica; los medidos pueden desviarse y esa desviación se explica, no se oculta.",
+      "fragments": [
+        71,
+        72,
+        73
+      ]
+    },
+    {
+      "sceneId": "bloque",
+      "startTime": 74.5,
+      "endTime": 80,
+      "notes": "Es la función medir_en_bloque del archivo de partida de la práctica, que ya viene escrita. Primer avance: cuando una operación dura muy poco, el reloj no la distingue bien; se cronometran 200 seguidas y se divide entre 200. Segundo avance: dos casos de la práctica medidos en el equipo donde se preparó la clase, con Python 3.14. Una búsqueda binaria dura unos 3 microsegundos y se mide en bloque. Una búsqueda lineal de la clave ausente con n = 1 000 000 dura unos 38 milisegundos; en bloque de 200 tardaría más de 7 segundos por repetición, así que se mide con pocas repeticiones. En el archivo de partida el estudiante decide, en una línea, cuál usar en cada caso. En otro equipo los valores cambian.",
+      "fragments": [
+        76.5,
+        77.5,
+        78.5
+      ]
+    },
+    {
+      "sceneId": "cocientes",
+      "startTime": 80,
+      "endTime": 87.5,
+      "notes": "Es el ejemplo resuelto del material de la semana: copiar una lista con datos[:] para cuatro valores de n, en un equipo de ejemplo con Python 3.14. Los tiempos son 1,8; 19,6; 379,6 y 9 072,8 microsegundos. Lo que se analiza no es el valor absoluto sino cómo cambia al multiplicar n por 10. Los cocientes consecutivos son 10,9; 19,4 y 23,9; para O(n) se espera cerca de 10. Primero contra último: 5 040, y se esperaba 1 000, unas cinco veces más. No se acerca a 1 ni a 2, así que no es O(1) ni O(log n). Una hipótesis que el curso no verifica es que la lista de un millón de elementos ya no cabe en la memoria rápida del procesador. Es el formato del reporte TA-1.4. Antes de cada avance, pedir la predicción.",
+      "fragments": [
+        82,
+        83,
+        84,
+        85,
+        86
+      ]
+    },
+    {
+      "sceneId": "grafica-escala",
+      "startTime": 87.5,
+      "endTime": 94,
+      "notes": "Es la Figura 3 del material de la semana, con los valores que calcula Joyanes: para n = 100, siete comparaciones de la binaria y cincuenta de media de la lineal; para n = 1 000 000, veinte y quinientas mil. Los dos ejes van en escala logarítmica, como plt.loglog en matplotlib. Primer avance: la lineal es una recta que sube de forma constante. Segundo avance: la binaria es una curva casi plana. Tercer avance: al final de la gráfica, 500 000 contra 20. Una escala lineal aplastaría los tamaños pequeños; por eso se usa logarítmica. Es la gráfica que piden en TA-1.4, con título, nombres de ejes con unidad y leyenda.",
+      "fragments": [
+        89.5,
+        90.5,
+        91.5,
+        92.5
+      ]
+    },
+    {
+      "sceneId": "codigo-grafica",
+      "startTime": 94,
+      "endTime": 100.5,
+      "notes": "Es el script del material de la semana que dibuja la gráfica, con la copia de una lista como ejemplo. Primer avance: plt.loglog pone los dos ejes en escala logarítmica. Segundo avance: título y nombres de los ejes, con la unidad del tiempo en microsegundos. Tercer avance: la leyenda distingue las series y savefig guarda la imagen que se pega en el reporte de TA-1.4. Los tamaños y los tiempos de cada búsqueda salen de la tabla de la práctica; en matplotlib se agrega una línea plt.loglog por búsqueda. Si no tienen matplotlib instalado, se instala con pip antes de la clase.",
+      "fragments": [
+        96,
+        97,
+        98,
+        99
+      ]
+    },
+    {
+      "sceneId": "ordenar",
+      "startTime": 100.5,
+      "endTime": 107,
+      "notes": "Es la situación C del material de la semana. Un equipo busca cinco veces en una lista de un millón de elementos sin ordenar. Uno propone ordenar una vez y usar la binaria; otro, usar la lineal. Ordenar cuesta del orden de n log n, unas 20 000 000 de operaciones; cinco lineales cuestan unas 5 000 000 en el peor caso. Primer avance: la opción de ordenar. Segundo avance: la opción lineal, mucho más corta. Tercer avance: con cinco búsquedas conviene la lineal. Con las cifras del material de la semana, ordenar compensa en el peor caso desde 21 búsquedas, porque cada una cuesta unas 20 comparaciones en lugar de un millón. Antes de avanzar, pedir que tomen posición.",
+      "fragments": [
+        102.5,
+        103.5,
+        104.5,
+        105.5
+      ]
+    },
+    {
+      "sceneId": "actividades",
+      "startTime": 107,
+      "endTime": 110.5,
+      "notes": "PE-1.4 se arma en clase: el script con la búsqueda lineal y la binaria propias y su micro-benchmark para cuatro tamaños y tres claves, con la lista construida fuera de la medición, calentamiento, al menos 30 repeticiones y mediana en microsegundos. Si no terminan las mediciones en clase, las completan en su tiempo autónomo antes de TA-1.4, que usa esos tiempos. TA-1.4 es el reporte de una página con la gráfica en escala logarítmica y el análisis de escala. GA-1.2 es el checkpoint de invariantes. Las plantillas y las fechas están en Canvas."
+    },
+    {
+      "sceneId": "cierre",
+      "startTime": 110.5,
+      "endTime": 114,
+      "notes": "Volver a la pregunta inicial: no hacen falta un millón de pasos si la lista está ordenada, pero esa precondición hay que cumplirla y la medición hay que diseñarla. Tarea para casa: la recuperación sin apuntes del material de la semana, con ocho preguntas, y las tres situaciones para transferir."
+    }
+  ],
+  "slideSequences": []
+}
+    </script>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="114" data-width="1920" data-height="1080">
+
+      <section id="portada" class="clip slide dark" data-start="0" data-duration="3.5" data-track-index="0" data-label="Portada" data-frags="0">
+        <div class="frame" id="portada-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">01 / 20</span>
+      <p class="course" data-in="0" style="--i:0">Estructura de Datos · Semana 4</p>
+      <h1 class="claim xl" data-in="1" style="--i:1">Buscar entre un millón de registros no debería costar un millón de pasos</h1>
+      <p class="lead" data-in="2" style="--i:2">Búsqueda lineal y binaria, invariantes y micro-benchmarks</p>
+      <p class="byline" data-in="3" style="--i:3">Estructura de Datos · Charlie Cárdenas Toledo</p>
+        </div>
+      </section>
+
+      <section id="ruta" class="clip slide" data-start="3.5" data-duration="3.5" data-track-index="0" data-label="Ruta de la clase" data-frags="0">
+        <div class="frame" id="ruta-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">02 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">La clase va de dos formas de buscar a una medición que las compara</h1>
+      <ol class="steps">
+        <li data-in="1" style="--i:1"><b>1</b><span>Explorar el registro de matrícula</span></li>
+        <li data-in="2" style="--i:2"><b>2</b><span>Comparar la búsqueda lineal y la binaria</span></li>
+        <li data-in="3" style="--i:3"><b>3</b><span>Escribir la invariante y encontrar un error</span></li>
+        <li data-in="4" style="--i:4"><b>4</b><span>Diseñar un micro-benchmark confiable</span></li>
+        <li data-in="5" style="--i:5"><b>5</b><span>Leer los cocientes y la gráfica de escala</span></li>
+      </ol>
+        </div>
+      </section>
+
+      <section id="matricula" class="clip slide" data-start="7" data-duration="6.5" data-track-index="0" data-label="Dos propuestas" data-frags="3">
+        <div class="frame" id="matricula-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">03 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">Dos formas de buscar entre un millón de registros</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/dos-propuestas/dos-propuestas.html?embed" title="Dos barras. La primera se llena hasta un millón de registros revisados; la segunda se reduce a la mitad veinte veces. Debajo, una lista sin ordenar donde la búsqueda por la mitad descarta justo la zona que contiene el 15." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="idea" class="clip slide dark" data-start="13.5" data-duration="3.5" data-track-index="0" data-label="La idea" data-frags="0">
+        <div class="frame" id="idea-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">04 / 20</span>
+      <h1 class="claim xl" data-in="0" style="--i:0">Buscar es hallar una posición o saber que no hay ninguna</h1>
+      <p class="lead" data-in="1" style="--i:1">La lineal recorre. La binaria descarta mitades.</p>
+        </div>
+      </section>
+
+      <section id="busqueda-1983" class="clip slide" data-start="17" data-duration="7.5" data-track-index="0" data-label="Buscar el 1983" data-frags="4">
+        <div class="frame" id="busqueda-1983-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">05 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">Buscar el 1983: siete comparaciones contra tres</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/busqueda-1983/busqueda-1983.html?embed" title="Una lista ordenada de once números. La búsqueda lineal revisa los siete primeros hasta hallar el 1983. La binaria revisa el 1898, luego el 2446 y por último el 1983, y descarta la mitad que no puede contenerlo en cada paso." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="codigo" class="clip slide" data-start="24.5" data-duration="6.5" data-track-index="0" data-label="La binaria en Python" data-frags="3">
+        <div class="frame" id="codigo-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">06 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">La binaria se traza vuelta por vuelta</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/codigo-binaria/codigo-binaria.html?embed" title="El código de buscar_binaria a la izquierda con la línea ejecutada resaltada. A la derecha, la lista de once números con los marcadores bajo, centro y alto en cada una de las tres vueltas que buscan el 1983." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="invariante-idea" class="clip slide dark" data-start="31" data-duration="3.5" data-track-index="0" data-label="La invariante" data-frags="0">
+        <div class="frame" id="invariante-idea-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">07 / 20</span>
+      <h1 class="claim xl" data-in="0" style="--i:0">Una invariante es lo que sigue siendo cierto en cada vuelta</h1>
+      <p class="lead" data-in="1" style="--i:1">Si la clave está, está entre bajo y alto.</p>
+        </div>
+      </section>
+
+      <section id="invariante-1500" class="clip slide" data-start="34.5" data-duration="8.5" data-track-index="0" data-label="El intervalo se vacía" data-frags="5">
+        <div class="frame" id="invariante-1500-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">08 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">Cuando el intervalo se vacía, la clave no está</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="5" src="figuras/invariante-1500/invariante-1500.html?embed" title="La lista ordenada con un recuadro verde que marca el intervalo entre bajo y alto. Buscando el 1500, que no está, el recuadro se encoge en cuatro vueltas hasta quedar vacío." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="bucle-infinito" class="clip slide" data-start="43" data-duration="7.5" data-track-index="0" data-label="El error de alto = centro" data-frags="4">
+        <div class="frame" id="bucle-infinito-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">09 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">Con alto = centro, el bucle no termina nunca</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/bucle-infinito/bucle-infinito.html?embed" title="El código de la búsqueda con error y una tabla de vueltas para la lista 1, 3 y la clave 2. La vuelta 2 y la vuelta 3 tienen los mismos valores, así que el bucle se repite. Con alto igual a centro menos 1 la función devuelve menos uno." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="micro-idea" class="clip slide dark" data-start="50.5" data-duration="3.5" data-track-index="0" data-label="Medir" data-frags="0">
+        <div class="frame" id="micro-idea-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">10 / 20</span>
+      <h1 class="claim xl" data-in="0" style="--i:0">Cronometrar una sola vez no demuestra nada</h1>
+      <p class="lead" data-in="1" style="--i:1">Un costo se predice con Big-O y se comprueba con una medición.</p>
+        </div>
+      </section>
+
+      <section id="una-medicion" class="clip slide" data-start="54" data-duration="6.5" data-track-index="0" data-label="Una sola medición" data-frags="3">
+        <div class="frame" id="una-medicion-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">11 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">Dos mediciones sueltas dijeron algo falso</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/una-medicion/una-medicion.html?embed" title="Dos tarjetas con una medición de la búsqueda lineal, 25 microsegundos con n igual a mil y 0,9 con n igual a un millón. Al revelar las claves, la segunda buscó un elemento cercano al inicio. Con la misma clave ausente, el tiempo pasa a 25 000 microsegundos." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="cinco-pasos" class="clip slide" data-start="60.5" data-duration="8.5" data-track-index="0" data-label="Cinco pasos" data-frags="5">
+        <div class="frame" id="cinco-pasos-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">12 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">Un micro-benchmark confiable sigue cinco pasos</h1>
+      <iframe class="fig tall" data-in="1" style="--i:1" data-fig="5" src="figuras/cinco-pasos/cinco-pasos.html?embed" title="Cinco tarjetas, una por paso: preparar, calentar, repetir, tomar la mediana y comparar, cada una con la línea de Python que la realiza." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="claves" class="clip slide" data-start="69" data-duration="5.5" data-track-index="0" data-label="Qué cociente se espera" data-frags="2">
+        <div class="frame" id="claves-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">13 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">Cada clave tiene su cociente esperado</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="2" src="figuras/claves-esperadas/claves-esperadas.html?embed" title="Cuatro filas con búsqueda y clave y el cociente esperado al multiplicar n por 1 000: la lineal cerca de 1 000 con la clave del medio y con la ausente, la binaria cerca de 1 con la clave del medio y cerca de 2 con la ausente." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="bloque" class="clip slide" data-start="74.5" data-duration="5.5" data-track-index="0" data-label="Medir en bloque" data-frags="2">
+        <div class="frame" id="bloque-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">14 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">Si la operación es muy corta, se mide en bloque y se divide</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="2" src="figuras/en-bloque/en-bloque.html?embed" title="El código de medir_en_bloque, que cronometra 200 operaciones seguidas y divide entre 200, con dos casos: la búsqueda binaria de unos 3 microsegundos se mide en bloque y la lineal de unos 38 milisegundos se mide sola." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="cocientes" class="clip slide" data-start="80" data-duration="7.5" data-track-index="0" data-label="Tiempos y cocientes" data-frags="4">
+        <div class="frame" id="cocientes-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">15 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">Lo que se analiza es cuánto cambia al multiplicar n</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/cocientes/cocientes.html?embed" title="Tabla con los tiempos de copiar una lista para n de mil a un millón, los cocientes entre tamaños consecutivos de 10,9, 19,4 y 23,9, y el cociente total de 5 040 frente a los 1 000 que se esperaban." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="grafica-escala" class="clip slide" data-start="87.5" data-duration="6.5" data-track-index="0" data-label="Gráfica de escala" data-frags="3">
+        <div class="frame" id="grafica-escala-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">16 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">En escala logarítmica la lineal es una recta y la binaria casi no sube</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/grafica-escala/grafica-escala.html?embed" title="Gráfica con los dos ejes en escala logarítmica. La búsqueda lineal sube como una recta de 5 a 500 000 comparaciones; la binaria sube de 4 a 20 comparaciones, casi plana." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="codigo-grafica" class="clip slide" data-start="94" data-duration="6.5" data-track-index="0" data-label="El código de la gráfica" data-frags="3">
+        <div class="frame" id="codigo-grafica-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">17 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">Cinco líneas de matplotlib dibujan la gráfica del reporte</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/codigo-grafica/codigo-grafica.html?embed" title="El código de matplotlib con plt.loglog, título, nombres de ejes con unidad, leyenda y savefig, y una gráfica esquemática que se va completando con cada grupo de líneas." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="ordenar" class="clip slide" data-start="100.5" data-duration="6.5" data-track-index="0" data-label="Ordenar o no ordenar" data-frags="3">
+        <div class="frame" id="ordenar-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">18 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">Ordenar primero no siempre se paga</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/ordenar-o-buscar/ordenar-o-buscar.html?embed" title="Dos barras: ordenar una lista de un millón y buscar cinco veces con la binaria cuesta unas veinte millones de operaciones; cinco búsquedas lineales cuestan unas cinco millones." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="actividades" class="clip slide" data-start="107" data-duration="3.5" data-track-index="0" data-label="Actividades" data-frags="0">
+        <div class="frame" id="actividades-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">19 / 20</span>
+      <h1 class="claim" data-in="0" style="--i:0">Tres actividades calificadas cierran la semana</h1>
+      <div class="cards three tall">
+        <div class="card" data-in="1" style="--i:1"><span class="tag">PE-1.4 · 2,25 puntos</span><strong>Micro-benchmark</strong><em>Búsqueda lineal contra búsqueda binaria, con sus tiempos y cocientes</em></div>
+        <div class="card" data-in="2" style="--i:2"><span class="tag">TA-1.4 · 2,25 puntos</span><strong>Reporte de una página</strong><em>La gráfica de los tiempos y el análisis de escala</em></div>
+        <div class="card" data-in="3" style="--i:3"><span class="tag">GA-1.2 · 1 punto</span><strong>Checkpoint de invariantes</strong><em>Seis afirmaciones, cada una con su justificación</em></div>
+      </div>
+        </div>
+      </section>
+
+      <section id="cierre" class="clip slide dark" data-start="110.5" data-duration="3.5" data-track-index="0" data-label="Cierre" data-frags="0">
+        <div class="frame" id="cierre-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">20 / 20</span>
+      <h1 class="claim xl" data-in="0" style="--i:0">Un costo se predice con Big-O y se comprueba con una medición bien hecha</h1>
+      <p class="lead" data-in="1" style="--i:1">Tarea: recuperación sin apuntes</p>
+      <p class="byline" data-in="2" style="--i:2">Fuentes: Joyanes (2008) · Karumanchi (2017) · ASU CSE 310</p>
+        </div>
+      </section>
+    </div>
+    <script>
+      // Con el motor de HyperFrames (check, Studio) el registro ya existe.
+      // Al presentar, el reproductor mueve esta línea de tiempo directamente.
+      const engineHosted = Object.prototype.hasOwnProperty.call(window, "__timelines");
+      window.__timelines = window.__timelines || {};
+      if (!engineHosted) document.documentElement.classList.add("live");
+
+      const ENTER = 2;
+      const tl = gsap.timeline({ paused: true });
+      tl.to({}, { duration: 114 }, 0);
+
+      const figSyncs = [];
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      slides.forEach((slide, index) => {
+        const start = Number(slide.dataset.start);
+        const end = start + Number(slide.dataset.duration);
+        const frame = slide.querySelector(".frame");
+        tl.set(frame, { opacity: 1 }, start);
+        if (index < slides.length - 1) tl.set(frame, { opacity: 0 }, end);
+
+        slide.querySelectorAll("[data-in]").forEach((el) => {
+          const i = Number(el.dataset.in);
+          tl.fromTo(el, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, start + 0.12 + i * 0.07);
+        });
+        slide.querySelectorAll("[data-f]").forEach((el) => {
+          const hold = start + ENTER + Number(el.dataset.f);
+          tl.fromTo(el, { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, hold - 0.6);
+        });
+        slide.querySelectorAll("iframe[data-fig]").forEach((el) => {
+          // La figura corre en su propio documento: en vivo anima sola hacia el estado pedido;
+          // con el motor (check, Studio) sigue la línea de tiempo cuadro a cuadro.
+          // El estado se calcula desde el tiempo de la línea de tiempo, así responde igual
+          // al avanzar, al retroceder y al saltar entre diapositivas.
+          const steps = Number(el.dataset.fig);
+          let sent = -1;
+          const wanted = () => {
+            const t = tl.time();
+            let u = 0;
+            for (let step = 1; step <= steps; step++) u += Math.min(1, Math.max(0, (t - (start + ENTER + step - 0.6)) / 0.6));
+            return engineHosted ? u / steps : Math.round(u) / steps;
+          };
+          const send = (force) => {
+            const value = wanted();
+            if (!el.contentWindow || (!force && value === sent)) return;
+            sent = value;
+            el.contentWindow.postMessage({ type: "fig", mode: engineHosted ? "set" : "go", value }, "*");
+          };
+          figSyncs.push(send);
+          el.addEventListener("load", () => send(true));
+        });
+        slide.querySelectorAll("[data-hl]").forEach((el) => {
+          const hold = start + ENTER + Number(el.dataset.hl);
+          tl.to(el, { backgroundColor: "#fbe3a6", color: "#5c3d00", duration: 0.4 }, hold - 0.5);
+        });
+      });
+
+      tl.eventCallback("onUpdate", () => figSyncs.forEach((sync) => sync()));
+      // En vivo el reproductor puede mover la línea de tiempo sin emitir eventos: se revisa en cada tic de GSAP.
+      if (!engineHosted) gsap.ticker.add(() => figSyncs.forEach((sync) => sync()));
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

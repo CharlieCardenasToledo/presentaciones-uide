@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 530" role="img" aria-labelledby="t d" font-family="Arial, Helvetica, sans-serif">
+  <title id="t">Diagrama ER de la biblioteca con razones de cardinalidad y participación</title>
+  <desc id="d">Cuatro tipos de entidad y cinco tipos de relación. ESTUDIANTE pertenece a CARRERA, de muchos a uno, con participación total de los dos lados. ESTUDIANTE representa a CARRERA, de uno a uno, con participación total de la carrera. ESTUDIANTE reserva LIBRO, de muchos a muchos, con el atributo fecha_reserva en la relación. LIBRO tiene EJEMPLAR, que es una entidad débil con la clave parcial número_ejemplar. ESTUDIANTE acompaña a ESTUDIANTE, relación recursiva con los roles monitor y acompañado.</desc>
+  <rect x="0" y="0" width="960" height="530" fill="#ffffff"/>
+  <text x="30" y="40" font-size="13" fill="#5a5257">1, N y M: razón de cardinalidad. Línea doble: participación total. Línea sencilla: parcial.</text>
+  <text x="30" y="60" font-size="13" fill="#5a5257">Rectángulo y rombo dobles: entidad débil y su relación identificadora.</text>
+  <line x1="371.9" y1="223.2" x2="313.9" y2="160.2" stroke="#3a3337" stroke-width="1.4"/>
+  <line x1="368.1" y1="226.8" x2="310.1" y2="163.8" stroke="#3a3337" stroke-width="1.4"/>
+  <text x="353.0" y="183.5" font-size="15" font-weight="700" fill="#910048" text-anchor="middle">N</text>
+  <line x1="206.4" y1="160.0" x2="128.4" y2="223.0" stroke="#3a3337" stroke-width="1.4"/>
+  <line x1="209.6" y1="164.0" x2="131.6" y2="227.0" stroke="#3a3337" stroke-width="1.4"/>
+  <text x="155.0" y="183.5" font-size="15" font-weight="700" fill="#910048" text-anchor="middle">1</text>
+  <line x1="370.0" y1="275.0" x2="312.0" y2="338.0" stroke="#3a3337" stroke-width="1.4"/>
+  <text x="355.0" y="326.5" font-size="15" font-weight="700" fill="#910048" text-anchor="middle">1</text>
+  <line x1="209.6" y1="336.0" x2="131.6" y2="273.0" stroke="#3a3337" stroke-width="1.4"/>
+  <line x1="206.4" y1="340.0" x2="128.4" y2="277.0" stroke="#3a3337" stroke-width="1.4"/>
+  <text x="153.0" y="326.5" font-size="15" font-weight="700" fill="#910048" text-anchor="middle">1</text>
+  <line x1="495.0" y1="250.0" x2="547.0" y2="250.0" stroke="#3a3337" stroke-width="1.4"/>
+  <text x="521.0" y="241.0" font-size="15" font-weight="700" fill="#910048" text-anchor="middle">M</text>
+  <line x1="703.0" y1="250.0" x2="755.0" y2="250.0" stroke="#3a3337" stroke-width="1.4"/>
+  <text x="729.0" y="241.0" font-size="15" font-weight="700" fill="#910048" text-anchor="middle">N</text>
+  <line x1="830.0" y1="275.0" x2="830.0" y2="318.0" stroke="#3a3337" stroke-width="1.4"/>
+  <text x="856.0" y="301.5" font-size="15" font-weight="700" fill="#910048" text-anchor="middle">1</text>
+  <line x1="827.4" y1="402.0" x2="827.4" y2="439.0" stroke="#3a3337" stroke-width="1.4"/>
+  <line x1="832.6" y1="402.0" x2="832.6" y2="439.0" stroke="#3a3337" stroke-width="1.4"/>
+  <text x="856.0" y="426.5" font-size="15" font-weight="700" fill="#910048" text-anchor="middle">N</text>
+  <line x1="430.0" y1="275.0" x2="430.0" y2="417.0" stroke="#3a3337" stroke-width="1.4"/>
+  <text x="404.0" y="377.2" font-size="15" font-weight="700" fill="#910048" text-anchor="middle">1</text>
+  <text x="400.0" y="334.6" font-size="12" font-style="italic" fill="#5a5257" text-anchor="middle">monitor</text>
+  <line x1="486.0" y1="275.0" x2="486.0" y2="417.0" stroke="#3a3337" stroke-width="1.4"/>
+  <text x="512.0" y="377.2" font-size="15" font-weight="700" fill="#910048" text-anchor="middle">N</text>
+  <text x="528.0" y="334.6" font-size="12" font-style="italic" fill="#5a5257" text-anchor="middle">acompañado</text>
+  <line x1="625" y1="214" x2="625" y2="172" stroke="#3a3337" stroke-width="1.3"/>
+  <ellipse cx="625" cy="152" rx="74" ry="21" fill="#ffffff" stroke="#3a3337" stroke-width="1.3"/>
+  <text x="625" y="157" font-size="13" fill="#1f1a1d" text-anchor="middle">fecha_reserva</text>
+  <line x1="749" y1="470" x2="722" y2="470" stroke="#3a3337" stroke-width="1.3"/>
+  <ellipse cx="642" cy="470" rx="80" ry="21" fill="#ffffff" stroke="#3a3337" stroke-width="1.3"/>
+  <text x="642" y="475" font-size="13" fill="#1f1a1d" text-anchor="middle">número_ejemplar</text>
+  <line x1="578" y1="479" x2="706" y2="479" stroke="#1f1a1d" stroke-width="1.2" stroke-dasharray="4 3"/>
+  <rect x="25" y="225" width="150" height="50" fill="#f6f1f3" stroke="#910048" stroke-width="2"/>
+  <text x="100" y="256" font-size="16" font-weight="700" fill="#1f1a1d" text-anchor="middle">CARRERA</text>
+  <rect x="345" y="225" width="150" height="50" fill="#f6f1f3" stroke="#910048" stroke-width="2"/>
+  <text x="420" y="256" font-size="16" font-weight="700" fill="#1f1a1d" text-anchor="middle">ESTUDIANTE</text>
+  <rect x="755" y="225" width="150" height="50" fill="#f6f1f3" stroke="#910048" stroke-width="2"/>
+  <text x="830" y="256" font-size="16" font-weight="700" fill="#1f1a1d" text-anchor="middle">LIBRO</text>
+  <rect x="749" y="439" width="162" height="62" fill="#ffffff" stroke="#910048" stroke-width="1.6"/>
+  <rect x="755" y="445" width="150" height="50" fill="#f6f1f3" stroke="#910048" stroke-width="2"/>
+  <text x="830" y="476" font-size="16" font-weight="700" fill="#1f1a1d" text-anchor="middle">EJEMPLAR</text>
+  <path d="M182 150L260 114L338 150L260 186Z" fill="#ffffff" stroke="#3a3337" stroke-width="1.5"/>
+  <text x="260" y="155" font-size="13" font-weight="700" fill="#1f1a1d" text-anchor="middle">PERTENECE_A</text>
+  <path d="M182 350L260 314L338 350L260 386Z" fill="#ffffff" stroke="#3a3337" stroke-width="1.5"/>
+  <text x="260" y="355" font-size="13" font-weight="700" fill="#1f1a1d" text-anchor="middle">REPRESENTA</text>
+  <path d="M547 250L625 214L703 250L625 286Z" fill="#ffffff" stroke="#3a3337" stroke-width="1.5"/>
+  <text x="625" y="255" font-size="13" font-weight="700" fill="#1f1a1d" text-anchor="middle">RESERVA</text>
+  <path d="M743 360L830 318L917 360L830 402Z" fill="#ffffff" stroke="#3a3337" stroke-width="1.3"/>
+  <path d="M752 360L830 324L908 360L830 396Z" fill="#ffffff" stroke="#3a3337" stroke-width="1.5"/>
+  <text x="830" y="365" font-size="13" font-weight="700" fill="#1f1a1d" text-anchor="middle">TIENE</text>
+  <path d="M380 440L458 404L536 440L458 476Z" fill="#ffffff" stroke="#3a3337" stroke-width="1.5"/>
+  <text x="458" y="445" font-size="13" font-weight="700" fill="#1f1a1d" text-anchor="middle">ACOMPAÑA</text>
+</svg>

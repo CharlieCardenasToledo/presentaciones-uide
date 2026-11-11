@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CC05A_IFT202 · Semana 3: Fundamentos de la Seguridad</title>
+    <script>
+      // El modo público se distingue en la pestaña del navegador.
+      if (new URLSearchParams(location.search).get("mode") === "audience") {
+        document.title = "CC05A_IFT202 · Semana 3: Fundamentos de la Seguridad" + " (pantalla del público)";
+      }
+    </script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { height: 100%; background: #0a0a0a; overflow: hidden; }
+      hyperframes-slideshow { display: block; position: relative; width: 100vw; height: 100vh; }
+      hyperframes-player { position: absolute; inset: 0; }
+    </style>
+    <script src="../vendor/hyperframes-player.global.js"></script>
+    <script src="../vendor/hyperframes-slideshow.global.js"></script>
+  </head>
+  <body>
+    <hyperframes-slideshow tabindex="0" notes-storage-key="ift202-semana-03">
+      <hyperframes-player interactive src="composition/index.html"></hyperframes-player>
+      <script type="application/hyperframes-slideshow+json">
+{
+  "slides": [
+    {
+      "sceneId": "portada",
+      "startTime": 0,
+      "endTime": 3.5,
+      "notes": "Abrir con una pregunta: un lunes aparece en el correo de una clínica un envío de la lista de pacientes hecho el domingo a las tres de la madrugada, y la secretaria dice que dormía. ¿Qué es lo primero que quieren saber? Recoger tres respuestas sin corregirlas. Casi siempre aparece quién fue; la clase muestra qué otras preguntas faltaban."
+    },
+    {
+      "sceneId": "ruta",
+      "startTime": 3.5,
+      "endTime": 7,
+      "notes": "Presentar la ruta en un minuto. Es la secuencia del material de la semana: el caso de la clínica, las cuatro preguntas de un acceso, los factores y la autenticación multifactor, cómo se guardan y se atacan las contraseñas, y el laboratorio con la prueba de fortaleza."
+    },
+    {
+      "sceneId": "caso",
+      "startTime": 7,
+      "endTime": 13.5,
+      "notes": "Es la exploración del material de la semana. Una clínica de Loja con doce empleados; la secretaria, Marcela Salinas, usa la misma contraseña en el correo, el sistema de citas y la red inalámbrica. Al entrar: el único registro del servidor dice que la cuenta msalinas inició sesión el domingo a las 03:12. Primer avance: la misma contraseña, vidasana2024, servía en los tres servicios. Segundo avance: la cuenta tenía permisos de administradora porque, según la clínica, así nunca da problemas. Tercer avance: las cuatro preguntas que la clínica no pudo responder. Antes de cada avance, pedir que escriban qué falló en ese momento. Todavía sin nombres técnicos.",
+      "fragments": [
+        9,
+        10,
+        11,
+        12
+      ]
+    },
+    {
+      "sceneId": "idea",
+      "startTime": 13.5,
+      "endTime": 17,
+      "notes": "Aquí aparecen los nombres técnicos. Las cuatro preguntas del caso corresponden a identificación, autenticación, autorización y trazabilidad. En inglés se agrupan como identificación, autenticación, autorización y contabilidad; en este curso se usa trazabilidad para el último."
+    },
+    {
+      "sceneId": "cuatro",
+      "startTime": 17,
+      "endTime": 24.5,
+      "notes": "Es la Tabla 1 y la Figura 1 del material de la semana, con el ejemplo del banco para fijar la idea. Cada avance revela una columna: la pregunta, qué ocurre en el banco, qué ocurre en la clínica y qué pasa si falla. Identificación es afirmar quién se es; por sí sola no prueba nada. Autenticación es comprobar esa afirmación. Autorización decide qué puede hacer una identidad ya autenticada. Trazabilidad registra qué hizo cada identidad y cuándo. El orden importa: sin identificación no hay a quién autenticar, y con una autenticación débil la autorización llega a la persona equivocada. Antes de cada avance, pedir el ejemplo del banco.",
+      "fragments": [
+        19,
+        20,
+        21,
+        22,
+        23
+      ]
+    },
+    {
+      "sceneId": "clasificar",
+      "startTime": 24.5,
+      "endTime": 31,
+      "notes": "Práctica de clasificación con otro contexto, un portal universitario. Se pregunta siempre qué hace el sistema en ese momento: afirmar quién es alguien, comprobarlo, decidir qué puede hacer o registrar lo que hizo. Los seis eventos están a la vista; antes de cada avance, pedir la clasificación de los dos siguientes. Avance 1: la matrícula es identificación y la comparación con la contraseña guardada es autenticación. Avance 2: ver solo las propias notas es autorización y anotar hora y dirección es trazabilidad. Avance 3: el guardia que compara la credencial con el rostro autentica, y que solo secretaría cambie notas es autorización. Los seis eventos del material de la semana quedan para el trabajo autónomo.",
+      "fragments": [
+        26.5,
+        27.5,
+        28.5,
+        29.5
+      ]
+    },
+    {
+      "sceneId": "factores",
+      "startTime": 31,
+      "endTime": 37.5,
+      "notes": "Es la Tabla 2 del material de la semana. Una contraseña es una prueba débil: se puede adivinar, copiar o filtrar. Para reforzarla se combinan pruebas de naturaleza distinta, los factores. Conocimiento: algo que sabes. Posesión: algo que tienes. Inherencia: algo que eres. Cada avance revela un factor con sus ejemplos, su debilidad principal y si se reemplaza al comprometerse. La diferencia que más se olvida: una contraseña se cambia, pero una huella no. Antes de cada avance, pedir ejemplos del factor.",
+      "fragments": [
+        33,
+        34,
+        35,
+        36
+      ]
+    },
+    {
+      "sceneId": "mfa",
+      "startTime": 37.5,
+      "endTime": 44,
+      "notes": "La autenticación multifactor, MFA, exige al menos dos factores de categorías distintas. Es la condición que más se pasa por alto. Al entrar: tres pares de pruebas sin etiquetar; preguntar cuáles son multifactor. Primer avance: contraseña y PIN son ambos de conocimiento; quien roba uno suele poder robar el otro, así que no es MFA. Segundo avance: contraseña, que es conocimiento, con un código del teléfono, que es posesión: sí es MFA, y un atacante que obtuvo la contraseña con un correo falso todavía necesita el teléfono. Tercer avance: huella y rostro son ambos de inherencia. Aclarar que no todos los segundos factores protegen igual: un código por mensaje de texto puede desviarse, uno de aplicación no viaja por la red telefónica y una llave física resiste mejor la suplantación.",
+      "fragments": [
+        39.5,
+        40.5,
+        41.5,
+        42.5
+      ]
+    },
+    {
+      "sceneId": "hash-idea",
+      "startTime": 44,
+      "endTime": 47.5,
+      "notes": "Un sistema bien diseñado nunca guarda la contraseña en texto legible. Guarda su hash, el resultado de una función matemática que convierte cualquier texto en una cadena de longitud fija y que no se puede invertir. Al iniciar sesión se calcula el hash de lo escrito y se compara con el guardado."
+    },
+    {
+      "sceneId": "hash-sal",
+      "startTime": 47.5,
+      "endTime": 54,
+      "notes": "Los hashes de la figura son SHA-256 reales de una contraseña ficticia, recortados. Al entrar: dos cuentas con la misma contraseña y sin sal. Primer avance: los hashes son idénticos, así que quien ve la base descubre la repetición. Segundo avance: con una sal aleatoria distinta por cuenta, la misma contraseña produce hashes distintos. Tercer avance: un atacante puede calcular de antemano los hashes de millones de contraseñas comunes y buscarlos en una tabla; sin sal la coincidencia es inmediata y con sal las tablas precalculadas dejan de servir. Antes de cada avance, pedir qué creen que verá el atacante. Las contraseñas de esta figura no son las del laboratorio.",
+      "fragments": [
+        49.5,
+        50.5,
+        51.5,
+        52.5
+      ]
+    },
+    {
+      "sceneId": "velocidad",
+      "startTime": 54,
+      "endTime": 59.5,
+      "notes": "La sal no impide probar contraseñas una por una contra una cuenta concreta. Lo que frena esa prueba es la velocidad. Los valores se midieron en el equipo donde se preparó esta clase, con Python y hashlib, en un solo hilo: SHA-256 de una vuelta permite unos 276 000 intentos por segundo, y PBKDF2 con 100 000 iteraciones, unos 18. En otro equipo los valores cambian y la proporción se mantiene. Por eso para contraseñas se usan funciones lentas a propósito: PBKDF2, bcrypt, scrypt o Argon2. En el laboratorio miden esta diferencia con sus propios datos. Antes de cada avance, pedir una estimación.",
+      "fragments": [
+        56,
+        57,
+        58
+      ]
+    },
+    {
+      "sceneId": "ataques",
+      "startTime": 59.5,
+      "endTime": 66,
+      "notes": "Tres formas frecuentes de atacar contraseñas, con datos ficticios. La fuerza bruta prueba todas las combinaciones de una longitud y un conjunto de caracteres. El ataque de diccionario prueba solo contraseñas probables, de listas de palabras, nombres y contraseñas filtradas, con variaciones como mayúscula inicial o un año al final. El relleno de credenciales usa pares de usuario y contraseña filtrados en otro sitio y aprovecha que mucha gente reutiliza la contraseña. Antes de cada avance, preguntar qué defensa frena ese ataque: límite de intentos, longitud y lista de comunes, y segundo factor.",
+      "fragments": [
+        61.5,
+        62.5,
+        63.5,
+        64.5
+      ]
+    },
+    {
+      "sceneId": "espacio",
+      "startTime": 66,
+      "endTime": 72.5,
+      "notes": "Es la Tabla 3 del material de la semana: cuánto tarda en agotarse el espacio de combinaciones a mil millones de intentos por segundo, que es un ritmo posible solo contra funciones rápidas. Primer avance: ocho caracteres caen entre minutos y semanas. Segundo avance: doce letras minúsculas tardan unos tres años y doce caracteres de los 94 imprimibles, unos quince millones de años. Tercer avance: cinco palabras al azar de una lista de 7776 tardan unos 900 años, y se recuerdan mejor. La barra va en escala logarítmica: cada marca vale diez veces la anterior. Antes de cada avance, pedir una estimación del tiempo.",
+      "fragments": [
+        68,
+        69,
+        70,
+        71
+      ]
+    },
+    {
+      "sceneId": "teorico",
+      "startTime": 72.5,
+      "endTime": 78,
+      "notes": "Es el ejemplo resuelto del material de la semana con la contraseña ficticia Clinica2024. Primer avance: el espacio teórico, once caracteres entre 62, unas 5,2 por 10 a la 19; parece enorme. Segundo avance: un atacante de diccionario prueba palabras comunes, con y sin mayúscula inicial y con sufijos de años; son unas decenas de miles de candidatas, que un computador recorre en segundos contra un hash rápido. La contraseña cae aunque su espacio teórico sea enorme, porque su estructura es predecible. Las barras van en escala logarítmica. Antes de avanzar, preguntar si Clinica2024 resiste.",
+      "fragments": [
+        74.5,
+        75.5,
+        76.5
+      ]
+    },
+    {
+      "sceneId": "laboratorio",
+      "startTime": 78,
+      "endTime": 85.5,
+      "notes": "El laboratorio reúne las decisiones de cualquier sistema real, en pequeño y sin conexión a ningún sistema, con cuentas de práctica. Cada avance revela una pieza y la línea que deja en el registro de accesos: registrar una cuenta con una contraseña que pasa la política; activar el segundo factor confirmándolo con un código antes de dejarlo activo, para no dejar a nadie fuera si copió mal el secreto; ingresar con contraseña y código; y bloquear tras tres fallos seguidos. El registro es un ejemplo con la forma que pidel material de la semana: fecha, usuario, evento y resultado. En el laboratorio pueden cambiar la longitud mínima para probar el efecto.",
+      "fragments": [
+        80,
+        81,
+        82,
+        83,
+        84
+      ]
+    },
+    {
+      "sceneId": "totp",
+      "startTime": 85.5,
+      "endTime": 92,
+      "notes": "El segundo factor del laboratorio es un código de un solo uso basado en el tiempo, TOTP, definido en la RFC 6238. Servidor y aplicación comparten un secreto que se entrega una sola vez, al activar el factor. Cada 30 segundos ambos aplican HMAC al número del intervalo de tiempo actual con ese secreto y toman seis dígitos. Los códigos de la figura son reales, calculados con el secreto de prueba de la RFC. Primer avance: los dos muestran el mismo código. Segundo avance: al pasar al intervalo siguiente cambia. Tercer avance: un código capturado deja de servir al terminar su intervalo; el servidor acepta el anterior y el siguiente por diferencias de reloj. Como el secreto no viaja en cada inicio de sesión, no hay nada reutilizable que interceptar.",
+      "fragments": [
+        87.5,
+        88.5,
+        89.5,
+        90.5
+      ]
+    },
+    {
+      "sceneId": "controles",
+      "startTime": 92,
+      "endTime": 97.5,
+      "notes": "Es el ejemplo resuelto del material de la semana con una papelería de seis empleados y es el formato de la parte IV de GPE-S3: control, pregunta que cubre, costo y efecto. Primer avance: el administrador de la tienda en línea tiene riesgo alto, porque puede cambiar precios y ver pedidos; contraseña larga más un código de aplicación autenticadora, bloqueo tras cinco fallos, registro de cada ingreso y cada cambio de precios con hora y origen, y permisos solo sobre la tienda. Costo: una aplicación gratuita y cinco minutos. Segundo avance: el empleado que solo registra ventas tiene riesgo bajo; contraseña individual, sin segundo factor por ahora, permisos de caja y registro de ventas, porque el daño máximo es pequeño. Mismo sistema, controles distintos según el riesgo. Antes de cada avance, pedir qué controles pondrían.",
+      "fragments": [
+        94,
+        95,
+        96
+      ]
+    },
+    {
+      "sceneId": "evaluador",
+      "startTime": 97.5,
+      "endTime": 105,
+      "notes": "Es el ejemplo resuelto del evaluador, con la contraseña ficticia Clinica2024 y un puntaje máximo de 5: longitud hasta 2, diccionario hasta 1, variedad hasta 1 y patrones desde menos 1 hasta 0. Avance 1: longitud, 11 caracteres, corta, 1 punto, con el fragmento de código. Avance 2: al quitar los dígitos finales queda clinica, que está en la lista, 0 puntos. Avance 3: variedad, tres tipos, 1 punto; patrones, sin repeticiones ni secuencias, 0. Avance 4: total 2 puntos, nivel medio, pero esa contraseña cayó en pocos intentos en el ataque de diccionario; ese desajuste es un límite de la prueba y debe ir en el informe. Ningún conjunto de reglas mide la fortaleza real.",
+      "fragments": [
+        99.5,
+        100.5,
+        101.5,
+        102.5,
+        103.5
+      ]
+    },
+    {
+      "sceneId": "etica",
+      "startTime": 105,
+      "endTime": 108.5,
+      "notes": "Las reglas éticas de la semana aplican los principios de la semana 1: se actúa con autorización, con el menor alcance necesario y sin dañar a terceros. Se evalúan solo contraseñas ficticias creadas para la práctica. Nunca se escriben, guardan ni envían contraseñas reales, propias o ajenas, ni a este programa ni a un servicio en línea. Y el programa no intenta adivinar la contraseña de ninguna cuenta real."
+    },
+    {
+      "sceneId": "actividades",
+      "startTime": 108.5,
+      "endTime": 112,
+      "notes": "GPE-S3 es el ataque de diccionario sobre las cuentas ficticias de la Clínica Vida Sana, con la configuración de la autenticación básica y multifactor y la propuesta de controles. La consigna, la plantilla y la rúbrica con sus pesos están en Canvas. GTA-S3 de desarrollo profesional autónomo es la prueba de fortaleza de contraseñas en Python. GA-S3 es Docente por un día: cinco minutos sobre una de las cinco recomendaciones de gestión segura de contraseñas. GTA-S3 de proyecto es la propuesta inicial en equipo, que incluye cómo se identificarán y autenticarán las personas en su sistema. Las fechas están en Canvas."
+    },
+    {
+      "sceneId": "cierre",
+      "startTime": 112,
+      "endTime": 115.5,
+      "notes": "Volver al caso de la clínica: con identificación individual, un segundo factor, permisos mínimos y un registro con hora y origen, la clínica habría sabido quién entró, qué pudo hacer y qué hizo. Tarea para casa: la recuperación sin apuntes del material de la semana, con ocho preguntas, y las tres situaciones nuevas. Si surge la duda de cuál es la más difícil, suele ser la de la tienda con una contraseña compartida, porque exige convencer al dueño de cambiar un hábito."
+    }
+  ],
+  "slideSequences": []
+}
+    </script>
+    </hyperframes-slideshow>
+  </body>
+</html>

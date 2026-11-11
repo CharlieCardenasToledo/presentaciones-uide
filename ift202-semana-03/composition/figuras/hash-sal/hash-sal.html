@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Hash, sal y tablas precalculadas</title>
+<style>
+:root{--wine:#910048;--wine-deep:#6d0036;--gold:#e8a920;--teal:#0c6b62;--amber:#7a5200;--ink:#1f1a1d;--muted:#5a5257;--tint:#f6f1f3;--red:#b3261e}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:transparent;font-family:system-ui,"Segoe UI",sans-serif;color:var(--ink);overflow:hidden}
+#st{position:absolute;left:0;top:0;width:1560px;height:720px;transform-origin:0 0}
+.b{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border-radius:16px;padding:6px 14px;font-weight:700;font-size:32px;line-height:1.15;background:var(--tint);color:var(--ink)}
+.b small{display:block;font-size:24px;font-weight:600;margin-top:4px}
+.t{position:absolute;font-size:34px;font-weight:700;line-height:1.2}
+.pill{position:absolute;display:flex;align-items:center;justify-content:center;height:52px;padding:0 20px;border-radius:26px;color:#fff;font:800 24px/1 ui-monospace,Consolas,monospace;white-space:nowrap;opacity:0;z-index:5}
+.ln{position:absolute;background:#cfc6ca}
+
+</style></head><body>
+<div id="st">
+<div id="t1" class="t" style="left:40px;top:20px;width:600px;font-size:32px;color:var(--wine-deep);font-weight:800;text-align:left;opacity:1;white-space:pre">Sin sal</div>
+<div id="c1" class="t" style="left:50px;top:66px;width:180px;font-size:20px;color:#5a5257;font-weight:800;text-align:left;opacity:1;white-space:pre">usuario</div>
+<div id="c2" class="t" style="left:250px;top:66px;width:500px;font-size:20px;color:#5a5257;font-weight:800;text-align:left;opacity:1;white-space:pre">hash guardado</div>
+<div id="s0u" class="b" style="left:40px;top:96px;width:190px;height:52px;background:#f6f1f3;color:#1f1a1d;font-size:26px;font-weight:700;font-family:ui-monospace,Consolas,monospace;align-items:flex-start;text-align:left;padding:8px 16px;border-radius:14px;opacity:1"><div style="width:100%;line-height:1.25">ana</div></div>
+<div id="s0h" class="b" style="left:240px;top:96px;width:520px;height:52px;background:#f6f1f3;color:#1f1a1d;font-size:26px;font-weight:700;font-family:ui-monospace,Consolas,monospace;align-items:flex-start;text-align:left;padding:8px 16px;border-radius:14px;opacity:1"><div style="width:100%;line-height:1.25">bb2eed82913d7925…</div></div>
+<div id="s1u" class="b" style="left:40px;top:158px;width:190px;height:52px;background:#f6f1f3;color:#1f1a1d;font-size:26px;font-weight:700;font-family:ui-monospace,Consolas,monospace;align-items:flex-start;text-align:left;padding:8px 16px;border-radius:14px;opacity:1"><div style="width:100%;line-height:1.25">luis</div></div>
+<div id="s1h" class="b" style="left:240px;top:158px;width:520px;height:52px;background:#f6f1f3;color:#1f1a1d;font-size:26px;font-weight:700;font-family:ui-monospace,Consolas,monospace;align-items:flex-start;text-align:left;padding:8px 16px;border-radius:14px;opacity:1"><div style="width:100%;line-height:1.25">bb2eed82913d7925…</div></div>
+<div id="igual" class="t" style="left:40px;top:226px;width:920px;font-size:28px;color:#b3261e;font-weight:800;text-align:left;opacity:0;white-space:pre">Hashes iguales: se nota que usan la misma contraseña</div>
+<div id="t2" class="t" style="left:40px;top:296px;width:800px;font-size:32px;color:var(--wine-deep);font-weight:800;text-align:left;opacity:0;white-space:pre">Con sal aleatoria por cuenta</div>
+<div id="d1" class="t" style="left:50px;top:342px;width:180px;font-size:20px;color:#5a5257;font-weight:800;text-align:left;opacity:0;white-space:pre">usuario</div>
+<div id="d2" class="t" style="left:250px;top:342px;width:200px;font-size:20px;color:#5a5257;font-weight:800;text-align:left;opacity:0;white-space:pre">sal</div>
+<div id="d3" class="t" style="left:470px;top:342px;width:400px;font-size:20px;color:#5a5257;font-weight:800;text-align:left;opacity:0;white-space:pre">hash guardado</div>
+<div id="w0u" class="b" style="left:40px;top:372px;width:190px;height:52px;background:#f6f1f3;color:#1f1a1d;font-size:26px;font-weight:700;font-family:ui-monospace,Consolas,monospace;align-items:flex-start;text-align:left;padding:8px 16px;border-radius:14px;opacity:0"><div style="width:100%;line-height:1.25">ana</div></div>
+<div id="w0s" class="b" style="left:240px;top:372px;width:210px;height:52px;background:#f6f1f3;color:#0c6b62;font-size:26px;font-weight:700;font-family:ui-monospace,Consolas,monospace;align-items:flex-start;text-align:left;padding:8px 16px;border-radius:14px;opacity:0"><div style="width:100%;line-height:1.25">k3Qx9a</div></div>
+<div id="w0h" class="b" style="left:460px;top:372px;width:500px;height:52px;background:#f6f1f3;color:#1f1a1d;font-size:26px;font-weight:700;font-family:ui-monospace,Consolas,monospace;align-items:flex-start;text-align:left;padding:8px 16px;border-radius:14px;opacity:0"><div style="width:100%;line-height:1.25">78d685095dafce51…</div></div>
+<div id="w1u" class="b" style="left:40px;top:434px;width:190px;height:52px;background:#f6f1f3;color:#1f1a1d;font-size:26px;font-weight:700;font-family:ui-monospace,Consolas,monospace;align-items:flex-start;text-align:left;padding:8px 16px;border-radius:14px;opacity:0"><div style="width:100%;line-height:1.25">luis</div></div>
+<div id="w1s" class="b" style="left:240px;top:434px;width:210px;height:52px;background:#f6f1f3;color:#0c6b62;font-size:26px;font-weight:700;font-family:ui-monospace,Consolas,monospace;align-items:flex-start;text-align:left;padding:8px 16px;border-radius:14px;opacity:0"><div style="width:100%;line-height:1.25">p7Lm2z</div></div>
+<div id="w1h" class="b" style="left:460px;top:434px;width:500px;height:52px;background:#f6f1f3;color:#1f1a1d;font-size:26px;font-weight:700;font-family:ui-monospace,Consolas,monospace;align-items:flex-start;text-align:left;padding:8px 16px;border-radius:14px;opacity:0"><div style="width:100%;line-height:1.25">05cbc42cd6f0292a…</div></div>
+<div id="difer" class="t" style="left:40px;top:502px;width:920px;font-size:28px;color:#0c6b62;font-weight:800;text-align:left;opacity:0;white-space:pre">Misma contraseña, hashes distintos</div>
+<div id="tabla" class="b" style="left:1010px;top:40px;width:510px;height:280px;border-radius:16px;background:#2a2226"></div>
+<div id="tabh" class="t" style="left:1034px;top:56px;width:470px;font-size:22px;color:#cfc6ca;font-weight:600;text-align:left;opacity:0;white-space:pre">tabla precalculada del atacante</div>
+<div id="tabr2" class="t" style="left:1034px;top:120px;width:470px;font-size:22px;color:#f6f1f3;font-weight:700;font-family:ui-monospace,Consolas,monospace;text-align:left;opacity:0;white-space:pre">bb2eed82…  =  Cafeteria2025</div>
+<div id="hitA" class="t" style="left:1010px;top:360px;width:510px;font-size:26px;color:#b3261e;font-weight:800;text-align:left;opacity:0;white-space:pre">Sin sal: coincide al instante</div>
+<div id="hitB" class="t" style="left:1010px;top:440px;width:510px;font-size:26px;color:#0c6b62;font-weight:800;text-align:left;opacity:0;white-space:pre">Con sal: ninguna fila coincide</div>
+<div id="nota" class="t" style="left:40px;top:668px;width:1480px;font-size:22px;color:#5a5257;font-weight:600;text-align:left;opacity:1;white-space:pre">Hashes SHA-256 reales de una contraseña ficticia, recortados a 16 caracteres</div>
+</div>
+<script>
+const N = 3;
+const st = document.getElementById("st");
+function fit() { const k = Math.min(innerWidth / 1560, innerHeight / 720); st.style.transform = "scale(" + k + ")"; }
+fit(); addEventListener("resize", fit);
+const $ = (s) => document.querySelector(s);
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const ease = (t) => { t = clamp(t, 0, 1); return t * t * (3 - 2 * t); };
+const win = (s, a, b) => ease((s - a) / (b - a));
+const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+const mix = (a, b, t) => { const x = hex(a), y = hex(b); return "rgb(" + x.map((v, i) => Math.round(v + (y[i] - v) * t)).join(",") + ")"; };
+function lit(el, base, color, t, fg0, fg1) { el.style.background = mix(base, color, t); el.style.color = mix(fg0 || "#1f1a1d", fg1 || "#ffffff", t); }
+function put(el, x, y, a) { el.style.transform = "translate(" + x + "px," + y + "px)"; el.style.opacity = String(a); }
+function route(k, pts) { for (let i = 0; i < pts.length - 1; i++) { if (k <= pts[i + 1][0]) { const t = ease((k - pts[i][0]) / (pts[i + 1][0] - pts[i][0])); return [pts[i][1] + (pts[i + 1][1] - pts[i][1]) * t, pts[i][2] + (pts[i + 1][2] - pts[i][2]) * t]; } } const l = pts[pts.length - 1]; return [l[1], l[2]]; }
+
+function caps(s, n, pref) { for (let k = 0; k <= n; k++) { const a = win(s, k - 0.5, k) * (k < n ? 1 - win(s, k, k + 0.5) : 1); put($("#" + pref + k), 0, 0, clamp(a, 0, 1)); } }
+const op = (id, v) => { const e = document.getElementById(id); if (e) e.setAttribute("opacity", String(Math.max(0, Math.min(1, v)))); };
+const show = (id, v) => { const e = document.getElementById(id); if (e) e.style.opacity = String(Math.max(0, Math.min(1, v))); };
+const rise = (id, a) => { const e = document.getElementById(id); if (e) { e.style.opacity = String(clamp(a, 0, 1)); e.style.transform = "translateY(" + ((1 - clamp(a, 0, 1)) * 18) + "px)"; } };
+
+let u = 0, target = 0, frame = 0, timer = 0, last = 0;
+function draw() { 
+const s = u * N;
+const a1 = win(s, 0, 1), a2 = win(s, 1, 2), a3 = win(s, 2, 3);
+show("igual", a1);
+for (let k = 0; k < 2; k++) { lit($("#s" + k + "h"), "#f6f1f3", "#fbe3a6", a1, "#1f1a1d", "#7a5200"); }
+for (const id of ["t2", "d1", "d2", "d3", "w0u", "w0s", "w0h", "w1u", "w1s", "w1h", "difer"]) rise(id, a2);
+for (const id of ["tabla", "tabh", "tabr2", "hitA", "hitB"]) rise(id, a3);
+ }
+function loop() {
+  clearTimeout(timer); cancelAnimationFrame(frame);
+  const now = performance.now();
+  const dt = last ? Math.min((now - last) / 1000, 1) : 1 / 60; last = now;
+  const speed = 1 / (N * 1.6);
+  u = target > u ? Math.min(target, u + dt * speed) : Math.max(target, u - dt * speed * 2);
+  draw();
+  if (u !== target) { frame = requestAnimationFrame(loop); timer = setTimeout(loop, 80); } else { frame = 0; timer = 0; last = 0; }
+}
+const run = () => { if (!frame && !timer) { last = 0; loop(); } };
+const go = (v) => { target = clamp(v, 0, 1); run(); };
+window.__fig = { set(v) { u = target = clamp(v, 0, 1); draw(); }, go, get u() { return u; } };
+addEventListener("message", (e) => { const m = e.data; if (!m || m.type !== "fig") return; if (m.mode === "set") window.__fig.set(Number(m.value)); else go(Number(m.value)); });
+if (window.parent !== window) {
+  const KEYMAP = { ArrowRight: "ArrowRight", PageDown: "ArrowRight", " ": "ArrowRight", Enter: "ArrowRight", ArrowLeft: "ArrowLeft", PageUp: "ArrowLeft", Backspace: "ArrowLeft" };
+  addEventListener("keydown", (e) => { const k = KEYMAP[e.key]; if (!k) return; e.preventDefault(); e.stopImmediatePropagation(); parent.postMessage({ type: "deck-key", key: k }, "*"); }, true);
+} else {
+  addEventListener("click", () => go(target >= 1 ? 0 : Math.min(1, Math.round(target * N + 1) / N)));
+}
+draw();
+</script></body></html>

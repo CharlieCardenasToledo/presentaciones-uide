@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Buscar el 1983 con las dos búsquedas</title>
+<style>
+:root{--wine:#910048;--wine-deep:#6d0036;--gold:#e8a920;--teal:#0c6b62;--amber:#7a5200;--ink:#1f1a1d;--muted:#5a5257;--tint:#f6f1f3;--red:#b3261e}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:transparent;font-family:system-ui,"Segoe UI",sans-serif;color:var(--ink);overflow:hidden}
+#st{position:absolute;left:0;top:0;width:1560px;height:720px;transform-origin:0 0}
+.b{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border-radius:16px;padding:6px 14px;font-weight:700;font-size:32px;line-height:1.15;background:var(--tint);color:var(--ink)}
+.b small{display:block;font-size:24px;font-weight:600;margin-top:4px}
+.t{position:absolute;font-size:34px;font-weight:700;line-height:1.2}
+.pill{position:absolute;display:flex;align-items:center;justify-content:center;height:52px;padding:0 20px;border-radius:26px;color:#fff;font:800 24px/1 ui-monospace,Consolas,monospace;white-space:nowrap;opacity:0;z-index:5}
+.ln{position:absolute;background:#cfc6ca}
+
+</style></head><body>
+<div id="st">
+<div id="rl" class="t" style="left:70px;top:70px;width:700px;font-size:34px;color:var(--wine-deep);font-weight:800;text-align:left;opacity:1;white-space:pre">Búsqueda lineal</div>
+<div id="rb" class="t" style="left:70px;top:340px;width:700px;font-size:34px;color:var(--wine-deep);font-weight:800;text-align:left;opacity:1;white-space:pre">Búsqueda binaria</div>
+<div id="cla" class="t" style="left:1180px;top:70px;width:310px;font-size:34px;color:#1f1a1d;font-weight:800;font-family:ui-monospace,Consolas,monospace;text-align:right;opacity:1;white-space:pre">clave: 1983</div>
+<div id="a0" class="b" style="left:70px;top:120px;width:120px;height:80px;font-size:32px;font-family:ui-monospace,Consolas,monospace">1231</div>
+<div id="ai0" class="t" style="left:70px;top:206px;width:120px;font-size:22px;color:#5a5257;font-weight:600;text-align:center;opacity:1;white-space:pre">0</div>
+<div id="a1" class="b" style="left:200px;top:120px;width:120px;height:80px;font-size:32px;font-family:ui-monospace,Consolas,monospace">1473</div>
+<div id="ai1" class="t" style="left:200px;top:206px;width:120px;font-size:22px;color:#5a5257;font-weight:600;text-align:center;opacity:1;white-space:pre">1</div>
+<div id="a2" class="b" style="left:330px;top:120px;width:120px;height:80px;font-size:32px;font-family:ui-monospace,Consolas,monospace">1545</div>
+<div id="ai2" class="t" style="left:330px;top:206px;width:120px;font-size:22px;color:#5a5257;font-weight:600;text-align:center;opacity:1;white-space:pre">2</div>
+<div id="a3" class="b" style="left:460px;top:120px;width:120px;height:80px;font-size:32px;font-family:ui-monospace,Consolas,monospace">1834</div>
+<div id="ai3" class="t" style="left:460px;top:206px;width:120px;font-size:22px;color:#5a5257;font-weight:600;text-align:center;opacity:1;white-space:pre">3</div>
+<div id="a4" class="b" style="left:590px;top:120px;width:120px;height:80px;font-size:32px;font-family:ui-monospace,Consolas,monospace">1892</div>
+<div id="ai4" class="t" style="left:590px;top:206px;width:120px;font-size:22px;color:#5a5257;font-weight:600;text-align:center;opacity:1;white-space:pre">4</div>
+<div id="a5" class="b" style="left:720px;top:120px;width:120px;height:80px;font-size:32px;font-family:ui-monospace,Consolas,monospace">1898</div>
+<div id="ai5" class="t" style="left:720px;top:206px;width:120px;font-size:22px;color:#5a5257;font-weight:600;text-align:center;opacity:1;white-space:pre">5</div>
+<div id="a6" class="b" style="left:850px;top:120px;width:120px;height:80px;font-size:32px;font-family:ui-monospace,Consolas,monospace">1983</div>
+<div id="ai6" class="t" style="left:850px;top:206px;width:120px;font-size:22px;color:#5a5257;font-weight:600;text-align:center;opacity:1;white-space:pre">6</div>
+<div id="a7" class="b" style="left:980px;top:120px;width:120px;height:80px;font-size:32px;font-family:ui-monospace,Consolas,monospace">2005</div>
+<div id="ai7" class="t" style="left:980px;top:206px;width:120px;font-size:22px;color:#5a5257;font-weight:600;text-align:center;opacity:1;white-space:pre">7</div>
+<div id="a8" class="b" style="left:1110px;top:120px;width:120px;height:80px;font-size:32px;font-family:ui-monospace,Consolas,monospace">2446</div>
+<div id="ai8" class="t" style="left:1110px;top:206px;width:120px;font-size:22px;color:#5a5257;font-weight:600;text-align:center;opacity:1;white-space:pre">8</div>
+<div id="a9" class="b" style="left:1240px;top:120px;width:120px;height:80px;font-size:32px;font-family:ui-monospace,Consolas,monospace">2685</div>
+<div id="ai9" class="t" style="left:1240px;top:206px;width:120px;font-size:22px;color:#5a5257;font-weight:600;text-align:center;opacity:1;white-space:pre">9</div>
+<div id="a10" class="b" style="left:1370px;top:120px;width:120px;height:80px;font-size:32px;font-family:ui-monospace,Consolas,monospace">3200</div>
+<div id="ai10" class="t" style="left:1370px;top:206px;width:120px;font-size:22px;color:#5a5257;font-weight:600;text-align:center;opacity:1;white-space:pre">10</div>
+<div id="b0" class="b" style="left:70px;top:390px;width:120px;height:80px;font-size:32px;font-family:ui-monospace,Consolas,monospace">1231</div>
+<div id="bi0" class="t" style="left:70px;top:476px;width:120px;font-size:22px;color:#5a5257;font-weight:600;text-align:center;opacity:1;white-space:pre">0</div>
+<div id="b1" class="b" style="left:200px;top:390px;width:120px;height:80px;font-size:32px;font-family:ui-monospace,Consolas,monospace">1473</div>
+<div id="bi1" class="t" style="left:200px;top:476px;width:120px;font-size:22px;color:#5a5257;font-weight:600;text-align:center;opacity:1;white-space:pre">1</div>
+<div id="b2" class="b" style="left:330px;top:390px;width:120px;height:80px;font-size:32px;font-family:ui-monospace,Consolas,monospace">1545</div>
+<div id="bi2" class="t" style="left:330px;top:476px;width:120px;font-size:22px;color:#5a5257;font-weight:600;text-align:center;opacity:1;white-space:pre">2</div>
+<div id="b3" class="b" style="left:460px;top:390px;width:120px;height:80px;font-size:32px;font-family:ui-monospace,Consolas,monospace">1834</div>
+<div id="bi3" class="t" style="left:460px;top:476px;width:120px;font-size:22px;color:#5a5257;font-weight:600;text-align:center;opacity:1;white-space:pre">3</div>
+<div id="b4" class="b" style="left:590px;top:390px;width:120px;height:80px;font-size:32px;font-family:ui-monospace,Consolas,monospace">1892</div>
+<div id="bi4" class="t" style="left:590px;top:476px;width:120px;font-size:22px;color:#5a5257;font-weight:600;text-align:center;opacity:1;white-space:pre">4</div>
+<div id="b5" class="b" style="left:720px;top:390px;width:120px;height:80px;font-size:32px;font-family:ui-monospace,Consolas,monospace">1898</div>
+<div id="bi5" class="t" style="left:720px;top:476px;width:120px;font-size:22px;color:#5a5257;font-weight:600;text-align:center;opacity:1;white-space:pre">5</div>
+<div id="b6" class="b" style="left:850px;top:390px;width:120px;height:80px;font-size:32px;font-family:ui-monospace,Consolas,monospace">1983</div>
+<div id="bi6" class="t" style="left:850px;top:476px;width:120px;font-size:22px;color:#5a5257;font-weight:600;text-align:center;opacity:1;white-space:pre">6</div>
+<div id="b7" class="b" style="left:980px;top:390px;width:120px;height:80px;font-size:32px;font-family:ui-monospace,Consolas,monospace">2005</div>
+<div id="bi7" class="t" style="left:980px;top:476px;width:120px;font-size:22px;color:#5a5257;font-weight:600;text-align:center;opacity:1;white-space:pre">7</div>
+<div id="b8" class="b" style="left:1110px;top:390px;width:120px;height:80px;font-size:32px;font-family:ui-monospace,Consolas,monospace">2446</div>
+<div id="bi8" class="t" style="left:1110px;top:476px;width:120px;font-size:22px;color:#5a5257;font-weight:600;text-align:center;opacity:1;white-space:pre">8</div>
+<div id="b9" class="b" style="left:1240px;top:390px;width:120px;height:80px;font-size:32px;font-family:ui-monospace,Consolas,monospace">2685</div>
+<div id="bi9" class="t" style="left:1240px;top:476px;width:120px;font-size:22px;color:#5a5257;font-weight:600;text-align:center;opacity:1;white-space:pre">9</div>
+<div id="b10" class="b" style="left:1370px;top:390px;width:120px;height:80px;font-size:32px;font-family:ui-monospace,Consolas,monospace">3200</div>
+<div id="bi10" class="t" style="left:1370px;top:476px;width:120px;font-size:22px;color:#5a5257;font-weight:600;text-align:center;opacity:1;white-space:pre">10</div>
+<div id="na" class="t" style="left:70px;top:258px;width:700px;font-size:36px;color:#910048;font-weight:800;font-family:ui-monospace,Consolas,monospace;text-align:left;opacity:1;white-space:pre">comparaciones: 0</div>
+<div id="nb" class="t" style="left:70px;top:528px;width:700px;font-size:36px;color:#0c6b62;font-weight:800;font-family:ui-monospace,Consolas,monospace;text-align:left;opacity:1;white-space:pre">comparaciones: 0</div>
+<div id="k0" class="t" style="left:70px;top:640px;width:1420px;opacity:0;color:var(--wine-deep);font-size:30px">La misma lista ordenada y la misma clave</div>
+<div id="k1" class="t" style="left:70px;top:640px;width:1420px;opacity:0;color:var(--wine-deep);font-size:30px">La lineal revisa de uno en uno hasta el índice 6</div>
+<div id="k2" class="t" style="left:70px;top:640px;width:1420px;opacity:0;color:var(--wine-deep);font-size:30px">La binaria abre por el centro: 1898 es menor que 1983 y descarta la izquierda</div>
+<div id="k3" class="t" style="left:70px;top:640px;width:1420px;opacity:0;color:var(--wine-deep);font-size:30px">El centro de lo que queda es 2446, mayor: descarta la derecha</div>
+<div id="k4" class="t" style="left:70px;top:640px;width:1420px;opacity:0;color:var(--wine-deep);font-size:30px">El centro del intervalo restante es 1983. Siete comparaciones contra tres</div>
+</div>
+<script>
+const N = 4;
+const st = document.getElementById("st");
+function fit() { const k = Math.min(innerWidth / 1560, innerHeight / 720); st.style.transform = "scale(" + k + ")"; }
+fit(); addEventListener("resize", fit);
+const $ = (s) => document.querySelector(s);
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const ease = (t) => { t = clamp(t, 0, 1); return t * t * (3 - 2 * t); };
+const win = (s, a, b) => ease((s - a) / (b - a));
+const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+const mix = (a, b, t) => { const x = hex(a), y = hex(b); return "rgb(" + x.map((v, i) => Math.round(v + (y[i] - v) * t)).join(",") + ")"; };
+function lit(el, base, color, t, fg0, fg1) { el.style.background = mix(base, color, t); el.style.color = mix(fg0 || "#1f1a1d", fg1 || "#ffffff", t); }
+function put(el, x, y, a) { el.style.transform = "translate(" + x + "px," + y + "px)"; el.style.opacity = String(a); }
+function route(k, pts) { for (let i = 0; i < pts.length - 1; i++) { if (k <= pts[i + 1][0]) { const t = ease((k - pts[i][0]) / (pts[i + 1][0] - pts[i][0])); return [pts[i][1] + (pts[i + 1][1] - pts[i][1]) * t, pts[i][2] + (pts[i + 1][2] - pts[i][2]) * t]; } } const l = pts[pts.length - 1]; return [l[1], l[2]]; }
+
+function caps(s, n, pref) { for (let k = 0; k <= n; k++) { const a = win(s, k - 0.5, k) * (k < n ? 1 - win(s, k, k + 0.5) : 1); put($("#" + pref + k), 0, 0, clamp(a, 0, 1)); } }
+const op = (id, v) => { const e = document.getElementById(id); if (e) e.setAttribute("opacity", String(Math.max(0, Math.min(1, v)))); };
+const opAll = (ids, v) => ids.forEach((i) => op(i, v));
+const show = (id, v) => { const e = document.getElementById(id); if (e) e.style.opacity = String(Math.max(0, Math.min(1, v))); };
+const rise = (id, a) => { const e = document.getElementById(id); if (e) { e.style.opacity = String(clamp(a, 0, 1)); e.style.transform = "translateY(" + ((1 - clamp(a, 0, 1)) * 18) + "px)"; } };
+const fmt = (n) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, "\u00a0");
+const tri = (s, k, n) => win(s, k - 0.5, k) * (k < n ? 1 - win(s, k, k + 0.5) : 1);
+const lerpArr = (arr, s) => { const t = clamp(s, 0, arr.length - 1); const i = Math.min(arr.length - 2, Math.floor(t)); const f = ease(t - i); return arr[i] + (arr[i + 1] - arr[i]) * f; };
+
+const COL = [
+  ["#f6f1f3","#f6f1f3","#f6f1f3","#f6f1f3","#f6f1f3","#f6f1f3","#f6f1f3","#f6f1f3","#f6f1f3","#f6f1f3","#f6f1f3"],
+  ["#f6f1f3","#f6f1f3","#f6f1f3","#f6f1f3","#f6f1f3","#e8a920","#f6f1f3","#f6f1f3","#f6f1f3","#f6f1f3","#f6f1f3"],
+  ["#f6f1f3","#f6f1f3","#f6f1f3","#f6f1f3","#f6f1f3","#f6f1f3","#f6f1f3","#f6f1f3","#e8a920","#f6f1f3","#f6f1f3"],
+  ["#f6f1f3","#f6f1f3","#f6f1f3","#f6f1f3","#f6f1f3","#f6f1f3","#0c6b62","#f6f1f3","#f6f1f3","#f6f1f3","#f6f1f3"]];
+const OPA = [
+  [1,1,1,1,1,1,1,1,1,1,1],
+  [.3,.3,.3,.3,.3,1,1,1,1,1,1],
+  [.3,.3,.3,.3,.3,.3,1,1,1,.3,.3],
+  [.3,.3,.3,.3,.3,.3,1,.3,.3,.3,.3]];
+
+let u = 0, target = 0, frame = 0, timer = 0, last = 0;
+function draw() { 
+const s = u * N;
+const a1 = win(s, 0, 1);
+const p = a1 * 7;
+for (let i = 0; i < 11; i++) {
+  const e = $("#a" + i);
+  const t = i < 7 ? clamp(p - i, 0, 1) : 0;
+  if (i < 6) lit(e, "#f6f1f3", "#e8a920", t, "#1f1a1d", "#1f1a1d");
+  else if (i === 6) lit(e, "#f6f1f3", "#0c6b62", t, "#1f1a1d", "#ffffff");
+}
+$("#na").textContent = "comparaciones: " + Math.ceil(p - 1e-9);
+const b = clamp(s - 1, 0, 3), k = Math.min(2, Math.floor(b)), f = ease(b - k);
+for (let i = 0; i < 11; i++) {
+  const e = $("#b" + i);
+  const c0 = COL[k][i], c1 = COL[k + 1][i];
+  e.style.background = mix(c0, c1, f);
+  e.style.color = mix(c0 === "#0c6b62" ? "#ffffff" : "#1f1a1d", c1 === "#0c6b62" ? "#ffffff" : "#1f1a1d", f);
+  e.style.opacity = String(OPA[k][i] + (OPA[k + 1][i] - OPA[k][i]) * f);
+}
+$("#nb").textContent = "comparaciones: " + Math.round(b);
+caps(s, 4, "k");
+ }
+function loop() {
+  clearTimeout(timer); cancelAnimationFrame(frame);
+  const now = performance.now();
+  const dt = last ? Math.min((now - last) / 1000, 1) : 1 / 60; last = now;
+  const speed = 1 / (N * 1.6);
+  u = target > u ? Math.min(target, u + dt * speed) : Math.max(target, u - dt * speed * 2);
+  draw();
+  if (u !== target) { frame = requestAnimationFrame(loop); timer = setTimeout(loop, 80); } else { frame = 0; timer = 0; last = 0; }
+}
+const run = () => { if (!frame && !timer) { last = 0; loop(); } };
+const go = (v) => { target = clamp(v, 0, 1); run(); };
+window.__fig = { set(v) { u = target = clamp(v, 0, 1); draw(); }, go, get u() { return u; } };
+addEventListener("message", (e) => { const m = e.data; if (!m || m.type !== "fig") return; if (m.mode === "set") window.__fig.set(Number(m.value)); else go(Number(m.value)); });
+if (window.parent !== window) {
+  const KEYMAP = { ArrowRight: "ArrowRight", PageDown: "ArrowRight", " ": "ArrowRight", Enter: "ArrowRight", ArrowLeft: "ArrowLeft", PageUp: "ArrowLeft", Backspace: "ArrowLeft" };
+  addEventListener("keydown", (e) => { const k = KEYMAP[e.key]; if (!k) return; e.preventDefault(); e.stopImmediatePropagation(); parent.postMessage({ type: "deck-key", key: k }, "*"); }, true);
+} else {
+  addEventListener("click", () => go(target >= 1 ? 0 : Math.min(1, Math.round(target * N + 1) / N)));
+}
+draw();
+</script></body></html>

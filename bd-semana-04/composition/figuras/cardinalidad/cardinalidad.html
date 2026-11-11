@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tres relaciones, tres razones de cardinalidad</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; background: #ffffff; color-scheme: light; overflow: hidden; }
+  body { display: grid; place-items: center; font-family: system-ui, "Segoe UI", Arial, sans-serif; cursor: pointer; }
+  svg { width: 100%; height: 100%; display: block; }
+  .status { font-size: 30px; font-weight: 700; fill: #910048; }
+  .col { font-size: 24px; font-weight: 800; fill: #910048; letter-spacing: 0.04em; }
+  .name { font-size: 26px; fill: #1f1a1d; }
+  .count { font-size: 22px; font-weight: 700; fill: #ffffff; }
+  .pair { font-size: 28px; font-weight: 700; fill: #1f1a1d; }
+  .ratio { font-size: 46px; font-weight: 800; fill: #910048; }
+  .hint { font-size: 19px; fill: #5a5257; }
+  .link { stroke: #910048; stroke-width: 4; stroke-linecap: round; fill: none; }
+</style>
+</head>
+<body>
+<svg viewBox="0 0 1200 640" role="img" aria-labelledby="t d" preserveAspectRatio="xMidYMid meet">
+  <title id="t">Tres relaciones de la biblioteca con sus instancias</title>
+  <desc id="d">A la izquierda, cinco estudiantes; a la derecha, tres carreras. En el primer paso, REPRESENTA une a cada carrera con un solo estudiante: razón uno a uno. En el segundo, PERTENECE_A une a cada estudiante con una carrera y cada carrera recibe varios: razón muchos a uno. En el tercero, la columna derecha pasa a ser tres libros y RESERVA une a un estudiante con varios libros y a un libro con varios estudiantes: razón muchos a muchos.</desc>
+
+  <text id="status" class="status" x="60" y="46">dos conjuntos de entidades, todavía sin relación</text>
+  <g id="dots" transform="translate(1040 36)">
+    <circle cx="0" cy="0" r="9" fill="#e2dcdf" /><circle cx="34" cy="0" r="9" fill="#e2dcdf" /><circle cx="68" cy="0" r="9" fill="#e2dcdf" />
+  </g>
+
+  <rect x="60" y="70" width="1080" height="462" rx="18" fill="#f6f1f3" />
+  <text class="col" x="360" y="112" text-anchor="middle">ESTUDIANTE</text>
+  <text id="rightCol" class="col" x="840" y="112" text-anchor="middle">CARRERA</text>
+
+  <g id="links"></g>
+  <g id="nodes"></g>
+
+  <text id="pairL" class="pair" x="360" y="584" text-anchor="middle"></text>
+  <text id="ratio" class="ratio" x="600" y="592" text-anchor="middle"></text>
+  <text id="pairR" class="pair" x="840" y="584" text-anchor="middle"></text>
+
+  <text id="step" class="hint" x="60" y="630">Paso 0 de 3</text>
+  <text class="hint" x="1140" y="630" text-anchor="end">Un clic avanza un paso</text>
+</svg>
+<script>
+const NS = "http://www.w3.org/2000/svg";
+const LEFT = ["Ana", "Marco", "Lucía", "Diego", "Sara"];
+const RIGHT = [["Software", "Derecho", "Turismo"], ["Software", "Derecho", "Turismo"], ["Software", "Derecho", "Turismo"], ["Bases de datos", "Redes", "Álgebra"]];
+const RELS = [
+  null,
+  { name: "REPRESENTA", text: "REPRESENTA: una carrera, un representante", ratio: "1:1", l: "ESTUDIANTE (0,1)", r: "CARRERA (1,1)", col: "CARRERA", pairs: [[0, 0], [3, 1], [4, 2]] },
+  { name: "PERTENECE_A", text: "PERTENECE_A: muchos estudiantes, una carrera", ratio: "N:1", l: "ESTUDIANTE (1,1)", r: "CARRERA (1,N)", col: "CARRERA", pairs: [[0, 0], [1, 0], [2, 1], [3, 1], [4, 2]] },
+  { name: "RESERVA", text: "RESERVA: muchos estudiantes, muchos libros", ratio: "M:N", l: "ESTUDIANTE (0,3)", r: "LIBRO (0,N)", col: "LIBRO", pairs: [[0, 0], [1, 0], [1, 1], [2, 1]] },
+];
+const LX = 360, RX = 840;
+const ly = (i) => 170 + i * 78, ry = (j) => 205 + j * 120;
+const $ = (id) => document.getElementById(id);
+const el = (tag, attrs, parent, text) => {
+  const node = document.createElementNS(NS, tag);
+  for (const key in attrs) node.setAttribute(key, attrs[key]);
+  if (text != null) node.textContent = text;
+  parent.appendChild(node);
+  return node;
+};
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const ease = (x) => x * x * (3 - 2 * x);
+
+// Líneas de cada relación, en su propio grupo.
+const groups = RELS.map((rel, k) => {
+  if (!rel) return null;
+  const g = el("g", { opacity: 0 }, $("links"));
+  const lines = rel.pairs.map(([i, j]) => {
+    const len = Math.hypot(RX - LX - 44, ry(j) - ly(i));
+    return { len, node: el("line", { class: "link", x1: LX + 22, y1: ly(i), x2: RX - 22, y2: ry(j), "stroke-dasharray": len.toFixed(1) }, g) };
+  });
+  return { g, lines };
+});
+
+const leftNodes = LEFT.map((name, i) => {
+  el("text", { class: "name", x: LX - 36, y: ly(i) + 9, "text-anchor": "end" }, $("nodes"), name);
+  el("circle", { cx: LX, cy: ly(i), r: 22, fill: "#1f1a1d" }, $("nodes"));
+  return el("text", { class: "count", x: LX, y: ly(i) + 8, "text-anchor": "middle" }, $("nodes"), "");
+});
+const rightNodes = [0, 1, 2].map((j) => {
+  const label = el("text", { class: "name", x: RX + 36, y: ry(j) + 9 }, $("nodes"), RIGHT[0][j]);
+  el("circle", { cx: RX, cy: ry(j), r: 22, fill: "#1f1a1d" }, $("nodes"));
+  return { label, count: el("text", { class: "count", x: RX, y: ry(j) + 8, "text-anchor": "middle" }, $("nodes"), "") };
+});
+
+let u = 0, target = 0, raf = 0, last = 0, timer = 0;
+
+function draw() {
+  const x = u * 3;
+  for (let s = 1; s <= 3; s++) {
+    const enter = ease(clamp(x - (s - 1), 0, 1));
+    const leave = s < 3 ? ease(clamp(x - s, 0, 1)) : 0;
+    groups[s].g.setAttribute("opacity", (enter > 0 ? 1 - leave : 0).toFixed(3));
+    for (const line of groups[s].lines) line.node.setAttribute("stroke-dashoffset", (line.len * (1 - enter)).toFixed(1));
+  }
+  const step = Math.round(x);
+  const near = clamp(1 - 2.2 * Math.abs(x - step), 0, 1);
+  const rel = RELS[step];
+  const countL = [0, 0, 0, 0, 0], countR = [0, 0, 0];
+  if (rel) for (const [i, j] of rel.pairs) { countL[i]++; countR[j]++; }
+  leftNodes.forEach((node, i) => { node.textContent = rel ? countL[i] : ""; node.setAttribute("opacity", near); });
+  rightNodes.forEach((node, j) => {
+    node.count.textContent = rel ? countR[j] : "";
+    node.count.setAttribute("opacity", near);
+    node.label.textContent = RIGHT[step][j];
+    node.label.setAttribute("opacity", step === 3 || x > 2 ? near : 1);
+  });
+  $("rightCol").textContent = rel ? rel.col : "CARRERA";
+  $("status").textContent = rel ? rel.text : "dos conjuntos de entidades, todavía sin relación";
+  for (const [id, value] of [["pairL", rel ? rel.l : ""], ["ratio", rel ? rel.ratio : ""], ["pairR", rel ? rel.r : ""]]) {
+    $(id).textContent = value;
+    $(id).setAttribute("opacity", near);
+  }
+  $("step").textContent = "Paso " + step + " de 3";
+  $("dots").querySelectorAll("circle").forEach((c, i) => c.setAttribute("fill", i < step ? "#910048" : "#e2dcdf"));
+}
+
+function tick(now) {
+  cancelAnimationFrame(raf); clearTimeout(timer); raf = 0; timer = 0;
+  now = performance.now();
+  const dt = Math.min(0.125, (now - last) / 1000);
+  last = now;
+  const speed = (1 / 3) / 0.9;
+  const d = target - u;
+  if (Math.abs(d) <= speed * dt) u = target;
+  else u += Math.sign(d) * speed * dt;
+  draw();
+  if (u !== target) { raf = requestAnimationFrame(tick); timer = setTimeout(tick, 60); }
+}
+
+function go(v) {
+  target = clamp(v, 0, 1);
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) { u = target; draw(); return; }
+  if (!raf && !timer) { last = performance.now(); raf = requestAnimationFrame(tick); timer = setTimeout(tick, 60); }
+}
+
+function advance(dir) {
+  const current = Math.round(target * 3);
+  const next = dir > 0 ? (current >= 3 ? 0 : current + 1) : Math.max(0, current - 1);
+  go(next / 3);
+}
+
+window.__fig = {
+  set(v) { cancelAnimationFrame(raf); clearTimeout(timer); raf = 0; timer = 0; u = target = clamp(v, 0, 1); draw(); },
+  go,
+};
+addEventListener("message", (event) => {
+  const m = event.data;
+  if (!m || m.type !== "fig") return;
+  if (m.mode === "set") window.__fig.set(Number(m.value)); else go(Number(m.value));
+});
+addEventListener("click", () => advance(1));
+addEventListener("keydown", (event) => {
+  if (event.key === "ArrowRight" || event.key === " " || event.key === "Enter") advance(1);
+  if (event.key === "ArrowLeft") advance(-1);
+});
+draw();
+</script>
+</body>
+</html>

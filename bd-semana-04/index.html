@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CC05A_IFT200 · Semana 4: Estructura, modelado y almacenamiento de BD</title>
+    <script>
+      // El modo público se distingue en la pestaña del navegador.
+      if (new URLSearchParams(location.search).get("mode") === "audience") {
+        document.title = "CC05A_IFT200 · Semana 4: Estructura, modelado y almacenamiento de BD" + " (pantalla del público)";
+      }
+    </script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { height: 100%; background: #0a0a0a; overflow: hidden; }
+      hyperframes-slideshow { display: block; position: relative; width: 100vw; height: 100vh; }
+      hyperframes-player { position: absolute; inset: 0; }
+    </style>
+    <script src="../vendor/hyperframes-player.global.js"></script>
+    <script src="../vendor/hyperframes-slideshow.global.js"></script>
+  </head>
+  <body>
+    <hyperframes-slideshow tabindex="0" notes-storage-key="bd-semana-04">
+      <hyperframes-player interactive src="composition/index.html"></hyperframes-player>
+      <script type="application/hyperframes-slideshow+json">
+{
+  "slides": [
+    {
+      "sceneId": "portada",
+      "startTime": 0,
+      "endTime": 3.5,
+      "notes": "Abrir con una pregunta: ya tenemos la ficha del estudiante y la ficha del libro; ¿dónde anotamos qué estudiante reservó qué libro? Recoger respuestas sin corregirlas. Casi siempre aparece la idea de agregar un atributo; la clase muestra por qué eso no alcanza."
+    },
+    {
+      "sceneId": "ruta",
+      "startTime": 3.5,
+      "endTime": 7,
+      "notes": "Presentar la ruta en un minuto. Es la misma secuencia del material de la semana: primero el pedido, después los nombres técnicos, y al final la validación del diagrama."
+    },
+    {
+      "sceneId": "pedido",
+      "startTime": 7,
+      "endTime": 14.5,
+      "notes": "Leer en voz alta el pedido ampliado del material de la semana y pedir que subrayen los verbos que unen dos fichas. Figura en cinco estados. Al entrar: las fichas de la semana pasada, sueltas. Primer avance: pertenece a y representa a unen estudiante y carrera. Segundo avance: reserva une estudiante y libro, y trae una fecha. Tercer avance: tiene une un libro con sus ejemplares. Cuarto avance: acompaña a une a un estudiante con otro estudiante. Antes de cada avance, preguntar qué verbo creen que sigue. Preguntar por las rarezas: una ficha conectada consigo misma, una fecha que no es de ninguna ficha, un ejemplar sin clave.",
+      "fragments": [
+        9,
+        10,
+        11,
+        12,
+        13
+      ]
+    },
+    {
+      "sceneId": "idea",
+      "startTime": 14.5,
+      "endTime": 18,
+      "notes": "Regla práctica del texto base: los sustantivos de la narración suelen dar origen a los tipos de entidad y los verbos a los tipos de relación. Conectar con la semana 3, cuando subrayaron sustantivos."
+    },
+    {
+      "sceneId": "relacion",
+      "startTime": 18,
+      "endTime": 22.5,
+      "notes": "Tipo de relación: conjunto de asociaciones entre entidades de varios tipos de entidad. Es la misma diferencia que entre tipo de entidad y entidad. Insistir en que un atributo que apunta a otra entidad, como carrera dentro de ESTUDIANTE, se convierte en relación y se quita de la entidad.",
+      "fragments": [
+        20,
+        21
+      ]
+    },
+    {
+      "sceneId": "roles",
+      "startTime": 22.5,
+      "endTime": 28,
+      "notes": "Grado: número de tipos de entidad que participan; en el curso se trabaja con relaciones binarias. ACOMPAÑA es binaria aunque solo aparezca un rectángulo, porque la misma entidad participa dos veces. Al entrar: las dos líneas llegan al mismo rectángulo y no se sabe cuál es cuál; preguntarlo a la clase. Primer avance: los nombres de rol, monitor y acompañado, dicen qué papel juega cada línea. Segundo avance: instancias; Ana aparece en las dos filas, acompañada por Lucía y acompañando a Diego, con los dos roles a la vez. En una relación entre tipos distintos, como RESERVA, los roles son obvios y no se escriben.",
+      "fragments": [
+        24.5,
+        25.5,
+        26.5
+      ]
+    },
+    {
+      "sceneId": "dos-preguntas",
+      "startTime": 28,
+      "endTime": 32.5,
+      "notes": "Las dos restricciones estructurales responden las dos preguntas de la exploración. La razón de cardinalidad fija el máximo; la participación fija el mínimo. Las dos salen de las reglas del pedido, no del gusto de quien dibuja.",
+      "fragments": [
+        30,
+        31
+      ]
+    },
+    {
+      "sceneId": "figura-cardinalidad",
+      "startTime": 32.5,
+      "endTime": 39,
+      "notes": "Figura interactiva en cuatro estados. Al entrar: cinco estudiantes y tres carreras, sin líneas. Primer avance, REPRESENTA: a cada carrera llega una sola línea y de cada estudiante sale una o ninguna. Segundo avance, PERTENECE_A: de cada estudiante sale exactamente una y a cada carrera llegan varias. Tercer avance, RESERVA: la columna derecha pasa a ser libros; de Marco salen dos y a un libro llegan dos. Antes de cada avance, pedir que predigan cuántas líneas saldrán de cada lado. Los números dentro de los círculos cuentan las líneas. Un clic sobre la figura también avanza.",
+      "fragments": [
+        34.5,
+        35.5,
+        36.5,
+        37.5
+      ]
+    },
+    {
+      "sceneId": "participacion",
+      "startTime": 39,
+      "endTime": 45.5,
+      "notes": "Sofía acaba de inscribirse y todavía no tiene líneas. Primer avance: en PERTENECE_A todos los estudiantes tienen su línea menos Sofía, y el pedido dice que cada estudiante pertenece a una carrera: el sistema debe rechazarla. Eso es participación total, mínimo 1. Segundo avance: Sofía queda unida a Turismo y cumple. Tercer avance: la columna derecha pasa a libros y RESERVA; Marco, Diego, Sofía y Pedro Páramo no tienen línea y no pasa nada, porque reservar es opcional. Eso es participación parcial, mínimo 0. La misma persona sin línea es un error en una relación y es normal en otra. Antes de cada avance, pedir que predigan si Sofía puede quedar sin línea.",
+      "fragments": [
+        41,
+        42,
+        43,
+        44
+      ]
+    },
+    {
+      "sceneId": "atributo-relacion",
+      "startTime": 45.5,
+      "endTime": 52,
+      "notes": "Ana reservó dos libros y Marco uno; cada reserva tiene su fecha. Primer avance: si la fecha fuera dato del estudiante, Ana tendría dos fechas y no se sabría cuál es de cuál libro. Segundo avance: si fuera dato del libro, Rayuela tendría dos fechas y no se sabría de quién es cada una. Tercer avance: cada fecha pertenece a una reserva, es decir, a la conexión; por eso cuelga del rombo RESERVA. En una relación 1:N el atributo sí puede pasarse a la entidad del lado N, porque cada entidad de ese lado participa en una sola instancia. Antes de cada avance, preguntar dónde guardarían la fecha.",
+      "fragments": [
+        47.5,
+        48.5,
+        49.5,
+        50.5
+      ]
+    },
+    {
+      "sceneId": "diagrama",
+      "startTime": 52,
+      "endTime": 58.5,
+      "notes": "Es la Figura 2 del material de la semana, dibujada en tres pasos con los nombres de las relaciones ya conocidos. Primer avance: PERTENECE_A y REPRESENTA; el 1 y la N se anotan junto a las entidades y la línea doble es participación total. Segundo avance: RESERVA, con M y N, y el óvalo fecha_reserva colgado del rombo. Tercer avance: ACOMPAÑA, que sale de ESTUDIANTE y vuelve a ESTUDIANTE, con los roles monitor y acompañado. Leer cada relación con una oración por lado. El rectángulo y el rombo dobles aparecen en la lámina del ejemplar.",
+      "fragments": [
+        54,
+        55,
+        56,
+        57
+      ]
+    },
+    {
+      "sceneId": "lectura",
+      "startTime": 58.5,
+      "endTime": 65,
+      "notes": "Tres filas de la Tabla 1 del material de la semana. Revelar fila por fila pidiendo la razón y la participación antes de mostrarlas. Es el formato de la tabla de relaciones del taller PE-1.4.",
+      "fragments": [
+        60.5,
+        61.5,
+        62.5,
+        63.5
+      ]
+    },
+    {
+      "sceneId": "preguntar",
+      "startTime": 65,
+      "endTime": 68.5,
+      "notes": "Si una razón de cardinalidad o una dependencia no puede determinarse a partir de los requisitos, hay que preguntar a los usuarios. En el taller, si el pedido no alcanza, se anota la pregunta en lugar de inventar la respuesta."
+    },
+    {
+      "sceneId": "debil",
+      "startTime": 68.5,
+      "endTime": 75,
+      "notes": "El ejemplar número 1 existe en todos los libros: el número no distingue a un ejemplar de todos los demás. Primer avance: se marcan los dos 1 y se ve que el número se repite. Segundo avance: aparece el código del libro; con código más número cada ejemplar es único. Un tipo de entidad sin atributos clave propios es débil; la clave completa se forma con la del propietario más la clave parcial. Tercer avance: la notación. Rectángulo doble para la entidad débil, rombo doble para la relación identificadora, línea doble porque el ejemplar participa siempre y subrayado discontinuo para la clave parcial. Antes de cada avance, preguntar qué creen que va a pasar.",
+      "fragments": [
+        70.5,
+        71.5,
+        72.5,
+        73.5
+      ]
+    },
+    {
+      "sceneId": "prueba-clave",
+      "startTime": 75,
+      "endTime": 78.5,
+      "notes": "No toda dependencia de existencia produce una entidad débil. La licencia de conducir no existe sin una persona, pero tiene su propio número: es una entidad fuerte. Para decidir se pregunta por la clave."
+    },
+    {
+      "sceneId": "minmax",
+      "startTime": 78.5,
+      "endTime": 85,
+      "notes": "Es la Figura 3 del material de la semana. Al entrar: el diagrama completo, con letras y con la entidad débil. Primer avance: cada letra se cambia por un par de números junto a la entidad a la que se refiere. Comparar con la lámina anterior: el 1 de PERTENECE_A estaba del lado de CARRERA y el (1,1) está del lado de ESTUDIANTE; dicen lo mismo desde lados opuestos. Segundo avance: el segundo número es el máximo; en RESERVA, el (0,3) dice hasta tres reservas, algo que la letra M no podía decir. Tercer avance: el primero es el mínimo; en ámbar los que valen 0, participación parcial, y en verde los que valen 1 o más, participación total. Con el mínimo, las líneas dobles ya no hacen falta.",
+      "fragments": [
+        80.5,
+        81.5,
+        82.5,
+        83.5
+      ]
+    },
+    {
+      "sceneId": "leer-par",
+      "startTime": 85,
+      "endTime": 91.5,
+      "notes": "Tres pares de la Figura 3. El segundo es el que la notación de letras no podía decir: hasta tres reservas. Pedir a la clase que lea cada par en voz alta antes de mostrar la tercera columna. En el taller PE-1.4 los pares van en una tabla.",
+      "fragments": [
+        87,
+        88,
+        89,
+        90
+      ]
+    },
+    {
+      "sceneId": "casos",
+      "startTime": 91.5,
+      "endTime": 99,
+      "notes": "Cuatro casos de la Tabla 2 del material de la semana. Un caso de prueba es un hecho concreto. Se anota qué responde la biblioteca, según el pedido, y qué responde el diagrama, según sus restricciones. Revelar fila por fila pidiendo las dos respuestas. El último caso no es un error: es un límite del diagrama, y la regla se anota aparte. Es el formato del informe TA-1.4.",
+      "fragments": [
+        93.5,
+        94.5,
+        95.5,
+        96.5,
+        97.5
+      ]
+    },
+    {
+      "sceneId": "limite",
+      "startTime": 99,
+      "endTime": 105.5,
+      "notes": "Es el último caso de la tabla, con el mismo hecho: Ana, de Software, representa a Derecho. Al entrar: Ana es de Software, Diego es de Derecho y Derecho todavía no tiene representante. Primer avance: se prueba el hecho; la biblioteca lo rechaza porque cada carrera nombra a uno de sus propios estudiantes. Segundo avance: se consulta el diagrama; Derecho tiene un representante y Ana representa a una sola carrera, así que cumple (1,1) y (0,1) y lo permite. Tercer avance: las dos respuestas no coinciden, pero el dibujo no está mal: el diagrama no tiene cómo decir que el representante debe ser de la misma carrera. La regla se anota aparte, junto al diagrama. Antes de cada avance, pedir las respuestas a la clase.",
+      "fragments": [
+        101,
+        102,
+        103,
+        104
+      ]
+    },
+    {
+      "sceneId": "falla",
+      "startTime": 105.5,
+      "endTime": 109,
+      "notes": "Si las dos respuestas no coinciden hay un error en el diagrama, falta una pregunta a los usuarios o se llegó a un límite del diagrama. Cuando un caso falla se corrige y se vuelven a pasar todos los casos."
+    },
+    {
+      "sceneId": "actividades",
+      "startTime": 109,
+      "endTime": 112.5,
+      "notes": "PE-1.4 se hace en clase con el pedido ampliado de Talento Humano de ILE: tabla de relaciones, pares (min, max) y diagrama con la notación de la Figura 2. TA-1.4 es autónomo: la plantilla trae el diagrama de la farmacia con errores; se escriben casos de prueba, se encuentran los errores y se dibuja el diagrama corregido. Las plantillas y las fechas están en Canvas."
+    },
+    {
+      "sceneId": "cierre",
+      "startTime": 112.5,
+      "endTime": 116,
+      "notes": "Volver a la pregunta inicial: la reserva no se anota en el estudiante ni en el libro, sino en una relación entre los dos. Tarea para casa: la recuperación sin apuntes del material de la semana. La próxima semana es la evaluación diagnóstica."
+    }
+  ],
+  "slideSequences": []
+}
+    </script>
+    </hyperframes-slideshow>
+  </body>
+</html>

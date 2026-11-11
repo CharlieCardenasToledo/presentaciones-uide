@@ -1,0 +1,640 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Semana 4 · Relaciones y entidades débiles</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      :root {
+        /* Colores tomados del logotipo UIDE: vino #910048 y dorado #E8A920. Sin degradados. */
+        --paper: #ffffff; --ink: #1f1a1d; --muted: #5a5257; --wine: #910048; --wine-deep: #6d0036; --gold: #e8a920;
+        --teal: #0c6b62; --teal-soft: #e3f2f0; --amber: #7a5200; --amber-soft: #fcefc9; --card: #ffffff; --line: #e2dcdf; --tint: #f6f1f3;
+      }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--paper); }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; font-family: system-ui, sans-serif; color: var(--ink); }
+      .slide { position: absolute; inset: 0; }
+      .frame { position: absolute; inset: 0; padding: 92px 120px 150px; display: flex; flex-direction: column; justify-content: center; opacity: 0; background: var(--paper); }
+      .frame::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 22px; background: var(--wine); }
+      .frame::after { content: ""; position: absolute; left: 22px; top: 0; bottom: 0; width: 8px; background: var(--gold); }
+      .dark .frame { background: var(--wine); color: #fff; }
+      .dark .frame::before { background: var(--gold); }
+      .dark .frame::after { display: none; }
+      .logo { position: absolute; top: 44px; right: 96px; height: 92px; width: auto; }
+      .dark .logo { top: 0; right: 96px; height: 150px; padding: 26px 30px 22px; background: #fff; border-radius: 0 0 18px 18px; box-sizing: border-box; }
+      .num { position: absolute; bottom: 52px; left: 120px; font-size: 26px; letter-spacing: 0.14em; color: var(--muted); font-variant-numeric: tabular-nums; }
+      .dark .num { color: #f1d3e0; }
+      .course { font-size: 34px; font-weight: 600; color: var(--gold); margin-bottom: 30px; }
+      .claim { font-family: ui-serif, serif; font-weight: 700; font-size: 74px; line-height: 1.08; letter-spacing: -0.015em; max-width: 1480px; margin-bottom: 44px; }
+      .claim.long { font-size: 62px; max-width: 1640px; }
+      .claim.xl { font-size: 96px; max-width: 1500px; }
+      .lead { font-size: 48px; line-height: 1.25; color: #ffffff; max-width: 1400px; }
+      .lead.dark-ink { color: var(--muted); margin-top: -14px; margin-bottom: 40px; }
+      .byline { font-size: 32px; color: #f6dfe9; margin-top: 70px; }
+      .source { font-size: 30px; color: var(--muted); margin-top: 34px; }
+      .punch { font-family: ui-serif, serif; font-size: 56px; font-weight: 700; color: var(--wine); margin-top: 44px; }
+      .punch.soft { color: var(--ink); font-size: 46px; margin-top: 18px; }
+      .punch.good { color: var(--teal); }
+
+      .steps { list-style: none; display: grid; gap: 18px; max-width: 1500px; }
+      .steps li { display: flex; align-items: center; gap: 30px; font-size: 46px; background: var(--tint); border-radius: 18px; padding: 18px 30px; }
+      .steps b { flex: none; width: 72px; height: 72px; border-radius: 50%; background: var(--wine); color: #fff; display: grid; place-items: center; font-size: 40px; }
+
+      .cards { display: grid; gap: 30px; }
+      .cards.three { grid-template-columns: repeat(3, 1fr); }
+      .cards.two { grid-template-columns: repeat(2, 1fr); }
+      .cards.four { grid-template-columns: repeat(4, 1fr); }
+      .cards.grid2 { grid-template-columns: repeat(2, 1fr); gap: 26px; }
+      .cards.tight { margin-top: 30px; }
+      .card { background: var(--tint); border-radius: 22px; padding: 36px 40px; display: flex; flex-direction: column; gap: 14px; }
+      .card strong { font-size: 48px; line-height: 1.12; font-weight: 800; }
+      .card em { font-style: normal; font-size: 40px; line-height: 1.2; color: var(--muted); }
+      .card .tag, .panel .tag { align-self: flex-start; font-size: 34px; font-weight: 600; color: var(--wine); }
+      .card.file strong { font-family: ui-monospace, monospace; font-size: 46px; }
+      .card.empty, .card.warn { background: var(--amber-soft); }
+      .card.warn strong { color: var(--amber); }
+      .card.pill { align-items: center; text-align: center; padding: 30px 20px; }
+      .card.pill b { width: 68px; height: 68px; border-radius: 50%; background: var(--wine); color: #fff; display: grid; place-items: center; font-size: 38px; }
+      .cards.tall .card { min-height: 300px; }
+      .verdict { margin-top: auto; padding: 14px 18px; border-radius: 12px; background: #fbe3a6; color: var(--amber) !important; font-weight: 700; }
+      .verdict.good { background: #cfe9e5; color: var(--teal) !important; }
+
+      table.data { border-collapse: collapse; width: 100%; background: var(--tint); border-radius: 20px; overflow: hidden; }
+      table.data th { text-align: left; font-size: 30px; letter-spacing: 0.1em; text-transform: uppercase; color: #fff; background: var(--wine-deep); padding: 20px 28px; }
+      table.data td { font-size: 42px; padding: 22px 28px; border-top: 3px solid #ffffff; font-variant-numeric: tabular-nums; }
+      table.data.matrix td { font-size: 40px; padding: 24px 28px; }
+      table.data.matrix b { color: var(--wine); }
+      .chips { display: flex; gap: 22px; margin-top: 36px; flex-wrap: wrap; }
+      .chip { font-size: 40px; font-weight: 700; padding: 16px 28px; border-radius: 999px; background: var(--amber-soft); color: var(--amber); }
+
+      .split { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+      .panel { background: var(--tint); border-radius: 22px; padding: 30px 34px; display: flex; flex-direction: column; gap: 18px; }
+      .panel.good { background: var(--teal-soft); }
+      .panel.good .tag { color: var(--teal); }
+      .box { font-size: 40px; padding: 18px 24px; border-radius: 14px; background: #ffffff; }
+      .box i { font-style: normal; color: var(--amber); font-weight: 700; }
+      .box.strong { background: var(--teal); color: #fff; font-weight: 700; }
+      .box.new { background: var(--teal-soft); color: var(--teal); font-weight: 700; }
+      .schema { font-family: ui-monospace, monospace; font-size: 44px; font-weight: 700; padding: 26px 32px; border-radius: 18px; background: var(--tint); }
+      .schema.main { font-size: 50px; background: var(--wine-deep); color: #fff; }
+      .schema.small { font-size: 40px; background: #ffffff; }
+      .schema u { text-decoration-thickness: 5px; text-underline-offset: 8px; }
+
+      .layers { display: grid; gap: 22px; max-width: 1500px; }
+      .layer { display: flex; align-items: baseline; gap: 34px; padding: 30px 38px; border-radius: 20px; background: var(--wine); color: #fff; }
+      .layer.mid { background: #7f003f; margin-left: 70px; }
+      .layer.low { background: var(--wine-deep); margin-left: 140px; }
+      .layer strong { font-size: 50px; flex: none; width: 430px; }
+      .layer em { font-style: normal; font-size: 40px; color: #ffffff; }
+
+      .timeline { display: grid; gap: 14px; }
+      .timeline .row { display: grid; grid-template-columns: 170px 560px 1fr; align-items: center; gap: 30px; background: var(--tint); border-radius: 16px; padding: 14px 28px; }
+      .timeline b { font-family: ui-serif, serif; font-size: 52px; color: var(--wine); font-variant-numeric: tabular-nums; }
+      .timeline strong { font-size: 42px; }
+      .timeline em { font-style: normal; font-size: 40px; color: var(--muted); }
+
+      img.shot { flex: none; height: 640px; width: auto; align-self: center; margin-top: -10px; }
+      iframe.fig { flex: none; width: 1560px; height: 720px; border: 0; background: transparent; align-self: center; margin-top: -24px; }
+
+      /* Transiciones solo al presentar en vivo: el reproductor salta entre
+         puntos de la línea de tiempo y el navegador suaviza el cambio. */
+      html.live .frame { transition: opacity 0.45s ease; }
+      html.live [data-in], html.live [data-f] { transition: opacity 0.5s ease, transform 0.55s cubic-bezier(0.2, 0.7, 0.2, 1); transition-delay: calc(var(--i, 0) * 70ms); }
+      html.live [data-hl] { transition: background-color 0.4s ease, color 0.4s ease; }
+    </style>
+  </head>
+  <body>
+    <script type="application/hyperframes-slideshow+json">
+{
+  "slides": [
+    {
+      "sceneId": "portada",
+      "startTime": 0,
+      "endTime": 3.5,
+      "notes": "Abrir con una pregunta: ya tenemos la ficha del estudiante y la ficha del libro; ¿dónde anotamos qué estudiante reservó qué libro? Recoger respuestas sin corregirlas. Casi siempre aparece la idea de agregar un atributo; la clase muestra por qué eso no alcanza."
+    },
+    {
+      "sceneId": "ruta",
+      "startTime": 3.5,
+      "endTime": 7,
+      "notes": "Presentar la ruta en un minuto. Es la misma secuencia del material de la semana: primero el pedido, después los nombres técnicos, y al final la validación del diagrama."
+    },
+    {
+      "sceneId": "pedido",
+      "startTime": 7,
+      "endTime": 14.5,
+      "notes": "Leer en voz alta el pedido ampliado del material de la semana y pedir que subrayen los verbos que unen dos fichas. Figura en cinco estados. Al entrar: las fichas de la semana pasada, sueltas. Primer avance: pertenece a y representa a unen estudiante y carrera. Segundo avance: reserva une estudiante y libro, y trae una fecha. Tercer avance: tiene une un libro con sus ejemplares. Cuarto avance: acompaña a une a un estudiante con otro estudiante. Antes de cada avance, preguntar qué verbo creen que sigue. Preguntar por las rarezas: una ficha conectada consigo misma, una fecha que no es de ninguna ficha, un ejemplar sin clave.",
+      "fragments": [
+        9,
+        10,
+        11,
+        12,
+        13
+      ]
+    },
+    {
+      "sceneId": "idea",
+      "startTime": 14.5,
+      "endTime": 18,
+      "notes": "Regla práctica del texto base: los sustantivos de la narración suelen dar origen a los tipos de entidad y los verbos a los tipos de relación. Conectar con la semana 3, cuando subrayaron sustantivos."
+    },
+    {
+      "sceneId": "relacion",
+      "startTime": 18,
+      "endTime": 22.5,
+      "notes": "Tipo de relación: conjunto de asociaciones entre entidades de varios tipos de entidad. Es la misma diferencia que entre tipo de entidad y entidad. Insistir en que un atributo que apunta a otra entidad, como carrera dentro de ESTUDIANTE, se convierte en relación y se quita de la entidad.",
+      "fragments": [
+        20,
+        21
+      ]
+    },
+    {
+      "sceneId": "roles",
+      "startTime": 22.5,
+      "endTime": 28,
+      "notes": "Grado: número de tipos de entidad que participan; en el curso se trabaja con relaciones binarias. ACOMPAÑA es binaria aunque solo aparezca un rectángulo, porque la misma entidad participa dos veces. Al entrar: las dos líneas llegan al mismo rectángulo y no se sabe cuál es cuál; preguntarlo a la clase. Primer avance: los nombres de rol, monitor y acompañado, dicen qué papel juega cada línea. Segundo avance: instancias; Ana aparece en las dos filas, acompañada por Lucía y acompañando a Diego, con los dos roles a la vez. En una relación entre tipos distintos, como RESERVA, los roles son obvios y no se escriben.",
+      "fragments": [
+        24.5,
+        25.5,
+        26.5
+      ]
+    },
+    {
+      "sceneId": "dos-preguntas",
+      "startTime": 28,
+      "endTime": 32.5,
+      "notes": "Las dos restricciones estructurales responden las dos preguntas de la exploración. La razón de cardinalidad fija el máximo; la participación fija el mínimo. Las dos salen de las reglas del pedido, no del gusto de quien dibuja.",
+      "fragments": [
+        30,
+        31
+      ]
+    },
+    {
+      "sceneId": "figura-cardinalidad",
+      "startTime": 32.5,
+      "endTime": 39,
+      "notes": "Figura interactiva en cuatro estados. Al entrar: cinco estudiantes y tres carreras, sin líneas. Primer avance, REPRESENTA: a cada carrera llega una sola línea y de cada estudiante sale una o ninguna. Segundo avance, PERTENECE_A: de cada estudiante sale exactamente una y a cada carrera llegan varias. Tercer avance, RESERVA: la columna derecha pasa a ser libros; de Marco salen dos y a un libro llegan dos. Antes de cada avance, pedir que predigan cuántas líneas saldrán de cada lado. Los números dentro de los círculos cuentan las líneas. Un clic sobre la figura también avanza.",
+      "fragments": [
+        34.5,
+        35.5,
+        36.5,
+        37.5
+      ]
+    },
+    {
+      "sceneId": "participacion",
+      "startTime": 39,
+      "endTime": 45.5,
+      "notes": "Sofía acaba de inscribirse y todavía no tiene líneas. Primer avance: en PERTENECE_A todos los estudiantes tienen su línea menos Sofía, y el pedido dice que cada estudiante pertenece a una carrera: el sistema debe rechazarla. Eso es participación total, mínimo 1. Segundo avance: Sofía queda unida a Turismo y cumple. Tercer avance: la columna derecha pasa a libros y RESERVA; Marco, Diego, Sofía y Pedro Páramo no tienen línea y no pasa nada, porque reservar es opcional. Eso es participación parcial, mínimo 0. La misma persona sin línea es un error en una relación y es normal en otra. Antes de cada avance, pedir que predigan si Sofía puede quedar sin línea.",
+      "fragments": [
+        41,
+        42,
+        43,
+        44
+      ]
+    },
+    {
+      "sceneId": "atributo-relacion",
+      "startTime": 45.5,
+      "endTime": 52,
+      "notes": "Ana reservó dos libros y Marco uno; cada reserva tiene su fecha. Primer avance: si la fecha fuera dato del estudiante, Ana tendría dos fechas y no se sabría cuál es de cuál libro. Segundo avance: si fuera dato del libro, Rayuela tendría dos fechas y no se sabría de quién es cada una. Tercer avance: cada fecha pertenece a una reserva, es decir, a la conexión; por eso cuelga del rombo RESERVA. En una relación 1:N el atributo sí puede pasarse a la entidad del lado N, porque cada entidad de ese lado participa en una sola instancia. Antes de cada avance, preguntar dónde guardarían la fecha.",
+      "fragments": [
+        47.5,
+        48.5,
+        49.5,
+        50.5
+      ]
+    },
+    {
+      "sceneId": "diagrama",
+      "startTime": 52,
+      "endTime": 58.5,
+      "notes": "Es la Figura 2 del material de la semana, dibujada en tres pasos con los nombres de las relaciones ya conocidos. Primer avance: PERTENECE_A y REPRESENTA; el 1 y la N se anotan junto a las entidades y la línea doble es participación total. Segundo avance: RESERVA, con M y N, y el óvalo fecha_reserva colgado del rombo. Tercer avance: ACOMPAÑA, que sale de ESTUDIANTE y vuelve a ESTUDIANTE, con los roles monitor y acompañado. Leer cada relación con una oración por lado. El rectángulo y el rombo dobles aparecen en la lámina del ejemplar.",
+      "fragments": [
+        54,
+        55,
+        56,
+        57
+      ]
+    },
+    {
+      "sceneId": "lectura",
+      "startTime": 58.5,
+      "endTime": 65,
+      "notes": "Tres filas de la Tabla 1 del material de la semana. Revelar fila por fila pidiendo la razón y la participación antes de mostrarlas. Es el formato de la tabla de relaciones del taller PE-1.4.",
+      "fragments": [
+        60.5,
+        61.5,
+        62.5,
+        63.5
+      ]
+    },
+    {
+      "sceneId": "preguntar",
+      "startTime": 65,
+      "endTime": 68.5,
+      "notes": "Si una razón de cardinalidad o una dependencia no puede determinarse a partir de los requisitos, hay que preguntar a los usuarios. En el taller, si el pedido no alcanza, se anota la pregunta en lugar de inventar la respuesta."
+    },
+    {
+      "sceneId": "debil",
+      "startTime": 68.5,
+      "endTime": 75,
+      "notes": "El ejemplar número 1 existe en todos los libros: el número no distingue a un ejemplar de todos los demás. Primer avance: se marcan los dos 1 y se ve que el número se repite. Segundo avance: aparece el código del libro; con código más número cada ejemplar es único. Un tipo de entidad sin atributos clave propios es débil; la clave completa se forma con la del propietario más la clave parcial. Tercer avance: la notación. Rectángulo doble para la entidad débil, rombo doble para la relación identificadora, línea doble porque el ejemplar participa siempre y subrayado discontinuo para la clave parcial. Antes de cada avance, preguntar qué creen que va a pasar.",
+      "fragments": [
+        70.5,
+        71.5,
+        72.5,
+        73.5
+      ]
+    },
+    {
+      "sceneId": "prueba-clave",
+      "startTime": 75,
+      "endTime": 78.5,
+      "notes": "No toda dependencia de existencia produce una entidad débil. La licencia de conducir no existe sin una persona, pero tiene su propio número: es una entidad fuerte. Para decidir se pregunta por la clave."
+    },
+    {
+      "sceneId": "minmax",
+      "startTime": 78.5,
+      "endTime": 85,
+      "notes": "Es la Figura 3 del material de la semana. Al entrar: el diagrama completo, con letras y con la entidad débil. Primer avance: cada letra se cambia por un par de números junto a la entidad a la que se refiere. Comparar con la lámina anterior: el 1 de PERTENECE_A estaba del lado de CARRERA y el (1,1) está del lado de ESTUDIANTE; dicen lo mismo desde lados opuestos. Segundo avance: el segundo número es el máximo; en RESERVA, el (0,3) dice hasta tres reservas, algo que la letra M no podía decir. Tercer avance: el primero es el mínimo; en ámbar los que valen 0, participación parcial, y en verde los que valen 1 o más, participación total. Con el mínimo, las líneas dobles ya no hacen falta.",
+      "fragments": [
+        80.5,
+        81.5,
+        82.5,
+        83.5
+      ]
+    },
+    {
+      "sceneId": "leer-par",
+      "startTime": 85,
+      "endTime": 91.5,
+      "notes": "Tres pares de la Figura 3. El segundo es el que la notación de letras no podía decir: hasta tres reservas. Pedir a la clase que lea cada par en voz alta antes de mostrar la tercera columna. En el taller PE-1.4 los pares van en una tabla.",
+      "fragments": [
+        87,
+        88,
+        89,
+        90
+      ]
+    },
+    {
+      "sceneId": "casos",
+      "startTime": 91.5,
+      "endTime": 99,
+      "notes": "Cuatro casos de la Tabla 2 del material de la semana. Un caso de prueba es un hecho concreto. Se anota qué responde la biblioteca, según el pedido, y qué responde el diagrama, según sus restricciones. Revelar fila por fila pidiendo las dos respuestas. El último caso no es un error: es un límite del diagrama, y la regla se anota aparte. Es el formato del informe TA-1.4.",
+      "fragments": [
+        93.5,
+        94.5,
+        95.5,
+        96.5,
+        97.5
+      ]
+    },
+    {
+      "sceneId": "limite",
+      "startTime": 99,
+      "endTime": 105.5,
+      "notes": "Es el último caso de la tabla, con el mismo hecho: Ana, de Software, representa a Derecho. Al entrar: Ana es de Software, Diego es de Derecho y Derecho todavía no tiene representante. Primer avance: se prueba el hecho; la biblioteca lo rechaza porque cada carrera nombra a uno de sus propios estudiantes. Segundo avance: se consulta el diagrama; Derecho tiene un representante y Ana representa a una sola carrera, así que cumple (1,1) y (0,1) y lo permite. Tercer avance: las dos respuestas no coinciden, pero el dibujo no está mal: el diagrama no tiene cómo decir que el representante debe ser de la misma carrera. La regla se anota aparte, junto al diagrama. Antes de cada avance, pedir las respuestas a la clase.",
+      "fragments": [
+        101,
+        102,
+        103,
+        104
+      ]
+    },
+    {
+      "sceneId": "falla",
+      "startTime": 105.5,
+      "endTime": 109,
+      "notes": "Si las dos respuestas no coinciden hay un error en el diagrama, falta una pregunta a los usuarios o se llegó a un límite del diagrama. Cuando un caso falla se corrige y se vuelven a pasar todos los casos."
+    },
+    {
+      "sceneId": "actividades",
+      "startTime": 109,
+      "endTime": 112.5,
+      "notes": "PE-1.4 se hace en clase con el pedido ampliado de Talento Humano de ILE: tabla de relaciones, pares (min, max) y diagrama con la notación de la Figura 2. TA-1.4 es autónomo: la plantilla trae el diagrama de la farmacia con errores; se escriben casos de prueba, se encuentran los errores y se dibuja el diagrama corregido. Las plantillas y las fechas están en Canvas."
+    },
+    {
+      "sceneId": "cierre",
+      "startTime": 112.5,
+      "endTime": 116,
+      "notes": "Volver a la pregunta inicial: la reserva no se anota en el estudiante ni en el libro, sino en una relación entre los dos. Tarea para casa: la recuperación sin apuntes del material de la semana. La próxima semana es la evaluación diagnóstica."
+    }
+  ],
+  "slideSequences": []
+}
+    </script>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="116" data-width="1920" data-height="1080">
+
+      <section id="portada" class="clip slide dark" data-start="0" data-duration="3.5" data-track-index="0" data-label="Portada" data-frags="0">
+        <div class="frame" id="portada-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">01 / 22</span>
+      <p class="course" data-in="0" style="--i:0">CC05A_IFT200 · Semana 4</p>
+      <h1 class="claim xl" data-in="1" style="--i:1">Las fichas sueltas no cuentan toda la historia</h1>
+      <p class="lead" data-in="2" style="--i:2">Relaciones, restricciones estructurales y entidades débiles</p>
+      <p class="byline" data-in="3" style="--i:3">Estructura, modelado, almacenamiento de BDD · Charlie Cárdenas Toledo</p>
+        </div>
+      </section>
+
+      <section id="ruta" class="clip slide" data-start="3.5" data-duration="3.5" data-track-index="0" data-label="Ruta de la clase" data-frags="0">
+        <div class="frame" id="ruta-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">02 / 22</span>
+      <h1 class="claim" data-in="0" style="--i:0">La clase va de un pedido a un diagrama comprobado</h1>
+      <ol class="steps">
+        <li data-in="1" style="--i:1"><b>1</b><span>Explorar las conexiones del pedido</span></li>
+        <li data-in="2" style="--i:2"><b>2</b><span>Nombrar relaciones, grado y roles</span></li>
+        <li data-in="3" style="--i:3"><b>3</b><span>Fijar cuántos y si es obligatorio</span></li>
+        <li data-in="4" style="--i:4"><b>4</b><span>Modelar la entidad débil y usar (min, max)</span></li>
+        <li data-in="5" style="--i:5"><b>5</b><span>Validar con casos de prueba</span></li>
+      </ol>
+        </div>
+      </section>
+
+      <section id="pedido" class="clip slide" data-start="7" data-duration="7.5" data-track-index="0" data-label="El pedido ampliado" data-frags="4">
+        <div class="frame" id="pedido-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">03 / 22</span>
+      <h1 class="claim" data-in="0" style="--i:0">El pedido une las fichas con cinco verbos</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/conexiones/conexiones.html?embed" title="Cuatro fichas: carrera, estudiante, libro y ejemplar. Los verbos pertenece a y representa a unen estudiante y carrera, reserva une estudiante y libro con una fecha, tiene une libro y ejemplar y acompaña a une estudiante consigo mismo." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="idea" class="clip slide dark" data-start="14.5" data-duration="3.5" data-track-index="0" data-label="La idea" data-frags="0">
+        <div class="frame" id="idea-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">04 / 22</span>
+      <h1 class="claim xl" data-in="0" style="--i:0">Los sustantivos dan las entidades; los verbos, las relaciones</h1>
+      <p class="lead" data-in="1" style="--i:1">La semana pasada subrayaron sustantivos. Hoy, verbos.</p>
+        </div>
+      </section>
+
+      <section id="relacion" class="clip slide" data-start="18" data-duration="4.5" data-track-index="0" data-label="Tipo e instancia" data-frags="1">
+        <div class="frame" id="relacion-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">05 / 22</span>
+      <h1 class="claim" data-in="0" style="--i:0">Una relación también tiene tipo e instancias</h1>
+      <div class="cards two tall">
+        <div class="card" data-in="1" style="--i:1"><span class="tag">Tipo de relación</span><strong>PERTENECE_A, entre ESTUDIANTE y CARRERA</strong><em>La descripción: se dibuja como un rombo</em></div>
+        <div class="card" data-f="1"><span class="tag">Instancia</span><strong>Ana Rivas pertenece a Software</strong><em>Un hecho concreto de hoy</em></div>
+      </div>
+        </div>
+      </section>
+
+      <section id="roles" class="clip slide" data-start="22.5" data-duration="5.5" data-track-index="0" data-label="Roles" data-frags="2">
+        <div class="frame" id="roles-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">06 / 22</span>
+      <h1 class="claim" data-in="0" style="--i:0">Cuando una ficha se conecta consigo misma, los roles son obligatorios</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="2" src="figuras/roles/roles.html?embed" title="El rectángulo ESTUDIANTE con dos líneas hacia el rombo ACOMPAÑA, rotuladas monitor y acompañado. A la derecha, Lucía acompaña a Ana y Ana acompaña a Diego." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="dos-preguntas" class="clip slide" data-start="28" data-duration="4.5" data-track-index="0" data-label="Dos preguntas" data-frags="1">
+        <div class="frame" id="dos-preguntas-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">07 / 22</span>
+      <h1 class="claim" data-in="0" style="--i:0">Cada lado de una relación responde dos preguntas</h1>
+      <div class="split">
+        <div class="panel" data-in="1" style="--i:1">
+          <span class="tag">¿Cuántos como máximo?</span>
+          <div class="box strong" style="background:var(--wine-deep)">Razón de cardinalidad</div>
+          <div class="box">1:1, 1:N o M:N</div>
+        </div>
+        <div class="panel good" data-f="1">
+          <span class="tag">¿Está obligado a participar?</span>
+          <div class="box strong">Participación</div>
+          <div class="box new">Total o parcial</div>
+        </div>
+      </div>
+        </div>
+      </section>
+
+      <section id="figura-cardinalidad" class="clip slide" data-start="32.5" data-duration="6.5" data-track-index="0" data-label="Tres razones" data-frags="3">
+        <div class="frame" id="figura-cardinalidad-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">08 / 22</span>
+      <h1 class="claim" data-in="0" style="--i:0">Las líneas que salen de cada lado dan la razón</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/cardinalidad/cardinalidad.html?embed" title="Cinco estudiantes a la izquierda y tres carreras a la derecha. REPRESENTA une de uno a uno, PERTENECE_A de muchos a uno y RESERVA, con libros a la derecha, de muchos a muchos." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="participacion" class="clip slide" data-start="39" data-duration="6.5" data-track-index="0" data-label="Participación" data-frags="3">
+        <div class="frame" id="participacion-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">09 / 22</span>
+      <h1 class="claim" data-in="0" style="--i:0">Una línea que falta es un error solo si la participación es total</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/participacion/participacion.html?embed" title="Cinco estudiantes a la izquierda. En PERTENECE_A todos tienen línea hacia una carrera menos Sofía, que queda marcada en rojo hasta que se le asigna Turismo. En RESERVA la columna derecha son libros y varios estudiantes y un libro quedan sin línea sin que sea un problema." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="atributo-relacion" class="clip slide" data-start="45.5" data-duration="6.5" data-track-index="0" data-label="Atributos de relación" data-frags="3">
+        <div class="frame" id="atributo-relacion-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">10 / 22</span>
+      <h1 class="claim" data-in="0" style="--i:0">Hay datos que no son de ninguna ficha, sino de la conexión</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/fecha-reserva/fecha-reserva.html?embed" title="Ana y Marco a la izquierda, Rayuela y Cien años a la derecha, con tres reservas. La fecha como dato del estudiante o del libro resulta ambigua; como dato de cada reserva, cada línea lleva la suya." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="diagrama" class="clip slide" data-start="52" data-duration="6.5" data-track-index="0" data-label="El diagrama" data-frags="3">
+        <div class="frame" id="diagrama-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">11 / 22</span>
+      <h1 class="claim" data-in="0" style="--i:0">Cada regla del pedido deja una marca</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/er-relaciones/er-relaciones.html?embed" title="Diagrama ER de la biblioteca construido en tres pasos: PERTENECE_A y REPRESENTA entre carrera y estudiante, RESERVA entre estudiante y libro con su fecha, y ACOMPAÑA de estudiante consigo mismo con los roles monitor y acompañado." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="lectura" class="clip slide" data-start="58.5" data-duration="6.5" data-track-index="0" data-label="Leer una relación" data-frags="3">
+        <div class="frame" id="lectura-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">12 / 22</span>
+      <h1 class="claim" data-in="0" style="--i:0">Cada fila de la tabla se justifica con una oración del pedido</h1>
+      <table class="data matrix" data-in="1" style="--i:1">
+        <thead><tr><th>Relación</th><th>Razón</th><th>Participación</th></tr></thead>
+        <tbody>
+          <tr data-f="1"><td>PERTENECE_A</td><td><b>N:1</b></td><td>Estudiante total; carrera total</td></tr>
+          <tr data-f="2"><td>REPRESENTA</td><td><b>1:1</b></td><td>Estudiante parcial; carrera total</td></tr>
+          <tr data-f="3"><td>RESERVA</td><td><b>M:N</b></td><td>Estudiante parcial; libro parcial</td></tr>
+        </tbody>
+      </table>
+        </div>
+      </section>
+
+      <section id="preguntar" class="clip slide dark" data-start="65" data-duration="3.5" data-track-index="0" data-label="Preguntar" data-frags="0">
+        <div class="frame" id="preguntar-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">13 / 22</span>
+      <h1 class="claim xl" data-in="0" style="--i:0">Una restricción inventada es un error de diseño</h1>
+      <p class="lead" data-in="1" style="--i:1">Si el pedido no lo dice, se pregunta a los usuarios.</p>
+        </div>
+      </section>
+
+      <section id="debil" class="clip slide" data-start="68.5" data-duration="6.5" data-track-index="0" data-label="Entidad débil" data-frags="3">
+        <div class="frame" id="debil-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">14 / 22</span>
+      <h1 class="claim" data-in="0" style="--i:0">El ejemplar número 1 existe en todos los libros</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/ejemplar-debil/ejemplar-debil.html?embed" title="Tabla de ejemplares con el número 1 repetido para dos libros. Al agregar el código del libro cada ejemplar queda identificado. A la derecha, LIBRO, el rombo doble TIENE y EJEMPLAR con rectángulo doble y el número con subrayado discontinuo." loading="eager"></iframe>
+      <p class="source" data-in="2" style="--i:2">Elmasri y Navathe (2016), sección 3.5</p>
+        </div>
+      </section>
+
+      <section id="prueba-clave" class="clip slide dark" data-start="75" data-duration="3.5" data-track-index="0" data-label="La prueba" data-frags="0">
+        <div class="frame" id="prueba-clave-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">15 / 22</span>
+      <h1 class="claim xl" data-in="0" style="--i:0">La prueba es la clave, no la dependencia</h1>
+      <p class="lead" data-in="1" style="--i:1">Una licencia depende de una persona, pero tiene su propio número.</p>
+        </div>
+      </section>
+
+      <section id="minmax" class="clip slide" data-start="78.5" data-duration="6.5" data-track-index="0" data-label="Notación (min, max)" data-frags="3">
+        <div class="frame" id="minmax-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">16 / 22</span>
+      <h1 class="claim" data-in="0" style="--i:0">Un par de números por cada lado</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/er-minmax/er-minmax.html?embed" title="El diagrama completo de la biblioteca. Las letras se reemplazan por pares mínimo y máximo junto a cada entidad; primero se resalta el máximo, con el (0,3) de RESERVA, y luego el mínimo." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="leer-par" class="clip slide" data-start="85" data-duration="6.5" data-track-index="0" data-label="Leer un par" data-frags="3">
+        <div class="frame" id="leer-par-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">17 / 22</span>
+      <h1 class="claim" data-in="0" style="--i:0">Cada par se lee como una oración sobre una entidad</h1>
+      <table class="data matrix" data-in="1" style="--i:1">
+        <thead><tr><th>Relación y lado</th><th>Par</th><th>Se lee</th></tr></thead>
+        <tbody>
+          <tr data-f="1"><td>PERTENECE_A, estudiante</td><td><b>(1,1)</b></td><td>Exactamente una carrera</td></tr>
+          <tr data-f="2"><td>RESERVA, estudiante</td><td><b>(0,3)</b></td><td>Ninguna reserva o hasta tres</td></tr>
+          <tr data-f="3"><td>TIENE, libro</td><td><b>(0,N)</b></td><td>Ningún ejemplar o muchos</td></tr>
+        </tbody>
+      </table>
+        </div>
+      </section>
+
+      <section id="casos" class="clip slide" data-start="91.5" data-duration="7.5" data-track-index="0" data-label="Casos de prueba" data-frags="4">
+        <div class="frame" id="casos-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">18 / 22</span>
+      <h1 class="claim" data-in="0" style="--i:0">Un caso de prueba compara dos respuestas</h1>
+      <table class="data matrix" data-in="1" style="--i:1">
+        <thead><tr><th>Hecho</th><th>Biblioteca</th><th>Diagrama</th></tr></thead>
+        <tbody>
+          <tr data-f="1"><td>Ana pertenece a dos carreras</td><td>Lo rechaza</td><td>Lo impide</td></tr>
+          <tr data-f="2"><td>Marco no tiene reservas</td><td>Lo acepta</td><td>Lo permite</td></tr>
+          <tr data-f="3"><td>Ana pide una cuarta reserva</td><td>Lo rechaza</td><td>Lo impide</td></tr>
+          <tr data-f="4"><td>Ana, de Software, representa a Derecho</td><td>Lo rechaza</td><td><b>Lo permite</b></td></tr>
+        </tbody>
+      </table>
+        </div>
+      </section>
+
+      <section id="limite" class="clip slide" data-start="99" data-duration="6.5" data-track-index="0" data-label="Un límite del diagrama" data-frags="3">
+        <div class="frame" id="limite-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">19 / 22</span>
+      <h1 class="claim" data-in="0" style="--i:0">Hay reglas que el diagrama no puede decir</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/limite-diagrama/limite-diagrama.html?embed" title="Ana pertenece a Software y Diego a Derecho. Se prueba que Ana represente a Derecho: la biblioteca lo rechaza, el diagrama lo permite y el caso falla porque el diagrama no puede decir que el representante sea de su propia carrera." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="falla" class="clip slide dark" data-start="105.5" data-duration="3.5" data-track-index="0" data-label="Cuándo falla" data-frags="0">
+        <div class="frame" id="falla-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">20 / 22</span>
+      <h1 class="claim xl" data-in="0" style="--i:0">Un caso falla cuando el diagrama responde distinto que la organización</h1>
+      <p class="lead" data-in="1" style="--i:1">Se corrige el diagrama y se vuelven a pasar todos los casos.</p>
+        </div>
+      </section>
+
+      <section id="actividades" class="clip slide" data-start="109" data-duration="3.5" data-track-index="0" data-label="Actividades" data-frags="0">
+        <div class="frame" id="actividades-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">21 / 22</span>
+      <h1 class="claim" data-in="0" style="--i:0">Dos actividades calificadas cierran la semana</h1>
+      <div class="cards two tall">
+        <div class="card" data-in="1" style="--i:1"><span class="tag">PE-1.4 · 3 puntos</span><strong>Modelado complejo</strong><em>El diagrama ER completo de Talento Humano de ILE</em></div>
+        <div class="card" data-in="2" style="--i:2"><span class="tag">TA-1.4 · 3 puntos</span><strong>Informe de validación ER</strong><em>Casos de prueba para un diagrama con errores</em></div>
+      </div>
+        </div>
+      </section>
+
+      <section id="cierre" class="clip slide dark" data-start="112.5" data-duration="3.5" data-track-index="0" data-label="Cierre" data-frags="0">
+        <div class="frame" id="cierre-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">22 / 22</span>
+      <h1 class="claim xl" data-in="0" style="--i:0">Un diagrama no se da por bueno hasta que pasa sus casos de prueba</h1>
+      <p class="lead" data-in="1" style="--i:1">Próxima semana: evaluación diagnóstica</p>
+      <p class="byline" data-in="2" style="--i:2">Fuente: Elmasri y Navathe (2016), capítulo 3, secciones 3.4 a 3.7 · ASU IFT 200</p>
+        </div>
+      </section>
+    </div>
+    <script>
+      // Con el motor de HyperFrames (check, Studio) el registro ya existe.
+      // Al presentar, el reproductor mueve esta línea de tiempo directamente.
+      const engineHosted = Object.prototype.hasOwnProperty.call(window, "__timelines");
+      window.__timelines = window.__timelines || {};
+      if (!engineHosted) document.documentElement.classList.add("live");
+
+      const ENTER = 2;
+      const tl = gsap.timeline({ paused: true });
+      tl.to({}, { duration: 116 }, 0);
+
+      const figSyncs = [];
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      slides.forEach((slide, index) => {
+        const start = Number(slide.dataset.start);
+        const end = start + Number(slide.dataset.duration);
+        const frame = slide.querySelector(".frame");
+        tl.set(frame, { opacity: 1 }, start);
+        if (index < slides.length - 1) tl.set(frame, { opacity: 0 }, end);
+
+        slide.querySelectorAll("[data-in]").forEach((el) => {
+          const i = Number(el.dataset.in);
+          tl.fromTo(el, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, start + 0.12 + i * 0.07);
+        });
+        slide.querySelectorAll("[data-f]").forEach((el) => {
+          const hold = start + ENTER + Number(el.dataset.f);
+          tl.fromTo(el, { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, hold - 0.6);
+        });
+        slide.querySelectorAll("iframe[data-fig]").forEach((el) => {
+          // La figura corre en su propio documento: en vivo anima sola hacia el estado pedido;
+          // con el motor (check, Studio) sigue la línea de tiempo cuadro a cuadro.
+          // El estado se calcula desde el tiempo de la línea de tiempo, así responde igual
+          // al avanzar, al retroceder y al saltar entre diapositivas.
+          const steps = Number(el.dataset.fig);
+          let sent = -1;
+          const wanted = () => {
+            const t = tl.time();
+            let u = 0;
+            for (let step = 1; step <= steps; step++) u += Math.min(1, Math.max(0, (t - (start + ENTER + step - 0.6)) / 0.6));
+            return engineHosted ? u / steps : Math.round(u) / steps;
+          };
+          const send = (force) => {
+            const value = wanted();
+            if (!el.contentWindow || (!force && value === sent)) return;
+            sent = value;
+            el.contentWindow.postMessage({ type: "fig", mode: engineHosted ? "set" : "go", value }, "*");
+          };
+          figSyncs.push(send);
+          el.addEventListener("load", () => send(true));
+        });
+        slide.querySelectorAll("[data-hl]").forEach((el) => {
+          const hold = start + ENTER + Number(el.dataset.hl);
+          tl.to(el, { backgroundColor: "#fbe3a6", color: "#5c3d00", duration: 0.4 }, hold - 0.5);
+        });
+      });
+
+      tl.eventCallback("onUpdate", () => figSyncs.forEach((sync) => sync()));
+      // En vivo el reproductor puede mover la línea de tiempo sin emitir eventos: se revisa en cada tic de GSAP.
+      if (!engineHosted) gsap.ticker.add(() => figSyncs.forEach((sync) => sync()));
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

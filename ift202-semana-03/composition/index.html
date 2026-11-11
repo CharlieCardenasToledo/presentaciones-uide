@@ -1,0 +1,593 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Semana 3 · Identificación y autenticación</title>
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      :root {
+        /* Colores tomados del logotipo UIDE: vino #910048 y dorado #E8A920. Sin degradados. */
+        --paper: #ffffff; --ink: #1f1a1d; --muted: #5a5257; --wine: #910048; --wine-deep: #6d0036; --gold: #e8a920;
+        --teal: #0c6b62; --teal-soft: #e3f2f0; --amber: #7a5200; --amber-soft: #fcefc9; --card: #ffffff; --line: #e2dcdf; --tint: #f6f1f3;
+      }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--paper); }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; font-family: system-ui, sans-serif; color: var(--ink); }
+      .slide { position: absolute; inset: 0; }
+      .frame { position: absolute; inset: 0; padding: 92px 120px 150px; display: flex; flex-direction: column; justify-content: center; opacity: 0; background: var(--paper); }
+      .frame::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 22px; background: var(--wine); }
+      .frame::after { content: ""; position: absolute; left: 22px; top: 0; bottom: 0; width: 8px; background: var(--gold); }
+      .dark .frame { background: var(--wine); color: #fff; }
+      .dark .frame::before { background: var(--gold); }
+      .dark .frame::after { display: none; }
+      .logo { position: absolute; top: 44px; right: 96px; height: 92px; width: auto; }
+      .dark .logo { top: 0; right: 96px; height: 150px; padding: 26px 30px 22px; background: #fff; border-radius: 0 0 18px 18px; box-sizing: border-box; }
+      .num { position: absolute; bottom: 52px; left: 120px; font-size: 26px; letter-spacing: 0.14em; color: var(--muted); font-variant-numeric: tabular-nums; }
+      .dark .num { color: #f1d3e0; }
+      .course { font-size: 34px; font-weight: 600; color: var(--gold); margin-bottom: 30px; }
+      .claim { font-family: ui-serif, serif; font-weight: 700; font-size: 74px; line-height: 1.08; letter-spacing: -0.015em; max-width: 1480px; margin-bottom: 44px; }
+      .claim.long { font-size: 62px; max-width: 1640px; }
+      .claim.xl { font-size: 96px; max-width: 1500px; }
+      .lead { font-size: 48px; line-height: 1.25; color: #ffffff; max-width: 1400px; }
+      .lead.dark-ink { color: var(--muted); margin-top: -14px; margin-bottom: 40px; }
+      .byline { font-size: 32px; color: #f6dfe9; margin-top: 70px; }
+      .source { font-size: 30px; color: var(--muted); margin-top: 34px; }
+      .punch { font-family: ui-serif, serif; font-size: 56px; font-weight: 700; color: var(--wine); margin-top: 44px; }
+      .punch.soft { color: var(--ink); font-size: 46px; margin-top: 18px; }
+      .punch.good { color: var(--teal); }
+
+      .steps { list-style: none; display: grid; gap: 18px; max-width: 1500px; }
+      .steps li { display: flex; align-items: center; gap: 30px; font-size: 46px; background: var(--tint); border-radius: 18px; padding: 18px 30px; }
+      .steps b { flex: none; width: 72px; height: 72px; border-radius: 50%; background: var(--wine); color: #fff; display: grid; place-items: center; font-size: 40px; }
+
+      .cards { display: grid; gap: 30px; }
+      .cards.three { grid-template-columns: repeat(3, 1fr); }
+      .cards.two { grid-template-columns: repeat(2, 1fr); }
+      .cards.four { grid-template-columns: repeat(4, 1fr); }
+      .cards.grid2 { grid-template-columns: repeat(2, 1fr); gap: 26px; }
+      .cards.tight { margin-top: 30px; }
+      .card { background: var(--tint); border-radius: 22px; padding: 36px 40px; display: flex; flex-direction: column; gap: 14px; }
+      .card strong { font-size: 48px; line-height: 1.12; font-weight: 800; }
+      .card em { font-style: normal; font-size: 40px; line-height: 1.2; color: var(--muted); }
+      .card .tag, .panel .tag { align-self: flex-start; font-size: 34px; font-weight: 600; color: var(--wine); }
+      .card.file strong { font-family: ui-monospace, monospace; font-size: 46px; }
+      .card.empty, .card.warn { background: var(--amber-soft); }
+      .card.warn strong { color: var(--amber); }
+      .card.pill { align-items: center; text-align: center; padding: 30px 20px; }
+      .card.pill b { width: 68px; height: 68px; border-radius: 50%; background: var(--wine); color: #fff; display: grid; place-items: center; font-size: 38px; }
+      .cards.tall .card { min-height: 300px; }
+      .verdict { margin-top: auto; padding: 14px 18px; border-radius: 12px; background: #fbe3a6; color: var(--amber) !important; font-weight: 700; }
+      .verdict.good { background: #cfe9e5; color: var(--teal) !important; }
+
+      table.data { border-collapse: collapse; width: 100%; background: var(--tint); border-radius: 20px; overflow: hidden; }
+      table.data th { text-align: left; font-size: 30px; letter-spacing: 0.1em; text-transform: uppercase; color: #fff; background: var(--wine-deep); padding: 20px 28px; }
+      table.data td { font-size: 42px; padding: 22px 28px; border-top: 3px solid #ffffff; font-variant-numeric: tabular-nums; }
+      table.data.matrix td { font-size: 40px; padding: 24px 28px; }
+      table.data.matrix b { color: var(--wine); }
+      .chips { display: flex; gap: 22px; margin-top: 36px; flex-wrap: wrap; }
+      .chip { font-size: 40px; font-weight: 700; padding: 16px 28px; border-radius: 999px; background: var(--amber-soft); color: var(--amber); }
+
+      .split { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+      .panel { background: var(--tint); border-radius: 22px; padding: 30px 34px; display: flex; flex-direction: column; gap: 18px; }
+      .panel.good { background: var(--teal-soft); }
+      .panel.good .tag { color: var(--teal); }
+      .box { font-size: 40px; padding: 18px 24px; border-radius: 14px; background: #ffffff; }
+      .box i { font-style: normal; color: var(--amber); font-weight: 700; }
+      .box.strong { background: var(--teal); color: #fff; font-weight: 700; }
+      .box.new { background: var(--teal-soft); color: var(--teal); font-weight: 700; }
+      .schema { font-family: ui-monospace, monospace; font-size: 44px; font-weight: 700; padding: 26px 32px; border-radius: 18px; background: var(--tint); }
+      .schema.main { font-size: 50px; background: var(--wine-deep); color: #fff; }
+      .schema.small { font-size: 40px; background: #ffffff; }
+      .schema u { text-decoration-thickness: 5px; text-underline-offset: 8px; }
+
+      .layers { display: grid; gap: 22px; max-width: 1500px; }
+      .layer { display: flex; align-items: baseline; gap: 34px; padding: 30px 38px; border-radius: 20px; background: var(--wine); color: #fff; }
+      .layer.mid { background: #7f003f; margin-left: 70px; }
+      .layer.low { background: var(--wine-deep); margin-left: 140px; }
+      .layer strong { font-size: 50px; flex: none; width: 430px; }
+      .layer em { font-style: normal; font-size: 40px; color: #ffffff; }
+
+      .timeline { display: grid; gap: 14px; }
+      .timeline .row { display: grid; grid-template-columns: 170px 560px 1fr; align-items: center; gap: 30px; background: var(--tint); border-radius: 16px; padding: 14px 28px; }
+      .timeline b { font-family: ui-serif, serif; font-size: 52px; color: var(--wine); font-variant-numeric: tabular-nums; }
+      .timeline strong { font-size: 42px; }
+      .timeline em { font-style: normal; font-size: 40px; color: var(--muted); }
+
+      img.shot { flex: none; height: 640px; width: auto; align-self: center; margin-top: -10px; }
+      iframe.fig { flex: none; width: 1560px; height: 720px; border: 0; background: transparent; align-self: center; margin-top: -24px; }
+
+      /* Transiciones solo al presentar en vivo: el reproductor salta entre
+         puntos de la línea de tiempo y el navegador suaviza el cambio. */
+      html.live .frame { transition: opacity 0.45s ease; }
+      html.live [data-in], html.live [data-f] { transition: opacity 0.5s ease, transform 0.55s cubic-bezier(0.2, 0.7, 0.2, 1); transition-delay: calc(var(--i, 0) * 70ms); }
+      html.live [data-hl] { transition: background-color 0.4s ease, color 0.4s ease; }
+    </style>
+  </head>
+  <body>
+    <script type="application/hyperframes-slideshow+json">
+{
+  "slides": [
+    {
+      "sceneId": "portada",
+      "startTime": 0,
+      "endTime": 3.5,
+      "notes": "Abrir con una pregunta: un lunes aparece en el correo de una clínica un envío de la lista de pacientes hecho el domingo a las tres de la madrugada, y la secretaria dice que dormía. ¿Qué es lo primero que quieren saber? Recoger tres respuestas sin corregirlas. Casi siempre aparece quién fue; la clase muestra qué otras preguntas faltaban."
+    },
+    {
+      "sceneId": "ruta",
+      "startTime": 3.5,
+      "endTime": 7,
+      "notes": "Presentar la ruta en un minuto. Es la secuencia del material de la semana: el caso de la clínica, las cuatro preguntas de un acceso, los factores y la autenticación multifactor, cómo se guardan y se atacan las contraseñas, y el laboratorio con la prueba de fortaleza."
+    },
+    {
+      "sceneId": "caso",
+      "startTime": 7,
+      "endTime": 13.5,
+      "notes": "Es la exploración del material de la semana. Una clínica de Loja con doce empleados; la secretaria, Marcela Salinas, usa la misma contraseña en el correo, el sistema de citas y la red inalámbrica. Al entrar: el único registro del servidor dice que la cuenta msalinas inició sesión el domingo a las 03:12. Primer avance: la misma contraseña, vidasana2024, servía en los tres servicios. Segundo avance: la cuenta tenía permisos de administradora porque, según la clínica, así nunca da problemas. Tercer avance: las cuatro preguntas que la clínica no pudo responder. Antes de cada avance, pedir que escriban qué falló en ese momento. Todavía sin nombres técnicos.",
+      "fragments": [
+        9,
+        10,
+        11,
+        12
+      ]
+    },
+    {
+      "sceneId": "idea",
+      "startTime": 13.5,
+      "endTime": 17,
+      "notes": "Aquí aparecen los nombres técnicos. Las cuatro preguntas del caso corresponden a identificación, autenticación, autorización y trazabilidad. En inglés se agrupan como identificación, autenticación, autorización y contabilidad; en este curso se usa trazabilidad para el último."
+    },
+    {
+      "sceneId": "cuatro",
+      "startTime": 17,
+      "endTime": 24.5,
+      "notes": "Es la Tabla 1 y la Figura 1 del material de la semana, con el ejemplo del banco para fijar la idea. Cada avance revela una columna: la pregunta, qué ocurre en el banco, qué ocurre en la clínica y qué pasa si falla. Identificación es afirmar quién se es; por sí sola no prueba nada. Autenticación es comprobar esa afirmación. Autorización decide qué puede hacer una identidad ya autenticada. Trazabilidad registra qué hizo cada identidad y cuándo. El orden importa: sin identificación no hay a quién autenticar, y con una autenticación débil la autorización llega a la persona equivocada. Antes de cada avance, pedir el ejemplo del banco.",
+      "fragments": [
+        19,
+        20,
+        21,
+        22,
+        23
+      ]
+    },
+    {
+      "sceneId": "clasificar",
+      "startTime": 24.5,
+      "endTime": 31,
+      "notes": "Práctica de clasificación con otro contexto, un portal universitario. Se pregunta siempre qué hace el sistema en ese momento: afirmar quién es alguien, comprobarlo, decidir qué puede hacer o registrar lo que hizo. Los seis eventos están a la vista; antes de cada avance, pedir la clasificación de los dos siguientes. Avance 1: la matrícula es identificación y la comparación con la contraseña guardada es autenticación. Avance 2: ver solo las propias notas es autorización y anotar hora y dirección es trazabilidad. Avance 3: el guardia que compara la credencial con el rostro autentica, y que solo secretaría cambie notas es autorización. Los seis eventos del material de la semana quedan para el trabajo autónomo.",
+      "fragments": [
+        26.5,
+        27.5,
+        28.5,
+        29.5
+      ]
+    },
+    {
+      "sceneId": "factores",
+      "startTime": 31,
+      "endTime": 37.5,
+      "notes": "Es la Tabla 2 del material de la semana. Una contraseña es una prueba débil: se puede adivinar, copiar o filtrar. Para reforzarla se combinan pruebas de naturaleza distinta, los factores. Conocimiento: algo que sabes. Posesión: algo que tienes. Inherencia: algo que eres. Cada avance revela un factor con sus ejemplos, su debilidad principal y si se reemplaza al comprometerse. La diferencia que más se olvida: una contraseña se cambia, pero una huella no. Antes de cada avance, pedir ejemplos del factor.",
+      "fragments": [
+        33,
+        34,
+        35,
+        36
+      ]
+    },
+    {
+      "sceneId": "mfa",
+      "startTime": 37.5,
+      "endTime": 44,
+      "notes": "La autenticación multifactor, MFA, exige al menos dos factores de categorías distintas. Es la condición que más se pasa por alto. Al entrar: tres pares de pruebas sin etiquetar; preguntar cuáles son multifactor. Primer avance: contraseña y PIN son ambos de conocimiento; quien roba uno suele poder robar el otro, así que no es MFA. Segundo avance: contraseña, que es conocimiento, con un código del teléfono, que es posesión: sí es MFA, y un atacante que obtuvo la contraseña con un correo falso todavía necesita el teléfono. Tercer avance: huella y rostro son ambos de inherencia. Aclarar que no todos los segundos factores protegen igual: un código por mensaje de texto puede desviarse, uno de aplicación no viaja por la red telefónica y una llave física resiste mejor la suplantación.",
+      "fragments": [
+        39.5,
+        40.5,
+        41.5,
+        42.5
+      ]
+    },
+    {
+      "sceneId": "hash-idea",
+      "startTime": 44,
+      "endTime": 47.5,
+      "notes": "Un sistema bien diseñado nunca guarda la contraseña en texto legible. Guarda su hash, el resultado de una función matemática que convierte cualquier texto en una cadena de longitud fija y que no se puede invertir. Al iniciar sesión se calcula el hash de lo escrito y se compara con el guardado."
+    },
+    {
+      "sceneId": "hash-sal",
+      "startTime": 47.5,
+      "endTime": 54,
+      "notes": "Los hashes de la figura son SHA-256 reales de una contraseña ficticia, recortados. Al entrar: dos cuentas con la misma contraseña y sin sal. Primer avance: los hashes son idénticos, así que quien ve la base descubre la repetición. Segundo avance: con una sal aleatoria distinta por cuenta, la misma contraseña produce hashes distintos. Tercer avance: un atacante puede calcular de antemano los hashes de millones de contraseñas comunes y buscarlos en una tabla; sin sal la coincidencia es inmediata y con sal las tablas precalculadas dejan de servir. Antes de cada avance, pedir qué creen que verá el atacante. Las contraseñas de esta figura no son las del laboratorio.",
+      "fragments": [
+        49.5,
+        50.5,
+        51.5,
+        52.5
+      ]
+    },
+    {
+      "sceneId": "velocidad",
+      "startTime": 54,
+      "endTime": 59.5,
+      "notes": "La sal no impide probar contraseñas una por una contra una cuenta concreta. Lo que frena esa prueba es la velocidad. Los valores se midieron en el equipo donde se preparó esta clase, con Python y hashlib, en un solo hilo: SHA-256 de una vuelta permite unos 276 000 intentos por segundo, y PBKDF2 con 100 000 iteraciones, unos 18. En otro equipo los valores cambian y la proporción se mantiene. Por eso para contraseñas se usan funciones lentas a propósito: PBKDF2, bcrypt, scrypt o Argon2. En el laboratorio miden esta diferencia con sus propios datos. Antes de cada avance, pedir una estimación.",
+      "fragments": [
+        56,
+        57,
+        58
+      ]
+    },
+    {
+      "sceneId": "ataques",
+      "startTime": 59.5,
+      "endTime": 66,
+      "notes": "Tres formas frecuentes de atacar contraseñas, con datos ficticios. La fuerza bruta prueba todas las combinaciones de una longitud y un conjunto de caracteres. El ataque de diccionario prueba solo contraseñas probables, de listas de palabras, nombres y contraseñas filtradas, con variaciones como mayúscula inicial o un año al final. El relleno de credenciales usa pares de usuario y contraseña filtrados en otro sitio y aprovecha que mucha gente reutiliza la contraseña. Antes de cada avance, preguntar qué defensa frena ese ataque: límite de intentos, longitud y lista de comunes, y segundo factor.",
+      "fragments": [
+        61.5,
+        62.5,
+        63.5,
+        64.5
+      ]
+    },
+    {
+      "sceneId": "espacio",
+      "startTime": 66,
+      "endTime": 72.5,
+      "notes": "Es la Tabla 3 del material de la semana: cuánto tarda en agotarse el espacio de combinaciones a mil millones de intentos por segundo, que es un ritmo posible solo contra funciones rápidas. Primer avance: ocho caracteres caen entre minutos y semanas. Segundo avance: doce letras minúsculas tardan unos tres años y doce caracteres de los 94 imprimibles, unos quince millones de años. Tercer avance: cinco palabras al azar de una lista de 7776 tardan unos 900 años, y se recuerdan mejor. La barra va en escala logarítmica: cada marca vale diez veces la anterior. Antes de cada avance, pedir una estimación del tiempo.",
+      "fragments": [
+        68,
+        69,
+        70,
+        71
+      ]
+    },
+    {
+      "sceneId": "teorico",
+      "startTime": 72.5,
+      "endTime": 78,
+      "notes": "Es el ejemplo resuelto del material de la semana con la contraseña ficticia Clinica2024. Primer avance: el espacio teórico, once caracteres entre 62, unas 5,2 por 10 a la 19; parece enorme. Segundo avance: un atacante de diccionario prueba palabras comunes, con y sin mayúscula inicial y con sufijos de años; son unas decenas de miles de candidatas, que un computador recorre en segundos contra un hash rápido. La contraseña cae aunque su espacio teórico sea enorme, porque su estructura es predecible. Las barras van en escala logarítmica. Antes de avanzar, preguntar si Clinica2024 resiste.",
+      "fragments": [
+        74.5,
+        75.5,
+        76.5
+      ]
+    },
+    {
+      "sceneId": "laboratorio",
+      "startTime": 78,
+      "endTime": 85.5,
+      "notes": "El laboratorio reúne las decisiones de cualquier sistema real, en pequeño y sin conexión a ningún sistema, con cuentas de práctica. Cada avance revela una pieza y la línea que deja en el registro de accesos: registrar una cuenta con una contraseña que pasa la política; activar el segundo factor confirmándolo con un código antes de dejarlo activo, para no dejar a nadie fuera si copió mal el secreto; ingresar con contraseña y código; y bloquear tras tres fallos seguidos. El registro es un ejemplo con la forma que pidel material de la semana: fecha, usuario, evento y resultado. En el laboratorio pueden cambiar la longitud mínima para probar el efecto.",
+      "fragments": [
+        80,
+        81,
+        82,
+        83,
+        84
+      ]
+    },
+    {
+      "sceneId": "totp",
+      "startTime": 85.5,
+      "endTime": 92,
+      "notes": "El segundo factor del laboratorio es un código de un solo uso basado en el tiempo, TOTP, definido en la RFC 6238. Servidor y aplicación comparten un secreto que se entrega una sola vez, al activar el factor. Cada 30 segundos ambos aplican HMAC al número del intervalo de tiempo actual con ese secreto y toman seis dígitos. Los códigos de la figura son reales, calculados con el secreto de prueba de la RFC. Primer avance: los dos muestran el mismo código. Segundo avance: al pasar al intervalo siguiente cambia. Tercer avance: un código capturado deja de servir al terminar su intervalo; el servidor acepta el anterior y el siguiente por diferencias de reloj. Como el secreto no viaja en cada inicio de sesión, no hay nada reutilizable que interceptar.",
+      "fragments": [
+        87.5,
+        88.5,
+        89.5,
+        90.5
+      ]
+    },
+    {
+      "sceneId": "controles",
+      "startTime": 92,
+      "endTime": 97.5,
+      "notes": "Es el ejemplo resuelto del material de la semana con una papelería de seis empleados y es el formato de la parte IV de GPE-S3: control, pregunta que cubre, costo y efecto. Primer avance: el administrador de la tienda en línea tiene riesgo alto, porque puede cambiar precios y ver pedidos; contraseña larga más un código de aplicación autenticadora, bloqueo tras cinco fallos, registro de cada ingreso y cada cambio de precios con hora y origen, y permisos solo sobre la tienda. Costo: una aplicación gratuita y cinco minutos. Segundo avance: el empleado que solo registra ventas tiene riesgo bajo; contraseña individual, sin segundo factor por ahora, permisos de caja y registro de ventas, porque el daño máximo es pequeño. Mismo sistema, controles distintos según el riesgo. Antes de cada avance, pedir qué controles pondrían.",
+      "fragments": [
+        94,
+        95,
+        96
+      ]
+    },
+    {
+      "sceneId": "evaluador",
+      "startTime": 97.5,
+      "endTime": 105,
+      "notes": "Es el ejemplo resuelto del evaluador, con la contraseña ficticia Clinica2024 y un puntaje máximo de 5: longitud hasta 2, diccionario hasta 1, variedad hasta 1 y patrones desde menos 1 hasta 0. Avance 1: longitud, 11 caracteres, corta, 1 punto, con el fragmento de código. Avance 2: al quitar los dígitos finales queda clinica, que está en la lista, 0 puntos. Avance 3: variedad, tres tipos, 1 punto; patrones, sin repeticiones ni secuencias, 0. Avance 4: total 2 puntos, nivel medio, pero esa contraseña cayó en pocos intentos en el ataque de diccionario; ese desajuste es un límite de la prueba y debe ir en el informe. Ningún conjunto de reglas mide la fortaleza real.",
+      "fragments": [
+        99.5,
+        100.5,
+        101.5,
+        102.5,
+        103.5
+      ]
+    },
+    {
+      "sceneId": "etica",
+      "startTime": 105,
+      "endTime": 108.5,
+      "notes": "Las reglas éticas de la semana aplican los principios de la semana 1: se actúa con autorización, con el menor alcance necesario y sin dañar a terceros. Se evalúan solo contraseñas ficticias creadas para la práctica. Nunca se escriben, guardan ni envían contraseñas reales, propias o ajenas, ni a este programa ni a un servicio en línea. Y el programa no intenta adivinar la contraseña de ninguna cuenta real."
+    },
+    {
+      "sceneId": "actividades",
+      "startTime": 108.5,
+      "endTime": 112,
+      "notes": "GPE-S3 es el ataque de diccionario sobre las cuentas ficticias de la Clínica Vida Sana, con la configuración de la autenticación básica y multifactor y la propuesta de controles. La consigna, la plantilla y la rúbrica con sus pesos están en Canvas. GTA-S3 de desarrollo profesional autónomo es la prueba de fortaleza de contraseñas en Python. GA-S3 es Docente por un día: cinco minutos sobre una de las cinco recomendaciones de gestión segura de contraseñas. GTA-S3 de proyecto es la propuesta inicial en equipo, que incluye cómo se identificarán y autenticarán las personas en su sistema. Las fechas están en Canvas."
+    },
+    {
+      "sceneId": "cierre",
+      "startTime": 112,
+      "endTime": 115.5,
+      "notes": "Volver al caso de la clínica: con identificación individual, un segundo factor, permisos mínimos y un registro con hora y origen, la clínica habría sabido quién entró, qué pudo hacer y qué hizo. Tarea para casa: la recuperación sin apuntes del material de la semana, con ocho preguntas, y las tres situaciones nuevas. Si surge la duda de cuál es la más difícil, suele ser la de la tienda con una contraseña compartida, porque exige convencer al dueño de cambiar un hábito."
+    }
+  ],
+  "slideSequences": []
+}
+    </script>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="115.5" data-width="1920" data-height="1080">
+
+      <section id="portada" class="clip slide dark" data-start="0" data-duration="3.5" data-track-index="0" data-label="Portada" data-frags="0">
+        <div class="frame" id="portada-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">01 / 21</span>
+      <p class="course" data-in="0" style="--i:0">CC05A_IFT202 · Semana 3</p>
+      <h1 class="claim xl" data-in="1" style="--i:1">Una cuenta entró, pero nadie sabe quién estaba detrás</h1>
+      <p class="lead" data-in="2" style="--i:2">Identificación y autenticación</p>
+      <p class="byline" data-in="3" style="--i:3">Fundamentos de la Seguridad · Charlie Cárdenas Toledo</p>
+        </div>
+      </section>
+
+      <section id="ruta" class="clip slide" data-start="3.5" data-duration="3.5" data-track-index="0" data-label="Ruta de la clase" data-frags="0">
+        <div class="frame" id="ruta-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">02 / 21</span>
+      <h1 class="claim" data-in="0" style="--i:0">La clase va de una cuenta sin dueño a un acceso bien comprobado</h1>
+      <ol class="steps">
+        <li data-in="1" style="--i:1"><b>1</b><span>Explorar el caso de la clínica</span></li>
+        <li data-in="2" style="--i:2"><b>2</b><span>Diferenciar las cuatro preguntas de un acceso</span></li>
+        <li data-in="3" style="--i:3"><b>3</b><span>Clasificar factores y reconocer la autenticación multifactor</span></li>
+        <li data-in="4" style="--i:4"><b>4</b><span>Entender cómo se guardan y se atacan las contraseñas</span></li>
+        <li data-in="5" style="--i:5"><b>5</b><span>Configurar el laboratorio y medir la fortaleza</span></li>
+      </ol>
+        </div>
+      </section>
+
+      <section id="caso" class="clip slide" data-start="7" data-duration="6.5" data-track-index="0" data-label="El caso de la clínica" data-frags="3">
+        <div class="frame" id="caso-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">03 / 21</span>
+      <h1 class="claim" data-in="0" style="--i:0">Una sola línea de registro no alcanza para saber quién entró</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/caso-clinica/caso-clinica.html?embed" title="Un registro del servidor con una sola línea, la contraseña vidasana2024 repetida en el correo, el sistema de citas y la red inalámbrica, una cuenta con todos los permisos y cuatro preguntas sin respuesta." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="idea" class="clip slide dark" data-start="13.5" data-duration="3.5" data-track-index="0" data-label="La idea" data-frags="0">
+        <div class="frame" id="idea-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">04 / 21</span>
+      <h1 class="claim xl" data-in="0" style="--i:0">Toda cuenta debe poder responder cuatro preguntas</h1>
+      <p class="lead" data-in="1" style="--i:1">Quién dice ser, si puede probarlo, qué puede hacer y qué hizo.</p>
+        </div>
+      </section>
+
+      <section id="cuatro" class="clip slide" data-start="17" data-duration="7.5" data-track-index="0" data-label="Las cuatro preguntas" data-frags="4">
+        <div class="frame" id="cuatro-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">05 / 21</span>
+      <h1 class="claim" data-in="0" style="--i:0">Las cuatro preguntas de un acceso</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/cuatro-preguntas/cuatro-preguntas.html?embed" title="Cuatro columnas: identificación, autenticación, autorización y trazabilidad, cada una con su pregunta, un ejemplo del banco, un ejemplo de la clínica y lo que pasa si falla." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="clasificar" class="clip slide" data-start="24.5" data-duration="6.5" data-track-index="0" data-label="Clasificar eventos" data-frags="3">
+        <div class="frame" id="clasificar-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">06 / 21</span>
+      <h1 class="claim" data-in="0" style="--i:0">Qué hace el sistema en ese momento decide el concepto</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/clasificar/clasificar.html?embed" title="Seis eventos de un portal universitario que se clasifican, de dos en dos, como identificación, autenticación, autorización o trazabilidad." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="factores" class="clip slide" data-start="31" data-duration="6.5" data-track-index="0" data-label="Factores de autenticación" data-frags="3">
+        <div class="frame" id="factores-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">07 / 21</span>
+      <h1 class="claim" data-in="0" style="--i:0">Tres tipos de prueba: lo que sabes, lo que tienes y lo que eres</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/tres-factores/tres-factores.html?embed" title="Tres columnas: conocimiento, posesión e inherencia, con ejemplos, debilidad principal y si se puede reemplazar al comprometerse." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="mfa" class="clip slide" data-start="37.5" data-duration="6.5" data-track-index="0" data-label="¿Es multifactor?" data-frags="3">
+        <div class="frame" id="mfa-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">08 / 21</span>
+      <h1 class="claim" data-in="0" style="--i:0">Dos pruebas del mismo tipo no hacen una autenticación multifactor</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/mfa-prueba/mfa-prueba.html?embed" title="Tres pares de pruebas: contraseña con PIN, contraseña con código del teléfono, y huella con rostro. Solo el segundo par combina dos categorías distintas." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="hash-idea" class="clip slide dark" data-start="44" data-duration="3.5" data-track-index="0" data-label="El hash" data-frags="0">
+        <div class="frame" id="hash-idea-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">09 / 21</span>
+      <h1 class="claim xl" data-in="0" style="--i:0">Un sistema bien diseñado nunca guarda la contraseña</h1>
+      <p class="lead" data-in="1" style="--i:1">Guarda su hash, mezclado con una sal.</p>
+        </div>
+      </section>
+
+      <section id="hash-sal" class="clip slide" data-start="47.5" data-duration="6.5" data-track-index="0" data-label="Hash y sal" data-frags="3">
+        <div class="frame" id="hash-sal-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">10 / 21</span>
+      <h1 class="claim" data-in="0" style="--i:0">La sal hace que dos contraseñas iguales no se vean iguales</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/hash-sal/hash-sal.html?embed" title="Dos cuentas con la misma contraseña. Sin sal tienen el mismo hash y una tabla precalculada lo descubre; con una sal distinta por cuenta los hashes difieren y la tabla no sirve." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="velocidad" class="clip slide" data-start="54" data-duration="5.5" data-track-index="0" data-label="La velocidad es la defensa" data-frags="2">
+        <div class="frame" id="velocidad-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">11 / 21</span>
+      <h1 class="claim" data-in="0" style="--i:0">Contra una sola cuenta, lo que frena al atacante es la lentitud</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="2" src="figuras/velocidad/velocidad.html?embed" title="Dos barras en escala logarítmica: SHA-256 permite unos 276 000 intentos por segundo y PBKDF2 con 100 000 iteraciones, unos 18." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="ataques" class="clip slide" data-start="59.5" data-duration="6.5" data-track-index="0" data-label="Tres ataques" data-frags="3">
+        <div class="frame" id="ataques-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">12 / 21</span>
+      <h1 class="claim" data-in="0" style="--i:0">Tres formas de adivinar, cada una con su método</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/tres-ataques/tres-ataques.html?embed" title="Tres columnas con intentos de ejemplo: fuerza bruta, diccionario y relleno de credenciales." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="espacio" class="clip slide" data-start="66" data-duration="6.5" data-track-index="0" data-label="Espacio de combinaciones" data-frags="3">
+        <div class="frame" id="espacio-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">13 / 21</span>
+      <h1 class="claim" data-in="0" style="--i:0">La longitud pesa más que los símbolos raros</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/espacio/espacio.html?embed" title="Seis barras en escala logarítmica con el tiempo para agotar las combinaciones de seis tipos de contraseña, de unos 3,5 minutos a unos 15 millones de años." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="teorico" class="clip slide" data-start="72.5" data-duration="5.5" data-track-index="0" data-label="Teórico y real" data-frags="2">
+        <div class="frame" id="teorico-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">14 / 21</span>
+      <h1 class="claim" data-in="0" style="--i:0">Una contraseña predecible cae aunque su espacio sea enorme</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="2" src="figuras/teorico-real/teorico-real.html?embed" title="Dos barras en escala logarítmica para Clinica2024: el espacio teórico de unas 5,2 por 10 a la 19 combinaciones y el espacio real de un ataque de diccionario, de unas decenas de miles." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="laboratorio" class="clip slide" data-start="78" data-duration="7.5" data-track-index="0" data-label="El laboratorio" data-frags="4">
+        <div class="frame" id="laboratorio-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">15 / 21</span>
+      <h1 class="claim" data-in="0" style="--i:0">Cada decisión de seguridad deja una línea en el registro</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/autenticacion-lab/autenticacion-lab.html?embed" title="Cuatro pasos del programa de autenticación: registrar, activar el segundo factor, ingresar y bloquear tras tres fallos. Debajo, un registro de accesos de ejemplo que se llena con cada paso." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="totp" class="clip slide" data-start="85.5" data-duration="6.5" data-track-index="0" data-label="Código de un solo uso" data-frags="3">
+        <div class="frame" id="totp-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">16 / 21</span>
+      <h1 class="claim" data-in="0" style="--i:0">El código cambia cada 30 segundos y el secreto no viaja</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/totp/totp.html?embed" title="El servidor y la aplicación del teléfono comparten un secreto y calculan el mismo código de seis dígitos en cada intervalo de 30 segundos. Un código capturado deja de servir al terminar el intervalo." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="controles" class="clip slide" data-start="92" data-duration="5.5" data-track-index="0" data-label="Controles según el riesgo" data-frags="2">
+        <div class="frame" id="controles-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">17 / 21</span>
+      <h1 class="claim" data-in="0" style="--i:0">El control se decide según el riesgo de la cuenta</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="2" src="figuras/controles-riesgo/controles-riesgo.html?embed" title="Dos cuentas de una papelería con los controles de cada una: el administrador de la tienda en línea, de riesgo alto, con contraseña larga, código de aplicación y bloqueo; y el empleado de caja, de riesgo bajo, con contraseña individual y permisos de caja." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="evaluador" class="clip slide" data-start="97.5" data-duration="7.5" data-track-index="0" data-label="Prueba de fortaleza" data-frags="4">
+        <div class="frame" id="evaluador-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">18 / 21</span>
+      <h1 class="claim" data-in="0" style="--i:0">Un evaluador con reglas simples puede equivocarse, y hay que decirlo</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/evaluador/evaluador.html?embed" title="Cuatro criterios aplicados a la contraseña Clinica2024: longitud, diccionario, variedad y patrones, con un total de 2 puntos, nivel medio, y el límite de que igual cayó en un ataque de diccionario." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="etica" class="clip slide dark" data-start="105" data-duration="3.5" data-track-index="0" data-label="Reglas del laboratorio" data-frags="0">
+        <div class="frame" id="etica-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">19 / 21</span>
+      <h1 class="claim xl" data-in="0" style="--i:0">Solo contraseñas ficticias, solo dentro del laboratorio</h1>
+      <p class="lead" data-in="1" style="--i:1">Con autorización, con el menor alcance y sin dañar a terceros.</p>
+        </div>
+      </section>
+
+      <section id="actividades" class="clip slide" data-start="108.5" data-duration="3.5" data-track-index="0" data-label="Actividades" data-frags="0">
+        <div class="frame" id="actividades-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">20 / 21</span>
+      <h1 class="claim" data-in="0" style="--i:0">Cuatro actividades calificadas cierran la semana</h1>
+      <div class="cards four tall">
+        <div class="card" data-in="1" style="--i:1"><span class="tag">GPE-S3 · 3 puntos</span><strong>Ataque de diccionario</strong><em>Resultados, controles y segundo factor del laboratorio</em></div>
+        <div class="card" data-in="2" style="--i:2"><span class="tag">GTA-S3 · 1 punto</span><strong>Prueba de fortaleza</strong><em>Un evaluador en Python, sus resultados y sus límites</em></div>
+        <div class="card" data-in="3" style="--i:3"><span class="tag">GA-S3 · 1,5 puntos</span><strong>Docente por un día</strong><em>Cinco minutos sobre una recomendación de contraseñas</em></div>
+        <div class="card" data-in="4" style="--i:4"><span class="tag">GTA-S3 · 2 puntos</span><strong>Proyecto de asignatura</strong><em>Propuesta inicial y esquema de acceso del equipo</em></div>
+      </div>
+        </div>
+      </section>
+
+      <section id="cierre" class="clip slide dark" data-start="112" data-duration="3.5" data-track-index="0" data-label="Cierre" data-frags="0">
+        <div class="frame" id="cierre-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">21 / 21</span>
+      <h1 class="claim xl" data-in="0" style="--i:0">Quién entró, cómo se comprobó, qué pudo hacer y qué quedó registrado</h1>
+      <p class="lead" data-in="1" style="--i:1">Tarea: recuperación sin apuntes</p>
+      <p class="byline" data-in="2" style="--i:2">Fuentes: NIST CSF 2.0 · RFC 6238 · material de la semana en Canvas</p>
+        </div>
+      </section>
+    </div>
+    <script>
+      // Con el motor de HyperFrames (check, Studio) el registro ya existe.
+      // Al presentar, el reproductor mueve esta línea de tiempo directamente.
+      const engineHosted = Object.prototype.hasOwnProperty.call(window, "__timelines");
+      window.__timelines = window.__timelines || {};
+      if (!engineHosted) document.documentElement.classList.add("live");
+
+      const ENTER = 2;
+      const tl = gsap.timeline({ paused: true });
+      tl.to({}, { duration: 115.5 }, 0);
+
+      const figSyncs = [];
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      slides.forEach((slide, index) => {
+        const start = Number(slide.dataset.start);
+        const end = start + Number(slide.dataset.duration);
+        const frame = slide.querySelector(".frame");
+        tl.set(frame, { opacity: 1 }, start);
+        if (index < slides.length - 1) tl.set(frame, { opacity: 0 }, end);
+
+        slide.querySelectorAll("[data-in]").forEach((el) => {
+          const i = Number(el.dataset.in);
+          tl.fromTo(el, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, start + 0.12 + i * 0.07);
+        });
+        slide.querySelectorAll("[data-f]").forEach((el) => {
+          const hold = start + ENTER + Number(el.dataset.f);
+          tl.fromTo(el, { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, hold - 0.6);
+        });
+        slide.querySelectorAll("iframe[data-fig]").forEach((el) => {
+          // La figura corre en su propio documento: en vivo anima sola hacia el estado pedido;
+          // con el motor (check, Studio) sigue la línea de tiempo cuadro a cuadro.
+          // El estado se calcula desde el tiempo de la línea de tiempo, así responde igual
+          // al avanzar, al retroceder y al saltar entre diapositivas.
+          const steps = Number(el.dataset.fig);
+          let sent = -1;
+          const wanted = () => {
+            const t = tl.time();
+            let u = 0;
+            for (let step = 1; step <= steps; step++) u += Math.min(1, Math.max(0, (t - (start + ENTER + step - 0.6)) / 0.6));
+            return engineHosted ? u / steps : Math.round(u) / steps;
+          };
+          const send = (force) => {
+            const value = wanted();
+            if (!el.contentWindow || (!force && value === sent)) return;
+            sent = value;
+            el.contentWindow.postMessage({ type: "fig", mode: engineHosted ? "set" : "go", value }, "*");
+          };
+          figSyncs.push(send);
+          el.addEventListener("load", () => send(true));
+        });
+        slide.querySelectorAll("[data-hl]").forEach((el) => {
+          const hold = start + ENTER + Number(el.dataset.hl);
+          tl.to(el, { backgroundColor: "#fbe3a6", color: "#5c3d00", duration: 0.4 }, hold - 0.5);
+        });
+      });
+
+      tl.eventCallback("onUpdate", () => figSyncs.forEach((sync) => sync()));
+      // En vivo el reproductor puede mover la línea de tiempo sin emitir eventos: se revisa en cada tic de GSAP.
+      if (!engineHosted) gsap.ticker.add(() => figSyncs.forEach((sync) => sync()));
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

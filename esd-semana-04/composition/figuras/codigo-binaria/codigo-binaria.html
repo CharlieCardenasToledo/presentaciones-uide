@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>La búsqueda binaria en Python, vuelta por vuelta</title>
+<style>
+:root{--wine:#910048;--wine-deep:#6d0036;--gold:#e8a920;--teal:#0c6b62;--amber:#7a5200;--ink:#1f1a1d;--muted:#5a5257;--tint:#f6f1f3;--red:#b3261e}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:transparent;font-family:system-ui,"Segoe UI",sans-serif;color:var(--ink);overflow:hidden}
+#st{position:absolute;left:0;top:0;width:1560px;height:720px;transform-origin:0 0}
+.b{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border-radius:16px;padding:6px 14px;font-weight:700;font-size:32px;line-height:1.15;background:var(--tint);color:var(--ink)}
+.b small{display:block;font-size:24px;font-weight:600;margin-top:4px}
+.t{position:absolute;font-size:34px;font-weight:700;line-height:1.2}
+.pill{position:absolute;display:flex;align-items:center;justify-content:center;height:52px;padding:0 20px;border-radius:26px;color:#fff;font:800 24px/1 ui-monospace,Consolas,monospace;white-space:nowrap;opacity:0;z-index:5}
+.ln{position:absolute;background:#cfc6ca}
+
+</style></head><body>
+<div id="st">
+<div style="position:absolute;left:20px;top:20px;width:650px;height:520px;border-radius:18px;background:#f6f1f3"></div>
+<div id="cl0" class="b" style="left:34px;top:34px;width:622px;height:42px;border-radius:8px;justify-content:center;align-items:flex-start;padding:0 10px;font-family:ui-monospace,Consolas,monospace;font-size:25px;font-weight:600;text-align:left;background:transparent;color:#1f1a1d">def&nbsp;buscar_binaria(a,&nbsp;clave):</div>
+<div id="cl1" class="b" style="left:34px;top:78px;width:622px;height:42px;border-radius:8px;justify-content:center;align-items:flex-start;padding:0 10px;font-family:ui-monospace,Consolas,monospace;font-size:25px;font-weight:600;text-align:left;background:transparent;color:#1f1a1d">&nbsp;&nbsp;&nbsp;&nbsp;bajo,&nbsp;alto&nbsp;=&nbsp;0,&nbsp;len(a)&nbsp;-&nbsp;1</div>
+<div id="cl2" class="b" style="left:34px;top:122px;width:622px;height:42px;border-radius:8px;justify-content:center;align-items:flex-start;padding:0 10px;font-family:ui-monospace,Consolas,monospace;font-size:25px;font-weight:600;text-align:left;background:transparent;color:#1f1a1d">&nbsp;&nbsp;&nbsp;&nbsp;while&nbsp;bajo&nbsp;<=&nbsp;alto:</div>
+<div id="cl3" class="b" style="left:34px;top:166px;width:622px;height:42px;border-radius:8px;justify-content:center;align-items:flex-start;padding:0 10px;font-family:ui-monospace,Consolas,monospace;font-size:25px;font-weight:600;text-align:left;background:transparent;color:#1f1a1d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;centro&nbsp;=&nbsp;(bajo&nbsp;+&nbsp;alto)&nbsp;//&nbsp;2</div>
+<div id="cl4" class="b" style="left:34px;top:210px;width:622px;height:42px;border-radius:8px;justify-content:center;align-items:flex-start;padding:0 10px;font-family:ui-monospace,Consolas,monospace;font-size:25px;font-weight:600;text-align:left;background:transparent;color:#1f1a1d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;a[centro]&nbsp;==&nbsp;clave:</div>
+<div id="cl5" class="b" style="left:34px;top:254px;width:622px;height:42px;border-radius:8px;justify-content:center;align-items:flex-start;padding:0 10px;font-family:ui-monospace,Consolas,monospace;font-size:25px;font-weight:600;text-align:left;background:transparent;color:#1f1a1d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;centro</div>
+<div id="cl6" class="b" style="left:34px;top:298px;width:622px;height:42px;border-radius:8px;justify-content:center;align-items:flex-start;padding:0 10px;font-family:ui-monospace,Consolas,monospace;font-size:25px;font-weight:600;text-align:left;background:transparent;color:#1f1a1d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;clave&nbsp;<&nbsp;a[centro]:</div>
+<div id="cl7" class="b" style="left:34px;top:342px;width:622px;height:42px;border-radius:8px;justify-content:center;align-items:flex-start;padding:0 10px;font-family:ui-monospace,Consolas,monospace;font-size:25px;font-weight:600;text-align:left;background:transparent;color:#1f1a1d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;alto&nbsp;=&nbsp;centro&nbsp;-&nbsp;1</div>
+<div id="cl8" class="b" style="left:34px;top:386px;width:622px;height:42px;border-radius:8px;justify-content:center;align-items:flex-start;padding:0 10px;font-family:ui-monospace,Consolas,monospace;font-size:25px;font-weight:600;text-align:left;background:transparent;color:#1f1a1d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else:</div>
+<div id="cl9" class="b" style="left:34px;top:430px;width:622px;height:42px;border-radius:8px;justify-content:center;align-items:flex-start;padding:0 10px;font-family:ui-monospace,Consolas,monospace;font-size:25px;font-weight:600;text-align:left;background:transparent;color:#1f1a1d">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bajo&nbsp;=&nbsp;centro&nbsp;+&nbsp;1</div>
+<div id="cl10" class="b" style="left:34px;top:474px;width:622px;height:42px;border-radius:8px;justify-content:center;align-items:flex-start;padding:0 10px;font-family:ui-monospace,Consolas,monospace;font-size:25px;font-weight:600;text-align:left;background:transparent;color:#1f1a1d">&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;-1</div>
+<div id="claveT" class="t" style="left:700px;top:18px;width:400px;font-size:32px;color:var(--wine-deep);font-weight:800;font-family:ui-monospace,Consolas,monospace;text-align:left;opacity:1;white-space:pre">clave = 1983</div>
+<div id="lc0" class="b" style="left:700px;top:100px;width:70px;height:70px;font-size:24px;font-family:ui-monospace,Consolas,monospace;border-radius:10px">1231</div>
+<div id="li0" class="t" style="left:700px;top:74px;width:70px;font-size:20px;color:#5a5257;font-weight:600;text-align:center;opacity:1;white-space:pre">0</div>
+<div id="lc1" class="b" style="left:776px;top:100px;width:70px;height:70px;font-size:24px;font-family:ui-monospace,Consolas,monospace;border-radius:10px">1473</div>
+<div id="li1" class="t" style="left:776px;top:74px;width:70px;font-size:20px;color:#5a5257;font-weight:600;text-align:center;opacity:1;white-space:pre">1</div>
+<div id="lc2" class="b" style="left:852px;top:100px;width:70px;height:70px;font-size:24px;font-family:ui-monospace,Consolas,monospace;border-radius:10px">1545</div>
+<div id="li2" class="t" style="left:852px;top:74px;width:70px;font-size:20px;color:#5a5257;font-weight:600;text-align:center;opacity:1;white-space:pre">2</div>
+<div id="lc3" class="b" style="left:928px;top:100px;width:70px;height:70px;font-size:24px;font-family:ui-monospace,Consolas,monospace;border-radius:10px">1834</div>
+<div id="li3" class="t" style="left:928px;top:74px;width:70px;font-size:20px;color:#5a5257;font-weight:600;text-align:center;opacity:1;white-space:pre">3</div>
+<div id="lc4" class="b" style="left:1004px;top:100px;width:70px;height:70px;font-size:24px;font-family:ui-monospace,Consolas,monospace;border-radius:10px">1892</div>
+<div id="li4" class="t" style="left:1004px;top:74px;width:70px;font-size:20px;color:#5a5257;font-weight:600;text-align:center;opacity:1;white-space:pre">4</div>
+<div id="lc5" class="b" style="left:1080px;top:100px;width:70px;height:70px;font-size:24px;font-family:ui-monospace,Consolas,monospace;border-radius:10px">1898</div>
+<div id="li5" class="t" style="left:1080px;top:74px;width:70px;font-size:20px;color:#5a5257;font-weight:600;text-align:center;opacity:1;white-space:pre">5</div>
+<div id="lc6" class="b" style="left:1156px;top:100px;width:70px;height:70px;font-size:24px;font-family:ui-monospace,Consolas,monospace;border-radius:10px">1983</div>
+<div id="li6" class="t" style="left:1156px;top:74px;width:70px;font-size:20px;color:#5a5257;font-weight:600;text-align:center;opacity:1;white-space:pre">6</div>
+<div id="lc7" class="b" style="left:1232px;top:100px;width:70px;height:70px;font-size:24px;font-family:ui-monospace,Consolas,monospace;border-radius:10px">2005</div>
+<div id="li7" class="t" style="left:1232px;top:74px;width:70px;font-size:20px;color:#5a5257;font-weight:600;text-align:center;opacity:1;white-space:pre">7</div>
+<div id="lc8" class="b" style="left:1308px;top:100px;width:70px;height:70px;font-size:24px;font-family:ui-monospace,Consolas,monospace;border-radius:10px">2446</div>
+<div id="li8" class="t" style="left:1308px;top:74px;width:70px;font-size:20px;color:#5a5257;font-weight:600;text-align:center;opacity:1;white-space:pre">8</div>
+<div id="lc9" class="b" style="left:1384px;top:100px;width:70px;height:70px;font-size:24px;font-family:ui-monospace,Consolas,monospace;border-radius:10px">2685</div>
+<div id="li9" class="t" style="left:1384px;top:74px;width:70px;font-size:20px;color:#5a5257;font-weight:600;text-align:center;opacity:1;white-space:pre">9</div>
+<div id="lc10" class="b" style="left:1460px;top:100px;width:70px;height:70px;font-size:24px;font-family:ui-monospace,Consolas,monospace;border-radius:10px">3200</div>
+<div id="li10" class="t" style="left:1460px;top:74px;width:70px;font-size:20px;color:#5a5257;font-weight:600;text-align:center;opacity:1;white-space:pre">10</div>
+<div id="mb" class="t" style="left:0px;top:182px;width:80px;font-size:22px;color:#910048;font-weight:800;text-align:center;opacity:1;white-space:pre">bajo</div>
+<div id="mc" class="t" style="left:0px;top:212px;width:80px;font-size:22px;color:#7a5200;font-weight:800;text-align:center;opacity:0;white-space:pre">centro</div>
+<div id="ma" class="t" style="left:0px;top:242px;width:80px;font-size:22px;color:#0c6b62;font-weight:800;text-align:center;opacity:1;white-space:pre">alto</div>
+<div id="tr0" class="t" style="left:700px;top:330px;width:830px;font-size:27px;color:#1f1a1d;font-weight:700;text-align:left;opacity:0;white-space:pre">Vuelta 1: centro = 5. a[5] = 1898 es menor que 1983: bajo = 6</div>
+<div id="tr1" class="t" style="left:700px;top:392px;width:830px;font-size:27px;color:#1f1a1d;font-weight:700;text-align:left;opacity:0;white-space:pre">Vuelta 2: centro = 8. a[8] = 2446 es mayor: alto = 7</div>
+<div id="tr2" class="t" style="left:700px;top:454px;width:830px;font-size:27px;color:#1f1a1d;font-weight:700;text-align:left;opacity:0;white-space:pre">Vuelta 3: centro = 6. a[6] = 1983 es la clave: devuelve 6</div>
+<div id="cmp" class="t" style="left:700px;top:560px;width:600px;font-size:34px;color:#0c6b62;font-weight:800;font-family:ui-monospace,Consolas,monospace;text-align:left;opacity:1;white-space:pre">comparaciones: 0</div>
+</div>
+<script>
+const N = 3;
+const st = document.getElementById("st");
+function fit() { const k = Math.min(innerWidth / 1560, innerHeight / 720); st.style.transform = "scale(" + k + ")"; }
+fit(); addEventListener("resize", fit);
+const $ = (s) => document.querySelector(s);
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const ease = (t) => { t = clamp(t, 0, 1); return t * t * (3 - 2 * t); };
+const win = (s, a, b) => ease((s - a) / (b - a));
+const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+const mix = (a, b, t) => { const x = hex(a), y = hex(b); return "rgb(" + x.map((v, i) => Math.round(v + (y[i] - v) * t)).join(",") + ")"; };
+function lit(el, base, color, t, fg0, fg1) { el.style.background = mix(base, color, t); el.style.color = mix(fg0 || "#1f1a1d", fg1 || "#ffffff", t); }
+function put(el, x, y, a) { el.style.transform = "translate(" + x + "px," + y + "px)"; el.style.opacity = String(a); }
+function route(k, pts) { for (let i = 0; i < pts.length - 1; i++) { if (k <= pts[i + 1][0]) { const t = ease((k - pts[i][0]) / (pts[i + 1][0] - pts[i][0])); return [pts[i][1] + (pts[i + 1][1] - pts[i][1]) * t, pts[i][2] + (pts[i + 1][2] - pts[i][2]) * t]; } } const l = pts[pts.length - 1]; return [l[1], l[2]]; }
+
+function caps(s, n, pref) { for (let k = 0; k <= n; k++) { const a = win(s, k - 0.5, k) * (k < n ? 1 - win(s, k, k + 0.5) : 1); put($("#" + pref + k), 0, 0, clamp(a, 0, 1)); } }
+const op = (id, v) => { const e = document.getElementById(id); if (e) e.setAttribute("opacity", String(Math.max(0, Math.min(1, v)))); };
+const opAll = (ids, v) => ids.forEach((i) => op(i, v));
+const show = (id, v) => { const e = document.getElementById(id); if (e) e.style.opacity = String(Math.max(0, Math.min(1, v))); };
+const rise = (id, a) => { const e = document.getElementById(id); if (e) { e.style.opacity = String(clamp(a, 0, 1)); e.style.transform = "translateY(" + ((1 - clamp(a, 0, 1)) * 18) + "px)"; } };
+const fmt = (n) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, "\u00a0");
+const tri = (s, k, n) => win(s, k - 0.5, k) * (k < n ? 1 - win(s, k, k + 0.5) : 1);
+const lerpArr = (arr, s) => { const t = clamp(s, 0, arr.length - 1); const i = Math.min(arr.length - 2, Math.floor(t)); const f = ease(t - i); return arr[i] + (arr[i + 1] - arr[i]) * f; };
+
+const BAJO = [0, 6, 6, 6], ALTO = [10, 10, 7, 7], CEN = [5, 5, 8, 6];
+const LINEAS = [[1], [3, 9], [3, 7], [3, 5]];
+
+let u = 0, target = 0, frame = 0, timer = 0, last = 0;
+function draw() { 
+const s = u * N;
+const bajo = lerpArr(BAJO, s), alto = lerpArr(ALTO, s), cen = lerpArr(CEN, s), a1 = win(s, 0, 0.5);
+for (let i = 0; i < 11; i++) {
+  const e = $("#lc" + i);
+  const dim = clamp(Math.max(bajo - i, i - alto), 0, 1);
+  const g = clamp(1 - Math.abs(i - cen), 0, 1) * win(s, 0.4, 1);
+  let bg = mix("#f6f1f3", "#e8a920", g);
+  let fg = "#1f1a1d";
+  if (i === 6) { const t = win(s, 2.5, 3); bg = mix(bg, "#0c6b62", t); fg = mix("#1f1a1d", "#ffffff", t); }
+  e.style.background = bg; e.style.color = fg; e.style.opacity = String(1 - 0.7 * dim * (1 - g));
+}
+const cx = (v) => 700 + v * 76 + 35 - 40;
+put($("#mb"), cx(bajo), 0, 1); put($("#ma"), cx(alto), 0, 1); put($("#mc"), cx(cen), 0, win(s, 0.4, 1));
+for (let i = 0; i < 11; i++) {
+  let h = 0;
+  for (let k = 0; k <= N; k++) if (LINEAS[k].indexOf(i) >= 0) h = Math.max(h, tri(s, k, N));
+  $("#cl" + i).style.background = mix("#f6f1f3", "#fbe3a6", h);
+}
+for (let k = 0; k < 3; k++) show("tr" + k, win(s, k + 0.3, k + 1));
+$("#cmp").textContent = "comparaciones: " + Math.round(clamp(s, 0, 3));
+ }
+function loop() {
+  clearTimeout(timer); cancelAnimationFrame(frame);
+  const now = performance.now();
+  const dt = last ? Math.min((now - last) / 1000, 1) : 1 / 60; last = now;
+  const speed = 1 / (N * 1.6);
+  u = target > u ? Math.min(target, u + dt * speed) : Math.max(target, u - dt * speed * 2);
+  draw();
+  if (u !== target) { frame = requestAnimationFrame(loop); timer = setTimeout(loop, 80); } else { frame = 0; timer = 0; last = 0; }
+}
+const run = () => { if (!frame && !timer) { last = 0; loop(); } };
+const go = (v) => { target = clamp(v, 0, 1); run(); };
+window.__fig = { set(v) { u = target = clamp(v, 0, 1); draw(); }, go, get u() { return u; } };
+addEventListener("message", (e) => { const m = e.data; if (!m || m.type !== "fig") return; if (m.mode === "set") window.__fig.set(Number(m.value)); else go(Number(m.value)); });
+if (window.parent !== window) {
+  const KEYMAP = { ArrowRight: "ArrowRight", PageDown: "ArrowRight", " ": "ArrowRight", Enter: "ArrowRight", ArrowLeft: "ArrowLeft", PageUp: "ArrowLeft", Backspace: "ArrowLeft" };
+  addEventListener("keydown", (e) => { const k = KEYMAP[e.key]; if (!k) return; e.preventDefault(); e.stopImmediatePropagation(); parent.postMessage({ type: "deck-key", key: k }, "*"); }, true);
+} else {
+  addEventListener("click", () => go(target >= 1 ? 0 : Math.min(1, Math.round(target * N + 1) / N)));
+}
+draw();
+</script></body></html>

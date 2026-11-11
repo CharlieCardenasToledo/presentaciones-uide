@@ -19,6 +19,11 @@
         "n": 3,
         "slug": "bd-semana-03",
         "tema": "Entidades, atributos y claves: del párrafo de requisitos al diccionario de datos"
+      },
+      {
+        "n": 4,
+        "slug": "bd-semana-04",
+        "tema": "Relaciones, restricciones estructurales y entidades débiles"
       }
     ]
   },
@@ -37,6 +42,11 @@
         "n": 2,
         "slug": "esd-semana-02",
         "tema": "Costos de arreglo y lista, acceso aleatorio y secuencial, e invariantes de un TDA"
+      },
+      {
+        "n": 4,
+        "slug": "esd-semana-04",
+        "tema": "Búsqueda lineal y binaria, invariantes y micro-benchmarks"
       }
     ]
   },
@@ -119,6 +129,11 @@
         "n": 2,
         "slug": "ift202-semana-02",
         "tema": "Marco NIST CSF 2.0: funciones, categorías, perfiles, niveles y guías de seguridad"
+      },
+      {
+        "n": 3,
+        "slug": "ift202-semana-03",
+        "tema": "Identificación y autenticación"
       }
     ]
   }

@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>La invariante y el intervalo vacío</title>
+<style>
+:root{--wine:#910048;--wine-deep:#6d0036;--gold:#e8a920;--teal:#0c6b62;--amber:#7a5200;--ink:#1f1a1d;--muted:#5a5257;--tint:#f6f1f3;--red:#b3261e}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:transparent;font-family:system-ui,"Segoe UI",sans-serif;color:var(--ink);overflow:hidden}
+#st{position:absolute;left:0;top:0;width:1560px;height:720px;transform-origin:0 0}
+.b{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border-radius:16px;padding:6px 14px;font-weight:700;font-size:32px;line-height:1.15;background:var(--tint);color:var(--ink)}
+.b small{display:block;font-size:24px;font-weight:600;margin-top:4px}
+.t{position:absolute;font-size:34px;font-weight:700;line-height:1.2}
+.pill{position:absolute;display:flex;align-items:center;justify-content:center;height:52px;padding:0 20px;border-radius:26px;color:#fff;font:800 24px/1 ui-monospace,Consolas,monospace;white-space:nowrap;opacity:0;z-index:5}
+.ln{position:absolute;background:#cfc6ca}
+
+</style></head><body>
+<div id="st">
+<div id="inv" class="t" style="left:70px;top:20px;width:1420px;font-size:34px;color:var(--wine-deep);font-weight:800;text-align:left;opacity:1;white-space:pre">Invariante: si la clave 1500 está, está entre bajo y alto</div>
+<div id="v0" class="b" style="left:70px;top:150px;width:120px;height:80px;font-size:32px;font-family:ui-monospace,Consolas,monospace">1231</div>
+<div id="vi0" class="t" style="left:70px;top:118px;width:120px;font-size:22px;color:#5a5257;font-weight:600;text-align:center;opacity:1;white-space:pre">0</div>
+<div id="v1" class="b" style="left:200px;top:150px;width:120px;height:80px;font-size:32px;font-family:ui-monospace,Consolas,monospace">1473</div>
+<div id="vi1" class="t" style="left:200px;top:118px;width:120px;font-size:22px;color:#5a5257;font-weight:600;text-align:center;opacity:1;white-space:pre">1</div>
+<div id="v2" class="b" style="left:330px;top:150px;width:120px;height:80px;font-size:32px;font-family:ui-monospace,Consolas,monospace">1545</div>
+<div id="vi2" class="t" style="left:330px;top:118px;width:120px;font-size:22px;color:#5a5257;font-weight:600;text-align:center;opacity:1;white-space:pre">2</div>
+<div id="v3" class="b" style="left:460px;top:150px;width:120px;height:80px;font-size:32px;font-family:ui-monospace,Consolas,monospace">1834</div>
+<div id="vi3" class="t" style="left:460px;top:118px;width:120px;font-size:22px;color:#5a5257;font-weight:600;text-align:center;opacity:1;white-space:pre">3</div>
+<div id="v4" class="b" style="left:590px;top:150px;width:120px;height:80px;font-size:32px;font-family:ui-monospace,Consolas,monospace">1892</div>
+<div id="vi4" class="t" style="left:590px;top:118px;width:120px;font-size:22px;color:#5a5257;font-weight:600;text-align:center;opacity:1;white-space:pre">4</div>
+<div id="v5" class="b" style="left:720px;top:150px;width:120px;height:80px;font-size:32px;font-family:ui-monospace,Consolas,monospace">1898</div>
+<div id="vi5" class="t" style="left:720px;top:118px;width:120px;font-size:22px;color:#5a5257;font-weight:600;text-align:center;opacity:1;white-space:pre">5</div>
+<div id="v6" class="b" style="left:850px;top:150px;width:120px;height:80px;font-size:32px;font-family:ui-monospace,Consolas,monospace">1983</div>
+<div id="vi6" class="t" style="left:850px;top:118px;width:120px;font-size:22px;color:#5a5257;font-weight:600;text-align:center;opacity:1;white-space:pre">6</div>
+<div id="v7" class="b" style="left:980px;top:150px;width:120px;height:80px;font-size:32px;font-family:ui-monospace,Consolas,monospace">2005</div>
+<div id="vi7" class="t" style="left:980px;top:118px;width:120px;font-size:22px;color:#5a5257;font-weight:600;text-align:center;opacity:1;white-space:pre">7</div>
+<div id="v8" class="b" style="left:1110px;top:150px;width:120px;height:80px;font-size:32px;font-family:ui-monospace,Consolas,monospace">2446</div>
+<div id="vi8" class="t" style="left:1110px;top:118px;width:120px;font-size:22px;color:#5a5257;font-weight:600;text-align:center;opacity:1;white-space:pre">8</div>
+<div id="v9" class="b" style="left:1240px;top:150px;width:120px;height:80px;font-size:32px;font-family:ui-monospace,Consolas,monospace">2685</div>
+<div id="vi9" class="t" style="left:1240px;top:118px;width:120px;font-size:22px;color:#5a5257;font-weight:600;text-align:center;opacity:1;white-space:pre">9</div>
+<div id="v10" class="b" style="left:1370px;top:150px;width:120px;height:80px;font-size:32px;font-family:ui-monospace,Consolas,monospace">3200</div>
+<div id="vi10" class="t" style="left:1370px;top:118px;width:120px;font-size:22px;color:#5a5257;font-weight:600;text-align:center;opacity:1;white-space:pre">10</div>
+<svg style="position:absolute;left:0;top:0;width:1560px;height:720px;pointer-events:none" viewBox="0 0 1560 720"><rect id="brk" x="62" y="140" width="1436" height="100" rx="14" fill="none" stroke="#0c6b62" stroke-width="7"/></svg>
+<div id="lec" class="t" style="left:70px;top:276px;width:900px;font-size:38px;color:#1f1a1d;font-weight:800;font-family:ui-monospace,Consolas,monospace;text-align:left;opacity:1;white-space:pre">bajo = 0    alto = 10</div>
+<div id="cmp2" class="t" style="left:1020px;top:276px;width:470px;font-size:34px;color:#0c6b62;font-weight:800;font-family:ui-monospace,Consolas,monospace;text-align:right;opacity:1;white-space:pre">comparaciones: 0</div>
+<div id="k0" class="t" style="left:70px;top:380px;width:1420px;opacity:0;color:var(--wine-deep);font-size:36px">Al empezar, el intervalo es toda la lista</div>
+<div id="k1" class="t" style="left:70px;top:380px;width:1420px;opacity:0;color:var(--wine-deep);font-size:36px">centro = 5, a[5] = 1898 es mayor que 1500: alto = 4</div>
+<div id="k2" class="t" style="left:70px;top:380px;width:1420px;opacity:0;color:var(--wine-deep);font-size:36px">centro = 2, a[2] = 1545 es mayor: alto = 1</div>
+<div id="k3" class="t" style="left:70px;top:380px;width:1420px;opacity:0;color:var(--wine-deep);font-size:36px">centro = 0, a[0] = 1231 es menor: bajo = 1</div>
+<div id="k4" class="t" style="left:70px;top:380px;width:1420px;opacity:0;color:var(--wine-deep);font-size:36px">centro = 1, a[1] = 1473 es menor: bajo = 2</div>
+<div id="k5" class="t" style="left:70px;top:380px;width:1420px;opacity:0;color:#b3261e;font-size:36px">bajo = 2 es mayor que alto = 1: el intervalo está vacío, la clave no está y devuelve -1</div>
+</div>
+<script>
+const N = 5;
+const st = document.getElementById("st");
+function fit() { const k = Math.min(innerWidth / 1560, innerHeight / 720); st.style.transform = "scale(" + k + ")"; }
+fit(); addEventListener("resize", fit);
+const $ = (s) => document.querySelector(s);
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const ease = (t) => { t = clamp(t, 0, 1); return t * t * (3 - 2 * t); };
+const win = (s, a, b) => ease((s - a) / (b - a));
+const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+const mix = (a, b, t) => { const x = hex(a), y = hex(b); return "rgb(" + x.map((v, i) => Math.round(v + (y[i] - v) * t)).join(",") + ")"; };
+function lit(el, base, color, t, fg0, fg1) { el.style.background = mix(base, color, t); el.style.color = mix(fg0 || "#1f1a1d", fg1 || "#ffffff", t); }
+function put(el, x, y, a) { el.style.transform = "translate(" + x + "px," + y + "px)"; el.style.opacity = String(a); }
+function route(k, pts) { for (let i = 0; i < pts.length - 1; i++) { if (k <= pts[i + 1][0]) { const t = ease((k - pts[i][0]) / (pts[i + 1][0] - pts[i][0])); return [pts[i][1] + (pts[i + 1][1] - pts[i][1]) * t, pts[i][2] + (pts[i + 1][2] - pts[i][2]) * t]; } } const l = pts[pts.length - 1]; return [l[1], l[2]]; }
+
+function caps(s, n, pref) { for (let k = 0; k <= n; k++) { const a = win(s, k - 0.5, k) * (k < n ? 1 - win(s, k, k + 0.5) : 1); put($("#" + pref + k), 0, 0, clamp(a, 0, 1)); } }
+const op = (id, v) => { const e = document.getElementById(id); if (e) e.setAttribute("opacity", String(Math.max(0, Math.min(1, v)))); };
+const opAll = (ids, v) => ids.forEach((i) => op(i, v));
+const show = (id, v) => { const e = document.getElementById(id); if (e) e.style.opacity = String(Math.max(0, Math.min(1, v))); };
+const rise = (id, a) => { const e = document.getElementById(id); if (e) { e.style.opacity = String(clamp(a, 0, 1)); e.style.transform = "translateY(" + ((1 - clamp(a, 0, 1)) * 18) + "px)"; } };
+const fmt = (n) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, "\u00a0");
+const tri = (s, k, n) => win(s, k - 0.5, k) * (k < n ? 1 - win(s, k, k + 0.5) : 1);
+const lerpArr = (arr, s) => { const t = clamp(s, 0, arr.length - 1); const i = Math.min(arr.length - 2, Math.floor(t)); const f = ease(t - i); return arr[i] + (arr[i + 1] - arr[i]) * f; };
+
+const BAJO = [0, 0, 0, 1, 2], ALTO = [10, 4, 1, 1, 1], CEN = [5, 5, 2, 0, 1];
+const BA = [0, 0, 0, 1, 2, 2], AL = [10, 10, 4, 1, 1, 1];
+
+let u = 0, target = 0, frame = 0, timer = 0, last = 0;
+function draw() { 
+const s = u * N;
+const b = lerpArr([0, 0, 0, 1, 2, 2], s), a = lerpArr([10, 4, 1, 1, 1, 1], s);
+// el intervalo cambia al pasar de un paso al siguiente; el paso 0 lo muestra completo y los pasos 1 a 4 son las vueltas
+const bb = lerpArr([0, 0, 0, 1, 2], clamp(s - 1, 0, 4)), aa = lerpArr([10, 4, 1, 1, 1], clamp(s - 1, 0, 4));
+const cen = lerpArr([5, 2, 0, 1], clamp(s - 1, 0, 3));
+const emp = clamp(bb - aa, 0, 1);
+const r = $("#brk");
+r.setAttribute("x", String(62 + bb * 130)); r.setAttribute("width", String(Math.max(0, (aa - bb) * 130 + 136)));
+r.setAttribute("opacity", String(1 - emp));
+for (let i = 0; i < 11; i++) {
+  const e = $("#v" + i);
+  const dim = clamp(Math.max(bb - i, i - aa), 0, 1);
+  const g = clamp(1 - Math.abs(i - cen), 0, 1) * clamp(win(s, 0.4, 1) * (1 - win(s, 4, 4.6)), 0, 1);
+  e.style.background = mix("#f6f1f3", "#e8a920", g * (1 - dim));
+  e.style.opacity = String(1 - 0.7 * dim);
+}
+const k = Math.round(clamp(s, 0, 5));
+const st = [[0, 10], [0, 4], [0, 1], [1, 1], [2, 1], [2, 1]][k];
+$("#lec").textContent = "bajo = " + st[0] + "    alto = " + st[1];
+$("#lec").style.color = k === 5 ? "#b3261e" : "#1f1a1d";
+$("#cmp2").textContent = "comparaciones: " + Math.min(4, k);
+caps(s, 5, "k");
+ }
+function loop() {
+  clearTimeout(timer); cancelAnimationFrame(frame);
+  const now = performance.now();
+  const dt = last ? Math.min((now - last) / 1000, 1) : 1 / 60; last = now;
+  const speed = 1 / (N * 1.6);
+  u = target > u ? Math.min(target, u + dt * speed) : Math.max(target, u - dt * speed * 2);
+  draw();
+  if (u !== target) { frame = requestAnimationFrame(loop); timer = setTimeout(loop, 80); } else { frame = 0; timer = 0; last = 0; }
+}
+const run = () => { if (!frame && !timer) { last = 0; loop(); } };
+const go = (v) => { target = clamp(v, 0, 1); run(); };
+window.__fig = { set(v) { u = target = clamp(v, 0, 1); draw(); }, go, get u() { return u; } };
+addEventListener("message", (e) => { const m = e.data; if (!m || m.type !== "fig") return; if (m.mode === "set") window.__fig.set(Number(m.value)); else go(Number(m.value)); });
+if (window.parent !== window) {
+  const KEYMAP = { ArrowRight: "ArrowRight", PageDown: "ArrowRight", " ": "ArrowRight", Enter: "ArrowRight", ArrowLeft: "ArrowLeft", PageUp: "ArrowLeft", Backspace: "ArrowLeft" };
+  addEventListener("keydown", (e) => { const k = KEYMAP[e.key]; if (!k) return; e.preventDefault(); e.stopImmediatePropagation(); parent.postMessage({ type: "deck-key", key: k }, "*"); }, true);
+} else {
+  addEventListener("click", () => go(target >= 1 ? 0 : Math.min(1, Math.round(target * N + 1) / N)));
+}
+draw();
+</script></body></html>
