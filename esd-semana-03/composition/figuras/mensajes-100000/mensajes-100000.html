@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Cien mil mensajes</title>
+<style>
+:root{--wine:#910048;--wine-deep:#6d0036;--gold:#e8a920;--teal:#0c6b62;--amber:#7a5200;--ink:#1f1a1d;--muted:#5a5257;--tint:#f6f1f3;--red:#b3261e}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:transparent;font-family:system-ui,"Segoe UI",sans-serif;color:var(--ink);overflow:hidden}
+#st{position:absolute;left:0;top:0;width:1560px;height:720px;transform-origin:0 0}
+.b{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border-radius:16px;padding:6px 14px;font-weight:700;font-size:32px;line-height:1.15;background:var(--tint);color:var(--ink)}
+.b small{display:block;font-size:24px;font-weight:600;margin-top:4px}
+.t{position:absolute;font-size:34px;font-weight:700;line-height:1.2}
+.pill{position:absolute;display:flex;align-items:center;justify-content:center;height:52px;padding:0 20px;border-radius:26px;color:#fff;font:800 24px/1 ui-monospace,Consolas,monospace;white-space:nowrap;opacity:0;z-index:5}
+.ln{position:absolute;background:#cfc6ca}
+
+</style></head><body>
+<div id="st">
+<div id="t" class="t" style="left:40px;top:20px;width:1480px;font-size:34px;color:var(--wine-deep);font-weight:800;text-align:left;opacity:1;white-space:pre">Guardar 100 000 mensajes, agregando siempre al final</div>
+<div id="l1" class="t" style="left:40px;top:110px;width:800px;font-size:30px;color:#1f1a1d;font-weight:800;text-align:left;opacity:0;white-space:pre">Crecer de uno en uno</div>
+<div id="b1" class="b" style="left:40px;top:156px;width:969.8965661369484px;height:70px;border-radius:12px;background:#b3261e"></div>
+<div id="v1" class="t" style="left:1029.8965661369484px;top:172px;width:560px;font-size:32px;color:#b3261e;font-weight:800;font-family:ui-monospace,Consolas,monospace;text-align:left;opacity:0;white-space:pre">4 999 950 000 copias</div>
+<div id="l2" class="t" style="left:40px;top:300px;width:800px;font-size:30px;color:#1f1a1d;font-weight:800;text-align:left;opacity:0;white-space:pre">Duplicar la capacidad al llenarse</div>
+<div id="b2" class="b" style="left:40px;top:346px;width:511.7506612871096px;height:70px;border-radius:12px;background:#0c6b62"></div>
+<div id="v2" class="t" style="left:571.7506612871096px;top:362px;width:560px;font-size:32px;color:#0c6b62;font-weight:800;font-family:ui-monospace,Consolas,monospace;text-align:left;opacity:0;white-space:pre">131 071 copias</div>
+<div id="ver" class="t" style="left:40px;top:480px;width:1480px;font-size:36px;color:var(--wine-deep);font-weight:800;text-align:left;opacity:0;white-space:pre">Duplicar hace unas 38 000 veces menos copias: O(1) amortizado</div>
+<div id="nota" class="t" style="left:40px;top:640px;width:1480px;font-size:22px;color:#5a5257;font-weight:600;text-align:left;opacity:1;white-space:pre">Anchos en escala logarítmica. Copias del arreglo, sin contar las escrituras</div>
+</div>
+<script>
+const N = 2;
+const st = document.getElementById("st");
+function fit() { const k = Math.min(innerWidth / 1560, innerHeight / 720); st.style.transform = "scale(" + k + ")"; }
+fit(); addEventListener("resize", fit);
+const $ = (s) => document.querySelector(s);
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const ease = (t) => { t = clamp(t, 0, 1); return t * t * (3 - 2 * t); };
+const win = (s, a, b) => ease((s - a) / (b - a));
+const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+const mix = (a, b, t) => { const x = hex(a), y = hex(b); return "rgb(" + x.map((v, i) => Math.round(v + (y[i] - v) * t)).join(",") + ")"; };
+function lit(el, base, color, t, fg0, fg1) { el.style.background = mix(base, color, t); el.style.color = mix(fg0 || "#1f1a1d", fg1 || "#ffffff", t); }
+function put(el, x, y, a) { el.style.transform = "translate(" + x + "px," + y + "px)"; el.style.opacity = String(a); }
+function route(k, pts) { for (let i = 0; i < pts.length - 1; i++) { if (k <= pts[i + 1][0]) { const t = ease((k - pts[i][0]) / (pts[i + 1][0] - pts[i][0])); return [pts[i][1] + (pts[i + 1][1] - pts[i][1]) * t, pts[i][2] + (pts[i + 1][2] - pts[i][2]) * t]; } } const l = pts[pts.length - 1]; return [l[1], l[2]]; }
+
+function caps(s, n, pref) { for (let k = 0; k <= n; k++) { const a = win(s, k - 0.5, k) * (k < n ? 1 - win(s, k, k + 0.5) : 1); put($("#" + pref + k), 0, 0, clamp(a, 0, 1)); } }
+const op = (id, v) => { const e = document.getElementById(id); if (e) e.setAttribute("opacity", String(Math.max(0, Math.min(1, v)))); };
+const opAll = (ids, v) => ids.forEach((i) => op(i, v));
+const show = (id, v) => { const e = document.getElementById(id); if (e) e.style.opacity = String(Math.max(0, Math.min(1, v))); };
+const rise = (id, a) => { const e = document.getElementById(id); if (e) { e.style.opacity = String(clamp(a, 0, 1)); e.style.transform = "translateY(" + ((1 - clamp(a, 0, 1)) * 18) + "px)"; } };
+const fmt = (n) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, "\u00a0");
+const tri = (s, k, n) => win(s, k - 0.5, k) * (k < n ? 1 - win(s, k, k + 0.5) : 1);
+const lerpArr = (arr, s) => { const t = clamp(s, 0, arr.length - 1); const i = Math.min(arr.length - 2, Math.floor(t)); const f = ease(t - i); return arr[i] + (arr[i + 1] - arr[i]) * f; };
+
+let u = 0, target = 0, frame = 0, timer = 0, last = 0;
+function draw() { 
+const s = u * N;
+const a1 = win(s, 0, 1), a2 = win(s, 1, 2);
+show("l1", a1); show("v1", a1); $("#b1").style.opacity = String(a1); $("#b1").style.width = (969.9 * a1) + "px";
+show("l2", a2); show("v2", a2); $("#b2").style.opacity = String(a2); $("#b2").style.width = (511.8 * a2) + "px";
+show("ver", a2);
+ }
+function loop() {
+  clearTimeout(timer); cancelAnimationFrame(frame);
+  const now = performance.now();
+  const dt = last ? Math.min((now - last) / 1000, 1) : 1 / 60; last = now;
+  const speed = 1 / (N * 1.6);
+  u = target > u ? Math.min(target, u + dt * speed) : Math.max(target, u - dt * speed * 2);
+  draw();
+  if (u !== target) { frame = requestAnimationFrame(loop); timer = setTimeout(loop, 80); } else { frame = 0; timer = 0; last = 0; }
+}
+const run = () => { if (!frame && !timer) { last = 0; loop(); } };
+const go = (v) => { target = clamp(v, 0, 1); run(); };
+window.__fig = { set(v) { u = target = clamp(v, 0, 1); draw(); }, go, get u() { return u; } };
+addEventListener("message", (e) => { const m = e.data; if (!m || m.type !== "fig") return; if (m.mode === "set") window.__fig.set(Number(m.value)); else go(Number(m.value)); });
+if (window.parent !== window) {
+  const KEYMAP = { ArrowRight: "ArrowRight", PageDown: "ArrowRight", " ": "ArrowRight", Enter: "ArrowRight", ArrowLeft: "ArrowLeft", PageUp: "ArrowLeft", Backspace: "ArrowLeft" };
+  addEventListener("keydown", (e) => { const k = KEYMAP[e.key]; if (!k) return; e.preventDefault(); e.stopImmediatePropagation(); parent.postMessage({ type: "deck-key", key: k }, "*"); }, true);
+} else {
+  addEventListener("click", () => go(target >= 1 ? 0 : Math.min(1, Math.round(target * N + 1) / N)));
+}
+draw();
+</script></body></html>

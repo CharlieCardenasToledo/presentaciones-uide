@@ -47,6 +47,11 @@
         "n": 4,
         "slug": "esd-semana-04",
         "tema": "Búsqueda lineal y binaria, invariantes y micro-benchmarks"
+      },
+      {
+        "n": 3,
+        "slug": "esd-semana-03",
+        "tema": "Pilas, colas, pruebas unitarias y costo amortizado"
       }
     ]
   },

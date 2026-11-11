@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Cola circular de capacidad 5</title>
+<style>
+:root{--wine:#910048;--wine-deep:#6d0036;--gold:#e8a920;--teal:#0c6b62;--amber:#7a5200;--ink:#1f1a1d;--muted:#5a5257;--tint:#f6f1f3;--red:#b3261e}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:transparent;font-family:system-ui,"Segoe UI",sans-serif;color:var(--ink);overflow:hidden}
+#st{position:absolute;left:0;top:0;width:1560px;height:720px;transform-origin:0 0}
+.b{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border-radius:16px;padding:6px 14px;font-weight:700;font-size:32px;line-height:1.15;background:var(--tint);color:var(--ink)}
+.b small{display:block;font-size:24px;font-weight:600;margin-top:4px}
+.t{position:absolute;font-size:34px;font-weight:700;line-height:1.2}
+.pill{position:absolute;display:flex;align-items:center;justify-content:center;height:52px;padding:0 20px;border-radius:26px;color:#fff;font:800 24px/1 ui-monospace,Consolas,monospace;white-space:nowrap;opacity:0;z-index:5}
+.ln{position:absolute;background:#cfc6ca}
+
+</style></head><body>
+<div id="st">
+<div id="cc0" class="b" style="left:80px;top:230px;width:230px;height:110px;background:#f6f1f3;color:#1f1a1d;font-size:44px;font-weight:800;font-family:ui-monospace,Consolas,monospace;text-align:center;padding:8px 16px;border-radius:14px;opacity:1"><div style="width:100%;line-height:1.25"></div></div>
+<div id="ci0" class="t" style="left:80px;top:350px;width:230px;font-size:26px;color:#5a5257;font-weight:700;text-align:center;opacity:1;white-space:pre">0</div>
+<div id="cc1" class="b" style="left:350px;top:230px;width:230px;height:110px;background:#f6f1f3;color:#1f1a1d;font-size:44px;font-weight:800;font-family:ui-monospace,Consolas,monospace;text-align:center;padding:8px 16px;border-radius:14px;opacity:1"><div style="width:100%;line-height:1.25"></div></div>
+<div id="ci1" class="t" style="left:350px;top:350px;width:230px;font-size:26px;color:#5a5257;font-weight:700;text-align:center;opacity:1;white-space:pre">1</div>
+<div id="cc2" class="b" style="left:620px;top:230px;width:230px;height:110px;background:#f6f1f3;color:#1f1a1d;font-size:44px;font-weight:800;font-family:ui-monospace,Consolas,monospace;text-align:center;padding:8px 16px;border-radius:14px;opacity:1"><div style="width:100%;line-height:1.25"></div></div>
+<div id="ci2" class="t" style="left:620px;top:350px;width:230px;font-size:26px;color:#5a5257;font-weight:700;text-align:center;opacity:1;white-space:pre">2</div>
+<div id="cc3" class="b" style="left:890px;top:230px;width:230px;height:110px;background:#f6f1f3;color:#1f1a1d;font-size:44px;font-weight:800;font-family:ui-monospace,Consolas,monospace;text-align:center;padding:8px 16px;border-radius:14px;opacity:1"><div style="width:100%;line-height:1.25"></div></div>
+<div id="ci3" class="t" style="left:890px;top:350px;width:230px;font-size:26px;color:#5a5257;font-weight:700;text-align:center;opacity:1;white-space:pre">3</div>
+<div id="cc4" class="b" style="left:1160px;top:230px;width:230px;height:110px;background:#f6f1f3;color:#1f1a1d;font-size:44px;font-weight:800;font-family:ui-monospace,Consolas,monospace;text-align:center;padding:8px 16px;border-radius:14px;opacity:1"><div style="width:100%;line-height:1.25"></div></div>
+<div id="ci4" class="t" style="left:1160px;top:350px;width:230px;font-size:26px;color:#5a5257;font-weight:700;text-align:center;opacity:1;white-space:pre">4</div>
+<svg style="position:absolute;left:0;top:0;width:1560px;height:720px;pointer-events:none" viewBox="0 0 1560 720" xmlns="http://www.w3.org/2000/svg"><path id="wrap" d="M 1275 222 C 1275 110, 195 110, 195 222" fill="none" stroke="#910048" stroke-width="5" stroke-dasharray="1400" stroke-dashoffset="1400"/><path id="wrapp" d="M 181 206 L 195 230 L 209 206 Z" fill="#910048" opacity="0"/><path id="fre" d="M 195 392 l -16 28 h 32 z" fill="#0c6b62"/></svg>
+<div id="fl" class="t" style="left:80px;top:428px;width:230px;font-size:26px;color:#0c6b62;font-weight:800;text-align:center;opacity:1;white-space:pre">frente</div>
+<div id="lib0" class="t" style="left:80px;top:380px;width:230px;font-size:24px;color:#7a5200;font-weight:800;text-align:center;opacity:0;white-space:pre">libre</div>
+<div id="lib1" class="t" style="left:350px;top:380px;width:230px;font-size:24px;color:#7a5200;font-weight:800;text-align:center;opacity:0;white-space:pre">libre</div>
+<div id="est" class="t" style="left:40px;top:20px;width:900px;font-size:34px;color:#1f1a1d;font-weight:800;font-family:ui-monospace,Consolas,monospace;text-align:left;opacity:1;white-space:pre">frente = 0     tamano = 0</div>
+<div id="frm" class="t" style="left:80px;top:500px;width:1400px;font-size:34px;color:#910048;font-weight:800;font-family:ui-monospace,Consolas,monospace;text-align:left;opacity:0;white-space:pre">posición del nuevo elemento: (2 + 3) % 5 = 0</div>
+<div id="vac" class="b" style="left:80px;top:570px;width:660px;height:100px;background:#d3ebe7;color:#1f1a1d;font-size:28px;font-weight:700;text-align:center;padding:8px 16px;border-radius:14px;opacity:0"><div style="width:100%;line-height:1.25"><b style="color:#0c6b62">Vacía</b><br>tamano vale 0</div></div>
+<div id="lle" class="b" style="left:820px;top:570px;width:660px;height:100px;background:#fbe3ee;color:#1f1a1d;font-size:28px;font-weight:700;text-align:center;padding:8px 16px;border-radius:14px;opacity:0"><div style="width:100%;line-height:1.25"><b style="color:#910048">Llena</b><br>tamano vale la capacidad</div></div>
+<div id="k0" class="t" style="left:80px;top:70px;width:1400px;opacity:0;color:var(--wine-deep);font-size:30px">Una cola circular de capacidad 5, vacía</div>
+<div id="k1" class="t" style="left:80px;top:70px;width:1400px;opacity:0;color:var(--wine-deep);font-size:30px">Se encolan A, B, C, D y E: la cola está llena</div>
+<div id="k2" class="t" style="left:80px;top:70px;width:1400px;opacity:0;color:var(--wine-deep);font-size:30px">Se desencolan A y B: las casillas 0 y 1 quedan libres y el frente pasa a 2</div>
+<div id="k3" class="t" style="left:80px;top:70px;width:1400px;opacity:0;color:var(--wine-deep);font-size:30px">Se encola F: sin circularidad parecería llena; con (frente + tamano) % 5 va a la casilla 0</div>
+<div id="k4" class="t" style="left:80px;top:70px;width:1400px;opacity:0;color:var(--wine-deep);font-size:30px">Con frente y tamano, vacía y llena no se confunden</div>
+</div>
+<script>
+const N = 4;
+const st = document.getElementById("st");
+function fit() { const k = Math.min(innerWidth / 1560, innerHeight / 720); st.style.transform = "scale(" + k + ")"; }
+fit(); addEventListener("resize", fit);
+const $ = (s) => document.querySelector(s);
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const ease = (t) => { t = clamp(t, 0, 1); return t * t * (3 - 2 * t); };
+const win = (s, a, b) => ease((s - a) / (b - a));
+const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+const mix = (a, b, t) => { const x = hex(a), y = hex(b); return "rgb(" + x.map((v, i) => Math.round(v + (y[i] - v) * t)).join(",") + ")"; };
+function lit(el, base, color, t, fg0, fg1) { el.style.background = mix(base, color, t); el.style.color = mix(fg0 || "#1f1a1d", fg1 || "#ffffff", t); }
+function put(el, x, y, a) { el.style.transform = "translate(" + x + "px," + y + "px)"; el.style.opacity = String(a); }
+function route(k, pts) { for (let i = 0; i < pts.length - 1; i++) { if (k <= pts[i + 1][0]) { const t = ease((k - pts[i][0]) / (pts[i + 1][0] - pts[i][0])); return [pts[i][1] + (pts[i + 1][1] - pts[i][1]) * t, pts[i][2] + (pts[i + 1][2] - pts[i][2]) * t]; } } const l = pts[pts.length - 1]; return [l[1], l[2]]; }
+
+function caps(s, n, pref) { for (let k = 0; k <= n; k++) { const a = win(s, k - 0.5, k) * (k < n ? 1 - win(s, k, k + 0.5) : 1); put($("#" + pref + k), 0, 0, clamp(a, 0, 1)); } }
+const op = (id, v) => { const e = document.getElementById(id); if (e) e.setAttribute("opacity", String(Math.max(0, Math.min(1, v)))); };
+const opAll = (ids, v) => ids.forEach((i) => op(i, v));
+const show = (id, v) => { const e = document.getElementById(id); if (e) e.style.opacity = String(Math.max(0, Math.min(1, v))); };
+const rise = (id, a) => { const e = document.getElementById(id); if (e) { e.style.opacity = String(clamp(a, 0, 1)); e.style.transform = "translateY(" + ((1 - clamp(a, 0, 1)) * 18) + "px)"; } };
+const fmt = (n) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, "\u00a0");
+const tri = (s, k, n) => win(s, k - 0.5, k) * (k < n ? 1 - win(s, k, k + 0.5) : 1);
+const lerpArr = (arr, s) => { const t = clamp(s, 0, arr.length - 1); const i = Math.min(arr.length - 2, Math.floor(t)); const f = ease(t - i); return arr[i] + (arr[i + 1] - arr[i]) * f; };
+
+let u = 0, target = 0, frame = 0, timer = 0, last = 0;
+function draw() { 
+const s = u * N;
+const a1 = win(s, 0, 1), a2 = win(s, 1, 2), a3 = win(s, 2, 3), a4 = win(s, 3, 4);
+const L = ["A", "B", "C", "D", "E"];
+for (let i = 0; i < 5; i++) {
+  const e = $("#cc" + i);
+  let txt = L[i], o = clamp(a1 * 5 - i, 0, 1);
+  if (i < 2) o *= (1 - a2);
+  if (i === 0 && a3 > 0.01) { txt = "F"; o = a3; }
+  e.firstChild.textContent = txt; e.firstChild.style.opacity = String(o);
+  e.style.background = mix("#f6f1f3", "#fbe3a6", i === 0 ? a3 : 0);
+}
+const fr = a2 * 2 * 540 / 2;
+$("#fre").setAttribute("transform", "translate(" + (a2 * 540) + ",0)"); show("fl", 1); $("#fl").style.transform = "translateX(" + (a2 * 540) + "px)";
+const tam = Math.round(a1 * 5 - a2 * 2 + a3 * 1);
+$("#est").textContent = "frente = " + Math.round(a2 * 2) + "     tamano = " + tam;
+$("#wrap").setAttribute("stroke-dashoffset", String(1400 * (1 - a3))); op("wrapp", a3);
+show("lib0", a2 * (1 - a3)); show("lib1", a2); show("frm", a3);
+show("vac", a4); show("lle", a4);
+caps(s, 4, "k");
+ }
+function loop() {
+  clearTimeout(timer); cancelAnimationFrame(frame);
+  const now = performance.now();
+  const dt = last ? Math.min((now - last) / 1000, 1) : 1 / 60; last = now;
+  const speed = 1 / (N * 1.6);
+  u = target > u ? Math.min(target, u + dt * speed) : Math.max(target, u - dt * speed * 2);
+  draw();
+  if (u !== target) { frame = requestAnimationFrame(loop); timer = setTimeout(loop, 80); } else { frame = 0; timer = 0; last = 0; }
+}
+const run = () => { if (!frame && !timer) { last = 0; loop(); } };
+const go = (v) => { target = clamp(v, 0, 1); run(); };
+window.__fig = { set(v) { u = target = clamp(v, 0, 1); draw(); }, go, get u() { return u; } };
+addEventListener("message", (e) => { const m = e.data; if (!m || m.type !== "fig") return; if (m.mode === "set") window.__fig.set(Number(m.value)); else go(Number(m.value)); });
+if (window.parent !== window) {
+  const KEYMAP = { ArrowRight: "ArrowRight", PageDown: "ArrowRight", " ": "ArrowRight", Enter: "ArrowRight", ArrowLeft: "ArrowLeft", PageUp: "ArrowLeft", Backspace: "ArrowLeft" };
+  addEventListener("keydown", (e) => { const k = KEYMAP[e.key]; if (!k) return; e.preventDefault(); e.stopImmediatePropagation(); parent.postMessage({ type: "deck-key", key: k }, "*"); }, true);
+} else {
+  addEventListener("click", () => go(target >= 1 ? 0 : Math.min(1, Math.round(target * N + 1) / N)));
+}
+draw();
+</script></body></html>
