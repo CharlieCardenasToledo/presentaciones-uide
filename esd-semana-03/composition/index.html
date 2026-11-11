@@ -121,155 +121,186 @@
       "notes": "Presentar la ruta en un minuto. Es la secuencia del material de la semana: el caso del editor y la impresora, las dos estructuras y su API, la cola circular y los casos borde, las pruebas unitarias que comprueban el contrato y, al final, el costo amortizado del arreglo dinámico."
     },
     {
-      "sceneId": "exploracion",
+      "sceneId": "editor",
       "startTime": 7,
-      "endTime": 13.5,
-      "notes": "Es la exploración del material de la semana. Un desarrollador guarda los cambios del editor y los trabajos de la impresora, y para las dos cosas usa un arreglo al que se agrega siempre al final. Primer avance: entran tres cambios y tres trabajos en el orden A, B, C. Antes del segundo avance, preguntar en qué orden sale cada uno. Segundo avance: el editor devuelve C, B, A y la impresora, A, B, C; la regla de salida es distinta aunque se guarden igual. Tercer avance: qué debería pasar si se pulsa deshacer sin haber hecho ningún cambio o se pide imprimir sin trabajos. Lo correcto es avisar con un error claro: devolver un valor inventado esconde el problema y seguir en silencio deja un estado que nadie esperaba. Todavía sin nombres técnicos.",
+      "endTime": 17.5,
+      "notes": "Es la primera mitad de la exploración del material de la semana, ahora como simulación. Cada avance es una acción del editor. Avances 1 a 3: se escribe Hola mundo, se pone mundo en negrita y se escribe desde Loja; cada cambio entra en la pila de la derecha, A abajo y C arriba. Antes del avance 4, preguntar cuál de los tres cambios deshará Ctrl+Z. Avance 4: sale C, el último que entró, y el texto pierde desde Loja. Avance 5: sale B y se quita la negrita. Avance 6: sale A y el texto queda vacío. Avance 7: Ctrl+Z con la pila vacía; no hay nada que sacar y el editor avisa. En Python esa situación lanza IndexError. Todavía sin nombres técnicos: la regla es que sale lo último que entró.",
       "fragments": [
         9,
         10,
         11,
-        12
+        12,
+        13,
+        14,
+        15,
+        16
+      ]
+    },
+    {
+      "sceneId": "impresora",
+      "startTime": 17.5,
+      "endTime": 27,
+      "notes": "Segunda mitad de la exploración: tres computadoras comparten una impresora, y los trabajos esperan en una cola. Avance 1: Ana, Luis y Marco envían A, B y C en ese orden; cada trabajo entra al final de la cola, y el frente es el que está junto a la impresora. Antes del avance 2, preguntar cuál imprime primero. Avance 2: la impresora toma el frente, A, y la hoja sale a la bandeja. Avance 3: imprime B y, mientras tanto, Ana envía D, que entra al final, detrás de C. Avances 4 y 5: salen C y D. La bandeja queda con A, B, C y D, el orden en que llegaron. Avance 6: sin trabajos, si la impresora pidiera otro, desencolar lanzaría un error. Comparar con el editor: allí salía lo último; aquí, lo primero.",
+      "fragments": [
+        19.5,
+        20.5,
+        21.5,
+        22.5,
+        23.5,
+        24.5,
+        25.5
+      ]
+    },
+    {
+      "sceneId": "exploracion",
+      "startTime": 27,
+      "endTime": 33.5,
+      "notes": "Es el resumen de las dos simulaciones anteriores, con lo que el material de la semana plantea. Un desarrollador guarda los cambios del editor y los trabajos de la impresora, y para las dos cosas usa un arreglo al que se agrega siempre al final. Primer avance: entran tres cambios y tres trabajos en el orden A, B, C. Antes del segundo avance, preguntar en qué orden sale cada uno. Segundo avance: el editor devuelve C, B, A y la impresora, A, B, C; la regla de salida es distinta aunque se guarden igual. Tercer avance: qué debería pasar si se pulsa deshacer sin haber hecho ningún cambio o se pide imprimir sin trabajos. Lo correcto es avisar con un error claro: devolver un valor inventado esconde el problema y seguir en silencio deja un estado que nadie esperaba. Todavía sin nombres técnicos.",
+      "fragments": [
+        29,
+        30,
+        31,
+        32
       ]
     },
     {
       "sceneId": "idea",
-      "startTime": 13.5,
-      "endTime": 17,
+      "startTime": 33.5,
+      "endTime": 37,
       "notes": "Aquí aparecen los nombres técnicos. La pila saca el último que entró: LIFO. La cola saca el primero que entró: FIFO. Karumanchi y Joyanes las definen igual; la pila inserta y borra por un solo extremo, la cima, y la cola inserta por el final y borra por el frente."
     },
     {
       "sceneId": "api",
-      "startTime": 17,
-      "endTime": 24.5,
+      "startTime": 37,
+      "endTime": 44.5,
       "notes": "Es la Tabla 1 del material de la semana, hecha operación por operación. Los nombres son los simplificados del curso: apilar, desapilar, cima, encolar, desencolar, consultar_frente y el atributo tamano. Primer avance: se apilan y se encolan 10, 20 y 30; tamano vale 3 en las dos. Segundo avance: cima y consultar_frente consultan sin quitar, y el tamano no cambia. Tercer avance: desapilar devuelve 30 y desencolar devuelve 10; el tamano baja a 2. Cuarto avance: las precondiciones. Sacar o consultar exige que no esté vacía; insertar en un arreglo de tamaño fijo exige que no esté llena. Cuando no se cumplen, el libro habla de underflow y overflow, y en Python se lanzan IndexError y OverflowError. Antes de cada avance, preguntar qué devolverá la operación.",
       "fragments": [
-        19,
-        20,
-        21,
-        22,
-        23
+        39,
+        40,
+        41,
+        42,
+        43
       ]
     },
     {
       "sceneId": "circular",
-      "startTime": 24.5,
-      "endTime": 32,
+      "startTime": 44.5,
+      "endTime": 52,
       "notes": "Es la Figura 2 del material de la semana. En una cola sobre arreglo, las primeras posiciones se liberan al desencolar y, sin circularidad, no se reutilizan: el arreglo parece lleno con espacio libre. Primer avance: se encolan A, B, C, D y E en una cola de capacidad 5 y queda llena. Segundo avance: se desencolan A y B; el frente pasa a 2 y el tamano a 3. Tercer avance: se encola F; la posición es (frente + tamano) módulo la capacidad, es decir (2 + 3) módulo 5 = 0, y el índice da la vuelta. Cuarto avance: guardar el tamano evita confundir la cola vacía con la llena. Preguntar antes del tercer avance en qué casilla irá F. Las invariantes de la cola circular de capacidad c son 0 ≤ frente < c y 0 ≤ tamano ≤ c.",
       "fragments": [
-        26.5,
-        27.5,
-        28.5,
-        29.5,
-        30.5
+        46.5,
+        47.5,
+        48.5,
+        49.5,
+        50.5
       ]
     },
     {
       "sceneId": "enlazada",
-      "startTime": 32,
-      "endTime": 38.5,
+      "startTime": 52,
+      "endTime": 58.5,
       "notes": "La práctica PE-1.3 pide la cola con lista enlazada, con frente y final, y la pila con arreglo que se duplica. Primer avance: encolar enlaza cada nodo nuevo detrás del final; el frente apunta al primero. Segundo avance: desencolar devuelve el dato del frente y el frente avanza al nodo siguiente. Tercer avance: el caso borde que más se olvida. Al sacar el último nodo, frente y final deben quedar en None; si el final sigue apuntando al nodo que salió, la cola vacía parece tener un elemento y el siguiente encolar enlaza detrás de un nodo muerto. Es uno de los criterios de la práctica. Antes del tercer avance, preguntar qué debe valer el final.",
       "fragments": [
-        34,
-        35,
-        36,
-        37
+        54,
+        55,
+        56,
+        57
       ]
     },
     {
       "sceneId": "pruebas-idea",
-      "startTime": 38.5,
-      "endTime": 42,
+      "startTime": 58.5,
+      "endTime": 62,
       "notes": "Un contrato no sirve si nadie lo comprueba. Joyanes lo plantea con realismo: las pruebas dan evidencia de que un programa es correcto, pero no se puede declarar correcto un módulo mediante pruebas, a menos que sean exhaustivas. De ahí la actitud: una prueba se escribe para intentar romper el código, no para que pase; una prueba exitosa es la que encuentra un error. Los casos borde son los que fallan en la práctica."
     },
     {
       "sceneId": "anatomia",
-      "startTime": 42,
-      "endTime": 48.5,
+      "startTime": 62,
+      "endTime": 68.5,
       "notes": "Es el código de ejemplo resuelto del material de la semana. En este curso cada prueba tiene tres partes: preparar un estado inicial, ejecutar la operación y verificar el resultado. Se usa unittest, que viene en la biblioteca estándar. Una clase hereda de unittest.TestCase, cada método cuyo nombre empieza con test_ es una prueba y setUp prepara el estado antes de cada una. Primer avance: preparar; setUp crea una pila nueva y la prueba apila 10, 20 y 30. Segundo avance: ejecutar, desapilar. Tercer avance: verificar; assertEqual compara y assertRaises comprueba que se lance el error esperado. Los nombres dicen la operación y la situación: si la prueba falla, el nombre ya dice qué se rompió. Son las tres partes que se piden en la lista de pruebas de PE-1.3.",
       "fragments": [
-        44,
-        45,
-        46,
-        47
+        64,
+        65,
+        66,
+        67
       ]
     },
     {
       "sceneId": "que-probar",
-      "startTime": 48.5,
-      "endTime": 56,
+      "startTime": 68.5,
+      "endTime": 76,
       "notes": "Para cada estructura conviene cubrir cuatro grupos, que son los mismos que pide la lista de pruebas de PE-1.3. Primer avance: el orden de salida, el caso normal. Segundo avance: los casos borde, que son los que fallan en la práctica: vacía, llena, un solo elemento y el envoltorio del índice en la cola circular. Tercer avance: el efecto sobre el estado, que el tamano cambie como dice la postcondición. Cuarto avance: una invariante que se verifica después de cada operación; en la pila, 0 menor o igual que tamano menor o igual que la capacidad. Los nombres de la figura son pruebas de la pila del material de la semana. Antes de cada avance, preguntar qué prueba escribirían para ese grupo. Recordar que pasar pocas pruebas no demuestra que el módulo sea correcto.",
       "fragments": [
-        50.5,
-        51.5,
-        52.5,
-        53.5,
-        54.5
+        70.5,
+        71.5,
+        72.5,
+        73.5,
+        74.5
       ]
     },
     {
       "sceneId": "atrapa",
-      "startTime": 56,
-      "endTime": 62.5,
+      "startTime": 76,
+      "endTime": 82.5,
       "notes": "Se inyecta un error en una pila: la operación cima, que solo debe consultar, también resta uno al tamano. La salida de unittest que se ve en la figura es real: se corrió ese código. Primer avance: se resalta la línea que resta el tamano; la prueba test_cima_no_cambia_el_tamano espera que el tamano siga en 1. Segundo avance: al correr la prueba falla con AssertionError 0 distinto de 1, y el nombre ya dice qué se rompió. Tercer avance: se corrige el código para que cima solo lea y la salida muestra OK. Una prueba exitosa es la que encuentra un error. Si una prueba falla antes de corregir, en PE-1.3 se pega también esa salida. Antes de cada avance, preguntar qué creen que mostrará la terminal.",
       "fragments": [
-        58,
-        59,
-        60,
-        61
+        78,
+        79,
+        80,
+        81
       ]
     },
     {
       "sceneId": "amortizado-idea",
-      "startTime": 62.5,
-      "endTime": 66,
+      "startTime": 82.5,
+      "endTime": 86,
       "notes": "Cierra una pregunta pendiente de la semana anterior. El arreglo dinámico duplica su tamaño cuando se llena, y esa operación puntual cuesta O(n). Entonces, si agregar un elemento a veces cuesta O(n), ¿por qué se dice que agregar al final es O(1)? La respuesta es el costo amortizado: el promedio por operación en una secuencia de operaciones."
     },
     {
       "sceneId": "conteo",
-      "startTime": 66,
-      "endTime": 72.5,
+      "startTime": 86,
+      "endTime": 92.5,
       "notes": "Es el ejemplo resuelto del material de la semana, con n = 16 y una capacidad inicial de 1. El costo de cada inserción es una escritura más las copias que haga al crecer. Primer avance: al duplicar, casi todas las inserciones cuestan 1 y suben como picos en la 2, la 3, la 5 y la 9, con 1, 2, 4 y 8 copias; en total 15 copias y el costo es 16 + 15 = 31. Segundo avance: al crecer de uno en uno, la inserción k cuesta k, porque copia todo lo anterior: 1 + 2 + ... + 15 = 120 copias. Tercer avance: el promedio por inserción es 31 / 16, casi 2, frente a 136 / 16 = 8,5, y mientras n crece el primero se queda cerca de 2 y el segundo crece con n. Pista de control: cuando n es potencia de 2, las copias al duplicar son n - 1. Para TA-1.3 cuentan con otros valores de n; antes de cada avance, pedir la predicción.",
       "fragments": [
-        68,
-        69,
-        70,
-        71
+        88,
+        89,
+        90,
+        91
       ]
     },
     {
       "sceneId": "mensajes",
-      "startTime": 72.5,
-      "endTime": 78,
+      "startTime": 92.5,
+      "endTime": 98,
       "notes": "Es la situación C del material de la semana. Una aplicación guarda los últimos mensajes en un arreglo dinámico que crece de uno en uno. Con 100 000 mensajes se vuelve muy lenta y el desarrollador insiste en que agregar al final es O(1). Primer avance: al crecer de uno en uno el total de copias es 1 + 2 + ... + n, proporcional a n al cuadrado; para 100 000 mensajes son casi 5 000 millones de copias. Segundo avance: al duplicar la capacidad el total de copias es 131 071, menos que 2n; son unas 38 000 veces menos. La corrección es duplicar, y entonces agregar al final es O(1) amortizado. Aclarar los límites: una inserción individual, la que duplica, sigue costando O(n), y duplicar tiene un precio en memoria. Antes de cada avance, pedir una estimación.",
       "fragments": [
-        74.5,
-        75.5,
-        76.5
+        94.5,
+        95.5,
+        96.5
       ]
     },
     {
       "sceneId": "actividades",
-      "startTime": 78,
-      "endTime": 81.5,
+      "startTime": 98,
+      "endTime": 101.5,
       "notes": "PE-1.3 se arma en clase: una pila con arreglo propio que se duplica al llenarse y conserva el orden, una cola con lista enlazada con frente y final, y para cada una una suite de unittest con al menos cuatro pruebas, una de ellas de invariante, más la salida de unittest. TA-1.3 es un ensayo corto de dos páginas: cuentan las copias de las dos estrategias para otros valores de n, comparan los promedios y explican el costo amortizado y el límite de una inserción individual. Las plantillas y las fechas están en Canvas."
     },
     {
       "sceneId": "cierre",
-      "startTime": 81.5,
-      "endTime": 85,
+      "startTime": 101.5,
+      "endTime": 105,
       "notes": "Volver a la pregunta inicial: el editor saca lo último y la impresora lo primero, y las dos deben avisar con un error claro si no hay nada que sacar. Tarea para casa: la recuperación sin apuntes del material de la semana, con ocho preguntas, y las tres situaciones nuevas."
     }
   ],
   "slideSequences": []
 }
     </script>
-    <div id="root" data-composition-id="main" data-start="0" data-duration="85" data-width="1920" data-height="1080">
+    <div id="root" data-composition-id="main" data-start="0" data-duration="105" data-width="1920" data-height="1080">
 
       <section id="portada" class="clip slide dark" data-start="0" data-duration="3.5" data-track-index="0" data-label="Portada" data-frags="0">
         <div class="frame" id="portada-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">01 / 16</span>
+          <span class="num">01 / 18</span>
       <p class="course" data-in="0" style="--i:0">Estructura de Datos · Semana 3</p>
       <h1 class="claim xl" data-in="1" style="--i:1">Deshacer saca lo último; la impresora, lo primero</h1>
       <p class="lead" data-in="2" style="--i:2">Pilas, colas, pruebas unitarias y costo amortizado</p>
@@ -280,7 +311,7 @@
       <section id="ruta" class="clip slide" data-start="3.5" data-duration="3.5" data-track-index="0" data-label="Ruta de la clase" data-frags="0">
         <div class="frame" id="ruta-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">02 / 16</span>
+          <span class="num">02 / 18</span>
       <h1 class="claim" data-in="0" style="--i:0">La clase va de dos reglas para sacar a una prueba que las comprueba</h1>
       <ol class="steps">
         <li data-in="1" style="--i:1"><b>1</b><span>Explorar el botón deshacer y la impresora compartida</span></li>
@@ -292,118 +323,136 @@
         </div>
       </section>
 
-      <section id="exploracion" class="clip slide" data-start="7" data-duration="6.5" data-track-index="0" data-label="Deshacer e impresora" data-frags="3">
+      <section id="editor" class="clip slide" data-start="7" data-duration="10.5" data-track-index="0" data-label="Editor y Ctrl+Z" data-frags="7">
+        <div class="frame" id="editor-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">03 / 18</span>
+      <h1 class="claim" data-in="0" style="--i:0">Cada Ctrl+Z saca el último cambio que se hizo</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="7" src="figuras/editor-deshacer/editor-deshacer.html?embed" title="Simulación de un editor de texto. Se escribe Hola mundo, se pone mundo en negrita y se escribe desde Loja, y cada cambio se apila. Cada Ctrl+Z saca el cambio de la cima: C, luego B y luego A. Un cuarto Ctrl+Z con la pila vacía muestra el aviso de que no hay nada que deshacer." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="impresora" class="clip slide" data-start="17.5" data-duration="9.5" data-track-index="0" data-label="Impresora compartida" data-frags="6">
+        <div class="frame" id="impresora-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">04 / 18</span>
+      <h1 class="claim" data-in="0" style="--i:0">La impresora imprime en el orden de llegada</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="6" src="figuras/impresora-cola/impresora-cola.html?embed" title="Simulación de tres computadoras que envían trabajos a una impresora compartida. Los trabajos A, B y C entran a una cola; la impresora toma siempre el del frente y la bandeja de salida recibe A, B, C y D en el orden de llegada. Con la cola vacía, pedir otro trabajo es un error." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="exploracion" class="clip slide" data-start="27" data-duration="6.5" data-track-index="0" data-label="Dos reglas de salida" data-frags="3">
         <div class="frame" id="exploracion-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">03 / 16</span>
+          <span class="num">05 / 18</span>
       <h1 class="claim" data-in="0" style="--i:0">Se guardan igual, pero se sacan en órdenes distintos</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/deshacer-impresora/deshacer-impresora.html?embed" title="A la izquierda, tres cambios de un editor que se deshacen en orden C, B, A. A la derecha, tres trabajos de una impresora que se imprimen en orden A, B, C. Al final, el aviso cuando no hay nada que sacar." loading="eager"></iframe>
         </div>
       </section>
 
-      <section id="idea" class="clip slide dark" data-start="13.5" data-duration="3.5" data-track-index="0" data-label="La idea" data-frags="0">
+      <section id="idea" class="clip slide dark" data-start="33.5" data-duration="3.5" data-track-index="0" data-label="La idea" data-frags="0">
         <div class="frame" id="idea-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">04 / 16</span>
+          <span class="num">06 / 18</span>
       <h1 class="claim xl" data-in="0" style="--i:0">La pila saca lo último que entró; la cola, lo primero</h1>
       <p class="lead" data-in="1" style="--i:1">LIFO y FIFO: una sola regla las distingue.</p>
         </div>
       </section>
 
-      <section id="api" class="clip slide" data-start="17" data-duration="7.5" data-track-index="0" data-label="API de pila y cola" data-frags="4">
+      <section id="api" class="clip slide" data-start="37" data-duration="7.5" data-track-index="0" data-label="API de pila y cola" data-frags="4">
         <div class="frame" id="api-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">05 / 16</span>
+          <span class="num">07 / 18</span>
       <h1 class="claim" data-in="0" style="--i:0">Cada operación cambia el tamaño y exige una condición para usarse</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/api-pila-cola/api-pila-cola.html?embed" title="Una pila y una cola de capacidad 3. Se apilan y encolan 10, 20 y 30; cima y consultar_frente consultan sin quitar; desapilar devuelve 30 y desencolar devuelve 10; al final, los dos errores: underflow al sacar de una estructura vacía y overflow al insertar en una llena." loading="eager"></iframe>
         </div>
       </section>
 
-      <section id="circular" class="clip slide" data-start="24.5" data-duration="7.5" data-track-index="0" data-label="Cola circular" data-frags="4">
+      <section id="circular" class="clip slide" data-start="44.5" data-duration="7.5" data-track-index="0" data-label="Cola circular" data-frags="4">
         <div class="frame" id="circular-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">06 / 16</span>
+          <span class="num">08 / 18</span>
       <h1 class="claim" data-in="0" style="--i:0">En una cola circular, el índice da la vuelta con el módulo</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/cola-circular/cola-circular.html?embed" title="Una cola circular de capacidad 5 con cinco casillas. Se llena con A a E, se desencolan A y B, y al encolar F el índice vuelve a la casilla 0 porque (2 + 3) módulo 5 es 0. Vacía es tamano 0 y llena es tamano igual a la capacidad." loading="eager"></iframe>
         </div>
       </section>
 
-      <section id="enlazada" class="clip slide" data-start="32" data-duration="6.5" data-track-index="0" data-label="Cola con lista enlazada" data-frags="3">
+      <section id="enlazada" class="clip slide" data-start="52" data-duration="6.5" data-track-index="0" data-label="Cola con lista enlazada" data-frags="3">
         <div class="frame" id="enlazada-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">07 / 16</span>
+          <span class="num">09 / 18</span>
       <h1 class="claim" data-in="0" style="--i:0">Al sacar el último nodo, frente y final vuelven a None</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/cola-enlazada/cola-enlazada.html?embed" title="Tres nodos enlazados con las referencias frente y final. Al desencolar, el frente avanza; al sacar el último nodo, frente y final quedan en None." loading="eager"></iframe>
         </div>
       </section>
 
-      <section id="pruebas-idea" class="clip slide dark" data-start="38.5" data-duration="3.5" data-track-index="0" data-label="Las pruebas" data-frags="0">
+      <section id="pruebas-idea" class="clip slide dark" data-start="58.5" data-duration="3.5" data-track-index="0" data-label="Las pruebas" data-frags="0">
         <div class="frame" id="pruebas-idea-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">08 / 16</span>
+          <span class="num">10 / 18</span>
       <h1 class="claim xl" data-in="0" style="--i:0">Una prueba se escribe para romper el código, no para que pase</h1>
       <p class="lead" data-in="1" style="--i:1">Los casos borde son los que fallan en la práctica.</p>
         </div>
       </section>
 
-      <section id="anatomia" class="clip slide" data-start="42" data-duration="6.5" data-track-index="0" data-label="Tres partes de una prueba" data-frags="3">
+      <section id="anatomia" class="clip slide" data-start="62" data-duration="6.5" data-track-index="0" data-label="Tres partes de una prueba" data-frags="3">
         <div class="frame" id="anatomia-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">09 / 16</span>
+          <span class="num">11 / 18</span>
       <h1 class="claim" data-in="0" style="--i:0">Preparar, ejecutar y verificar: así se escribe cada prueba</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/anatomia-prueba/anatomia-prueba.html?embed" title="El código de dos pruebas de una pila con unittest. Se resaltan, por pasos, la preparación con setUp y apilar, la ejecución con desapilar y la verificación con assertEqual y assertRaises." loading="eager"></iframe>
         </div>
       </section>
 
-      <section id="que-probar" class="clip slide" data-start="48.5" data-duration="7.5" data-track-index="0" data-label="Qué probar" data-frags="4">
+      <section id="que-probar" class="clip slide" data-start="68.5" data-duration="7.5" data-track-index="0" data-label="Qué probar" data-frags="4">
         <div class="frame" id="que-probar-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">10 / 16</span>
+          <span class="num">12 / 18</span>
       <h1 class="claim" data-in="0" style="--i:0">Antes de escribir una prueba, se elige qué grupo cubre</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/que-probar/que-probar.html?embed" title="Cuatro grupos de pruebas con un ejemplo de nombre para cada uno: orden de salida, casos borde, efecto sobre el estado y una invariante." loading="eager"></iframe>
         </div>
       </section>
 
-      <section id="atrapa" class="clip slide" data-start="56" data-duration="6.5" data-track-index="0" data-label="Una prueba que falla" data-frags="3">
+      <section id="atrapa" class="clip slide" data-start="76" data-duration="6.5" data-track-index="0" data-label="Una prueba que falla" data-frags="3">
         <div class="frame" id="atrapa-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">11 / 16</span>
+          <span class="num">13 / 18</span>
       <h1 class="claim" data-in="0" style="--i:0">La prueba falla y el nombre dice qué se rompió</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/prueba-atrapa-error/prueba-atrapa-error.html?embed" title="Una operación cima que además resta uno al tamano, la prueba que espera que el tamano no cambie, la salida de unittest con la falla AssertionError 0 distinto de 1 y la corrección que da OK." loading="eager"></iframe>
         </div>
       </section>
 
-      <section id="amortizado-idea" class="clip slide dark" data-start="62.5" data-duration="3.5" data-track-index="0" data-label="Costo amortizado" data-frags="0">
+      <section id="amortizado-idea" class="clip slide dark" data-start="82.5" data-duration="3.5" data-track-index="0" data-label="Costo amortizado" data-frags="0">
         <div class="frame" id="amortizado-idea-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">12 / 16</span>
+          <span class="num">14 / 18</span>
       <h1 class="claim xl" data-in="0" style="--i:0">Si agregar a veces cuesta O(n), ¿por qué se dice O(1)?</h1>
       <p class="lead" data-in="1" style="--i:1">El costo amortizado es el promedio por operación de toda una secuencia.</p>
         </div>
       </section>
 
-      <section id="conteo" class="clip slide" data-start="66" data-duration="6.5" data-track-index="0" data-label="Contar las copias" data-frags="3">
+      <section id="conteo" class="clip slide" data-start="86" data-duration="6.5" data-track-index="0" data-label="Contar las copias" data-frags="3">
         <div class="frame" id="conteo-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">13 / 16</span>
+          <span class="num">15 / 18</span>
       <h1 class="claim" data-in="0" style="--i:0">Duplicar hace pocas copias grandes; crecer de uno en uno, muchas</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/conteo-copias/conteo-copias.html?embed" title="Dos gráficas de barras con el costo de cada una de las 16 inserciones de un arreglo dinámico. Al duplicar, casi todas cuestan 1 y hay cuatro picos, con 15 copias en total. Al crecer de uno en uno, la inserción k cuesta k, con 120 copias en total." loading="eager"></iframe>
         </div>
       </section>
 
-      <section id="mensajes" class="clip slide" data-start="72.5" data-duration="5.5" data-track-index="0" data-label="Cien mil mensajes" data-frags="2">
+      <section id="mensajes" class="clip slide" data-start="92.5" data-duration="5.5" data-track-index="0" data-label="Cien mil mensajes" data-frags="2">
         <div class="frame" id="mensajes-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">14 / 16</span>
+          <span class="num">16 / 18</span>
       <h1 class="claim" data-in="0" style="--i:0">Con cien mil mensajes, crecer de uno en uno es lo que lo vuelve lento</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="2" src="figuras/mensajes-100000/mensajes-100000.html?embed" title="Dos barras en escala logarítmica: crecer de uno en uno copia casi 5 000 millones de veces para 100 000 mensajes y duplicar la capacidad copia 131 071 veces." loading="eager"></iframe>
         </div>
       </section>
 
-      <section id="actividades" class="clip slide" data-start="78" data-duration="3.5" data-track-index="0" data-label="Actividades" data-frags="0">
+      <section id="actividades" class="clip slide" data-start="98" data-duration="3.5" data-track-index="0" data-label="Actividades" data-frags="0">
         <div class="frame" id="actividades-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">15 / 16</span>
+          <span class="num">17 / 18</span>
       <h1 class="claim" data-in="0" style="--i:0">Dos actividades calificadas cierran la semana</h1>
       <div class="cards two tall">
         <div class="card" data-in="1" style="--i:1"><span class="tag">PE-1.3 · 2,25 puntos</span><strong>Pila y cola con pruebas</strong><em>Una pila sobre arreglo que crece, una cola sobre lista enlazada y sus pruebas con unittest</em></div>
@@ -412,10 +461,10 @@
         </div>
       </section>
 
-      <section id="cierre" class="clip slide dark" data-start="81.5" data-duration="3.5" data-track-index="0" data-label="Cierre" data-frags="0">
+      <section id="cierre" class="clip slide dark" data-start="101.5" data-duration="3.5" data-track-index="0" data-label="Cierre" data-frags="0">
         <div class="frame" id="cierre-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">16 / 16</span>
+          <span class="num">18 / 18</span>
       <h1 class="claim xl" data-in="0" style="--i:0">Un contrato vale lo que valen las pruebas que lo comprueban</h1>
       <p class="lead" data-in="1" style="--i:1">Tarea: recuperación sin apuntes</p>
       <p class="byline" data-in="2" style="--i:2">Fuentes: Karumanchi (2017) · Joyanes (2008)</p>
@@ -431,7 +480,7 @@
 
       const ENTER = 2;
       const tl = gsap.timeline({ paused: true });
-      tl.to({}, { duration: 85 }, 0);
+      tl.to({}, { duration: 105 }, 0);
 
       const figSyncs = [];
       const slides = Array.from(document.querySelectorAll(".slide"));
