@@ -75,6 +75,11 @@
         "n": 3,
         "slug": "ins-semana-03",
         "tema": "Manifiesto Ágil, Scrum y XP, criterios de aceptación, validación y backlog priorizado"
+      },
+      {
+        "n": 4,
+        "slug": "ins-semana-04",
+        "tema": "Scrum y Kanban, refinamiento del backlog, Git, integración continua y cultura DevOps"
       }
     ]
   },

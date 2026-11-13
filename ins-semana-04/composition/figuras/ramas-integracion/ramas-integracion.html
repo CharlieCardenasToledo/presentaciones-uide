@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Ramas largas y ramas cortas</title>
+<style>
+:root{--wine:#910048;--wine-deep:#6d0036;--gold:#e8a920;--teal:#0c6b62;--amber:#7a5200;--ink:#1f1a1d;--muted:#5a5257;--tint:#f6f1f3;--red:#b3261e}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:transparent;font-family:system-ui,"Segoe UI",sans-serif;color:var(--ink);overflow:hidden}
+#st{position:absolute;left:0;top:0;width:1560px;height:720px;transform-origin:0 0}
+.b{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border-radius:16px;padding:6px 14px;font-weight:700;font-size:32px;line-height:1.15;background:var(--tint);color:var(--ink)}
+.b small{display:block;font-size:24px;font-weight:600;margin-top:4px}
+.t{position:absolute;font-size:34px;font-weight:700;line-height:1.2}
+.pill{position:absolute;display:flex;align-items:center;justify-content:center;height:52px;padding:0 20px;border-radius:26px;color:#fff;font:800 24px/1 ui-monospace,Consolas,monospace;white-space:nowrap;opacity:0;z-index:5}
+.ln{position:absolute;background:#cfc6ca}
+
+</style></head><body>
+<div id="st">
+<div id="tt" class="t" style="left:30px;top:14px;width:900px;opacity:1;color:var(--wine);font-size:30px">Ramas largas: dos semanas sin integrar</div>
+<div id="ml" class="t" style="left:30px;top:84px;width:100px;opacity:1;color:var(--ink);font-size:28px">main</div>
+<div style="position:absolute;left:140px;top:100px;width:860px;height:6px;background:var(--ink)"></div>
+<div style="position:absolute;left:197px;top:100px;width:6px;height:130px;background:#cfc6ca"></div>
+<div id="an" class="t" style="left:120px;top:142px;width:70px;opacity:1;color:var(--wine);font-size:26px">Ana</div>
+<div id="lu" class="t" style="left:120px;top:202px;width:70px;opacity:1;color:var(--teal);font-size:26px">Luis</div>
+<div style="position:absolute;left:200px;top:167px;width:700px;height:6px;background:var(--wine)"></div>
+<div style="position:absolute;left:200px;top:227px;width:700px;height:6px;background:var(--teal)"></div>
+<div id="d1" class="t" style="left:150px;top:248px;width:100px;opacity:1;text-align:center;color:var(--muted);font-size:24px">día 1</div>
+<div id="d10" class="t" style="left:850px;top:248px;width:100px;opacity:1;text-align:center;color:var(--muted);font-size:24px">día 10</div>
+<div style="position:absolute;left:250px;top:160px;width:20px;height:20px;border-radius:50%;background:var(--wine)"></div>
+<div style="position:absolute;left:250px;top:220px;width:20px;height:20px;border-radius:50%;background:var(--teal)"></div>
+<div style="position:absolute;left:365px;top:160px;width:20px;height:20px;border-radius:50%;background:var(--wine)"></div>
+<div style="position:absolute;left:365px;top:220px;width:20px;height:20px;border-radius:50%;background:var(--teal)"></div>
+<div style="position:absolute;left:480px;top:160px;width:20px;height:20px;border-radius:50%;background:var(--wine)"></div>
+<div style="position:absolute;left:480px;top:220px;width:20px;height:20px;border-radius:50%;background:var(--teal)"></div>
+<div style="position:absolute;left:595px;top:160px;width:20px;height:20px;border-radius:50%;background:var(--wine)"></div>
+<div style="position:absolute;left:595px;top:220px;width:20px;height:20px;border-radius:50%;background:var(--teal)"></div>
+<div style="position:absolute;left:710px;top:160px;width:20px;height:20px;border-radius:50%;background:var(--wine)"></div>
+<div style="position:absolute;left:710px;top:220px;width:20px;height:20px;border-radius:50%;background:var(--teal)"></div>
+<div style="position:absolute;left:825px;top:160px;width:20px;height:20px;border-radius:50%;background:var(--wine)"></div>
+<div style="position:absolute;left:825px;top:220px;width:20px;height:20px;border-radius:50%;background:var(--teal)"></div>
+<div id="mg" style="position:absolute;left:897px;top:100px;width:6px;height:130px;background:#cfc6ca;opacity:0"></div>
+<div id="xx" class="b" style="left:872px;top:74px;width:56px;height:56px;opacity:0;background:var(--red);color:#fff;border-radius:50%;font-size:34px;padding:0">✗</div>
+<div id="ch" class="t" style="left:760px;top:290px;width:280px;opacity:0;text-align:center;color:var(--red);font-size:28px">Choque al juntar</div>
+<div id="lp0" class="b" style="left:1090px;top:40px;width:440px;height:60px;opacity:0;background:#fcefc9;color:var(--amber);font-size:30px">Integrar duele</div>
+<div id="lp1" class="b" style="left:1090px;top:120px;width:440px;height:60px;opacity:0;background:#fcefc9;color:var(--amber);font-size:30px">↓ Se integra menos</div>
+<div id="lp2" class="b" style="left:1090px;top:200px;width:440px;height:60px;opacity:0;background:#f9dedc;color:var(--red);font-size:30px">↓ Cada vez duele más</div>
+<div id="t2" class="t" style="left:30px;top:336px;width:1000px;opacity:0;color:var(--teal);font-size:30px">Ramas cortas: cada cambio se junta el mismo día</div>
+<div id="m2" style="position:absolute;left:140px;top:470px;width:1360px;height:6px;background:var(--ink);opacity:0"></div>
+<div id="ml2" class="t" style="left:30px;top:452px;width:100px;opacity:0;color:var(--ink);font-size:28px">main</div>
+<div id="sb0" style="position:absolute;left:190px;top:404px;width:70px;height:66px;opacity:0"><div style="position:absolute;left:0;top:0;width:70px;height:34px;border-radius:10px;background:#cfe9e5;color:var(--teal);font:800 20px/34px system-ui;text-align:center">rama</div><div style="position:absolute;left:33px;top:34px;width:4px;height:32px;background:var(--teal)"></div></div>
+<div id="sd0" style="position:absolute;left:215px;top:461px;width:20px;height:20px;border-radius:50%;background:var(--teal);opacity:0"></div>
+<div id="sb1" style="position:absolute;left:300px;top:404px;width:70px;height:66px;opacity:0"><div style="position:absolute;left:0;top:0;width:70px;height:34px;border-radius:10px;background:#cfe9e5;color:var(--teal);font:800 20px/34px system-ui;text-align:center">rama</div><div style="position:absolute;left:33px;top:34px;width:4px;height:32px;background:var(--teal)"></div></div>
+<div id="sd1" style="position:absolute;left:325px;top:461px;width:20px;height:20px;border-radius:50%;background:var(--teal);opacity:0"></div>
+<div id="sb2" style="position:absolute;left:410px;top:404px;width:70px;height:66px;opacity:0"><div style="position:absolute;left:0;top:0;width:70px;height:34px;border-radius:10px;background:#cfe9e5;color:var(--teal);font:800 20px/34px system-ui;text-align:center">rama</div><div style="position:absolute;left:33px;top:34px;width:4px;height:32px;background:var(--teal)"></div></div>
+<div id="sd2" style="position:absolute;left:435px;top:461px;width:20px;height:20px;border-radius:50%;background:var(--teal);opacity:0"></div>
+<div id="sb3" style="position:absolute;left:520px;top:404px;width:70px;height:66px;opacity:0"><div style="position:absolute;left:0;top:0;width:70px;height:34px;border-radius:10px;background:#cfe9e5;color:var(--teal);font:800 20px/34px system-ui;text-align:center">rama</div><div style="position:absolute;left:33px;top:34px;width:4px;height:32px;background:var(--teal)"></div></div>
+<div id="sd3" style="position:absolute;left:545px;top:461px;width:20px;height:20px;border-radius:50%;background:var(--teal);opacity:0"></div>
+<div id="sb4" style="position:absolute;left:630px;top:404px;width:70px;height:66px;opacity:0"><div style="position:absolute;left:0;top:0;width:70px;height:34px;border-radius:10px;background:#cfe9e5;color:var(--teal);font:800 20px/34px system-ui;text-align:center">rama</div><div style="position:absolute;left:33px;top:34px;width:4px;height:32px;background:var(--teal)"></div></div>
+<div id="sd4" style="position:absolute;left:655px;top:461px;width:20px;height:20px;border-radius:50%;background:var(--teal);opacity:0"></div>
+<div id="sb5" style="position:absolute;left:740px;top:404px;width:70px;height:66px;opacity:0"><div style="position:absolute;left:0;top:0;width:70px;height:34px;border-radius:10px;background:#cfe9e5;color:var(--teal);font:800 20px/34px system-ui;text-align:center">rama</div><div style="position:absolute;left:33px;top:34px;width:4px;height:32px;background:var(--teal)"></div></div>
+<div id="sd5" style="position:absolute;left:765px;top:461px;width:20px;height:20px;border-radius:50%;background:var(--teal);opacity:0"></div>
+<div id="sb6" style="position:absolute;left:850px;top:404px;width:70px;height:66px;opacity:0"><div style="position:absolute;left:0;top:0;width:70px;height:34px;border-radius:10px;background:#cfe9e5;color:var(--teal);font:800 20px/34px system-ui;text-align:center">rama</div><div style="position:absolute;left:33px;top:34px;width:4px;height:32px;background:var(--teal)"></div></div>
+<div id="sd6" style="position:absolute;left:875px;top:461px;width:20px;height:20px;border-radius:50%;background:var(--teal);opacity:0"></div>
+<div id="sb7" style="position:absolute;left:960px;top:404px;width:70px;height:66px;opacity:0"><div style="position:absolute;left:0;top:0;width:70px;height:34px;border-radius:10px;background:#cfe9e5;color:var(--teal);font:800 20px/34px system-ui;text-align:center">rama</div><div style="position:absolute;left:33px;top:34px;width:4px;height:32px;background:var(--teal)"></div></div>
+<div id="sd7" style="position:absolute;left:985px;top:461px;width:20px;height:20px;border-radius:50%;background:var(--teal);opacity:0"></div>
+<div id="sb8" style="position:absolute;left:1070px;top:404px;width:70px;height:66px;opacity:0"><div style="position:absolute;left:0;top:0;width:70px;height:34px;border-radius:10px;background:#cfe9e5;color:var(--teal);font:800 20px/34px system-ui;text-align:center">rama</div><div style="position:absolute;left:33px;top:34px;width:4px;height:32px;background:var(--teal)"></div></div>
+<div id="sd8" style="position:absolute;left:1095px;top:461px;width:20px;height:20px;border-radius:50%;background:var(--teal);opacity:0"></div>
+<div id="sb9" style="position:absolute;left:1180px;top:404px;width:70px;height:66px;opacity:0"><div style="position:absolute;left:0;top:0;width:70px;height:34px;border-radius:10px;background:#cfe9e5;color:var(--teal);font:800 20px/34px system-ui;text-align:center">rama</div><div style="position:absolute;left:33px;top:34px;width:4px;height:32px;background:var(--teal)"></div></div>
+<div id="sd9" style="position:absolute;left:1205px;top:461px;width:20px;height:20px;border-radius:50%;background:var(--teal);opacity:0"></div>
+<div id="sb10" style="position:absolute;left:1290px;top:404px;width:70px;height:66px;opacity:0"><div style="position:absolute;left:0;top:0;width:70px;height:34px;border-radius:10px;background:#cfe9e5;color:var(--teal);font:800 20px/34px system-ui;text-align:center">rama</div><div style="position:absolute;left:33px;top:34px;width:4px;height:32px;background:var(--teal)"></div></div>
+<div id="sd10" style="position:absolute;left:1315px;top:461px;width:20px;height:20px;border-radius:50%;background:var(--teal);opacity:0"></div>
+<div id="sb11" style="position:absolute;left:1400px;top:404px;width:70px;height:66px;opacity:0"><div style="position:absolute;left:0;top:0;width:70px;height:34px;border-radius:10px;background:#cfe9e5;color:var(--teal);font:800 20px/34px system-ui;text-align:center">rama</div><div style="position:absolute;left:33px;top:34px;width:4px;height:32px;background:var(--teal)"></div></div>
+<div id="sd11" style="position:absolute;left:1425px;top:461px;width:20px;height:20px;border-radius:50%;background:var(--teal);opacity:0"></div>
+<div id="e2" class="t" style="left:150px;top:488px;width:100px;opacity:0;text-align:center;color:var(--muted);font-size:24px">día 1</div>
+<div id="e3" class="t" style="left:1380px;top:488px;width:100px;opacity:0;text-align:center;color:var(--muted);font-size:24px">día 12</div>
+<div id="k0" class="t" style="left:30px;top:592px;width:1500px;opacity:0;color:var(--wine-deep);font-size:32px">Dos personas editan pagos dos semanas, cada una en su rama</div>
+<div id="k1" class="t" style="left:30px;top:592px;width:1500px;opacity:0;color:var(--wine-deep);font-size:32px">Al juntar, los cambios chocan y fallan las pruebas</div>
+<div id="k2" class="t" style="left:30px;top:592px;width:1500px;opacity:0;color:var(--wine-deep);font-size:32px">Si integrar duele, se integra menos, y cada vez duele más</div>
+<div id="k3" class="t" style="left:30px;top:592px;width:1500px;opacity:0;color:var(--teal);font-size:32px">Con ramas cortas, cada cambio llega al trunk el mismo día</div>
+</div>
+<script>
+const N = 3;
+const st = document.getElementById("st");
+function fit() { const k = Math.min(innerWidth / 1560, innerHeight / 720); st.style.transform = "scale(" + k + ")"; }
+fit(); addEventListener("resize", fit);
+const $ = (s) => document.querySelector(s);
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const ease = (t) => { t = clamp(t, 0, 1); return t * t * (3 - 2 * t); };
+const win = (s, a, b) => ease((s - a) / (b - a));
+const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+const mix = (a, b, t) => { const x = hex(a), y = hex(b); return "rgb(" + x.map((v, i) => Math.round(v + (y[i] - v) * t)).join(",") + ")"; };
+function lit(el, base, color, t, fg0, fg1) { el.style.background = mix(base, color, t); el.style.color = mix(fg0 || "#1f1a1d", fg1 || "#ffffff", t); }
+function put(el, x, y, a) { el.style.transform = "translate(" + x + "px," + y + "px)"; el.style.opacity = String(a); }
+function route(k, pts) { for (let i = 0; i < pts.length - 1; i++) { if (k <= pts[i + 1][0]) { const t = ease((k - pts[i][0]) / (pts[i + 1][0] - pts[i][0])); return [pts[i][1] + (pts[i + 1][1] - pts[i][1]) * t, pts[i][2] + (pts[i + 1][2] - pts[i][2]) * t]; } } const l = pts[pts.length - 1]; return [l[1], l[2]]; }
+
+function caps(s, n, pref) { for (let k = 0; k <= n; k++) { const a = win(s, k - 0.5, k) * (k < n ? 1 - win(s, k, k + 0.5) : 1); put($("#" + pref + k), 0, 0, clamp(a, 0, 1)); } }
+function show(el, a, dy) { put(el, 0, (1 - a) * (dy === undefined ? 24 : dy), a); }
+
+let u = 0, target = 0, frame = 0, timer = 0, last = 0;
+function draw() { 
+const s = u * N;
+const a1 = win(s, 0, 1), a2 = win(s, 1, 2), a3 = win(s, 2, 3);
+put($("#mg"), 0, 0, a1); show($("#xx"), a1, 0); show($("#ch"), a1, 10);
+for (let i = 0; i < 3; i++) show($("#lp" + i), clamp(a2 * 3 - i, 0, 1), 16);
+for (const id of ["t2", "m2", "ml2", "e2", "e3"]) show($("#" + id), a3, 10);
+for (let i = 0; i < 12; i++) { const k = clamp(a3 * 14 - i, 0, 1); put($("#sb" + i), 0, 0, k); put($("#sd" + i), 0, 0, k); }
+caps(s, 3, "k");
+ }
+function loop() {
+  clearTimeout(timer); cancelAnimationFrame(frame);
+  const now = performance.now();
+  const dt = last ? Math.min((now - last) / 1000, 1) : 1 / 60; last = now;
+  const speed = 1 / (N * 1.6);
+  u = target > u ? Math.min(target, u + dt * speed) : Math.max(target, u - dt * speed * 2);
+  draw();
+  if (u !== target) { frame = requestAnimationFrame(loop); timer = setTimeout(loop, 80); } else { frame = 0; timer = 0; last = 0; }
+}
+const run = () => { if (!frame && !timer) { last = 0; loop(); } };
+const go = (v) => { target = clamp(v, 0, 1); run(); };
+window.__fig = { set(v) { u = target = clamp(v, 0, 1); draw(); }, go, get u() { return u; } };
+addEventListener("message", (e) => { const m = e.data; if (!m || m.type !== "fig") return; if (m.mode === "set") window.__fig.set(Number(m.value)); else go(Number(m.value)); });
+if (window.parent !== window) {
+  const KEYMAP = { ArrowRight: "ArrowRight", PageDown: "ArrowRight", " ": "ArrowRight", Enter: "ArrowRight", ArrowLeft: "ArrowLeft", PageUp: "ArrowLeft", Backspace: "ArrowLeft" };
+  addEventListener("keydown", (e) => { const k = KEYMAP[e.key]; if (!k) return; e.preventDefault(); e.stopImmediatePropagation(); parent.postMessage({ type: "deck-key", key: k }, "*"); }, true);
+} else {
+  addEventListener("click", () => go(target >= 1 ? 0 : Math.min(1, Math.round(target * N + 1) / N)));
+}
+draw();
+</script></body></html>

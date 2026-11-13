@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LTI_05A_INS · Semana 4: Ingeniería del Software</title>
+    <script>
+      // El modo público se distingue en la pestaña del navegador.
+      if (new URLSearchParams(location.search).get("mode") === "audience") {
+        document.title = "LTI_05A_INS · Semana 4: Ingeniería del Software" + " (pantalla del público)";
+      }
+    </script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { height: 100%; background: #0a0a0a; overflow: hidden; }
+      hyperframes-slideshow { display: block; position: relative; width: 100vw; height: 100vh; }
+      hyperframes-player { position: absolute; inset: 0; }
+    </style>
+    <script src="../vendor/hyperframes-player.global.js"></script>
+    <script src="../vendor/hyperframes-slideshow.global.js"></script>
+  </head>
+  <body>
+    <hyperframes-slideshow tabindex="0" notes-storage-key="ins-semana-04">
+      <hyperframes-player interactive src="composition/index.html"></hyperframes-player>
+      <script type="application/hyperframes-slideshow+json">
+{
+  "slides": [
+    {
+      "sceneId": "portada",
+      "startTime": 0,
+      "endTime": 3.5,
+      "notes": "Abrir con dos preguntas sin definir nada: cuántas cosas está haciendo a la vez su grupo de trabajo de proyecto, y cómo se enteran cuando algo se atasca. Anotar dos o tres respuestas. La clase de hoy trata de hacer visible el trabajo, limitarlo y juntarlo todos los días."
+    },
+    {
+      "sceneId": "ruta",
+      "startTime": 3.5,
+      "endTime": 7,
+      "notes": "Presentar la ruta en un minuto. Se parte del backlog ordenado de la semana 3 y se pregunta cómo se mueve el trabajo hasta el software terminado. Primero el tablero y el límite de trabajo en proceso; luego Scrum frente a Kanban; después cómo se prepara el backlog y cuándo algo está terminado; la reunión diaria; y al final Git, la tubería de integración, las tres vías de DevOps y el escalamiento. El ejemplo resuelto de toda la clase son las reservas de canchas de un municipio, como en la semana 3; el Marketplace Agrícola queda para las actividades."
+    },
+    {
+      "sceneId": "tablero",
+      "startTime": 7,
+      "endTime": 13.5,
+      "notes": "Antes de avanzar, preguntar: si cada integrante del equipo trabaja en lo suyo, cómo sabe el resto qué está pasando. Primer avance: dos tarjetas pasan a Haciendo porque alguien tenía capacidad y las jaló; nadie se las asigna. Segundo avance: una termina y pasa a Hecho, lo que deja lugar para jalar otra. Tercer avance: las políticas se escriben a la vista, qué entra, cuántas a la vez y qué significa terminado. Kanban se apoya en seis prácticas, y las tres primeras que se ven aquí son visualizar el flujo, limitar el trabajo en proceso y hacer explícitas las políticas. Fuentes: Pressman y Maxim (2020), sección sobre Kanban; Kim et al. (2016), sobre hacer visible el trabajo.",
+      "fragments": [
+        9,
+        10,
+        11,
+        12
+      ]
+    },
+    {
+      "sceneId": "wip",
+      "startTime": 13.5,
+      "endTime": 20,
+      "notes": "Dejar a la vista la columna sin límite y preguntar cuántas de esas cinco tarjetas estarán terminadas el viernes. Primer avance: con un límite de 2 por columna, el equipo termina Ver calendario y Reservar antes de empezar otra. Segundo avance: la tarjeta Recordatorio quiere entrar pero la columna está llena; espera, y lo que se conversa es qué hacer con las que están en curso, por ejemplo ayudar a terminar una o desbloquearla. Tercer avance: el resultado, dos terminadas frente a ninguna. Frase de cierre: dejar de empezar, empezar a terminar. Pressman y Maxim explican que el límite reduce el tiempo de entrega, mejora la calidad y permite entregar con más frecuencia; Kim et al. (2016) agregan que controlar el tamaño de la cola es uno de los pocos indicadores que anticipan el tiempo de entrega. Pedir que digan qué límite pondrían en la columna Haciendo de su propio grupo.",
+      "fragments": [
+        15.5,
+        16.5,
+        17.5,
+        18.5
+      ]
+    },
+    {
+      "sceneId": "scrum-kanban",
+      "startTime": 20,
+      "endTime": 26.5,
+      "notes": "Dos marcos que responden a la misma pregunta de maneras distintas. Primer avance, la cadencia: Scrum corta el tiempo en sprints de duración fija; Kanban es flujo continuo y el trabajo se jala cuando hay lugar. Segundo avance, qué limita la carga: en Scrum, el tiempo del sprint y lo que el equipo se compromete a entregar; en Kanban, el límite de trabajo en proceso de cada columna. Tercer avance, cuándo conviene cada uno: Scrum cuando se puede acordar un objetivo cada pocas semanas; Kanban cuando el trabajo llega de forma irregular, como errores y soporte. No son excluyentes: muchos equipos toman ideas de los dos. Preguntar cuál elegirían para el equipo que atiende los reportes de errores de un sistema ya en uso. Fuente: Pressman y Maxim (2020), secciones sobre Scrum y Kanban.",
+      "fragments": [
+        22,
+        23,
+        24,
+        25
+      ]
+    },
+    {
+      "sceneId": "refinamiento",
+      "startTime": 26.5,
+      "endTime": 34,
+      "notes": "Un backlog que llega preparado permite planificar sin sorpresas. La comunidad Scrum llama refinamiento (grooming) a cuatro actividades que se hacen durante el sprint y no la mañana de la planificación. Primer avance, refinar: la historia Pagar la reserva es grande, así que se divide en pagar con tarjeta y pagar en ventanilla. Segundo avance, estimar: el equipo anota el esfuerzo en cada una, 5 y 3 puntos. Tercer avance, crear: se agrega una historia técnica para registrar los errores de cobro. Cuarto avance, priorizar: el municipio cambia la tarifa y Tarifas por hora sube de la posición 4 a la 2. Antes de cada avance, preguntar qué haría el equipo con ese elemento. Es el insumo de la sección de refinamiento de PE-1.4. Fuente: Sommerville (2020), sobre gestión del backlog.",
+      "fragments": [
+        28.5,
+        29.5,
+        30.5,
+        31.5,
+        32.5
+      ]
+    },
+    {
+      "sceneId": "listo-terminado",
+      "startTime": 34,
+      "endTime": 41.5,
+      "notes": "Dos puertas con listas de comprobación que el equipo acuerda. Antes de avanzar, preguntar cuándo diría el equipo que Reservar una cancha está terminada. Primer avance: una historia está lista para entrar cuando tiene el detalle suficiente para estimarla y construirla, y cuando sus dependencias con otros elementos ya están identificadas. Segundo avance: la definición de terminado, cinco comprobaciones: revisada por otra persona, con pruebas unitarias, integrada, con pruebas de integración y aceptada. Tercer avance: cuando se cumplen todas, la historia entra al incremento. Cuarto avance: si falta una, no está terminada; vuelve al backlog y el sprint nunca se alarga. Es la sección de políticas de PE-1.4, y la definición de terminado es la misma que pide TA-1.4. Fuente: Sommerville (2020).",
+      "fragments": [
+        36,
+        37,
+        38,
+        39,
+        40
+      ]
+    },
+    {
+      "sceneId": "capacidad",
+      "startTime": 41.5,
+      "endTime": 48,
+      "notes": "Cuántos elementos puede comprometer el equipo depende de su capacidad. Es esfuerzo en días de una persona, sin confundirlo con el tiempo calendario, porque varias personas pueden trabajar en un mismo elemento. Antes de avanzar, preguntar cuántos días de trabajo útil tiene un equipo de cuatro en un sprint de diez días. Primer avance: se eligen tareas de uno a dos días hasta llenar esa capacidad; cada tarea dura uno o dos días como máximo para poder medir el avance en la reunión diaria. Segundo avance: cuando ya se completaron varios sprints se usa la velocidad, que es la suma de las estimaciones de lo terminado en cada sprint. Tercer avance: el sprint 4 se compromete cerca de 20 puntos, no 30. Los números de la figura son un ejemplo. En un primer sprint, como el del Marketplace Agrícola, todavía no hay velocidad y se decide con un criterio más intuitivo. Es la sección de capacidad de TA-1.4. Fuente: Sommerville (2020).",
+      "fragments": [
+        43.5,
+        44.5,
+        45.5,
+        46.5
+      ]
+    },
+    {
+      "sceneId": "reunion-diaria",
+      "startTime": 48,
+      "endTime": 55.5,
+      "notes": "El daily scrum dura quince minutos como máximo, al inicio de la jornada. Cada integrante responde tres preguntas. Avance por avance: qué hizo desde la última reunión; qué obstáculos encuentra; qué planea lograr antes de la siguiente. Ana dice que el servicio de pagos no responde en el entorno de pruebas: eso no se resuelve ahí. Último avance: el obstáculo se anota y Ana y Luis lo revisan a las 10:15, fuera de la reunión. Pressman y Maxim lo dicen así: los problemas se descubren en la reunión y la solución se coordina fuera de ella. Antes del último avance, preguntar qué pasaría con la reunión si se resolvieran los problemas ahí mismo. Es la sección de reuniones diarias de PE-1.4: dos reuniones simuladas con las tres preguntas y un obstáculo tratado fuera.",
+      "fragments": [
+        50,
+        51,
+        52,
+        53,
+        54
+      ]
+    },
+    {
+      "sceneId": "integrar",
+      "startTime": 55.5,
+      "endTime": 59,
+      "notes": "Cambio de tema: hasta aquí se organizó el trabajo; ahora se trata de juntar el código. Preguntar si alguien perdió una tarde juntando archivos de un trabajo grupal. Esa tarde perdida es la idea de la sección siguiente: cuando integrar duele, se integra menos, y cada integración posterior duele más. Fuente: Kim et al. (2016), sobre integración y ramas."
+    },
+    {
+      "sceneId": "ramas",
+      "startTime": 59,
+      "endTime": 65.5,
+      "notes": "Antes de avanzar, preguntar qué pasa si dos personas editan el mismo archivo durante dos semanas, cada una por su lado. Primer avance: los cambios chocan al juntar y las pruebas fallan. Segundo avance: el círculo vicioso que describe el DevOps Handbook, si integrar duele se integra menos y cada integración duele más; el esfuerzo para fusionar ramas crece de forma exponencial con su número. Tercer avance: con ramas de vida corta, cada cambio llega al trunk el mismo día; el lote es lo que se hace en una jornada y los conflictos se detectan cuando todavía son pequeños. La contramedida es la integración continua con desarrollo basado en el trunk: todos integran al menos una vez al día. Hay que distinguir los términos: una rama es una línea de trabajo paralela, y el trunk o main es la principal. Es lo que pide la regla de ramas de GA-1.3. Fuente: Kim et al. (2016).",
+      "fragments": [
+        61,
+        62,
+        63,
+        64
+      ]
+    },
+    {
+      "sceneId": "flujo-cambio",
+      "startTime": 65.5,
+      "endTime": 75,
+      "notes": "Un cambio pequeño viaja de la rama al trunk en seis pasos. Revelar uno por avance y pedir que digan el comando antes de verlo. Paso 1, crear una rama corta con git switch -c; paso 2, registrar el trabajo con git add y git commit y un mensaje que diga qué cambió y por qué; paso 3, publicar la rama con git push -u origin; paso 4, abrir un pull request en GitHub para pedir revisión; paso 5, revisar con comentarios y aprobaciones, que detecta errores y comparte conocimiento; paso 6, fusionar en main, actualizar con git pull y borrar la rama. Los nombres de la rama y del commit son del ejemplo de las canchas. Es el flujo que se ordena en GA-1.3. Fuente: Kim et al. (2016).",
+      "fragments": [
+        67.5,
+        68.5,
+        69.5,
+        70.5,
+        71.5,
+        72.5,
+        73.5
+      ]
+    },
+    {
+      "sceneId": "pr-tamano",
+      "startTime": 75,
+      "endTime": 81.5,
+      "notes": "Preguntar qué pedirían a un compañero que abre un pull request de ochocientas líneas que toca reservas, pagos y recordatorios. Primer avance: cuanto más grande el cambio, más tarda en entenderse y más carga pone sobre quien lo revisa, y el riesgo de integrar crece más rápido que el tamaño. Segundo avance: una regla práctica del equipo, si un cambio no se entiende después de leerlo un par de veces, se divide. Tercer avance: tres pull requests pequeños, cada uno con una sola idea, se revisan e integran más rápido. Quien lo envía suele pedir una o más aprobaciones o mencionar a las personas que quiere como revisoras. Es la sección de reglas del equipo de GA-1.3: vida máxima de una rama y tamaño de un pull request. Fuente: Kim et al. (2016).",
+      "fragments": [
+        77,
+        78,
+        79,
+        80
+      ]
+    },
+    {
+      "sceneId": "tuberia",
+      "startTime": 81.5,
+      "endTime": 89,
+      "notes": "La integración continua es la práctica técnica que sostiene la primera y la segunda vía. La tubería construye y prueba automáticamente, en un entorno parecido al de producción, todo el código que llega al control de versiones. Primer avance: tres comprobaciones, si se fusiona sin chocar, si compila y si todas las pruebas pasan. Segundo avance: si todo pasa, el cambio entra al trunk y el trunk queda en estado desplegable. Tercer avance: si una prueba falla, el cambio no entra y solo se entera su autor; algunos equipos lo llaman commit con compuerta. Cuarto avance: lo que significa terminado para el equipo, no funciona en mi computador sino pasó la tubería y está en el trunk. Antes del tercer avance, preguntar quién se entera si la prueba falla. Es la sección de comprobaciones automáticas y definición de terminado de TA-1.4. Fuente: Kim et al. (2016).",
+      "fragments": [
+        83.5,
+        84.5,
+        85.5,
+        86.5,
+        87.5
+      ]
+    },
+    {
+      "sceneId": "tres-vias",
+      "startTime": 89,
+      "endTime": 95.5,
+      "notes": "El DevOps Handbook sostiene que todos los patrones de DevOps derivan de tres principios. Primer avance, la primera vía, flujo: de izquierda a derecha, de desarrollo a operaciones y al cliente; en el equipo se reconoce en el tablero, los límites de trabajo en proceso, los commits pequeños y la integración diaria. Segundo avance, la segunda vía, retroalimentación: de derecha a izquierda, en todas las etapas; son las pruebas automáticas, la revisión de pull requests y el aviso inmediato cuando falla la tubería. Tercer avance, la tercera vía, aprendizaje continuo: una cultura de alta confianza que toma riesgos de forma disciplinada y aprende de éxitos y de fracasos; se reconoce en la retrospectiva de cada sprint. Pedir que ubiquen cada práctica vista hoy en una de las tres vías. Fuente: Kim et al. (2016).",
+      "fragments": [
+        91,
+        92,
+        93,
+        94
+      ]
+    },
+    {
+      "sceneId": "escalar",
+      "startTime": 95.5,
+      "endTime": 101,
+      "notes": "Todo lo anterior se pensó para equipos pequeños. Sommerville distingue dos formas de escalar los métodos ágiles. Primer avance, expandir: usarlos en sistemas grandes que un equipo pequeño no puede construir; los problemas son varios equipos separados, a veces en zonas horarias distintas, sin visión del todo, y reglas externas que exigen documentación; la respuesta es diseñar la arquitectura al inicio, documentar lo crítico y abrir canales entre los equipos. Segundo avance, ampliar: introducirlos en organizaciones grandes con años de procesos propios; los procesos formales chocan con los informales del equipo; la respuesta es introducirlos proyecto por proyecto y adaptar las políticas en lugar de negarlas. Escalar no es repetir Scrum en cada equipo. Pregunta para cerrar: si el equipo del Marketplace Agrícola pasara de cinco a veinte personas, qué dejarían fijado antes de trabajar por separado. Es la sección de escalamiento de TA-1.4. Fuente: Sommerville (2011), capítulo 3; Pressman y Maxim (2020).",
+      "fragments": [
+        97.5,
+        98.5,
+        99.5
+      ]
+    },
+    {
+      "sceneId": "actividades",
+      "startTime": 101,
+      "endTime": 104.5,
+      "notes": "Las consignas completas, las plantillas y las rúbricas están en Canvas. PE-1.4 vale 3 puntos, es individual y se entrega al terminar la clase del lunes 16 de noviembre. TA-1.4 vale 3 puntos y GA-1.3 vale 1 punto; las dos cierran el domingo 22 de noviembre a las 23:59. El módulo 3 del curso ASU Inclusive Mindset se completa aparte y su resultado se suma a la nota de TA-1.4. Las tres reutilizan el backlog que se armó en la semana 3 para el Marketplace Agrícola. Insistir en que para PE-1.4 conviene llegar con el backlog a mano."
+    },
+    {
+      "sceneId": "cierre",
+      "startTime": 104.5,
+      "endTime": 108,
+      "notes": "Cerrar volviendo a las preguntas del inicio: ahora saben cómo hacer visible el trabajo, cuántas cosas conviene tener en curso, y cómo juntar el código para que no duela. Pedir que escriban, en una frase, qué límite de trabajo en proceso pondrían en su equipo y qué regla de vida de rama. Recordar la preparación previa de PE-1.4: tener el backlog de TA-1.3 a mano."
+    }
+  ],
+  "slideSequences": []
+}
+    </script>
+    </hyperframes-slideshow>
+  </body>
+</html>

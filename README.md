@@ -13,6 +13,7 @@ Sitio: https://charliecardenastoledo.github.io/presentaciones-uide/
 | LTI_05A_INS Ingeniería del Software | 1. Ingeniería de software hoy, ética y descubrimiento inicial del proyecto | [ins-semana-01](https://charliecardenastoledo.github.io/presentaciones-uide/ins-semana-01/) |
 | LTI_05A_INS Ingeniería del Software | 2. Crisis del software, modelos de proceso, requisitos y borrador de SRS | [ins-semana-02](https://charliecardenastoledo.github.io/presentaciones-uide/ins-semana-02/) |
 | LTI_05A_INS Ingeniería del Software | 3. Manifiesto Ágil, criterios de aceptación y backlog priorizado | [ins-semana-03](https://charliecardenastoledo.github.io/presentaciones-uide/ins-semana-03/) |
+| LTI_05A_INS Ingeniería del Software | 4. Scrum y Kanban, Git y cultura DevOps | [ins-semana-04](https://charliecardenastoledo.github.io/presentaciones-uide/ins-semana-04/) |
 | LTI_05U_IHC Interacción Hombre Computadora | 1. HCI como ciencia de sistemas interactivos | [hci-semana-01](https://charliecardenastoledo.github.io/presentaciones-uide/hci-semana-01/) |
 | LTI_05U_IHC Interacción Hombre Computadora | 2. Carga mental, error humano, detección de señales y cognición distribuida | [hci-semana-02](https://charliecardenastoledo.github.io/presentaciones-uide/hci-semana-02/) |
 | LTI_05U_IHC Interacción Hombre Computadora | 3. GOMS, modelo a nivel de teclas y aprendizaje de habilidades | [hci-semana-03](https://charliecardenastoledo.github.io/presentaciones-uide/hci-semana-03/) |
