@@ -1,0 +1,625 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Semana 4 · Leyes empíricas y experimentación controlada</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      :root {
+        /* Colores tomados del logotipo UIDE: vino #910048 y dorado #E8A920. Sin degradados. */
+        --paper: #ffffff; --ink: #1f1a1d; --muted: #5a5257; --wine: #910048; --wine-deep: #6d0036; --gold: #e8a920;
+        --teal: #0c6b62; --teal-soft: #e3f2f0; --amber: #7a5200; --amber-soft: #fcefc9; --card: #ffffff; --line: #e2dcdf; --tint: #f6f1f3;
+      }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--paper); }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; font-family: system-ui, sans-serif; color: var(--ink); }
+      .slide { position: absolute; inset: 0; }
+      .frame { position: absolute; inset: 0; padding: 92px 120px 150px; display: flex; flex-direction: column; justify-content: center; opacity: 0; background: var(--paper); }
+      .frame::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 22px; background: var(--wine); }
+      .frame::after { content: ""; position: absolute; left: 22px; top: 0; bottom: 0; width: 8px; background: var(--gold); }
+      .dark .frame { background: var(--wine); color: #fff; }
+      .dark .frame::before { background: var(--gold); }
+      .dark .frame::after { display: none; }
+      .logo { position: absolute; top: 44px; right: 96px; height: 92px; width: auto; }
+      .dark .logo { top: 0; right: 96px; height: 150px; padding: 26px 30px 22px; background: #fff; border-radius: 0 0 18px 18px; box-sizing: border-box; }
+      .num { position: absolute; bottom: 52px; left: 120px; font-size: 26px; letter-spacing: 0.14em; color: var(--muted); font-variant-numeric: tabular-nums; }
+      .dark .num { color: #f1d3e0; }
+      .course { font-size: 34px; font-weight: 600; color: var(--gold); margin-bottom: 30px; }
+      .claim { font-family: ui-serif, serif; font-weight: 700; font-size: 74px; line-height: 1.08; letter-spacing: -0.015em; max-width: 1480px; margin-bottom: 44px; }
+      .claim.long { font-size: 62px; max-width: 1640px; }
+      .claim.xl { font-size: 96px; max-width: 1500px; }
+      .lead { font-size: 48px; line-height: 1.25; color: #ffffff; max-width: 1400px; }
+      .lead.dark-ink { color: var(--muted); margin-top: -14px; margin-bottom: 40px; }
+      .byline { font-size: 32px; color: #f6dfe9; margin-top: 70px; }
+      .source { font-size: 30px; color: var(--muted); margin-top: 34px; }
+      .punch { font-family: ui-serif, serif; font-size: 56px; font-weight: 700; color: var(--wine); margin-top: 44px; }
+      .punch.soft { color: var(--ink); font-size: 46px; margin-top: 18px; }
+      .punch.good { color: var(--teal); }
+
+      .steps { list-style: none; display: grid; gap: 18px; max-width: 1500px; }
+      .steps li { display: flex; align-items: center; gap: 30px; font-size: 46px; background: var(--tint); border-radius: 18px; padding: 18px 30px; }
+      .steps b { flex: none; width: 72px; height: 72px; border-radius: 50%; background: var(--wine); color: #fff; display: grid; place-items: center; font-size: 40px; }
+
+      .cards { display: grid; gap: 30px; }
+      .cards.three { grid-template-columns: repeat(3, 1fr); }
+      .cards.two { grid-template-columns: repeat(2, 1fr); }
+      .cards.four { grid-template-columns: repeat(4, 1fr); }
+      .cards.grid2 { grid-template-columns: repeat(2, 1fr); gap: 26px; }
+      .cards.tight { margin-top: 30px; }
+      .card { background: var(--tint); border-radius: 22px; padding: 36px 40px; display: flex; flex-direction: column; gap: 14px; }
+      .card strong { font-size: 48px; line-height: 1.12; font-weight: 800; }
+      .card em { font-style: normal; font-size: 40px; line-height: 1.2; color: var(--muted); }
+      .card .tag, .panel .tag { align-self: flex-start; font-size: 34px; font-weight: 600; color: var(--wine); }
+      .card.file strong { font-family: ui-monospace, monospace; font-size: 46px; }
+      .card.empty, .card.warn { background: var(--amber-soft); }
+      .card.warn strong { color: var(--amber); }
+      .card.pill { align-items: center; text-align: center; padding: 30px 20px; }
+      .card.pill b { width: 68px; height: 68px; border-radius: 50%; background: var(--wine); color: #fff; display: grid; place-items: center; font-size: 38px; }
+      .cards.tall .card { min-height: 300px; }
+      .verdict { margin-top: auto; padding: 14px 18px; border-radius: 12px; background: #fbe3a6; color: var(--amber) !important; font-weight: 700; }
+      .verdict.good { background: #cfe9e5; color: var(--teal) !important; }
+
+      table.data { border-collapse: collapse; width: 100%; background: var(--tint); border-radius: 20px; overflow: hidden; }
+      table.data th { text-align: left; font-size: 30px; letter-spacing: 0.1em; text-transform: uppercase; color: #fff; background: var(--wine-deep); padding: 20px 28px; }
+      table.data td { font-size: 42px; padding: 22px 28px; border-top: 3px solid #ffffff; font-variant-numeric: tabular-nums; }
+      table.data.matrix td { font-size: 40px; padding: 24px 28px; }
+      table.data.matrix b { color: var(--wine); }
+      .chips { display: flex; gap: 22px; margin-top: 36px; flex-wrap: wrap; }
+      .chip { font-size: 40px; font-weight: 700; padding: 16px 28px; border-radius: 999px; background: var(--amber-soft); color: var(--amber); }
+
+      .split { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+      .panel { background: var(--tint); border-radius: 22px; padding: 30px 34px; display: flex; flex-direction: column; gap: 18px; }
+      .panel.good { background: var(--teal-soft); }
+      .panel.good .tag { color: var(--teal); }
+      .box { font-size: 40px; padding: 18px 24px; border-radius: 14px; background: #ffffff; }
+      .box i { font-style: normal; color: var(--amber); font-weight: 700; }
+      .box.strong { background: var(--teal); color: #fff; font-weight: 700; }
+      .box.new { background: var(--teal-soft); color: var(--teal); font-weight: 700; }
+      .schema { font-family: ui-monospace, monospace; font-size: 44px; font-weight: 700; padding: 26px 32px; border-radius: 18px; background: var(--tint); }
+      .schema.main { font-size: 50px; background: var(--wine-deep); color: #fff; }
+      .schema.small { font-size: 40px; background: #ffffff; }
+      .schema u { text-decoration-thickness: 5px; text-underline-offset: 8px; }
+
+      .layers { display: grid; gap: 22px; max-width: 1500px; }
+      .layer { display: flex; align-items: baseline; gap: 34px; padding: 30px 38px; border-radius: 20px; background: var(--wine); color: #fff; }
+      .layer.mid { background: #7f003f; margin-left: 70px; }
+      .layer.low { background: var(--wine-deep); margin-left: 140px; }
+      .layer strong { font-size: 50px; flex: none; width: 430px; }
+      .layer em { font-style: normal; font-size: 40px; color: #ffffff; }
+
+      .timeline { display: grid; gap: 14px; }
+      .timeline .row { display: grid; grid-template-columns: 170px 560px 1fr; align-items: center; gap: 30px; background: var(--tint); border-radius: 16px; padding: 14px 28px; }
+      .timeline b { font-family: ui-serif, serif; font-size: 52px; color: var(--wine); font-variant-numeric: tabular-nums; }
+      .timeline strong { font-size: 42px; }
+      .timeline em { font-style: normal; font-size: 40px; color: var(--muted); }
+
+      iframe.fig { flex: none; width: 1560px; height: 720px; border: 0; background: transparent; align-self: center; margin-top: -24px; }
+
+      /* Transiciones solo al presentar en vivo: el reproductor salta entre
+         puntos de la línea de tiempo y el navegador suaviza el cambio. */
+      html.live .frame { transition: opacity 0.45s ease; }
+      html.live [data-in], html.live [data-f] { transition: opacity 0.5s ease, transform 0.55s cubic-bezier(0.2, 0.7, 0.2, 1); transition-delay: calc(var(--i, 0) * 70ms); }
+      html.live [data-hl] { transition: background-color 0.4s ease, color 0.4s ease; }
+    </style>
+  </head>
+  <body>
+    <script type="application/hyperframes-slideshow+json">
+{
+  "slides": [
+    {
+      "sceneId": "portada",
+      "startTime": 0,
+      "endTime": 3.5,
+      "notes": "Abrir con el caso, sin teoría. La clase se divide en dos bloques con la PE-1.4 en medio: antes de la práctica, las leyes de Fitts y Hick-Hyman, la hipótesis del botón y el diseño del experimento; después, el tamaño de efecto, la validez y la reproducibilidad. Pedir que anoten su respuesta al caso del botón para retomarla al final."
+    },
+    {
+      "sceneId": "caso-taxi",
+      "startTime": 3.5,
+      "endTime": 10,
+      "notes": "Es la exploración de la semana. Dejar la pantalla actual a la vista y preguntar: si el jefe de producto dice que es obvio que el botón ancho será más rápido, qué le responderían. Primer avance: la propuesta de la diseñadora, un botón ancho cerca del pulgar. Segundo avance: Camila usa la aplicación con una mano, de pie en el bus; Andrés, sentado y con las dos manos; no se puede probar con los 4 000 usuarios y hay dos semanas. Tercer avance: el analista de datos pide tres cosas, cuánto, comparado con qué y medido cómo. Anotar sus respuestas para retomarlas al cierre; los datos de la aplicación son de ejemplo. Fuente: página 4.1 del módulo.",
+      "fragments": [
+        5.5,
+        6.5,
+        7.5,
+        8.5
+      ]
+    },
+    {
+      "sceneId": "fitts-tarea",
+      "startTime": 10,
+      "endTime": 16.5,
+      "notes": "Se usa la misma pantalla de pedir un viaje, con el diseño de las aplicaciones de transporte, para ver de dónde sale la fórmula. MacKenzie aclara que Fitts nunca propuso una ley sino un modelo del comportamiento motor, y que la etiqueta ley llegó después. Antes de avanzar, preguntar de qué creen que depende el tiempo que tarda el pulgar en llegar al botón. Primer avance: la dificultad depende de dos medidas, la distancia A desde el pulgar hasta el botón (aquí 320 px) y el ancho W del botón en la dirección del movimiento, que para un pulgar que sube es su alto (aquí 40 px). Se juntan en el índice de dificultad ID = log2(A / W + 1), en bits: 3,17 bits. Segundo avance: con el botón del doble de alto, W = 80, el ID baja a 2,32 bits, unos 0,85 bits menos. Tercer avance: acercar el botón a la mitad de distancia, A = 160 con W = 40, da el mismo 2,32: duplicar el tamaño cuesta lo mismo que acortar la distancia a la mitad, y por eso con el mismo cociente A / W el ID no cambia. La forma original de Fitts es log2(2A / W); la de Shannon es la que se usa aquí. Las medidas de la figura están en píxeles de ejemplo y no son las de una aplicación real. Fuente: MacKenzie (2013).",
+      "fragments": [
+        12,
+        13,
+        14,
+        15
+      ]
+    },
+    {
+      "sceneId": "fitts-recta",
+      "startTime": 16.5,
+      "endTime": 23,
+      "notes": "Es el ejemplo resuelto de la página 4.1, con los tres puntos del ratón de MacKenzie: (1,00 bits; 361 ms), (2,40; 604) y (3,99; 979). Antes de ajustar, preguntar qué forma tienen esos puntos. Primer avance: la recta MT = a + b · IDe, con a = 137,2 ms y b = 207,3 ms/bit, R² = 0,9926. Segundo avance: la pendiente dice cuánto cuesta cada bit adicional de dificultad, unos 207 ms; su recíproco, 4,8 bits/s, es otra forma de resumir la rapidez. Tercer avance: para un diseño nuevo con 3,0 bits, 137,2 + 207,3 × 3,0 = 759 ms; se usa el ID nominal, porque un diseño que todavía no existe no tiene clics con los que calcular el ancho efectivo. El modelo se construye con IDe y se usa con ID. Fuente: MacKenzie (2013).",
+      "fragments": [
+        18.5,
+        19.5,
+        20.5,
+        21.5
+      ]
+    },
+    {
+      "sceneId": "ancho-efectivo",
+      "startTime": 23,
+      "endTime": 29.5,
+      "notes": "El ID nominal supone que la persona acertó siempre dentro del objetivo, pero las personas aciertan con distinta precisión. Preguntar antes: dos personas igual de rápidas, una con clics muy juntos y otra con clics dispersos, ¿merecen el mismo puntaje? Primer avance: ancho efectivo We = 4,133 × SDx, donde SDx es la desviación estándar de las posiciones de los clics respecto del centro de la barra (la columna desviacion_px, no la posición absoluta); con SDx = 4,53 px, We = 18,7 px e IDe = log2(80 / 18,7 + 1) = 2,40 bits. Segundo avance: otra persona con SDx = 7,0 px, We = 28,9 px e IDe = 1,91 bits; los puntos rojos son clics fuera del objetivo. Tercer avance: con el mismo tiempo de 0,604 s, el rendimiento TP = IDe / MT es 3,97 y 3,17 bits/s; el rendimiento incorpora velocidad y exactitud en un solo número. Los clics y los datos de la segunda persona son de ejemplo. Fuente: MacKenzie (2013).",
+      "fragments": [
+        25,
+        26,
+        27,
+        28
+      ]
+    },
+    {
+      "sceneId": "comparacion",
+      "startTime": 29.5,
+      "endTime": 36,
+      "notes": "Ejemplo de MacKenzie con 12 participantes que apuntaron con ratón y con un puntero remoto (RemotePoint), con distancias de 40, 80 y 160 px y anchos de 10, 20 y 40 px. Primer avance, las dos rectas: ratón MT = 159,01 + 203,82 · IDe con R² = 0,9702; RemotePoint MT = 596,86 + 408,38 · IDe con R² = 0,9332. Segundo avance, el rendimiento medio de las nueve condiciones: 3,60 bits/s para el ratón y 1,46 para el RemotePoint. Tercer avance, la advertencia de MacKenzie: el ratón es claramente mejor, pero mejor depende de la medida, y para presentar ante público el RemotePoint puede ser la mejor opción. Es una de las tres formas de usar Fitts en HCI: comparar diseños con la ecuación. Preguntar en qué situación elegirían el dispositivo más lento. Fuente: MacKenzie (2013).",
+      "fragments": [
+        31.5,
+        32.5,
+        33.5,
+        34.5
+      ]
+    },
+    {
+      "sceneId": "hick",
+      "startTime": 36,
+      "endTime": 41.5,
+      "notes": "La otra ley predice el tiempo de reacción de elección: el tiempo para elegir entre n estímulos, RT = a + b · log2(n + 1), con valores razonables a ≈ 200 ms y b ≈ 150 ms/bit. Antes de avanzar, preguntar cuánto más tarda elegir entre 26 letras que entre 2 opciones. Con esas constantes, 2 opciones tardan unos 438 ms, 8 unos 675 ms y 26 letras equiprobables, con log2(27) = 4,75 bits, unos 913 ms: crece con el logaritmo, no en línea recta. Primer avance: un menú de 8 opciones en un solo nivel, 675 ms, frente a dos niveles de 2 y luego 4, 438 + 548 = 986 ms; por eso el diseño de menús favorece la anchura sobre la profundidad. Segundo avance, las cautelas: son valores ilustrativos de las constantes, no datos medidos; la elección no es búsqueda visual, que crece de forma lineal con el número de ítems; y si algunas alternativas son más probables, la información baja y la reacción se acelera. MacKenzie advierte que esta ley no ganó en HCI el impulso de la de Fitts. Fuente: MacKenzie (2013).",
+      "fragments": [
+        38,
+        39,
+        40
+      ]
+    },
+    {
+      "sceneId": "hipotesis",
+      "startTime": 41.5,
+      "endTime": 48,
+      "notes": "Con una ley, la hipótesis del caso deja de ser una opinión. Retomar las tres respuestas que pidió el analista. Primer avance: el botón actual mide 40 px de alto y está a 320 px del pulgar. Segundo avance: el botón nuevo duplica el alto a la misma distancia, W = 80. Tercer avance: el ID baja de 3,17 a 2,32 bits, unos 0,85 bits, y con la pendiente de 204 ms/bit que MacKenzie obtuvo para el ratón la ley predice una diferencia de unos 173 ms; esa predicción, con su dirección y su tamaño en milisegundos, es la hipótesis que el experimento puede confirmar o refutar. Aclarar que la pendiente del ratón es una referencia: con el pulgar sobre una pantalla táctil la pendiente sería otra y es justamente lo que se mediría. Pedir que cada pareja escriba hoy una predicción para el experimento: cuánto cambia el tiempo entre las condiciones B y C. Fuente: MacKenzie (2013), página 4.1.",
+      "fragments": [
+        43.5,
+        44.5,
+        45.5,
+        46.5
+      ]
+    },
+    {
+      "sceneId": "variables",
+      "startTime": 48,
+      "endTime": 56.5,
+      "notes": "Una ley dice qué predecir; el diseño del experimento decide qué se cambia, qué se mide y qué se mantiene fijo. Revelar una clase por avance y pedir un ejemplo propio antes de ver el de Fitts. Independiente: la condición de apuntado, con cuatro niveles; nadie puede influir en ella desde el participante. Dependiente: el tiempo, los errores y el rendimiento, siempre con unidad. De control: lo que se fija, como el dispositivo, el tamaño y el zoom de la pantalla y las instrucciones. Aleatoria: lo que se deja variar al azar, casi siempre características de la persona, como la destreza. De confusión: lo que cambia junto con la independiente y mezcla los efectos; el caso típico es el orden de las condiciones si todos hacen la misma secuencia. MacKenzie recomienda una o dos variables independientes y tres a lo sumo, porque con k variables hay 2^k − 1 efectos que interpretar. Fuente: MacKenzie (2013), página 4.3.",
+      "fragments": [
+        50,
+        51,
+        52,
+        53,
+        54,
+        55
+      ]
+    },
+    {
+      "sceneId": "disenos",
+      "startTime": 56.5,
+      "endTime": 62,
+      "notes": "Primer avance: en un diseño dentro de sujetos cada participante prueba todos los niveles; usa menos participantes y reparte por igual la predisposición de cada persona entre las condiciones. Segundo avance: en uno entre sujetos cada participante prueba un solo nivel y hay un grupo por condición; evita la interferencia entre condiciones pero necesita más gente. El costo del diseño dentro de sujetos son los efectos de orden, práctica y fatiga: la práctica es una variable de confusión si el orden es siempre el mismo. La mayoría de los factores de HCI se asignan dentro de sujetos. Preguntar cuál elegirían para comparar tres formas de confirmar un viaje con 12 personas. Fuente: MacKenzie (2013).",
+      "fragments": [
+        58.5,
+        59.5,
+        60.5
+      ]
+    },
+    {
+      "sceneId": "latino",
+      "startTime": 62,
+      "endTime": 68.5,
+      "notes": "El orden compensatorio de las condiciones para neutralizar los efectos de orden se llama contrabalanceo, y su herramienta clásica es el cuadrado latino: cada símbolo aparece exactamente una vez en cada fila y en cada columna. Primer avance: el cuadrado simple de 3 × 3 (ABC, BCA, CAB) pone cada condición una vez en cada posición, pero el par AB aparece dos veces entre condiciones consecutivas y el par BA ninguna. Segundo avance: para un número par de niveles existe el cuadrado latino balanceado, y el de 4 × 4 es ABDC, BCAD, CDBA, DACB. Tercer avance: en él los 12 pares ordenados de condiciones consecutivas aparecen una vez cada uno. Para un número impar de niveles se usan todas las permutaciones. En PE-1.4, en las parejas impares el participante 1 hace ABDC y el 2 hace BCAD; en las pares, el 1 hace CDBA y el 2 hace DACB; una pareja cubre dos filas y el balance completo lo da la clase entera. Fuente: MacKenzie (2013).",
+      "fragments": [
+        64,
+        65,
+        66,
+        67
+      ]
+    },
+    {
+      "sceneId": "condiciones",
+      "startTime": 68.5,
+      "endTime": 77,
+      "notes": "Antes de la práctica, ver las cuatro condiciones del microexperimento a escala real: A (distancia 200 px, ancho 100 px), B (400 y 100), C (400 y 50) y D (800 y 50). Revelar una por avance y pedir que estimen cuál será la más lenta. Los ID nominales son 1,58; 2,32; 3,17 y 4,09 bits. Quinto avance: B y C comparten la distancia y solo cambia el ancho, así que la diferencia entre ellas es la que se predijo en la hipótesis, unos 0,85 bits. La condición D usa una distancia de 800 px: la ventana del navegador debe medir al menos 900 px de ancho y el zoom estar al 100 %. Cada condición son 12 clics alternados entre dos barras; el clic inicial en la barra resaltada no se registra y los dos primeros de los 12 son de práctica, así que quedan 10 clics válidos. Fuente: página 4.2 del módulo.",
+      "fragments": [
+        70.5,
+        71.5,
+        72.5,
+        73.5,
+        74.5,
+        75.5
+      ]
+    },
+    {
+      "sceneId": "pe",
+      "startTime": 77,
+      "endTime": 85.5,
+      "notes": "La práctica se hace en parejas y dura unos 70 minutos. Cada pareja escribe primero su predicción para la diferencia entre B y C y por qué. Después cada persona hace sus cuatro condiciones con el orden que le toca según el número de pareja y de participante (unos 2 minutos con la página) y descarga su archivo de datos. Con ese archivo calculan por condición el tiempo medio, el ID, el ancho efectivo, el IDe y el rendimiento, y ajustan la recta con la hoja de cálculo o con la calculadora de la página 4.2. Antes de que calculen, recordar que SDx es la desviación estándar de desviacion_px, no de la posición absoluta, y que la predicción para A = 300 y W = 60 usa el ID nominal. Para validar la herramienta, la calculadora debe dar con el ejemplo de la aplicación de taxis b = 148 ms/bit, a = 260 ms y R² = 0,997. Si alguien usa touchpad, anotarlo como variable de control. Al final, pedir en la pizarra el tiempo medio de B y C de cada persona: sirve para el bloque siguiente.",
+      "fragments": [
+        79,
+        80,
+        81,
+        82,
+        83,
+        84
+      ]
+    },
+    {
+      "sceneId": "tamano-efecto",
+      "startTime": 85.5,
+      "endTime": 92,
+      "notes": "Saber que dos condiciones difieren no dice cuánto difieren. Con los tiempos medios de B y C de la clase, repetir en la pizarra lo que muestra la figura con datos de ejemplo de ocho personas y dos botones. Primer avance: el botón pequeño tarda 837,75 ms y el grande 712,5 ms; la diferencia de medias, 125,25 ms, es el tamaño de efecto en su forma más simple. Segundo avance: al reportar un porcentaje hay que decir su base, el pequeño es 17,6 % más lento y el grande es 15,0 % más rápido, dos cifras de los mismos datos. Tercer avance: el estandarizado, d_av = 125,25 / 55,8 = 2,24, y con la corrección de Hedges g_av cerca de 2,12 (factor 0,945 con 16 observaciones). La referencia de Cohen de 0,8 para grande es arbitraria; lo que importa es la consecuencia práctica, 125 ms en cada confirmación, y que con ocho participantes el intervalo de confianza es amplio. Fuentes: MacKenzie (2013); Lakens (2013).",
+      "fragments": [
+        87.5,
+        88.5,
+        89.5,
+        90.5
+      ]
+    },
+    {
+      "sceneId": "variantes-d",
+      "startTime": 92,
+      "endTime": 98.5,
+      "notes": "Lakens describe tres variantes de d en un diseño dentro de sujetos, según el divisor. Primer avance: d_z divide la diferencia media entre la desviación estándar de las diferencias por participante; en el ejemplo da 8,9 porque las dos mediciones están muy correlacionadas, r = 0,97, y cuando r supera 0,5 es mayor que las otras dos. Segundo avance: d_rm ajusta esa desviación con la correlación r. Tercer avance: d_av divide entre el promedio de las dos desviaciones estándar e ignora r; Lakens recomienda reportar d_rm o d_av porque d_z casi no se usa para comparar con otros estudios. En esta asignatura se reporta d_av con la corrección de Hedges, que se llama g_av, y se declara cuál se usó; las referencias de Cohen de 0,2, 0,5 y 0,8 no deben aplicarse de forma rígida. Fuente: Lakens (2013).",
+      "fragments": [
+        94,
+        95,
+        96,
+        97
+      ]
+    },
+    {
+      "sceneId": "validez",
+      "startTime": 98.5,
+      "endTime": 105,
+      "notes": "Un resultado vale tanto como el diseño que lo produjo. Primer avance, las dos clases de validez: la interna es la medida en que el efecto observado se debe a las condiciones de prueba y no a otra cosa, y las variables de confusión la amenazan; la externa es la medida en que los resultados se generalizan a otras personas y situaciones. Segundo avance: mejorar una cuesta a la otra; una tarea muy controlada y artificial gana validez interna y pierde externa, y una muy realista hace lo contrario. Tercer avance, la respuesta de MacKenzie: varias preguntas estrechas y comprobables que, juntas, cubran lo amplio. Una pregunta comprobable es, por ejemplo, la velocidad de entrada en palabras por minuto con una técnica frente a otra tras una hora de uso, no si la técnica nueva es mejor. Preguntar a qué población se puede generalizar el resultado de su clase. Fuente: MacKenzie (2013), página 4.4.",
+      "fragments": [
+        100.5,
+        101.5,
+        102.5,
+        103.5
+      ]
+    },
+    {
+      "sceneId": "informe",
+      "startTime": 105,
+      "endTime": 114.5,
+      "notes": "Ejemplo resuelto de la página 4.4: un equipo reclutó a diez compañeros de su carrera y todos escribieron 20 frases con el teclado A y después con el B; el informe dice que B fue más rápido. Antes de avanzar, preguntar qué le falta a ese informe. Revelar un problema y su remedio por avance: la pregunta no se puede comprobar, así que se reescribe en palabras por minuto; el orden fijo mezcla la práctica con el teclado, así que se contrabalancea con AB y BA, cinco personas por secuencia; las instrucciones distintas de cada integrante sesgan el procedimiento, así que se escribe un protocolo; cada teléfono distinto es una variable sin controlar, así que se fija el dispositivo; diez compañeros de la misma carrera limitan la validez externa, así que se dice para quién vale; y un informe reproducible dice quiénes participaron, con qué aparato, qué tarea, qué procedimiento, qué variables, qué diseño y en qué orden. MacKenzie sostiene que la investigación que no se puede replicar es inútil. Es la sección de validez y método reproducible de TA-1.4. Fuente: MacKenzie (2013).",
+      "fragments": [
+        107,
+        108,
+        109,
+        110,
+        111,
+        112,
+        113
+      ]
+    },
+    {
+      "sceneId": "actividades",
+      "startTime": 114.5,
+      "endTime": 118,
+      "notes": "Las consignas completas, las plantillas y las rúbricas están en Canvas. PE-1.4 se hizo en clase, en parejas, vale 2,25 puntos y cierra hoy al terminar la clase, con el archivo de datos de cada participante. TA-1.4 es individual, vale 2,25 puntos y cierra el domingo 22 de noviembre a las 23:59: una hipótesis con la ley de Fitts y su predicción en milisegundos, la diferencia entre B y C en milisegundos y en porcentaje con su base, d_av con la corrección de Hedges, al menos tres amenazas a la validez y un método reproducible, de dos a tres páginas en PDF. El archivo datos-del-curso.csv con los tiempos de B y C de todos se publica en la página de Materiales después de la sesión. Quien no pudo asistir usa los 10 clics válidos de su propio B y C y avisa que no son independientes."
+    },
+    {
+      "sceneId": "cierre",
+      "startTime": 118,
+      "endTime": 121.5,
+      "notes": "Volver al caso del botón de confirmar y a las respuestas del inicio: ahora saben que más rápido se vuelve una hipótesis cuando dice cuánto (unos 173 ms), comparado con qué (el botón actual) y medido cómo (tiempo de movimiento con un diseño dentro de sujetos y contrabalanceado). Un resultado vale tanto como el diseño que lo produjo, y por eso el informe debe permitir que otra persona lo repita. Recordar que el archivo de datos del curso se publica en Materiales después de la sesión."
+    }
+  ],
+  "slideSequences": []
+}
+    </script>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="121.5" data-width="1920" data-height="1080">
+
+      <section id="portada" class="clip slide dark" data-start="0" data-duration="3.5" data-track-index="0" data-label="Portada" data-frags="0">
+        <div class="frame" id="portada-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">01 / 19</span>
+      <p class="course" data-in="0" style="--i:0">LTI_05U_IHC · Semana 4</p>
+      <h1 class="claim xl" data-in="1" style="--i:1">Más rápido no es una hipótesis hasta decir cuánto</h1>
+      <p class="lead" data-in="2" style="--i:2">Leyes de Fitts y Hick-Hyman, experimentos controlados y tamaño de efecto</p>
+      <p class="byline" data-in="3" style="--i:3">Interacción Hombre Computadora · Charlie Cárdenas Toledo</p>
+        </div>
+      </section>
+
+      <section id="caso-taxi" class="clip slide" data-start="3.5" data-duration="6.5" data-track-index="0" data-label="El botón de confirmar" data-frags="3">
+        <div class="frame" id="caso-taxi-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">02 / 19</span>
+      <h1 class="claim" data-in="0" style="--i:0">El botón de confirmar un viaje: ¿será más rápido uno ancho?</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/boton-taxi/boton-taxi.html?embed" title="Dos pantallas de pedir un viaje con el diseño de Uber, con las opciones UberX y Uber Go: la actual, con un botón Elegir pequeño en el borde superior, y la propuesta, con un botón negro ancho cerca del pulgar. Camila usa una mano y Andrés dos; hay 4 000 usuarios y dos semanas." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="fitts-tarea" class="clip slide" data-start="10" data-duration="6.5" data-track-index="0" data-label="Dificultad de apuntar" data-frags="3">
+        <div class="frame" id="fitts-tarea-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">03 / 19</span>
+      <h1 class="claim" data-in="0" style="--i:0">Pedir un viaje es apuntar con el pulgar</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/fitts-tarea/fitts-tarea.html?embed" title="La pantalla de pedir un viaje con el pulgar abajo y el botón Elegir UberX a 320 píxeles de distancia y 40 de alto. La dificultad es 3,17 bits; con el botón del doble de alto baja a 2,32 bits, igual que si se acercara a la mitad de distancia." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="fitts-recta" class="clip slide" data-start="16.5" data-duration="6.5" data-track-index="0" data-label="La recta de Fitts" data-frags="3">
+        <div class="frame" id="fitts-recta-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">04 / 19</span>
+      <h1 class="claim" data-in="0" style="--i:0">Una recta convierte la dificultad en milisegundos</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/fitts-recta/fitts-recta.html?embed" title="Gráfico del tiempo de movimiento frente al IDe con los puntos 1,00 bits y 361 ms, 2,40 y 604, 3,99 y 979. La recta MT igual 137,2 más 207,3 por IDe tiene R cuadrado 0,9926; cada bit cuesta unos 207 ms y un diseño de 3,0 bits tarda 759 ms." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="ancho-efectivo" class="clip slide" data-start="23" data-duration="6.5" data-track-index="0" data-label="Ancho efectivo" data-frags="3">
+        <div class="frame" id="ancho-efectivo-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">05 / 19</span>
+      <h1 class="claim" data-in="0" style="--i:0">El ancho efectivo premia a quien acierta con precisión</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/ancho-efectivo/ancho-efectivo.html?embed" title="Dos personas apuntan a un objetivo de 20 px. La primera tiene clics juntos, SDx de 4,53 px, We de 18,7 px, IDe de 2,40 bits y rendimiento de 3,97 bits por segundo. La segunda dispersa más: We de 28,9 px, IDe de 1,91 y rendimiento de 3,17." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="comparacion" class="clip slide" data-start="29.5" data-duration="6.5" data-track-index="0" data-label="Ratón y puntero remoto" data-frags="3">
+        <div class="frame" id="comparacion-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">06 / 19</span>
+      <h1 class="claim" data-in="0" style="--i:0">La recta permite comparar dispositivos sin discutir</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/comparacion-dispositivos/comparacion-dispositivos.html?embed" title="Dos rectas del tiempo frente al IDe: la del ratón, más baja, y la del RemotePoint, más alta y empinada. El rendimiento medio es 3,60 bits por segundo para el ratón y 1,46 para el RemotePoint." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="hick" class="clip slide" data-start="36" data-duration="5.5" data-track-index="0" data-label="Hick-Hyman" data-frags="2">
+        <div class="frame" id="hick-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">07 / 19</span>
+      <h1 class="claim" data-in="0" style="--i:0">Elegir entre más opciones tarda más, pero poco más</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="2" src="figuras/hick-hyman/hick-hyman.html?embed" title="Barras del tiempo de reacción de elección: 438 ms con 2 opciones, 675 con 8 y 913 con 26 letras. Debajo, un menú de 8 opciones en un nivel, 675 ms, frente a dos niveles de 2 y 4, 986 ms." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="hipotesis" class="clip slide" data-start="41.5" data-duration="6.5" data-track-index="0" data-label="La hipótesis del botón" data-frags="3">
+        <div class="frame" id="hipotesis-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">08 / 19</span>
+      <h1 class="claim" data-in="0" style="--i:0">Con la ley, la opinión se vuelve una hipótesis comprobable</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/hipotesis-boton/hipotesis-boton.html?embed" title="Dos pantallas de pedir un viaje: con el botón Elegir UberX de 40 píxeles de alto y con uno de 80, los dos a 320 píxeles del pulgar. La dificultad baja 0,85 bits y la hipótesis es que el botón ancho tarda unos 173 milisegundos menos." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="variables" class="clip slide" data-start="48" data-duration="8.5" data-track-index="0" data-label="Cinco clases de variables" data-frags="5">
+        <div class="frame" id="variables-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">09 / 19</span>
+      <h1 class="claim" data-in="0" style="--i:0">Antes de medir, cada variable tiene su papel</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="5" src="figuras/variables-clases/variables-clases.html?embed" title="Cinco clases de variables con su ejemplo en el microexperimento de Fitts: independiente, dependiente, de control, aleatoria y de confusión." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="disenos" class="clip slide" data-start="56.5" data-duration="5.5" data-track-index="0" data-label="Dentro y entre sujetos" data-frags="2">
+        <div class="frame" id="disenos-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">10 / 19</span>
+      <h1 class="claim" data-in="0" style="--i:0">Cada persona prueba todo, o cada grupo prueba una</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="2" src="figuras/dentro-entre/dentro-entre.html?embed" title="A la izquierda, un diseño dentro de sujetos: tres personas prueban las condiciones A, B y C. A la derecha, un diseño entre sujetos: tres grupos prueban una condición cada uno. Debajo, el costo de cada diseño." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="latino" class="clip slide" data-start="62" data-duration="6.5" data-track-index="0" data-label="Cuadrados latinos" data-frags="3">
+        <div class="frame" id="latino-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">11 / 19</span>
+      <h1 class="claim" data-in="0" style="--i:0">El cuadrado latino balanceado reparte el orden entre personas</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/cuadrados-latinos/cuadrados-latinos.html?embed" title="Un cuadrado latino simple de 3 por 3 donde el par AB aparece dos veces y el BA ninguna, el cuadrado balanceado de 4 por 4 ABDC, BCAD, CDBA y DACB, y los doce pares ordenados de condiciones consecutivas." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="condiciones" class="clip slide" data-start="68.5" data-duration="8.5" data-track-index="0" data-label="Las cuatro condiciones" data-frags="5">
+        <div class="frame" id="condiciones-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">12 / 19</span>
+      <h1 class="claim" data-in="0" style="--i:0">Cuatro condiciones, y B y C solo difieren en el ancho</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="5" src="figuras/condiciones-fitts/condiciones-fitts.html?embed" title="Las cuatro condiciones del microexperimento a escala: A con distancia 200 y ancho 100, B con 400 y 100, C con 400 y 50, y D con 800 y 50, con sus ID de 1,58, 2,32, 3,17 y 4,09 bits." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="pe" class="clip slide" data-start="77" data-duration="8.5" data-track-index="0" data-label="Práctica PE-1.4" data-frags="5">
+        <div class="frame" id="pe-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">13 / 19</span>
+      <h1 class="claim" data-in="0" style="--i:0">Ahora, en parejas: la práctica PE-1.4</h1>
+      <div class="timeline">
+        <div class="row" data-f="1"><b>1</b><strong>Predigan</strong><em>Cuánto cambia el tiempo entre B y C, y por qué</em></div>
+        <div class="row" data-f="2"><b>2</b><strong>Hagan</strong><em>Las cuatro condiciones en el orden que les toca</em></div>
+        <div class="row" data-f="3"><b>3</b><strong>Descarguen</strong><em>El archivo de datos de cada participante</em></div>
+        <div class="row" data-f="4"><b>4</b><strong>Calculen</strong><em>ID, We, IDe y rendimiento por condición, y la recta</em></div>
+        <div class="row" data-f="5"><b>5</b><strong>Contrasten</strong><em>Con la calculadora, y predigan para A = 300 y W = 60</em></div>
+      </div>
+        </div>
+      </section>
+
+      <section id="tamano-efecto" class="clip slide" data-start="85.5" data-duration="6.5" data-track-index="0" data-label="Tamaño de efecto" data-frags="3">
+        <div class="frame" id="tamano-efecto-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">14 / 19</span>
+      <h1 class="claim" data-in="0" style="--i:0">Cuánto cambió importa más que si cambió</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/tamano-efecto/tamano-efecto.html?embed" title="Dos botones comparados con ocho personas: 837,75 ms el pequeño y 712,5 ms el grande, diferencia de 125,25 ms, 17,6 por ciento más lento o 15,0 por ciento más rápido según la base, d_av de 2,24 y g_av de 2,12." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="variantes-d" class="clip slide" data-start="92" data-duration="6.5" data-track-index="0" data-label="Variantes de d" data-frags="3">
+        <div class="frame" id="variantes-d-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">15 / 19</span>
+      <h1 class="claim" data-in="0" style="--i:0">Con las mismas mediciones, d depende del divisor</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/variantes-d/variantes-d.html?embed" title="Tres variantes de d: d_z, que da 8,9 en el ejemplo; d_rm, que depende de la correlación; y d_av, que da 2,24. En la asignatura se reporta d_av con la corrección de Hedges." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="validez" class="clip slide" data-start="98.5" data-duration="6.5" data-track-index="0" data-label="Validez" data-frags="3">
+        <div class="frame" id="validez-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">16 / 19</span>
+      <h1 class="claim" data-in="0" style="--i:0">Controlar más da validez interna y quita externa</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/validez/validez.html?embed" title="Validez interna y externa. Una tarea muy controlada y artificial gana validez interna y pierde externa; una muy realista, al revés. El remedio es hacer varias preguntas estrechas y comprobables." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="informe" class="clip slide" data-start="105" data-duration="9.5" data-track-index="0" data-label="Un informe reproducible" data-frags="6">
+        <div class="frame" id="informe-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">17 / 19</span>
+      <h1 class="claim" data-in="0" style="--i:0">Un informe que dice B fue más rápido tiene seis problemas</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="6" src="figuras/informe-teclado/informe-teclado.html?embed" title="Seis problemas de un estudio de dos teclados con diez compañeros y su remedio: pregunta comprobable, contrabalanceo, protocolo escrito, mismo dispositivo, validez externa limitada y método reproducible." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="actividades" class="clip slide" data-start="114.5" data-duration="3.5" data-track-index="0" data-label="Actividades de la semana" data-frags="0">
+        <div class="frame" id="actividades-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">18 / 19</span>
+      <h1 class="claim" data-in="0" style="--i:0">Dos actividades calificadas cierran la semana</h1>
+      <div class="cards two tall">
+        <div class="card" data-in="1" style="--i:1"><span class="tag">PE-1.4 · 2,25 puntos</span><strong>Microexperimento cuantitativo</strong><em>Diseño, registro, cálculo de la recta de Fitts y conclusiones</em></div>
+        <div class="card" data-in="2" style="--i:2"><span class="tag">TA-1.4 · 2,25 puntos</span><strong>Informe experimental</strong><em>Hipótesis, tamaño de efecto, validez y método reproducible</em></div>
+      </div>
+        </div>
+      </section>
+
+      <section id="cierre" class="clip slide dark" data-start="118" data-duration="3.5" data-track-index="0" data-label="Cierre" data-frags="0">
+        <div class="frame" id="cierre-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">19 / 19</span>
+      <h1 class="claim xl" data-in="0" style="--i:0">Un resultado vale tanto como el diseño que lo produjo</h1>
+      <p class="lead" data-in="1" style="--i:1">Los datos de la clase estarán en Materiales para la TA-1.4</p>
+      <p class="byline" data-in="2" style="--i:2">Fuentes: MacKenzie (2013) · Lakens (2013)</p>
+        </div>
+      </section>
+    </div>
+    <script>
+      // Con el motor de HyperFrames (check, Studio) el registro ya existe.
+      // Al presentar, el reproductor mueve esta línea de tiempo directamente.
+      const engineHosted = Object.prototype.hasOwnProperty.call(window, "__timelines");
+      window.__timelines = window.__timelines || {};
+      if (!engineHosted) document.documentElement.classList.add("live");
+
+      // Las figuras incrustadas reenvían las flechas aquí: se les quita el foco y se entrega la tecla
+      // al documento donde el reproductor la escucha, para que las flechas siempre controlen el deck.
+      window.addEventListener("message", (ev) => {
+        const m = ev.data;
+        if (!m || m.type !== "deck-key") return;
+        let w = window;
+        for (;;) {
+          try { if (w.document.activeElement && w.document.activeElement !== w.document.body) w.document.activeElement.blur(); } catch (e) {}
+          if (w === w.parent) break;
+          w = w.parent;
+        }
+        try { w.focus(); w.document.dispatchEvent(new KeyboardEvent("keydown", { key: m.key, bubbles: true, cancelable: true })); } catch (e) {}
+      });
+
+      // El reproductor retrocede de diapositiva en diapositiva. Se reemplaza prev() del controlador para
+      // que teclado, botón y deslizamiento deshagan un avance a la vez: de un avance al anterior y,
+      // desde el primero, al último avance de la diapositiva previa.
+      (function installStepBack() {
+        let w = window, host = null;
+        for (;;) {
+          try { host = w.document.querySelector("hyperframes-slideshow"); } catch (e) {}
+          if (host || w === w.parent) break;
+          w = w.parent;
+        }
+        if (!host) return;
+        const patch = () => {
+          const c = host.controller;
+          if (!c) return false;
+          if (c.__stepBack) return true;
+          c.__stepBack = true;
+          const original = c.prev.bind(c);
+          c.prev = () => {
+            const f = c.frame;
+            if (c.stack.length > 1) return original();
+            if (f.fragmentIndex > 0) c.resumeSlide(f.slideIndex, f.fragmentIndex - 1);
+            else if (f.slideIndex > 0) {
+              const p = f.slideIndex - 1, n = c.show.slides[p].fragments.length;
+              c.resumeSlide(p, n > 0 ? n - 1 : -1);
+            }
+          };
+          return true;
+        };
+        setInterval(patch, 300);
+        patch();
+      })();
+
+      const ENTER = 2;
+      const tl = gsap.timeline({ paused: true });
+      tl.to({}, { duration: 121.5 }, 0);
+
+      const figSyncs = [];
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      slides.forEach((slide, index) => {
+        const start = Number(slide.dataset.start);
+        const end = start + Number(slide.dataset.duration);
+        const frame = slide.querySelector(".frame");
+        tl.set(frame, { opacity: 1 }, start);
+        if (index < slides.length - 1) tl.set(frame, { opacity: 0 }, end);
+
+        slide.querySelectorAll("[data-in]").forEach((el) => {
+          const i = Number(el.dataset.in);
+          tl.fromTo(el, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, start + 0.12 + i * 0.07);
+        });
+        slide.querySelectorAll("[data-f]").forEach((el) => {
+          const hold = start + ENTER + Number(el.dataset.f);
+          tl.fromTo(el, { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, hold - 0.6);
+        });
+        slide.querySelectorAll("iframe[data-fig]").forEach((el) => {
+          // La figura corre en su propio documento: en vivo anima sola hacia el estado pedido;
+          // con el motor (check, Studio) sigue la línea de tiempo cuadro a cuadro.
+          // El estado se calcula desde el tiempo de la línea de tiempo, así responde igual
+          // al avanzar, al retroceder y al saltar entre diapositivas.
+          const steps = Number(el.dataset.fig);
+          let sent = -1;
+          const wanted = () => {
+            const t = tl.time();
+            let u = 0;
+            for (let step = 1; step <= steps; step++) u += Math.min(1, Math.max(0, (t - (start + ENTER + step - 0.6)) / 0.6));
+            return engineHosted ? u / steps : Math.round(u) / steps;
+          };
+          const send = (force) => {
+            const value = wanted();
+            if (!el.contentWindow || (!force && value === sent)) return;
+            sent = value;
+            el.contentWindow.postMessage({ type: "fig", mode: engineHosted ? "set" : "go", value }, "*");
+          };
+          figSyncs.push(send);
+          el.addEventListener("load", () => send(true));
+        });
+        slide.querySelectorAll("[data-hl]").forEach((el) => {
+          const hold = start + ENTER + Number(el.dataset.hl);
+          tl.to(el, { backgroundColor: "#fbe3a6", color: "#5c3d00", duration: 0.4 }, hold - 0.5);
+        });
+      });
+
+      tl.eventCallback("onUpdate", () => figSyncs.forEach((sync) => sync()));
+      // En vivo el reproductor puede mover la línea de tiempo sin emitir eventos: se revisa en cada tic de GSAP.
+      if (!engineHosted) gsap.ticker.add(() => figSyncs.forEach((sync) => sync()));
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

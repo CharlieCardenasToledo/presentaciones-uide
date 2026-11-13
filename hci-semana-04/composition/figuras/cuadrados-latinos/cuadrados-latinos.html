@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Cuadrados latinos</title>
+<style>
+:root{--wine:#910048;--wine-deep:#6d0036;--gold:#e8a920;--teal:#0c6b62;--amber:#7a5200;--ink:#1f1a1d;--muted:#5a5257;--tint:#f6f1f3;--red:#b3261e}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:transparent;font-family:system-ui,"Segoe UI",sans-serif;color:var(--ink);overflow:hidden}
+#st{position:absolute;left:0;top:0;width:1560px;height:720px;transform-origin:0 0}
+.b{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border-radius:16px;padding:6px 14px;font-weight:700;font-size:32px;line-height:1.15;background:var(--tint);color:var(--ink)}
+.b small{display:block;font-size:24px;font-weight:600;margin-top:4px}
+.t{position:absolute;font-size:34px;font-weight:700;line-height:1.2}
+.pill{position:absolute;display:flex;align-items:center;justify-content:center;height:52px;padding:0 20px;border-radius:26px;color:#fff;font:800 24px/1 ui-monospace,Consolas,monospace;white-space:nowrap;opacity:0;z-index:5}
+.ln{position:absolute;background:#cfc6ca}
+.c{position:absolute;width:84px;height:66px;border-radius:12px;display:flex;align-items:center;justify-content:center;font:800 30px system-ui;background:#f6f1f3;color:var(--ink)}
+</style></head><body>
+<div id="st">
+<div id="ts" class="t" style="left:30px;top:8px;width:520px;opacity:0;color:var(--wine);font-size:28px">Cuadrado latino simple 3 × 3</div>
+<div id="tb" class="t" style="left:640px;top:8px;width:700px;opacity:0;color:var(--teal);font-size:28px">Cuadrado latino balanceado 4 × 4</div>
+<div id="sf0" class="t" style="left:30px;top:100px;width:130px;opacity:0;font-size:22px;color:var(--muted)">Secuencia 1</div>
+<div id="s00" class="c" data-r="1" style="left:180px;top:86px;opacity:0">A</div>
+<div id="s01" class="c" data-r="1" style="left:274px;top:86px;opacity:0">B</div>
+<div id="s02" class="c" data-r="0" style="left:368px;top:86px;opacity:0">C</div>
+<div id="sf1" class="t" style="left:30px;top:178px;width:130px;opacity:0;font-size:22px;color:var(--muted)">Secuencia 2</div>
+<div id="s10" class="c" data-r="0" style="left:180px;top:164px;opacity:0">B</div>
+<div id="s11" class="c" data-r="0" style="left:274px;top:164px;opacity:0">C</div>
+<div id="s12" class="c" data-r="0" style="left:368px;top:164px;opacity:0">A</div>
+<div id="sf2" class="t" style="left:30px;top:256px;width:130px;opacity:0;font-size:22px;color:var(--muted)">Secuencia 3</div>
+<div id="s20" class="c" data-r="0" style="left:180px;top:242px;opacity:0">C</div>
+<div id="s21" class="c" data-r="1" style="left:274px;top:242px;opacity:0">A</div>
+<div id="s22" class="c" data-r="1" style="left:368px;top:242px;opacity:0">B</div>
+<div id="sn" class="b" style="left:30px;top:330px;width:470px;height:100px;opacity:0;text-align:left;align-items:flex-start;justify-content:center;padding:14px 24px;background:#fcefc9;color:var(--amber);font-size:24px;font-weight:700">AB aparece dos veces entre condiciones consecutivas y BA ninguna</div>
+<div id="bf0" class="t" style="left:640px;top:100px;width:130px;opacity:0;font-size:22px;color:var(--muted)">Secuencia 1</div>
+<div id="b00" class="c" style="left:790px;top:86px;opacity:0">A</div>
+<div id="b01" class="c" style="left:884px;top:86px;opacity:0">B</div>
+<div id="b02" class="c" style="left:978px;top:86px;opacity:0">D</div>
+<div id="b03" class="c" style="left:1072px;top:86px;opacity:0">C</div>
+<div id="bf1" class="t" style="left:640px;top:178px;width:130px;opacity:0;font-size:22px;color:var(--muted)">Secuencia 2</div>
+<div id="b10" class="c" style="left:790px;top:164px;opacity:0">B</div>
+<div id="b11" class="c" style="left:884px;top:164px;opacity:0">C</div>
+<div id="b12" class="c" style="left:978px;top:164px;opacity:0">A</div>
+<div id="b13" class="c" style="left:1072px;top:164px;opacity:0">D</div>
+<div id="bf2" class="t" style="left:640px;top:256px;width:130px;opacity:0;font-size:22px;color:var(--muted)">Secuencia 3</div>
+<div id="b20" class="c" style="left:790px;top:242px;opacity:0">C</div>
+<div id="b21" class="c" style="left:884px;top:242px;opacity:0">D</div>
+<div id="b22" class="c" style="left:978px;top:242px;opacity:0">B</div>
+<div id="b23" class="c" style="left:1072px;top:242px;opacity:0">A</div>
+<div id="bf3" class="t" style="left:640px;top:334px;width:130px;opacity:0;font-size:22px;color:var(--muted)">Secuencia 4</div>
+<div id="b30" class="c" style="left:790px;top:320px;opacity:0">D</div>
+<div id="b31" class="c" style="left:884px;top:320px;opacity:0">A</div>
+<div id="b32" class="c" style="left:978px;top:320px;opacity:0">C</div>
+<div id="b33" class="c" style="left:1072px;top:320px;opacity:0">B</div>
+<div id="p0" class="b" style="left:30px;top:470px;width:118px;height:56px;font-size:28px;background:#cfe9e5;color:var(--teal);opacity:0">AB</div>
+<div id="p1" class="b" style="left:156px;top:470px;width:118px;height:56px;font-size:28px;background:#cfe9e5;color:var(--teal);opacity:0">BD</div>
+<div id="p2" class="b" style="left:282px;top:470px;width:118px;height:56px;font-size:28px;background:#cfe9e5;color:var(--teal);opacity:0">DC</div>
+<div id="p3" class="b" style="left:408px;top:470px;width:118px;height:56px;font-size:28px;background:#cfe9e5;color:var(--teal);opacity:0">BC</div>
+<div id="p4" class="b" style="left:534px;top:470px;width:118px;height:56px;font-size:28px;background:#cfe9e5;color:var(--teal);opacity:0">CA</div>
+<div id="p5" class="b" style="left:660px;top:470px;width:118px;height:56px;font-size:28px;background:#cfe9e5;color:var(--teal);opacity:0">AD</div>
+<div id="p6" class="b" style="left:786px;top:470px;width:118px;height:56px;font-size:28px;background:#cfe9e5;color:var(--teal);opacity:0">CD</div>
+<div id="p7" class="b" style="left:912px;top:470px;width:118px;height:56px;font-size:28px;background:#cfe9e5;color:var(--teal);opacity:0">DB</div>
+<div id="p8" class="b" style="left:1038px;top:470px;width:118px;height:56px;font-size:28px;background:#cfe9e5;color:var(--teal);opacity:0">BA</div>
+<div id="p9" class="b" style="left:1164px;top:470px;width:118px;height:56px;font-size:28px;background:#cfe9e5;color:var(--teal);opacity:0">DA</div>
+<div id="p10" class="b" style="left:1290px;top:470px;width:118px;height:56px;font-size:28px;background:#cfe9e5;color:var(--teal);opacity:0">AC</div>
+<div id="p11" class="b" style="left:1416px;top:470px;width:118px;height:56px;font-size:28px;background:#cfe9e5;color:var(--teal);opacity:0">CB</div>
+<div id="pn" class="t" style="left:30px;top:536px;width:1500px;opacity:0;color:var(--teal);font-size:24px">Los 12 pares ordenados de condiciones consecutivas aparecen una vez cada uno</div>
+<div id="k0" class="t" style="left:30px;top:596px;width:1500px;opacity:0;color:var(--wine-deep);font-size:32px">El cuadrado simple pone cada condición una vez en cada posición</div>
+<div id="k1" class="t" style="left:30px;top:596px;width:1500px;opacity:0;color:var(--wine-deep);font-size:32px">Pero el par AB se repite y el BA nunca aparece</div>
+<div id="k2" class="t" style="left:30px;top:596px;width:1500px;opacity:0;color:var(--wine-deep);font-size:32px">El balanceado de 4 × 4 aparece cada par una sola vez</div>
+<div id="k3" class="t" style="left:30px;top:596px;width:1500px;opacity:0;color:var(--teal);font-size:32px">Con cuatro condiciones, una pareja hace dos filas: el balance lo da la clase</div>
+</div>
+<script>
+const N = 3;
+const st = document.getElementById("st");
+function fit() { const k = Math.min(innerWidth / 1560, innerHeight / 720); st.style.transform = "scale(" + k + ")"; }
+fit(); addEventListener("resize", fit);
+const $ = (s) => document.querySelector(s);
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const ease = (t) => { t = clamp(t, 0, 1); return t * t * (3 - 2 * t); };
+const win = (s, a, b) => ease((s - a) / (b - a));
+const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+const mix = (a, b, t) => { const x = hex(a), y = hex(b); return "rgb(" + x.map((v, i) => Math.round(v + (y[i] - v) * t)).join(",") + ")"; };
+function lit(el, base, color, t, fg0, fg1) { el.style.background = mix(base, color, t); el.style.color = mix(fg0 || "#1f1a1d", fg1 || "#ffffff", t); }
+function put(el, x, y, a) { el.style.transform = "translate(" + x + "px," + y + "px)"; el.style.opacity = String(a); }
+function route(k, pts) { for (let i = 0; i < pts.length - 1; i++) { if (k <= pts[i + 1][0]) { const t = ease((k - pts[i][0]) / (pts[i + 1][0] - pts[i][0])); return [pts[i][1] + (pts[i + 1][1] - pts[i][1]) * t, pts[i][2] + (pts[i + 1][2] - pts[i][2]) * t]; } } const l = pts[pts.length - 1]; return [l[1], l[2]]; }
+
+function caps(s, n, pref) { for (let k = 0; k <= n; k++) { const a = win(s, k - 0.5, k) * (k < n ? 1 - win(s, k, k + 0.5) : 1); put($("#" + pref + k), 0, 0, clamp(a, 0, 1)); } }
+function show(el, a, dy) { put(el, 0, (1 - a) * (dy === undefined ? 24 : dy), a); }
+
+let u = 0, target = 0, frame = 0, timer = 0, last = 0;
+function draw() { 
+const s = u * N;
+const a1 = win(s, 0, 1), a2 = win(s, 1, 2), a3 = win(s, 2, 3);
+put($("#ts"), 0, 0, 1);
+for (let f = 0; f < 3; f++) { put($("#sf" + f), 0, 0, 1); for (let c = 0; c < 3; c++) { const el = $("#s" + f + c); put(el, 0, 0, 1); if (el.dataset.r === "1") { el.style.background = mix("#f6f1f3", "#fbe3a6", a1); } } }
+show($("#sn"), a1);
+put($("#tb"), 0, 0, a2);
+for (let f = 0; f < 4; f++) { put($("#bf" + f), 0, 0, a2); for (let c = 0; c < 4; c++) put($("#b" + f + c), 0, 0, a2); }
+for (let i = 0; i < 12; i++) show($("#p" + i), clamp(a3 * 14 - i, 0, 1), 10);
+show($("#pn"), a3, 10);
+caps(s, 3, "k");
+ }
+function loop() {
+  clearTimeout(timer); cancelAnimationFrame(frame);
+  const now = performance.now();
+  const dt = last ? Math.min((now - last) / 1000, 1) : 1 / 60; last = now;
+  const speed = 1 / (N * 1.6);
+  u = target > u ? Math.min(target, u + dt * speed) : Math.max(target, u - dt * speed * 2);
+  draw();
+  if (u !== target) { frame = requestAnimationFrame(loop); timer = setTimeout(loop, 80); } else { frame = 0; timer = 0; last = 0; }
+}
+const run = () => { if (!frame && !timer) { last = 0; loop(); } };
+const go = (v) => { target = clamp(v, 0, 1); run(); };
+window.__fig = { set(v) { u = target = clamp(v, 0, 1); draw(); }, go, get u() { return u; } };
+addEventListener("message", (e) => { const m = e.data; if (!m || m.type !== "fig") return; if (m.mode === "set") window.__fig.set(Number(m.value)); else go(Number(m.value)); });
+if (window.parent !== window) {
+  const KEYMAP = { ArrowRight: "ArrowRight", PageDown: "ArrowRight", " ": "ArrowRight", Enter: "ArrowRight", ArrowLeft: "ArrowLeft", PageUp: "ArrowLeft", Backspace: "ArrowLeft" };
+  addEventListener("keydown", (e) => { const k = KEYMAP[e.key]; if (!k) return; e.preventDefault(); e.stopImmediatePropagation(); parent.postMessage({ type: "deck-key", key: k }, "*"); }, true);
+} else {
+  addEventListener("click", () => go(target >= 1 ? 0 : Math.min(1, Math.round(target * N + 1) / N)));
+}
+draw();
+</script></body></html>

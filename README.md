@@ -17,6 +17,7 @@ Sitio: https://charliecardenastoledo.github.io/presentaciones-uide/
 | LTI_05U_IHC Interacción Hombre Computadora | 1. HCI como ciencia de sistemas interactivos | [hci-semana-01](https://charliecardenastoledo.github.io/presentaciones-uide/hci-semana-01/) |
 | LTI_05U_IHC Interacción Hombre Computadora | 2. Carga mental, error humano, detección de señales y cognición distribuida | [hci-semana-02](https://charliecardenastoledo.github.io/presentaciones-uide/hci-semana-02/) |
 | LTI_05U_IHC Interacción Hombre Computadora | 3. GOMS, modelo a nivel de teclas y aprendizaje de habilidades | [hci-semana-03](https://charliecardenastoledo.github.io/presentaciones-uide/hci-semana-03/) |
+| LTI_05U_IHC Interacción Hombre Computadora | 4. Leyes de Fitts y Hick-Hyman, experimentos y tamaño de efecto | [hci-semana-04](https://charliecardenastoledo.github.io/presentaciones-uide/hci-semana-04/) |
 | LTI_05U_ESD Estructura de Datos | 1. Big-O, TDA y representación en memoria | [esd-semana-01](https://charliecardenastoledo.github.io/presentaciones-uide/esd-semana-01/) |
 | LTI_05U_ESD Estructura de Datos | 2. Arreglos y listas, acceso aleatorio y secuencial, invariantes | [esd-semana-02](https://charliecardenastoledo.github.io/presentaciones-uide/esd-semana-02/) |
 | LTI_05U_ESD Estructura de Datos | 3. Pilas, colas, pruebas unitarias y costo amortizado | [esd-semana-03](https://charliecardenastoledo.github.io/presentaciones-uide/esd-semana-03/) |

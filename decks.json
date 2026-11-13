@@ -103,6 +103,11 @@
         "n": 3,
         "slug": "hci-semana-03",
         "tema": "Descomposición de tareas, GOMS, modelo a nivel de teclas, error de predicción y aprendizaje de habilidades"
+      },
+      {
+        "n": 4,
+        "slug": "hci-semana-04",
+        "tema": "Leyes de Fitts y Hick-Hyman, experimentos controlados, tamaño de efecto y validez"
       }
     ]
   },

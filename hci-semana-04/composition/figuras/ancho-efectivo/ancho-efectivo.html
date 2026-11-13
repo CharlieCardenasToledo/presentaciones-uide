@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Ancho efectivo y rendimiento</title>
+<style>
+:root{--wine:#910048;--wine-deep:#6d0036;--gold:#e8a920;--teal:#0c6b62;--amber:#7a5200;--ink:#1f1a1d;--muted:#5a5257;--tint:#f6f1f3;--red:#b3261e}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:transparent;font-family:system-ui,"Segoe UI",sans-serif;color:var(--ink);overflow:hidden}
+#st{position:absolute;left:0;top:0;width:1560px;height:720px;transform-origin:0 0}
+.b{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border-radius:16px;padding:6px 14px;font-weight:700;font-size:32px;line-height:1.15;background:var(--tint);color:var(--ink)}
+.b small{display:block;font-size:24px;font-weight:600;margin-top:4px}
+.t{position:absolute;font-size:34px;font-weight:700;line-height:1.2}
+.pill{position:absolute;display:flex;align-items:center;justify-content:center;height:52px;padding:0 20px;border-radius:26px;color:#fff;font:800 24px/1 ui-monospace,Consolas,monospace;white-space:nowrap;opacity:0;z-index:5}
+.ln{position:absolute;background:#cfc6ca}
+
+</style></head><body>
+<div id="st">
+<div id="n0" class="t" style="left:30px;top:106px;width:240px;opacity:0;color:var(--wine);font-size:32px">Persona 1<br><span style="font-size:24px;color:var(--muted)">SDx = 4,53 px</span></div>
+<div id="bd0" style="position:absolute;left:440px;top:56px;width:240px;height:150px;border-radius:12px;background:#000;opacity:0"></div>
+<div id="bl0" class="t" style="left:440px;top:20px;width:240px;text-align:center;opacity:0;color:var(--wine);font-size:24px">W = 20 px</div>
+<div id="d0_0" style="position:absolute;left:468.2px;top:148px;width:18px;height:18px;border-radius:50%;background:#ffffff;opacity:0"></div>
+<div id="d0_1" style="position:absolute;left:491.8px;top:96px;width:18px;height:18px;border-radius:50%;background:#ffffff;opacity:0"></div>
+<div id="d0_2" style="position:absolute;left:503.7px;top:148px;width:18px;height:18px;border-radius:50%;background:#ffffff;opacity:0"></div>
+<div id="d0_3" style="position:absolute;left:527.3px;top:96px;width:18px;height:18px;border-radius:50%;background:#ffffff;opacity:0"></div>
+<div id="d0_4" style="position:absolute;left:539.2px;top:148px;width:18px;height:18px;border-radius:50%;background:#ffffff;opacity:0"></div>
+<div id="d0_5" style="position:absolute;left:562.8px;top:96px;width:18px;height:18px;border-radius:50%;background:#ffffff;opacity:0"></div>
+<div id="d0_6" style="position:absolute;left:574.7px;top:148px;width:18px;height:18px;border-radius:50%;background:#ffffff;opacity:0"></div>
+<div id="d0_7" style="position:absolute;left:598.3px;top:96px;width:18px;height:18px;border-radius:50%;background:#ffffff;opacity:0"></div>
+<div id="d0_8" style="position:absolute;left:610.2px;top:148px;width:18px;height:18px;border-radius:50%;background:#ffffff;opacity:0"></div>
+<div id="d0_9" style="position:absolute;left:633.8px;top:96px;width:18px;height:18px;border-radius:50%;background:#ffffff;opacity:0"></div>
+<div id="we0" style="position:absolute;left:447.8px;top:224px;width:224.4px;height:8px;border-radius:4px;background:var(--teal);opacity:0"></div>
+<div id="wt0" class="t" style="left:360px;top:238px;width:400px;text-align:center;opacity:0;color:var(--teal);font-size:24px">We = 4,133 × 4,53 = 18,7 px</div>
+<div id="if0" class="b" style="left:900px;top:66px;width:630px;height:80px;opacity:0;text-align:left;align-items:flex-start;justify-content:center;padding:14px 24px;background:#e3f2f0;font-size:28px;font-family:ui-monospace,Consolas,monospace">IDe = log2(80 / 18,7 + 1) = 2,40 bits</div>
+<div id="tp0" class="b" style="left:900px;top:156px;width:630px;height:70px;opacity:0;background:#cfe9e5;color:var(--teal);font-size:28px;font-family:ui-monospace,Consolas,monospace">TP = 2,40 / 0,604 s = 3,97 bits/s</div>
+<div id="n1" class="t" style="left:30px;top:390px;width:240px;opacity:0;color:var(--wine);font-size:32px">Persona 2<br><span style="font-size:24px;color:var(--muted)">SDx = 7,0 px</span></div>
+<div id="bd1" style="position:absolute;left:440px;top:340px;width:240px;height:150px;border-radius:12px;background:#000;opacity:0"></div>
+<div id="bl1" class="t" style="left:440px;top:304px;width:240px;text-align:center;opacity:0;color:var(--wine);font-size:24px">W = 20 px</div>
+<div id="d1_0" style="position:absolute;left:423.0px;top:432px;width:18px;height:18px;border-radius:50%;background:#b3261e;opacity:0"></div>
+<div id="d1_1" style="position:absolute;left:459.6px;top:380px;width:18px;height:18px;border-radius:50%;background:#ffffff;opacity:0"></div>
+<div id="d1_2" style="position:absolute;left:477.9px;top:432px;width:18px;height:18px;border-radius:50%;background:#ffffff;opacity:0"></div>
+<div id="d1_3" style="position:absolute;left:514.4px;top:380px;width:18px;height:18px;border-radius:50%;background:#ffffff;opacity:0"></div>
+<div id="d1_4" style="position:absolute;left:532.7px;top:432px;width:18px;height:18px;border-radius:50%;background:#ffffff;opacity:0"></div>
+<div id="d1_5" style="position:absolute;left:569.3px;top:380px;width:18px;height:18px;border-radius:50%;background:#ffffff;opacity:0"></div>
+<div id="d1_6" style="position:absolute;left:587.6px;top:432px;width:18px;height:18px;border-radius:50%;background:#ffffff;opacity:0"></div>
+<div id="d1_7" style="position:absolute;left:624.1px;top:380px;width:18px;height:18px;border-radius:50%;background:#ffffff;opacity:0"></div>
+<div id="d1_8" style="position:absolute;left:642.4px;top:432px;width:18px;height:18px;border-radius:50%;background:#ffffff;opacity:0"></div>
+<div id="d1_9" style="position:absolute;left:679.0px;top:380px;width:18px;height:18px;border-radius:50%;background:#b3261e;opacity:0"></div>
+<div id="we1" style="position:absolute;left:386.6px;top:508px;width:346.8px;height:8px;border-radius:4px;background:var(--teal);opacity:0"></div>
+<div id="wt1" class="t" style="left:360px;top:522px;width:400px;text-align:center;opacity:0;color:var(--teal);font-size:24px">We = 4,133 × 7,0 = 28,9 px</div>
+<div id="if1" class="b" style="left:900px;top:350px;width:630px;height:80px;opacity:0;text-align:left;align-items:flex-start;justify-content:center;padding:14px 24px;background:#e3f2f0;font-size:28px;font-family:ui-monospace,Consolas,monospace">IDe = log2(80 / 28,9 + 1) = 1,91 bits</div>
+<div id="tp1" class="b" style="left:900px;top:440px;width:630px;height:70px;opacity:0;background:#cfe9e5;color:var(--teal);font-size:28px;font-family:ui-monospace,Consolas,monospace">TP = 1,91 / 0,604 s = 3,17 bits/s</div>
+<div id="k0" class="t" style="left:30px;top:592px;width:1500px;opacity:0;color:var(--wine-deep);font-size:32px">Una persona hace clic dentro de un objetivo de 20 px: algunos clics caen fuera</div>
+<div id="k1" class="t" style="left:30px;top:592px;width:1500px;opacity:0;color:var(--wine-deep);font-size:32px">El ancho efectivo usa la dispersión real: We = 4,133 · SDx</div>
+<div id="k2" class="t" style="left:30px;top:592px;width:1500px;opacity:0;color:var(--wine-deep);font-size:32px">Otra persona, igual de rápida, dispersa más los clics y su IDe es menor</div>
+<div id="k3" class="t" style="left:30px;top:592px;width:1500px;opacity:0;color:var(--teal);font-size:32px">Mismo tiempo, distinta exactitud: el rendimiento resume las dos cosas</div>
+</div>
+<script>
+const N = 3;
+const st = document.getElementById("st");
+function fit() { const k = Math.min(innerWidth / 1560, innerHeight / 720); st.style.transform = "scale(" + k + ")"; }
+fit(); addEventListener("resize", fit);
+const $ = (s) => document.querySelector(s);
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const ease = (t) => { t = clamp(t, 0, 1); return t * t * (3 - 2 * t); };
+const win = (s, a, b) => ease((s - a) / (b - a));
+const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+const mix = (a, b, t) => { const x = hex(a), y = hex(b); return "rgb(" + x.map((v, i) => Math.round(v + (y[i] - v) * t)).join(",") + ")"; };
+function lit(el, base, color, t, fg0, fg1) { el.style.background = mix(base, color, t); el.style.color = mix(fg0 || "#1f1a1d", fg1 || "#ffffff", t); }
+function put(el, x, y, a) { el.style.transform = "translate(" + x + "px," + y + "px)"; el.style.opacity = String(a); }
+function route(k, pts) { for (let i = 0; i < pts.length - 1; i++) { if (k <= pts[i + 1][0]) { const t = ease((k - pts[i][0]) / (pts[i + 1][0] - pts[i][0])); return [pts[i][1] + (pts[i + 1][1] - pts[i][1]) * t, pts[i][2] + (pts[i + 1][2] - pts[i][2]) * t]; } } const l = pts[pts.length - 1]; return [l[1], l[2]]; }
+
+function caps(s, n, pref) { for (let k = 0; k <= n; k++) { const a = win(s, k - 0.5, k) * (k < n ? 1 - win(s, k, k + 0.5) : 1); put($("#" + pref + k), 0, 0, clamp(a, 0, 1)); } }
+function show(el, a, dy) { put(el, 0, (1 - a) * (dy === undefined ? 24 : dy), a); }
+
+let u = 0, target = 0, frame = 0, timer = 0, last = 0;
+function draw() { 
+const s = u * N;
+const a1 = win(s, 0, 1), a2 = win(s, 1, 2), a3 = win(s, 2, 3);
+put($("#n0"), 0, 0, 1); put($("#bd0"), 0, 0, 1); put($("#bl0"), 0, 0, 1);
+for (let i = 0; i < 10; i++) put($("#d0_" + i), 0, 0, 1);
+put($("#we0"), 0, 0, a1); put($("#wt0"), 0, 0, a1); show($("#if0"), a1);
+put($("#n1"), 0, 0, a2); put($("#bd1"), 0, 0, a2); put($("#bl1"), 0, 0, a2);
+for (let i = 0; i < 10; i++) put($("#d1_" + i), 0, 0, a2);
+put($("#we1"), 0, 0, a2); put($("#wt1"), 0, 0, a2); show($("#if1"), a2);
+show($("#tp0"), a3); show($("#tp1"), a3);
+caps(s, 3, "k");
+ }
+function loop() {
+  clearTimeout(timer); cancelAnimationFrame(frame);
+  const now = performance.now();
+  const dt = last ? Math.min((now - last) / 1000, 1) : 1 / 60; last = now;
+  const speed = 1 / (N * 1.6);
+  u = target > u ? Math.min(target, u + dt * speed) : Math.max(target, u - dt * speed * 2);
+  draw();
+  if (u !== target) { frame = requestAnimationFrame(loop); timer = setTimeout(loop, 80); } else { frame = 0; timer = 0; last = 0; }
+}
+const run = () => { if (!frame && !timer) { last = 0; loop(); } };
+const go = (v) => { target = clamp(v, 0, 1); run(); };
+window.__fig = { set(v) { u = target = clamp(v, 0, 1); draw(); }, go, get u() { return u; } };
+addEventListener("message", (e) => { const m = e.data; if (!m || m.type !== "fig") return; if (m.mode === "set") window.__fig.set(Number(m.value)); else go(Number(m.value)); });
+if (window.parent !== window) {
+  const KEYMAP = { ArrowRight: "ArrowRight", PageDown: "ArrowRight", " ": "ArrowRight", Enter: "ArrowRight", ArrowLeft: "ArrowLeft", PageUp: "ArrowLeft", Backspace: "ArrowLeft" };
+  addEventListener("keydown", (e) => { const k = KEYMAP[e.key]; if (!k) return; e.preventDefault(); e.stopImmediatePropagation(); parent.postMessage({ type: "deck-key", key: k }, "*"); }, true);
+} else {
+  addEventListener("click", () => go(target >= 1 ? 0 : Math.min(1, Math.round(target * N + 1) / N)));
+}
+draw();
+</script></body></html>
