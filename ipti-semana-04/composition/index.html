@@ -1,0 +1,582 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Semana 4 · Infraestructura computacional de servidores</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      :root {
+        /* Colores tomados del logotipo UIDE: vino #910048 y dorado #E8A920. Sin degradados. */
+        --paper: #ffffff; --ink: #1f1a1d; --muted: #5a5257; --wine: #910048; --wine-deep: #6d0036; --gold: #e8a920;
+        --teal: #0c6b62; --teal-soft: #e3f2f0; --amber: #7a5200; --amber-soft: #fcefc9; --card: #ffffff; --line: #e2dcdf; --tint: #f6f1f3;
+      }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--paper); }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; font-family: system-ui, sans-serif; color: var(--ink); }
+      .slide { position: absolute; inset: 0; }
+      .frame { position: absolute; inset: 0; padding: 92px 120px 150px; display: flex; flex-direction: column; justify-content: center; opacity: 0; background: var(--paper); }
+      .frame::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 22px; background: var(--wine); }
+      .frame::after { content: ""; position: absolute; left: 22px; top: 0; bottom: 0; width: 8px; background: var(--gold); }
+      .dark .frame { background: var(--wine); color: #fff; }
+      .dark .frame::before { background: var(--gold); }
+      .dark .frame::after { display: none; }
+      .logo { position: absolute; top: 44px; right: 96px; height: 92px; width: auto; }
+      .dark .logo { top: 0; right: 96px; height: 150px; padding: 26px 30px 22px; background: #fff; border-radius: 0 0 18px 18px; box-sizing: border-box; }
+      .num { position: absolute; bottom: 52px; left: 120px; font-size: 26px; letter-spacing: 0.14em; color: var(--muted); font-variant-numeric: tabular-nums; }
+      .dark .num { color: #f1d3e0; }
+      .course { font-size: 34px; font-weight: 600; color: var(--gold); margin-bottom: 30px; }
+      .claim { font-family: ui-serif, serif; font-weight: 700; font-size: 74px; line-height: 1.08; letter-spacing: -0.015em; max-width: 1480px; margin-bottom: 44px; }
+      .claim.long { font-size: 62px; max-width: 1640px; }
+      .claim.xl { font-size: 96px; max-width: 1500px; }
+      .lead { font-size: 48px; line-height: 1.25; color: #ffffff; max-width: 1400px; }
+      .lead.dark-ink { color: var(--muted); margin-top: -14px; margin-bottom: 40px; }
+      .byline { font-size: 32px; color: #f6dfe9; margin-top: 70px; }
+      .source { font-size: 30px; color: var(--muted); margin-top: 34px; }
+      .punch { font-family: ui-serif, serif; font-size: 56px; font-weight: 700; color: var(--wine); margin-top: 44px; }
+      .punch.soft { color: var(--ink); font-size: 46px; margin-top: 18px; }
+      .punch.good { color: var(--teal); }
+
+      .steps { list-style: none; display: grid; gap: 18px; max-width: 1500px; }
+      .steps li { display: flex; align-items: center; gap: 30px; font-size: 46px; background: var(--tint); border-radius: 18px; padding: 18px 30px; }
+      .steps b { flex: none; width: 72px; height: 72px; border-radius: 50%; background: var(--wine); color: #fff; display: grid; place-items: center; font-size: 40px; }
+
+      .cards { display: grid; gap: 30px; }
+      .cards.three { grid-template-columns: repeat(3, 1fr); }
+      .cards.two { grid-template-columns: repeat(2, 1fr); }
+      .cards.four { grid-template-columns: repeat(4, 1fr); }
+      .cards.grid2 { grid-template-columns: repeat(2, 1fr); gap: 26px; }
+      .cards.tight { margin-top: 30px; }
+      .card { background: var(--tint); border-radius: 22px; padding: 36px 40px; display: flex; flex-direction: column; gap: 14px; }
+      .card strong { font-size: 48px; line-height: 1.12; font-weight: 800; }
+      .card em { font-style: normal; font-size: 40px; line-height: 1.2; color: var(--muted); }
+      .card .tag, .panel .tag { align-self: flex-start; font-size: 34px; font-weight: 600; color: var(--wine); }
+      .card.file strong { font-family: ui-monospace, monospace; font-size: 46px; }
+      .card.empty, .card.warn { background: var(--amber-soft); }
+      .card.warn strong { color: var(--amber); }
+      .card.pill { align-items: center; text-align: center; padding: 30px 20px; }
+      .card.pill b { width: 68px; height: 68px; border-radius: 50%; background: var(--wine); color: #fff; display: grid; place-items: center; font-size: 38px; }
+      .cards.tall .card { min-height: 300px; }
+      .verdict { margin-top: auto; padding: 14px 18px; border-radius: 12px; background: #fbe3a6; color: var(--amber) !important; font-weight: 700; }
+      .verdict.good { background: #cfe9e5; color: var(--teal) !important; }
+
+      table.data { border-collapse: collapse; width: 100%; background: var(--tint); border-radius: 20px; overflow: hidden; }
+      table.data th { text-align: left; font-size: 30px; letter-spacing: 0.1em; text-transform: uppercase; color: #fff; background: var(--wine-deep); padding: 20px 28px; }
+      table.data td { font-size: 42px; padding: 22px 28px; border-top: 3px solid #ffffff; font-variant-numeric: tabular-nums; }
+      table.data.matrix td { font-size: 40px; padding: 24px 28px; }
+      table.data.matrix b { color: var(--wine); }
+      .chips { display: flex; gap: 22px; margin-top: 36px; flex-wrap: wrap; }
+      .chip { font-size: 40px; font-weight: 700; padding: 16px 28px; border-radius: 999px; background: var(--amber-soft); color: var(--amber); }
+
+      .split { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+      .panel { background: var(--tint); border-radius: 22px; padding: 30px 34px; display: flex; flex-direction: column; gap: 18px; }
+      .panel.good { background: var(--teal-soft); }
+      .panel.good .tag { color: var(--teal); }
+      .box { font-size: 40px; padding: 18px 24px; border-radius: 14px; background: #ffffff; }
+      .box i { font-style: normal; color: var(--amber); font-weight: 700; }
+      .box.strong { background: var(--teal); color: #fff; font-weight: 700; }
+      .box.new { background: var(--teal-soft); color: var(--teal); font-weight: 700; }
+      .schema { font-family: ui-monospace, monospace; font-size: 44px; font-weight: 700; padding: 26px 32px; border-radius: 18px; background: var(--tint); }
+      .schema.main { font-size: 50px; background: var(--wine-deep); color: #fff; }
+      .schema.small { font-size: 40px; background: #ffffff; }
+      .schema u { text-decoration-thickness: 5px; text-underline-offset: 8px; }
+
+      .layers { display: grid; gap: 22px; max-width: 1500px; }
+      .layer { display: flex; align-items: baseline; gap: 34px; padding: 30px 38px; border-radius: 20px; background: var(--wine); color: #fff; }
+      .layer.mid { background: #7f003f; margin-left: 70px; }
+      .layer.low { background: var(--wine-deep); margin-left: 140px; }
+      .layer strong { font-size: 50px; flex: none; width: 430px; }
+      .layer em { font-style: normal; font-size: 40px; color: #ffffff; }
+
+      .timeline { display: grid; gap: 14px; }
+      .timeline .row { display: grid; grid-template-columns: 170px 560px 1fr; align-items: center; gap: 30px; background: var(--tint); border-radius: 16px; padding: 14px 28px; }
+      .timeline b { font-family: ui-serif, serif; font-size: 52px; color: var(--wine); font-variant-numeric: tabular-nums; }
+      .timeline strong { font-size: 42px; }
+      .timeline em { font-style: normal; font-size: 40px; color: var(--muted); }
+
+      iframe.fig { flex: none; width: 1560px; height: 720px; border: 0; background: transparent; align-self: center; margin-top: -24px; }
+
+      /* Transiciones solo al presentar en vivo: el reproductor salta entre
+         puntos de la línea de tiempo y el navegador suaviza el cambio. */
+      html.live .frame { transition: opacity 0.45s ease; }
+      html.live [data-in], html.live [data-f] { transition: opacity 0.5s ease, transform 0.55s cubic-bezier(0.2, 0.7, 0.2, 1); transition-delay: calc(var(--i, 0) * 70ms); }
+      html.live [data-hl] { transition: background-color 0.4s ease, color 0.4s ease; }
+    </style>
+  </head>
+  <body>
+    <script type="application/hyperframes-slideshow+json">
+{
+  "slides": [
+    {
+      "sceneId": "portada",
+      "startTime": 0,
+      "endTime": 3.5,
+      "notes": "Clase de dos horas, de 16:00 a 18:00. Primer bloque de presentación (capas, infraestructura como código, declarativo e imperativo, elección de herramienta), la práctica PE-S4 en medio, segundo bloque (principios, ciclo de vida, caso de Matrícula y Pagos) y presentación de la TA-S4 al final. Abrir con el caso, sin teoría. La semana anterior cerró con una conclusión: la elección entre invocación remota y evento depende de qué disponibilidad se quiere desacoplar. Esta semana se baja un nivel: sobre qué servidores corren esos sistemas y quién los crea."
+    },
+    {
+      "sceneId": "caso",
+      "startTime": 3.5,
+      "endTime": 10,
+      "notes": "Es el caso de toda la clase. El sistema de Matrícula y Pagos de la UIDE recibe en pocos días la mayor parte de las transacciones del periodo: miles de estudiantes seleccionan materias, generan comprobantes y pagan aranceles. El resto del periodo atiende una fracción mínima de ese tráfico. Si el equipo de TI compra o reserva servidores permanentes dimensionados para el pico, paga capacidad ociosa casi todo el año. Si los pide a mano cuando el pico ya empezó, llega tarde. La pregunta que se retoma al cierre: cómo conseguir capacidad solo cuando hace falta y poder repetirla igual el semestre siguiente. Pedir que anoten una respuesta. Los números de la gráfica son un ejemplo para dibujar la idea; el resto de la clase usa un clúster de 12 instancias como referencia.",
+      "fragments": [
+        5.5,
+        6.5,
+        7.5,
+        8.5
+      ]
+    },
+    {
+      "sceneId": "eras",
+      "startTime": 10,
+      "endTime": 16.5,
+      "notes": "Kief Morris describe el tránsito entre dos eras de la infraestructura. En la Era del Hierro los sistemas corren sobre hardware físico: aprovisionar un servidor toma semanas y los cambios se hacen con procesos manuales, guiados por interfaz gráfica o acceso físico al equipo. En la Era de la Nube los recursos están virtualizados, el aprovisionamiento toma minutos y los procesos pueden automatizarse de punta a punta. La diferencia no es solo de velocidad: un servidor deja de ser un objeto que se inspecciona a simple vista y pasa a ser un recurso que una herramienta puede consultar y modificar mediante una llamada de red. Los días del ticket son ilustrativos. Fuente: Morris (2021), Infrastructure as Code.",
+      "fragments": [
+        12,
+        13,
+        14,
+        15
+      ]
+    },
+    {
+      "sceneId": "capas",
+      "startTime": 16.5,
+      "endTime": 24,
+      "notes": "Esta lámina es el modelo del diagrama de capas de la PE-S4. De abajo hacia arriba: el hardware físico, que no desaparece; el hipervisor, una capa de software que particiona un servidor físico en varias máquinas virtuales independientes, cada una con su porción de CPU, memoria y almacenamiento; los recursos cloud, que el hipervisor expone como algo que un programa puede crear, modificar o destruir mediante una API; y la infraestructura como código, que escribe esas peticiones en un archivo. Cada capa oculta la complejidad de la anterior y expone una interfaz programable a la siguiente. El comando terraform apply termina invocando esa API. Fuente: Morris (2021).",
+      "fragments": [
+        18.5,
+        19.5,
+        20.5,
+        21.5,
+        22.5
+      ]
+    },
+    {
+      "sceneId": "iac",
+      "startTime": 24,
+      "endTime": 30.5,
+      "notes": "Un recurso programable por API todavía puede gestionarse a mano, clic a clic, sobre la consola web del proveedor. Lo que lo convierte en disciplina de ingeniería es la infraestructura como código: un enfoque de automatización basado en prácticas del desarrollo de software, donde se editan cambios en código y la automatización prueba y aplica esos cambios a los sistemas reales. Se apoya en tres prácticas núcleo. Primera, definir todo como código: cada recurso existe primero como texto versionable y no como configuración hecha a mano que vive en la memoria de quien la aplicó. Segunda, probar y entregar continuamente todo el trabajo en progreso. Tercera, construir piezas pequeñas y simples que cambian de forma independiente. La tercera se retoma al hablar de radio de impacto. Fuente: Morris (2021).",
+      "fragments": [
+        26,
+        27,
+        28,
+        29
+      ]
+    },
+    {
+      "sceneId": "declarativo",
+      "startTime": 30.5,
+      "endTime": 38,
+      "notes": "Morris distingue dos paradigmas de lenguaje. El declarativo especifica el estado final deseado, sin detallar los pasos; la herramienta compara ese estado contra el estado real y calcula la diferencia. Por eso, al ejecutar dos veces el mismo archivo de Terraform, la primera corrida crea los recursos y la segunda, sin cambios en el código, informa que no hay nada que hacer. El imperativo-programable especifica una secuencia de instrucciones en un lenguaje de propósito general, con bucles y condicionales, para construir los recursos paso a paso. Terraform usa HCL, un lenguaje declarativo. Pulumi usa TypeScript, Python, Go u otros. Esta lámina es el modelo del fragmento declarativo que pide la PE-S4. Fuente: Morris (2021).",
+      "fragments": [
+        32.5,
+        33.5,
+        34.5,
+        35.5,
+        36.5
+      ]
+    },
+    {
+      "sceneId": "herramienta",
+      "startTime": 38,
+      "endTime": 45.5,
+      "notes": "La tabla compara las dos herramientas en los tres criterios que pide la PE-S4: lenguaje, lógica dinámica y caso de uso ideal. Terraform representa el paradigma declarativo: su lenguaje HCL es un DSL pensado para describir recursos de forma directa. Pulumi representa el imperativo-programable: sustituye el DSL por lenguajes de propósito general, lo que permite aprovechar autocompletado, refactorización y pruebas unitarias. Para el caso de Matrícula y Pagos, el clúster de inscripción es una topología relativamente estática que se repite cada semestre con pocos parámetros variables: un módulo declarativo de Terraform resulta más apropiado que una librería completa de Pulumi. Insistir en que la elección se justifica con el nivel de lógica dinámica del escenario, no con la popularidad de la herramienta. Fuente: Morris (2021).",
+      "fragments": [
+        40,
+        41,
+        42,
+        43,
+        44
+      ]
+    },
+    {
+      "sceneId": "separar",
+      "startTime": 45.5,
+      "endTime": 52,
+      "notes": "Morris recomienda no forzar toda la lógica dentro de un único paradigma: usar sintaxis declarativa para los recursos finales que se despliegan, y reservar el lenguaje imperativo para construir las librerías o abstracciones que generan esa configuración declarativa. Ejemplo: un equipo necesita crear una subred distinta por cada zona de disponibilidad de una región de nube, un número que varía según el proveedor y no se conoce de antemano. Ese tipo de lógica no debería forzarse dentro de un DSL declarativo. Se resuelve con un programa que cuenta las zonas y arma la lista, y el resultado es una declaración clara de cada subred. Esta lámina es el modelo de la separación declarativo e imperativo que piden en la PE-S4. Fuente: Morris (2021).",
+      "fragments": [
+        47.5,
+        48.5,
+        49.5,
+        50.5
+      ]
+    },
+    {
+      "sceneId": "pe",
+      "startTime": 52,
+      "endTime": 59.5,
+      "notes": "La práctica es individual y se entrega completada al final de la clase. Tiempo sugerido: unos 40 minutos. Cada estudiante recibe un escenario de infraestructura temporal para un evento institucional y con él hace lo mismo que se vio en clase: dibuja la cadena de cuatro capas con rótulos del escenario, compara Terraform y Pulumi en los tres criterios y justifica la elección, escribe un fragmento declarativo del estado deseado de un recurso en pseudocódigo tipo HCL, y separa qué lógica sería declarativa y cuál necesitaría condicionales dinámicos. Recorrer el aula y revisar que el fragmento declare el estado final y no una secuencia de pasos.",
+      "fragments": [
+        54,
+        55,
+        56,
+        57,
+        58
+      ]
+    },
+    {
+      "sceneId": "principios",
+      "startTime": 59.5,
+      "endTime": 67,
+      "notes": "Segundo bloque, después de la práctica. Separar el código declarativo del imperativo resuelve cómo se escribe la infraestructura; queda pendiente cómo se gobierna una vez que existe y debe cambiar, fallar o desaparecer sin intervención manual. Morris propone principios de diseño. Primero, asumir que los sistemas no son confiables: un servidor virtual, un disco o la red pueden fallar en cualquier momento, y el sistema debe seguir funcionando a pesar de eso. Segundo, hacer todo reproducible: cualquier servidor debe poder reconstruirse desde cero a partir del código. Tercero, crear cosas desechables: los recursos deben poder agregarse, eliminarse o reemplazarse sin fricción. Cuarto, minimizar la variación: mantener idénticas las piezas parecidas. Son los cuatro principios de la rúbrica de la TA-S4, que se aplican a un servidor real de la UIDE. Fuente: Morris (2021).",
+      "fragments": [
+        61.5,
+        62.5,
+        63.5,
+        64.5,
+        65.5
+      ]
+    },
+    {
+      "sceneId": "copo",
+      "startTime": 67,
+      "endTime": 73.5,
+      "notes": "El antipatrón opuesto a la reproducibilidad es el sistema copo de nieve: un servidor acumulado de parches manuales que nadie puede reproducir de forma idéntica si falla. La bitácora de la izquierda es un ejemplo inventado pero habitual: un parche a mano, un puerto abierto a mano, una variable cambiada sin nota, y la frase no tocar, funciona. A la derecha, el mismo servidor se reconstruye desde el repositorio. Morris resume la actitud con la distinción entre mascotas y ganado: una mascota tiene nombre propio, se cuida y se cura; el ganado se numera y se reemplaza. En un clúster de doce máquinas conviene tratar los servidores como ganado. Fuente: Morris (2021).",
+      "fragments": [
+        69,
+        70,
+        71,
+        72
+      ]
+    },
+    {
+      "sceneId": "inmutable",
+      "startTime": 73.5,
+      "endTime": 80,
+      "notes": "Cuando dos entornos que deberían ser idénticos divergen con el tiempo por parches manuales o ejecuciones inconsistentes, ocurre la deriva de configuración. La infraestructura inmutable evita el problema de raíz: en lugar de modificar un servidor en ejecución, se crea una instancia nueva con la configuración actualizada, se prueba y se sustituye la antigua, que se destruye por completo. Es el principio de minimizar la variación convertido en propiedad del proceso y ya no en disciplina humana. La técnica blue-green aplica la misma idea: se crea una instancia paralela del stack, se conmuta el tráfico hacia ella y la anterior se destruye solo después de confirmar que la nueva funciona. Los valores de la tabla son un ejemplo. Fuente: Morris (2021).",
+      "fragments": [
+        75.5,
+        76.5,
+        77.5,
+        78.5
+      ]
+    },
+    {
+      "sceneId": "ciclo",
+      "startTime": 80,
+      "endTime": 87.5,
+      "notes": "Los principios se traducen en un ciclo de vida de tres fases. En el aprovisionamiento, la herramienta de gestión de stacks lee el código y traduce las declaraciones en llamadas a la API del proveedor para instanciar los recursos. En la gestión de cambios, el equipo reaplica el código de forma periódica para eliminar la deriva; si un cambio es demasiado riesgoso para aplicarse en el lugar, usa blue-green. En el desmantelamiento, los recursos se destruyen de forma limpia; los stacks de prueba efímeros se instancian para una ejecución del pipeline y se destruyen de inmediato, lo que evita recursos huérfanos y reduce el costo. Es el contenido de la segunda parte de la rúbrica de la TA-S4: tres fases y la técnica asociada a cada una. Fuente: Morris (2021).",
+      "fragments": [
+        82,
+        83,
+        84,
+        85,
+        86
+      ]
+    },
+    {
+      "sceneId": "radio",
+      "startTime": 87.5,
+      "endTime": 94,
+      "notes": "Dividir la infraestructura en stacks pequeños acota el radio de impacto, el número de recursos que un solo comando de cambio puede afectar. Es la tercera práctica núcleo vista otra vez: piezas pequeñas que cambian de forma independiente. Con un solo stack, un cambio mal aplicado puede tocar todo. Con un stack por sistema, un cambio en Matrícula solo toca los recursos de Matrícula y deja a salvo Reportes y Aulas Virtuales. Antes de aprobar un cambio, el ingeniero debe poder responder dos preguntas: cuál es el radio de impacto del comando que va a ejecutar y si el recurso resultante puede reconstruirse desde cero si falla. Si la segunda respuesta es que no, el sistema ya es un copo de nieve aunque todavía no haya fallado. Las cantidades de recursos son un ejemplo. Fuente: Morris (2021).",
+      "fragments": [
+        89.5,
+        90.5,
+        91.5,
+        92.5
+      ]
+    },
+    {
+      "sceneId": "matricula",
+      "startTime": 94,
+      "endTime": 101.5,
+      "notes": "Se resuelve el caso del inicio con los conceptos de la semana. El equipo de TI no reserva hardware físico adicional: declara cuántas instancias virtuales necesita el clúster de Matrícula y Pagos y el proveedor las aprovisiona en minutos. La configuración vive en un repositorio versionado y no en la memoria de quien la hizo el semestre anterior. Como el clúster es una topología estática que se repite cada semestre con pocos parámetros, un módulo declarativo de Terraform es más apropiado que una librería de Pulumi. El mismo código que crea el clúster para los catorce días de inscripción lo destruye al cierre, siguiendo el patrón de stack efímero, y es un stack independiente: una falla durante la matrícula no se propaga a Reportes ni a Aulas Virtuales. El cálculo es un ejemplo con 12 instancias y dos periodos al año: 12 por 24 por 365 son 105 120 horas contra 12 por 24 por 28, 8 064 horas. Fuente: Morris (2021).",
+      "fragments": [
+        96,
+        97,
+        98,
+        99,
+        100
+      ]
+    },
+    {
+      "sceneId": "actividades",
+      "startTime": 101.5,
+      "endTime": 105,
+      "notes": "Las consignas completas, las plantillas y las rúbricas están en Canvas. La PE-S4 se hizo en clase, de forma individual. La TA-S4 es una bitácora individual que se entrega en PDF: aplica los cuatro principios a un servidor real de la UIDE, documenta las tres fases del ciclo de vida con su técnica, compara infraestructura inmutable y mutable con el antipatrón que evita la inmutable, y argumenta cuándo convendría infraestructura efímera en un sistema de la UIDE, con una cita en APA 7. Recordar las fechas de entrega de Canvas."
+    },
+    {
+      "sceneId": "cierre",
+      "startTime": 105,
+      "endTime": 108.5,
+      "notes": "Volver a las respuestas del inicio. Con el vocabulario de la semana: la UIDE no compra capacidad para el pico ni pide servidores a mano; declara en un repositorio el clúster de Matrícula y Pagos, lo crea al abrir la inscripción, lo gestiona con cambios pequeños y lo destruye al cerrar. El mismo código documenta de forma verificable cuánta capacidad se usó en cada periodo y permite reconstruirla exacta el semestre siguiente. La pregunta de ingeniería antes de aprobar un cambio es doble: cuál es su radio de impacto y si el recurso puede reconstruirse desde cero."
+    }
+  ],
+  "slideSequences": []
+}
+    </script>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="108.5" data-width="1920" data-height="1080">
+
+      <section id="portada" class="clip slide dark" data-start="0" data-duration="3.5" data-track-index="0" data-label="Portada" data-frags="0">
+        <div class="frame" id="portada-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">01 / 17</span>
+      <p class="course" data-in="0" style="--i:0">PP_08_IPTI · Semana 4</p>
+      <h1 class="claim xl" data-in="1" style="--i:1">Del ticket al código: servidores que se crean y se destruyen con un comando</h1>
+      <p class="lead" data-in="2" style="--i:2">Integración de hardware y software, infraestructura como código y ciclo de vida</p>
+      <p class="byline" data-in="3" style="--i:3">Arquitectura e Integración de Plataformas de TI · Charlie Cárdenas Toledo</p>
+        </div>
+      </section>
+
+      <section id="caso" class="clip slide" data-start="3.5" data-duration="6.5" data-track-index="0" data-label="El pico de matrícula" data-frags="3">
+        <div class="frame" id="caso-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">02 / 17</span>
+      <h1 class="claim" data-in="0" style="--i:0">Dos semanas de pico, el resto del año sobra</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/caso-pico/caso-pico.html?embed" title="Gráfica de demanda semanal de Matrícula y Pagos: dos picos cortos y el resto del año con poca demanda; una capacidad fija dimensionada para el pico deja casi todo el año ocioso." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="eras" class="clip slide" data-start="10" data-duration="6.5" data-track-index="0" data-label="Era del Hierro y Era de la Nube" data-frags="3">
+        <div class="frame" id="eras-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">03 / 17</span>
+      <h1 class="claim" data-in="0" style="--i:0">El servidor ya no se instala: se pide</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/eras-ticket/eras-ticket.html?embed" title="Comparación entre abrir un ticket y esperar nueve días a que un técnico instale el servidor, y ejecutar un comando que crea doce instancias en cuarenta y un segundos." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="capas" class="clip slide" data-start="16.5" data-duration="7.5" data-track-index="0" data-label="Cuatro capas" data-frags="4">
+        <div class="frame" id="capas-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">04 / 17</span>
+      <h1 class="claim" data-in="0" style="--i:0">Cuatro capas, cada una con su interfaz</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/capas/capas.html?embed" title="Cuatro capas de abajo hacia arriba: hardware físico, hipervisor, recursos cloud pedidos por API e infraestructura como código, cada una con un ejemplo real." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="iac" class="clip slide" data-start="24" data-duration="6.5" data-track-index="0" data-label="Tres prácticas de IaC" data-frags="3">
+        <div class="frame" id="iac-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">05 / 17</span>
+      <h1 class="claim" data-in="0" style="--i:0">Los servidores se tratan como software</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/tres-practicas/tres-practicas.html?embed" title="Tres tarjetas: definir todo como código con un historial de git, probar y entregar de forma continua con validate y plan, y piezas pequeñas con un árbol de carpetas independientes." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="declarativo" class="clip slide" data-start="30.5" data-duration="7.5" data-track-index="0" data-label="Declarativo e imperativo" data-frags="4">
+        <div class="frame" id="declarativo-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">06 / 17</span>
+      <h1 class="claim" data-in="0" style="--i:0">Declarar el estado final o programar los pasos</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/declarativo-imperativo/declarativo-imperativo.html?embed" title="Código HCL de Terraform con count igual a 3, salida de dos corridas del mismo archivo, una que crea y otra sin cambios, y código Python de Pulumi con un bucle que crea tres instancias." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="herramienta" class="clip slide" data-start="38" data-duration="7.5" data-track-index="0" data-label="Terraform o Pulumi" data-frags="4">
+        <div class="frame" id="herramienta-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">07 / 17</span>
+      <h1 class="claim" data-in="0" style="--i:0">La herramienta se elige según el caso</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/terraform-pulumi/terraform-pulumi.html?embed" title="Tabla que compara Terraform y Pulumi en lenguaje, lógica dinámica y caso de uso ideal, con la conclusión de que Matrícula y Pagos conviene con Terraform." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="separar" class="clip slide" data-start="45.5" data-duration="6.5" data-track-index="0" data-label="Separar lo declarativo de lo imperativo" data-frags="3">
+        <div class="frame" id="separar-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">08 / 17</span>
+      <h1 class="claim" data-in="0" style="--i:0">Lo variable se programa; lo final se declara</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/separar-logica/separar-logica.html?embed" title="Un programa en Python cuenta las zonas de disponibilidad y genera tres declaraciones de subred; la regla de Morris separa la lógica imperativa de lo declarativo." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="pe" class="clip slide" data-start="52" data-duration="7.5" data-track-index="0" data-label="Práctica PE-S4" data-frags="4">
+        <div class="frame" id="pe-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">09 / 17</span>
+      <h1 class="claim" data-in="0" style="--i:0">Ahora, individualmente: la práctica PE-S4</h1>
+      <div class="timeline">
+        <div class="row" data-f="1"><b>1</b><strong>Las cuatro capas</strong><em>Con los rótulos de su escenario</em></div>
+        <div class="row" data-f="2"><b>2</b><strong>Terraform o Pulumi</strong><em>Tres criterios y la elección justificada</em></div>
+        <div class="row" data-f="3"><b>3</b><strong>Fragmento declarativo</strong><em>El estado final deseado de un recurso</em></div>
+        <div class="row" data-f="4"><b>4</b><strong>Declarativo e imperativo</strong><em>Qué lógica necesitaría condicionales</em></div>
+      </div>
+        </div>
+      </section>
+
+      <section id="principios" class="clip slide" data-start="59.5" data-duration="7.5" data-track-index="0" data-label="Cuatro principios" data-frags="4">
+        <div class="frame" id="principios-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">10 / 17</span>
+      <h1 class="claim" data-in="0" style="--i:0">Cuatro principios de infraestructura dinámica</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/cuatro-principios/cuatro-principios.html?embed" title="Cuatro tarjetas con un ejemplo cada una: reemplazo automático de una máquina que no responde, terraform apply reproducible, terraform destroy desechable y tres instancias con la misma imagen." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="copo" class="clip slide" data-start="67" data-duration="6.5" data-track-index="0" data-label="Copo de nieve, mascotas y ganado" data-frags="3">
+        <div class="frame" id="copo-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">11 / 17</span>
+      <h1 class="claim" data-in="0" style="--i:0">Un servidor imposible de reconstruir</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/copo-nieve/copo-nieve.html?embed" title="Bitácora de un servidor con parches manuales que nadie puede repetir, frente a un servidor reconstruido en seis minutos desde el repositorio; mascotas contra ganado." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="inmutable" class="clip slide" data-start="73.5" data-duration="6.5" data-track-index="0" data-label="Deriva e infraestructura inmutable" data-frags="3">
+        <div class="frame" id="inmutable-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">12 / 17</span>
+      <h1 class="claim" data-in="0" style="--i:0">No se parchea: se crea uno nuevo</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/deriva-inmutable/deriva-inmutable.html?embed" title="A la izquierda dos entornos que se separan con el tiempo: versión de openssl y conexiones máximas distintas. A la derecha, una instancia nueva se prueba, recibe el tráfico y la anterior se destruye." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="ciclo" class="clip slide" data-start="80" data-duration="7.5" data-track-index="0" data-label="Ciclo de vida en tres fases" data-frags="4">
+        <div class="frame" id="ciclo-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">13 / 17</span>
+      <h1 class="claim" data-in="0" style="--i:0">Tres fases, un mismo código</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/ciclo-vida/ciclo-vida.html?embed" title="Tres columnas con la salida de terraform en cada fase: apply para aprovisionar, plan para gestionar cambios y destroy para desmantelar, con la técnica de cada una." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="radio" class="clip slide" data-start="87.5" data-duration="6.5" data-track-index="0" data-label="Radio de impacto" data-frags="3">
+        <div class="frame" id="radio-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">14 / 17</span>
+      <h1 class="claim" data-in="0" style="--i:0">Stacks pequeños: un comando arriesga menos</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/radio-impacto/radio-impacto.html?embed" title="Una cuadrícula de 148 recursos que un solo comando puede afectar, frente a tres stacks pequeños; un cambio en Matrícula y Pagos afecta solo 12 recursos." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="matricula" class="clip slide" data-start="94" data-duration="7.5" data-track-index="0" data-label="Matrícula y Pagos con un stack efímero" data-frags="4">
+        <div class="frame" id="matricula-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">15 / 17</span>
+      <h1 class="claim" data-in="0" style="--i:0">El clúster existe solo mientras hay matrícula</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/matricula-efimero/matricula-efimero.html?embed" title="Línea de doce meses: capacidad fija todo el año con 105 120 horas de instancia, contra un stack efímero de dos ventanas de catorce días con 8 064 horas; los comandos apply y destroy lo abren y lo cierran." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="actividades" class="clip slide" data-start="101.5" data-duration="3.5" data-track-index="0" data-label="Actividades de la semana" data-frags="0">
+        <div class="frame" id="actividades-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">16 / 17</span>
+      <h1 class="claim" data-in="0" style="--i:0">Esta semana hay dos actividades</h1>
+      <div class="cards two tall">
+        <div class="card" data-in="1" style="--i:1"><span class="tag">PE-S4 · 2,25 puntos</span><strong>Integración HW/SW y propuesta IaC</strong><em>Las cuatro capas, Terraform o Pulumi, un fragmento declarativo y la separación declarativo e imperativo</em></div>
+        <div class="card" data-in="2" style="--i:2"><span class="tag">TA-S4 · 2,25 puntos</span><strong>Bitácora sobre hardware e IaC</strong><em>Cuatro principios aplicados a un servidor de la UIDE, tres fases, inmutable contra mutable y una aplicación institucional</em></div>
+      </div>
+        </div>
+      </section>
+
+      <section id="cierre" class="clip slide dark" data-start="105" data-duration="3.5" data-track-index="0" data-label="Cierre" data-frags="0">
+        <div class="frame" id="cierre-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">17 / 17</span>
+      <h1 class="claim xl" data-in="0" style="--i:0">Se declara, se crea, se cambia en pequeño y se destruye</h1>
+      <p class="lead" data-in="1" style="--i:1">Radio de impacto y reconstrucción desde cero: las dos preguntas antes de aprobar un cambio</p>
+      <p class="byline" data-in="2" style="--i:2">Fuente: Morris (2021), Infrastructure as Code</p>
+        </div>
+      </section>
+    </div>
+    <script>
+      // Con el motor de HyperFrames (check, Studio) el registro ya existe.
+      // Al presentar, el reproductor mueve esta línea de tiempo directamente.
+      const engineHosted = Object.prototype.hasOwnProperty.call(window, "__timelines");
+      window.__timelines = window.__timelines || {};
+      if (!engineHosted) document.documentElement.classList.add("live");
+
+      // Las figuras incrustadas reenvían las flechas aquí: se les quita el foco y se entrega la tecla
+      // al documento donde el reproductor la escucha, para que las flechas siempre controlen el deck.
+      window.addEventListener("message", (ev) => {
+        const m = ev.data;
+        if (!m || m.type !== "deck-key") return;
+        let w = window;
+        for (;;) {
+          try { if (w.document.activeElement && w.document.activeElement !== w.document.body) w.document.activeElement.blur(); } catch (e) {}
+          if (w === w.parent) break;
+          w = w.parent;
+        }
+        try { w.focus(); w.document.dispatchEvent(new KeyboardEvent("keydown", { key: m.key, bubbles: true, cancelable: true })); } catch (e) {}
+      });
+
+      // El reproductor retrocede de diapositiva en diapositiva. Se reemplaza prev() del controlador para
+      // que teclado, botón y deslizamiento deshagan un avance a la vez: de un avance al anterior y,
+      // desde el primero, al último avance de la diapositiva previa.
+      (function installStepBack() {
+        let w = window, host = null;
+        for (;;) {
+          try { host = w.document.querySelector("hyperframes-slideshow"); } catch (e) {}
+          if (host || w === w.parent) break;
+          w = w.parent;
+        }
+        if (!host) return;
+        const patch = () => {
+          const c = host.controller;
+          if (!c) return false;
+          if (c.__stepBack) return true;
+          c.__stepBack = true;
+          const original = c.prev.bind(c);
+          c.prev = () => {
+            const f = c.frame;
+            if (c.stack.length > 1) return original();
+            if (f.fragmentIndex > 0) c.resumeSlide(f.slideIndex, f.fragmentIndex - 1);
+            else if (f.slideIndex > 0) {
+              const p = f.slideIndex - 1, n = c.show.slides[p].fragments.length;
+              c.resumeSlide(p, n > 0 ? n - 1 : -1);
+            }
+          };
+          return true;
+        };
+        setInterval(patch, 300);
+        patch();
+      })();
+
+      const ENTER = 2;
+      const tl = gsap.timeline({ paused: true });
+      tl.to({}, { duration: 108.5 }, 0);
+
+      const figSyncs = [];
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      slides.forEach((slide, index) => {
+        const start = Number(slide.dataset.start);
+        const end = start + Number(slide.dataset.duration);
+        const frame = slide.querySelector(".frame");
+        tl.set(frame, { opacity: 1 }, start);
+        if (index < slides.length - 1) tl.set(frame, { opacity: 0 }, end);
+
+        slide.querySelectorAll("[data-in]").forEach((el) => {
+          const i = Number(el.dataset.in);
+          tl.fromTo(el, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, start + 0.12 + i * 0.07);
+        });
+        slide.querySelectorAll("[data-f]").forEach((el) => {
+          const hold = start + ENTER + Number(el.dataset.f);
+          tl.fromTo(el, { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, hold - 0.6);
+        });
+        slide.querySelectorAll("iframe[data-fig]").forEach((el) => {
+          // La figura corre en su propio documento: en vivo anima sola hacia el estado pedido;
+          // con el motor (check, Studio) sigue la línea de tiempo cuadro a cuadro.
+          // El estado se calcula desde el tiempo de la línea de tiempo, así responde igual
+          // al avanzar, al retroceder y al saltar entre diapositivas.
+          const steps = Number(el.dataset.fig);
+          let sent = -1;
+          const wanted = () => {
+            const t = tl.time();
+            let u = 0;
+            for (let step = 1; step <= steps; step++) u += Math.min(1, Math.max(0, (t - (start + ENTER + step - 0.6)) / 0.6));
+            return engineHosted ? u / steps : Math.round(u) / steps;
+          };
+          const send = (force) => {
+            const value = wanted();
+            if (!el.contentWindow || (!force && value === sent)) return;
+            sent = value;
+            el.contentWindow.postMessage({ type: "fig", mode: engineHosted ? "set" : "go", value }, "*");
+          };
+          figSyncs.push(send);
+          el.addEventListener("load", () => send(true));
+        });
+        slide.querySelectorAll("[data-hl]").forEach((el) => {
+          const hold = start + ENTER + Number(el.dataset.hl);
+          tl.to(el, { backgroundColor: "#fbe3a6", color: "#5c3d00", duration: 0.4 }, hold - 0.5);
+        });
+      });
+
+      tl.eventCallback("onUpdate", () => figSyncs.forEach((sync) => sync()));
+      // En vivo el reproductor puede mover la línea de tiempo sin emitir eventos: se revisa en cada tic de GSAP.
+      if (!engineHosted) gsap.ticker.add(() => figSyncs.forEach((sync) => sync()));
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

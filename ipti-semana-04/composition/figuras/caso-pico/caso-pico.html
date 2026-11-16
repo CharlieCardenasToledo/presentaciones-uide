@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Un pico de dos semanas</title>
+<style>
+:root{--wine:#910048;--wine-deep:#6d0036;--gold:#e8a920;--teal:#0c6b62;--amber:#7a5200;--ink:#1f1a1d;--muted:#5a5257;--tint:#f6f1f3;--red:#b3261e}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:transparent;font-family:system-ui,"Segoe UI",sans-serif;color:var(--ink);overflow:hidden}
+#st{position:absolute;left:0;top:0;width:1560px;height:720px;transform-origin:0 0}
+.b{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border-radius:16px;padding:6px 14px;font-weight:700;font-size:32px;line-height:1.15;background:var(--tint);color:var(--ink)}
+.b small{display:block;font-size:24px;font-weight:600;margin-top:4px}
+.t{position:absolute;font-size:34px;font-weight:700;line-height:1.2}
+.pill{position:absolute;display:flex;align-items:center;justify-content:center;height:52px;padding:0 20px;border-radius:26px;color:#fff;font:800 24px/1 ui-monospace,Consolas,monospace;white-space:nowrap;opacity:0;z-index:5}
+.ln{position:absolute;background:#cfc6ca}
+
+.cod{position:absolute;background:#1f1a1d;color:#e9e4e7;border-radius:12px;font:600 22px/1.45 ui-monospace,Consolas,monospace;padding:12px 18px;white-space:pre;overflow:hidden;opacity:0;text-align:left}
+.cod .k{color:#e8a920}.cod .s{color:#7fd6c8}.cod .c{color:#a79ea4}.cod .e{color:#ff8a80}.cod .n{color:#f6c1d9}
+.win{position:absolute;border-radius:12px;border:2px solid #cfc6ca;background:#fff;overflow:hidden;opacity:0;text-align:left}
+.win .bar{height:36px;background:#ece6e9;display:flex;align-items:center;padding:0 12px;gap:7px;font-size:20px;font-weight:700;color:#5a5257}
+.win .bar i{width:12px;height:12px;border-radius:50%;background:#c9bfc4;display:inline-block}
+.win .bd{padding:4px 14px;font-size:22px}
+.tr{display:flex;gap:12px;padding:7px 8px;border-bottom:1px solid #e4dde0;font-size:22px;font-weight:600;text-align:left;align-items:center}
+.tr.h{font-weight:800;color:#5a5257;font-size:19px;letter-spacing:.04em}
+.tr span:nth-child(1){flex:2.4}.tr span:nth-child(2){flex:2.2}.tr span:nth-child(3){flex:1}
+.fila{position:absolute;opacity:0;background:#fff;border:2px solid #e4dde0;border-radius:8px}
+.fila.mal{background:#f3c4c0;color:#b3261e;border-color:#b3261e}.fila.bien{background:#e3f2f0;color:#0c6b62;border-color:#0c6b62}
+.note{box-shadow:4px 6px 0 rgba(0,0,0,.14);border-radius:4px}
+code.m{font-family:ui-monospace,Consolas,monospace;font-size:20px;background:#1f1a1d;color:#ff8a80;padding:3px 10px;border-radius:6px;margin-top:6px;display:inline-block;font-weight:600}
+
+</style></head><body>
+<div id="st">
+<svg width="1560" height="720" viewBox="0 0 1560 720" style="position:absolute;left:0;top:0;pointer-events:none"><g id="cap" opacity="0"><line x1="30" y1="120" x2="1530" y2="120" stroke="#b3261e" stroke-width="5" stroke-dasharray="14 10"/></g><line x1="30" y1="420" x2="1530" y2="420" stroke="#8d8388" stroke-width="3"/></svg>
+<div id="b0" style="position:absolute;left:30.0px;top:120px;width:22px;height:300px;background:#910048;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="b1" style="position:absolute;left:58.7px;top:120px;width:22px;height:300px;background:#910048;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="b2" style="position:absolute;left:87.4px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z2" style="position:absolute;left:87.4px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b3" style="position:absolute;left:116.1px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z3" style="position:absolute;left:116.1px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b4" style="position:absolute;left:144.8px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z4" style="position:absolute;left:144.8px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b5" style="position:absolute;left:173.5px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z5" style="position:absolute;left:173.5px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b6" style="position:absolute;left:202.2px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z6" style="position:absolute;left:202.2px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b7" style="position:absolute;left:230.9px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z7" style="position:absolute;left:230.9px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b8" style="position:absolute;left:259.6px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z8" style="position:absolute;left:259.6px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b9" style="position:absolute;left:288.3px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z9" style="position:absolute;left:288.3px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b10" style="position:absolute;left:317.0px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z10" style="position:absolute;left:317.0px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b11" style="position:absolute;left:345.7px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z11" style="position:absolute;left:345.7px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b12" style="position:absolute;left:374.4px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z12" style="position:absolute;left:374.4px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b13" style="position:absolute;left:403.1px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z13" style="position:absolute;left:403.1px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b14" style="position:absolute;left:431.8px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z14" style="position:absolute;left:431.8px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b15" style="position:absolute;left:460.5px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z15" style="position:absolute;left:460.5px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b16" style="position:absolute;left:489.2px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z16" style="position:absolute;left:489.2px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b17" style="position:absolute;left:517.9px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z17" style="position:absolute;left:517.9px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b18" style="position:absolute;left:546.6px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z18" style="position:absolute;left:546.6px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b19" style="position:absolute;left:575.3px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z19" style="position:absolute;left:575.3px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b20" style="position:absolute;left:604.0px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z20" style="position:absolute;left:604.0px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b21" style="position:absolute;left:632.7px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z21" style="position:absolute;left:632.7px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b22" style="position:absolute;left:661.4px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z22" style="position:absolute;left:661.4px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b23" style="position:absolute;left:690.1px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z23" style="position:absolute;left:690.1px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b24" style="position:absolute;left:718.8px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z24" style="position:absolute;left:718.8px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b25" style="position:absolute;left:747.5px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z25" style="position:absolute;left:747.5px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b26" style="position:absolute;left:776.2px;top:120px;width:22px;height:300px;background:#910048;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="b27" style="position:absolute;left:804.9px;top:120px;width:22px;height:300px;background:#910048;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="b28" style="position:absolute;left:833.6px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z28" style="position:absolute;left:833.6px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b29" style="position:absolute;left:862.3px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z29" style="position:absolute;left:862.3px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b30" style="position:absolute;left:891.0px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z30" style="position:absolute;left:891.0px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b31" style="position:absolute;left:919.7px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z31" style="position:absolute;left:919.7px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b32" style="position:absolute;left:948.4px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z32" style="position:absolute;left:948.4px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b33" style="position:absolute;left:977.1px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z33" style="position:absolute;left:977.1px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b34" style="position:absolute;left:1005.8px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z34" style="position:absolute;left:1005.8px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b35" style="position:absolute;left:1034.5px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z35" style="position:absolute;left:1034.5px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b36" style="position:absolute;left:1063.2px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z36" style="position:absolute;left:1063.2px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b37" style="position:absolute;left:1091.9px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z37" style="position:absolute;left:1091.9px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b38" style="position:absolute;left:1120.6px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z38" style="position:absolute;left:1120.6px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b39" style="position:absolute;left:1149.3px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z39" style="position:absolute;left:1149.3px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b40" style="position:absolute;left:1178.0px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z40" style="position:absolute;left:1178.0px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b41" style="position:absolute;left:1206.7px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z41" style="position:absolute;left:1206.7px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b42" style="position:absolute;left:1235.4px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z42" style="position:absolute;left:1235.4px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b43" style="position:absolute;left:1264.1px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z43" style="position:absolute;left:1264.1px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b44" style="position:absolute;left:1292.8px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z44" style="position:absolute;left:1292.8px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b45" style="position:absolute;left:1321.5px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z45" style="position:absolute;left:1321.5px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b46" style="position:absolute;left:1350.2px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z46" style="position:absolute;left:1350.2px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b47" style="position:absolute;left:1378.9px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z47" style="position:absolute;left:1378.9px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b48" style="position:absolute;left:1407.6px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z48" style="position:absolute;left:1407.6px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b49" style="position:absolute;left:1436.3px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z49" style="position:absolute;left:1436.3px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b50" style="position:absolute;left:1465.0px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z50" style="position:absolute;left:1465.0px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="b51" style="position:absolute;left:1493.7px;top:370px;width:22px;height:50px;background:#b9aeb3;border-radius:3px 3px 0 0;opacity:0"></div>
+<div id="z51" style="position:absolute;left:1493.7px;top:120px;width:22px;height:250px;background:#fcefc9;opacity:0"></div>
+<div id="m1" class="b" style="left:22px;top:74px;width:160px;height:40px;opacity:0;background:transparent;color:var(--wine);font-size:26px">Matrícula</div>
+<div id="m2" class="b" style="left:760px;top:74px;width:150px;height:40px;opacity:0;background:transparent;color:var(--wine);font-size:26px">Matrícula</div>
+<div id="cl" class="b" style="left:925px;top:66px;width:605px;height:48px;opacity:0;background:transparent;color:#b3261e;font-size:27px">Capacidad fija para el pico: 12 servidores</div>
+<div id="oc" class="b" style="left:100px;top:235px;width:640px;height:60px;opacity:0;background:transparent;color:#7a5200;font-size:31px">Capacidad ociosa casi todo el año</div>
+<div id="ax" class="b" style="left:30px;top:428px;width:400px;height:40px;opacity:0;background:transparent;color:var(--muted);font-size:24px;align-items:flex-start;padding:0">Semana 1 … Semana 52</div>
+<div id="tar" class="b" style="left:30px;top:470px;width:1500px;height:70px;opacity:0;background:#910048;color:#fff;font-size:32px">Y si el servidor se pide a mano cuando el pico ya empezó, llega tarde</div>
+<div id="k0" class="t" style="left:30px;top:555px;width:1500px;opacity:0;color:var(--wine-deep);font-size:31px">Matrícula y Pagos de la UIDE recibe casi todo su tráfico en pocos días</div>
+<div id="k1" class="t" style="left:30px;top:555px;width:1500px;opacity:0;color:var(--wine-deep);font-size:31px">Los servidores fijos se dimensionan para el pico y el resto del año sobran</div>
+<div id="k2" class="t" style="left:30px;top:555px;width:1500px;opacity:0;color:var(--teal);font-size:31px">Pedirlos cuando el pico ya empezó significa llegar tarde</div>
+<div id="q0" class="t" style="left:30px;top:640px;width:1500px;opacity:0;color:var(--amber);font-size:30px">Pregunta: ¿Cuándo necesita la UIDE muchos servidores para matrículas?</div>
+<div id="q1" class="t" style="left:30px;top:640px;width:1500px;opacity:0;color:var(--amber);font-size:30px">Pregunta: ¿Cuánto de lo que se paga se usa el resto del año?</div>
+<div id="q2" class="t" style="left:30px;top:640px;width:1500px;opacity:0;color:var(--amber);font-size:30px">Pregunta: ¿Cómo se debería conseguir capacidad solo cuando hace falta?</div>
+</div>
+<script>
+const N = 3;
+const st = document.getElementById("st");
+function fit() { const k = Math.min(innerWidth / 1560, innerHeight / 720); st.style.transform = "scale(" + k + ")"; }
+fit(); addEventListener("resize", fit);
+const $ = (s) => document.querySelector(s);
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const ease = (t) => { t = clamp(t, 0, 1); return t * t * (3 - 2 * t); };
+const win = (s, a, b) => ease((s - a) / (b - a));
+const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+const mix = (a, b, t) => { const x = hex(a), y = hex(b); return "rgb(" + x.map((v, i) => Math.round(v + (y[i] - v) * t)).join(",") + ")"; };
+function lit(el, base, color, t, fg0, fg1) { el.style.background = mix(base, color, t); el.style.color = mix(fg0 || "#1f1a1d", fg1 || "#ffffff", t); }
+function put(el, x, y, a) { el.style.transform = "translate(" + x + "px," + y + "px)"; el.style.opacity = String(a); }
+function route(k, pts) { for (let i = 0; i < pts.length - 1; i++) { if (k <= pts[i + 1][0]) { const t = ease((k - pts[i][0]) / (pts[i + 1][0] - pts[i][0])); return [pts[i][1] + (pts[i + 1][1] - pts[i][1]) * t, pts[i][2] + (pts[i + 1][2] - pts[i][2]) * t]; } } const l = pts[pts.length - 1]; return [l[1], l[2]]; }
+
+function caps(s, n, pref) { for (let k = 0; k <= n; k++) { const a = win(s, k - 0.5, k) * (k < n ? 1 - win(s, k, k + 0.5) : 1); const el = $("#" + pref + k); if (el) put(el, 0, 0, clamp(a, 0, 1)); } }
+function show(el, a, dy) { put(el, 0, (1 - a) * (dy === undefined ? 24 : dy), a); }
+function so(id, a) { $("#" + id).setAttribute("opacity", String(a)); }
+
+let u = 0, target = 0, frame = 0, timer = 0, last = 0;
+function draw() { 
+const s = u * N;
+for (let i = 0; i < 52; i++) show($("#b" + i), win(s, i * 0.008, 0.45 + i * 0.008), 16);
+show($("#m1"), win(s, 0.5, 1), 8); show($("#m2"), win(s, 0.6, 1), 8); show($("#ax"), win(s, 0.4, 1), 6);
+so("cap", win(s, 1, 1.6)); show($("#cl"), win(s, 1, 1.6), 8);
+for (let i = 0; i < 52; i++) { const e = $("#z" + i); if (e) show(e, win(s, 1.2, 1.9), 0); }
+show($("#oc"), win(s, 1.7, 2), 8);
+show($("#tar"), win(s, 2, 3), 14);
+caps(s, 3, "k"); caps(s, 3, "q");
+ }
+function loop() {
+  clearTimeout(timer); cancelAnimationFrame(frame);
+  const now = performance.now();
+  const dt = last ? Math.min((now - last) / 1000, 1) : 1 / 60; last = now;
+  const speed = 1 / (N * 1.6);
+  u = target > u ? Math.min(target, u + dt * speed) : Math.max(target, u - dt * speed * 2);
+  draw();
+  if (u !== target) { frame = requestAnimationFrame(loop); timer = setTimeout(loop, 80); } else { frame = 0; timer = 0; last = 0; }
+}
+const run = () => { if (!frame && !timer) { last = 0; loop(); } };
+const go = (v) => { target = clamp(v, 0, 1); run(); };
+window.__fig = { set(v) { u = target = clamp(v, 0, 1); draw(); }, go, get u() { return u; } };
+addEventListener("message", (e) => { const m = e.data; if (!m || m.type !== "fig") return; if (m.mode === "set") window.__fig.set(Number(m.value)); else go(Number(m.value)); });
+if (window.parent !== window) {
+  const KEYMAP = { ArrowRight: "ArrowRight", PageDown: "ArrowRight", " ": "ArrowRight", Enter: "ArrowRight", ArrowLeft: "ArrowLeft", PageUp: "ArrowLeft", Backspace: "ArrowLeft" };
+  addEventListener("keydown", (e) => { const k = KEYMAP[e.key]; if (!k) return; e.preventDefault(); e.stopImmediatePropagation(); parent.postMessage({ type: "deck-key", key: k }, "*"); }, true);
+} else {
+  addEventListener("click", () => go(target >= 1 ? 0 : Math.min(1, Math.round(target * N + 1) / N)));
+}
+draw();
+</script></body></html>

@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Radio de impacto</title>
+<style>
+:root{--wine:#910048;--wine-deep:#6d0036;--gold:#e8a920;--teal:#0c6b62;--amber:#7a5200;--ink:#1f1a1d;--muted:#5a5257;--tint:#f6f1f3;--red:#b3261e}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:transparent;font-family:system-ui,"Segoe UI",sans-serif;color:var(--ink);overflow:hidden}
+#st{position:absolute;left:0;top:0;width:1560px;height:720px;transform-origin:0 0}
+.b{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border-radius:16px;padding:6px 14px;font-weight:700;font-size:32px;line-height:1.15;background:var(--tint);color:var(--ink)}
+.b small{display:block;font-size:24px;font-weight:600;margin-top:4px}
+.t{position:absolute;font-size:34px;font-weight:700;line-height:1.2}
+.pill{position:absolute;display:flex;align-items:center;justify-content:center;height:52px;padding:0 20px;border-radius:26px;color:#fff;font:800 24px/1 ui-monospace,Consolas,monospace;white-space:nowrap;opacity:0;z-index:5}
+.ln{position:absolute;background:#cfc6ca}
+
+.cod{position:absolute;background:#1f1a1d;color:#e9e4e7;border-radius:12px;font:600 22px/1.45 ui-monospace,Consolas,monospace;padding:12px 18px;white-space:pre;overflow:hidden;opacity:0;text-align:left}
+.cod .k{color:#e8a920}.cod .s{color:#7fd6c8}.cod .c{color:#a79ea4}.cod .e{color:#ff8a80}.cod .n{color:#f6c1d9}
+.win{position:absolute;border-radius:12px;border:2px solid #cfc6ca;background:#fff;overflow:hidden;opacity:0;text-align:left}
+.win .bar{height:36px;background:#ece6e9;display:flex;align-items:center;padding:0 12px;gap:7px;font-size:20px;font-weight:700;color:#5a5257}
+.win .bar i{width:12px;height:12px;border-radius:50%;background:#c9bfc4;display:inline-block}
+.win .bd{padding:4px 14px;font-size:22px}
+.tr{display:flex;gap:12px;padding:7px 8px;border-bottom:1px solid #e4dde0;font-size:22px;font-weight:600;text-align:left;align-items:center}
+.tr.h{font-weight:800;color:#5a5257;font-size:19px;letter-spacing:.04em}
+.tr span:nth-child(1){flex:2.4}.tr span:nth-child(2){flex:2.2}.tr span:nth-child(3){flex:1}
+.fila{position:absolute;opacity:0;background:#fff;border:2px solid #e4dde0;border-radius:8px}
+.fila.mal{background:#f3c4c0;color:#b3261e;border-color:#b3261e}.fila.bien{background:#e3f2f0;color:#0c6b62;border-color:#0c6b62}
+.note{box-shadow:4px 6px 0 rgba(0,0,0,.14);border-radius:4px}
+code.m{font-family:ui-monospace,Consolas,monospace;font-size:20px;background:#1f1a1d;color:#ff8a80;padding:3px 10px;border-radius:6px;margin-top:6px;display:inline-block;font-weight:600}
+
+</style></head><body>
+<div id="st">
+<div id="L0" style="position:absolute;left:30px;top:60px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L1" style="position:absolute;left:54px;top:60px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L2" style="position:absolute;left:78px;top:60px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L3" style="position:absolute;left:102px;top:60px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L4" style="position:absolute;left:126px;top:60px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L5" style="position:absolute;left:150px;top:60px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L6" style="position:absolute;left:174px;top:60px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L7" style="position:absolute;left:198px;top:60px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L8" style="position:absolute;left:222px;top:60px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L9" style="position:absolute;left:246px;top:60px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L10" style="position:absolute;left:270px;top:60px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L11" style="position:absolute;left:294px;top:60px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L12" style="position:absolute;left:30px;top:84px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L13" style="position:absolute;left:54px;top:84px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L14" style="position:absolute;left:78px;top:84px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L15" style="position:absolute;left:102px;top:84px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L16" style="position:absolute;left:126px;top:84px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L17" style="position:absolute;left:150px;top:84px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L18" style="position:absolute;left:174px;top:84px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L19" style="position:absolute;left:198px;top:84px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L20" style="position:absolute;left:222px;top:84px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L21" style="position:absolute;left:246px;top:84px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L22" style="position:absolute;left:270px;top:84px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L23" style="position:absolute;left:294px;top:84px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L24" style="position:absolute;left:30px;top:108px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L25" style="position:absolute;left:54px;top:108px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L26" style="position:absolute;left:78px;top:108px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L27" style="position:absolute;left:102px;top:108px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L28" style="position:absolute;left:126px;top:108px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L29" style="position:absolute;left:150px;top:108px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L30" style="position:absolute;left:174px;top:108px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L31" style="position:absolute;left:198px;top:108px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L32" style="position:absolute;left:222px;top:108px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L33" style="position:absolute;left:246px;top:108px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L34" style="position:absolute;left:270px;top:108px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L35" style="position:absolute;left:294px;top:108px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L36" style="position:absolute;left:30px;top:132px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L37" style="position:absolute;left:54px;top:132px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L38" style="position:absolute;left:78px;top:132px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L39" style="position:absolute;left:102px;top:132px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L40" style="position:absolute;left:126px;top:132px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L41" style="position:absolute;left:150px;top:132px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L42" style="position:absolute;left:174px;top:132px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L43" style="position:absolute;left:198px;top:132px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L44" style="position:absolute;left:222px;top:132px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L45" style="position:absolute;left:246px;top:132px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L46" style="position:absolute;left:270px;top:132px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L47" style="position:absolute;left:294px;top:132px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L48" style="position:absolute;left:30px;top:156px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L49" style="position:absolute;left:54px;top:156px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L50" style="position:absolute;left:78px;top:156px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L51" style="position:absolute;left:102px;top:156px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L52" style="position:absolute;left:126px;top:156px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L53" style="position:absolute;left:150px;top:156px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L54" style="position:absolute;left:174px;top:156px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L55" style="position:absolute;left:198px;top:156px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L56" style="position:absolute;left:222px;top:156px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L57" style="position:absolute;left:246px;top:156px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L58" style="position:absolute;left:270px;top:156px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L59" style="position:absolute;left:294px;top:156px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L60" style="position:absolute;left:30px;top:180px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L61" style="position:absolute;left:54px;top:180px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L62" style="position:absolute;left:78px;top:180px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L63" style="position:absolute;left:102px;top:180px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L64" style="position:absolute;left:126px;top:180px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L65" style="position:absolute;left:150px;top:180px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L66" style="position:absolute;left:174px;top:180px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L67" style="position:absolute;left:198px;top:180px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L68" style="position:absolute;left:222px;top:180px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L69" style="position:absolute;left:246px;top:180px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L70" style="position:absolute;left:270px;top:180px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L71" style="position:absolute;left:294px;top:180px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L72" style="position:absolute;left:30px;top:204px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L73" style="position:absolute;left:54px;top:204px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L74" style="position:absolute;left:78px;top:204px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L75" style="position:absolute;left:102px;top:204px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L76" style="position:absolute;left:126px;top:204px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L77" style="position:absolute;left:150px;top:204px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L78" style="position:absolute;left:174px;top:204px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L79" style="position:absolute;left:198px;top:204px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L80" style="position:absolute;left:222px;top:204px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L81" style="position:absolute;left:246px;top:204px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L82" style="position:absolute;left:270px;top:204px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L83" style="position:absolute;left:294px;top:204px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L84" style="position:absolute;left:30px;top:228px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L85" style="position:absolute;left:54px;top:228px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L86" style="position:absolute;left:78px;top:228px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L87" style="position:absolute;left:102px;top:228px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L88" style="position:absolute;left:126px;top:228px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L89" style="position:absolute;left:150px;top:228px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L90" style="position:absolute;left:174px;top:228px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L91" style="position:absolute;left:198px;top:228px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L92" style="position:absolute;left:222px;top:228px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L93" style="position:absolute;left:246px;top:228px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L94" style="position:absolute;left:270px;top:228px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L95" style="position:absolute;left:294px;top:228px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L96" style="position:absolute;left:30px;top:252px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L97" style="position:absolute;left:54px;top:252px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L98" style="position:absolute;left:78px;top:252px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L99" style="position:absolute;left:102px;top:252px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L100" style="position:absolute;left:126px;top:252px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L101" style="position:absolute;left:150px;top:252px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L102" style="position:absolute;left:174px;top:252px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L103" style="position:absolute;left:198px;top:252px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L104" style="position:absolute;left:222px;top:252px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L105" style="position:absolute;left:246px;top:252px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L106" style="position:absolute;left:270px;top:252px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L107" style="position:absolute;left:294px;top:252px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L108" style="position:absolute;left:30px;top:276px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L109" style="position:absolute;left:54px;top:276px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L110" style="position:absolute;left:78px;top:276px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L111" style="position:absolute;left:102px;top:276px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L112" style="position:absolute;left:126px;top:276px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L113" style="position:absolute;left:150px;top:276px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L114" style="position:absolute;left:174px;top:276px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L115" style="position:absolute;left:198px;top:276px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L116" style="position:absolute;left:222px;top:276px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L117" style="position:absolute;left:246px;top:276px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L118" style="position:absolute;left:270px;top:276px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L119" style="position:absolute;left:294px;top:276px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L120" style="position:absolute;left:30px;top:300px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L121" style="position:absolute;left:54px;top:300px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L122" style="position:absolute;left:78px;top:300px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L123" style="position:absolute;left:102px;top:300px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L124" style="position:absolute;left:126px;top:300px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L125" style="position:absolute;left:150px;top:300px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L126" style="position:absolute;left:174px;top:300px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L127" style="position:absolute;left:198px;top:300px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L128" style="position:absolute;left:222px;top:300px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L129" style="position:absolute;left:246px;top:300px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L130" style="position:absolute;left:270px;top:300px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L131" style="position:absolute;left:294px;top:300px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L132" style="position:absolute;left:30px;top:324px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L133" style="position:absolute;left:54px;top:324px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L134" style="position:absolute;left:78px;top:324px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L135" style="position:absolute;left:102px;top:324px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L136" style="position:absolute;left:126px;top:324px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L137" style="position:absolute;left:150px;top:324px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L138" style="position:absolute;left:174px;top:324px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L139" style="position:absolute;left:198px;top:324px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L140" style="position:absolute;left:222px;top:324px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L141" style="position:absolute;left:246px;top:324px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L142" style="position:absolute;left:270px;top:324px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L143" style="position:absolute;left:294px;top:324px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L144" style="position:absolute;left:30px;top:348px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L145" style="position:absolute;left:54px;top:348px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L146" style="position:absolute;left:78px;top:348px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="L147" style="position:absolute;left:102px;top:348px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R0" style="position:absolute;left:795px;top:60px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R1" style="position:absolute;left:819px;top:60px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R2" style="position:absolute;left:843px;top:60px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R3" style="position:absolute;left:867px;top:60px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R4" style="position:absolute;left:795px;top:84px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R5" style="position:absolute;left:819px;top:84px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R6" style="position:absolute;left:843px;top:84px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R7" style="position:absolute;left:867px;top:84px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R8" style="position:absolute;left:795px;top:108px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R9" style="position:absolute;left:819px;top:108px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R10" style="position:absolute;left:843px;top:108px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R11" style="position:absolute;left:867px;top:108px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R12" style="position:absolute;left:951px;top:60px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R13" style="position:absolute;left:975px;top:60px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R14" style="position:absolute;left:999px;top:60px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R15" style="position:absolute;left:1023px;top:60px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R16" style="position:absolute;left:1047px;top:60px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R17" style="position:absolute;left:1071px;top:60px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R18" style="position:absolute;left:1095px;top:60px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R19" style="position:absolute;left:1119px;top:60px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R20" style="position:absolute;left:951px;top:84px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R21" style="position:absolute;left:975px;top:84px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R22" style="position:absolute;left:999px;top:84px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R23" style="position:absolute;left:1023px;top:84px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R24" style="position:absolute;left:1047px;top:84px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R25" style="position:absolute;left:1071px;top:84px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R26" style="position:absolute;left:1095px;top:84px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R27" style="position:absolute;left:1119px;top:84px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R28" style="position:absolute;left:951px;top:108px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R29" style="position:absolute;left:975px;top:108px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R30" style="position:absolute;left:999px;top:108px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R31" style="position:absolute;left:1023px;top:108px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R32" style="position:absolute;left:1047px;top:108px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R33" style="position:absolute;left:1071px;top:108px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R34" style="position:absolute;left:1095px;top:108px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R35" style="position:absolute;left:1119px;top:108px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R36" style="position:absolute;left:951px;top:132px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R37" style="position:absolute;left:975px;top:132px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R38" style="position:absolute;left:999px;top:132px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R39" style="position:absolute;left:1023px;top:132px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R40" style="position:absolute;left:1047px;top:132px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R41" style="position:absolute;left:1071px;top:132px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R42" style="position:absolute;left:1095px;top:132px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R43" style="position:absolute;left:1119px;top:132px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R44" style="position:absolute;left:951px;top:156px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R45" style="position:absolute;left:975px;top:156px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R46" style="position:absolute;left:999px;top:156px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R47" style="position:absolute;left:1023px;top:156px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R48" style="position:absolute;left:1047px;top:156px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R49" style="position:absolute;left:1071px;top:156px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R50" style="position:absolute;left:1095px;top:156px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R51" style="position:absolute;left:1119px;top:156px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R52" style="position:absolute;left:951px;top:180px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R53" style="position:absolute;left:975px;top:180px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R54" style="position:absolute;left:999px;top:180px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R55" style="position:absolute;left:1023px;top:180px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R56" style="position:absolute;left:1047px;top:180px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R57" style="position:absolute;left:1071px;top:180px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R58" style="position:absolute;left:1095px;top:180px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R59" style="position:absolute;left:1119px;top:180px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R60" style="position:absolute;left:951px;top:204px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R61" style="position:absolute;left:975px;top:204px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R62" style="position:absolute;left:999px;top:204px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R63" style="position:absolute;left:1023px;top:204px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R64" style="position:absolute;left:1047px;top:204px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R65" style="position:absolute;left:1071px;top:204px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R66" style="position:absolute;left:1095px;top:204px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R67" style="position:absolute;left:1119px;top:204px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R68" style="position:absolute;left:951px;top:228px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R69" style="position:absolute;left:975px;top:228px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R70" style="position:absolute;left:999px;top:228px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R71" style="position:absolute;left:1023px;top:228px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R72" style="position:absolute;left:1047px;top:228px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R73" style="position:absolute;left:1071px;top:228px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R74" style="position:absolute;left:1095px;top:228px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R75" style="position:absolute;left:1119px;top:228px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R76" style="position:absolute;left:1203px;top:60px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R77" style="position:absolute;left:1227px;top:60px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R78" style="position:absolute;left:1251px;top:60px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R79" style="position:absolute;left:1275px;top:60px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R80" style="position:absolute;left:1299px;top:60px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R81" style="position:absolute;left:1323px;top:60px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R82" style="position:absolute;left:1347px;top:60px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R83" style="position:absolute;left:1371px;top:60px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R84" style="position:absolute;left:1395px;top:60px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R85" style="position:absolute;left:1203px;top:84px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R86" style="position:absolute;left:1227px;top:84px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R87" style="position:absolute;left:1251px;top:84px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R88" style="position:absolute;left:1275px;top:84px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R89" style="position:absolute;left:1299px;top:84px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R90" style="position:absolute;left:1323px;top:84px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R91" style="position:absolute;left:1347px;top:84px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R92" style="position:absolute;left:1371px;top:84px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R93" style="position:absolute;left:1395px;top:84px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R94" style="position:absolute;left:1203px;top:108px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R95" style="position:absolute;left:1227px;top:108px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R96" style="position:absolute;left:1251px;top:108px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R97" style="position:absolute;left:1275px;top:108px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R98" style="position:absolute;left:1299px;top:108px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R99" style="position:absolute;left:1323px;top:108px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R100" style="position:absolute;left:1347px;top:108px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R101" style="position:absolute;left:1371px;top:108px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R102" style="position:absolute;left:1395px;top:108px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R103" style="position:absolute;left:1203px;top:132px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R104" style="position:absolute;left:1227px;top:132px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R105" style="position:absolute;left:1251px;top:132px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R106" style="position:absolute;left:1275px;top:132px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R107" style="position:absolute;left:1299px;top:132px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R108" style="position:absolute;left:1323px;top:132px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R109" style="position:absolute;left:1347px;top:132px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R110" style="position:absolute;left:1371px;top:132px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R111" style="position:absolute;left:1395px;top:132px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R112" style="position:absolute;left:1203px;top:156px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R113" style="position:absolute;left:1227px;top:156px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R114" style="position:absolute;left:1251px;top:156px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R115" style="position:absolute;left:1275px;top:156px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R116" style="position:absolute;left:1299px;top:156px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R117" style="position:absolute;left:1323px;top:156px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R118" style="position:absolute;left:1347px;top:156px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R119" style="position:absolute;left:1371px;top:156px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R120" style="position:absolute;left:1395px;top:156px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R121" style="position:absolute;left:1203px;top:180px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R122" style="position:absolute;left:1227px;top:180px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R123" style="position:absolute;left:1251px;top:180px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R124" style="position:absolute;left:1275px;top:180px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R125" style="position:absolute;left:1299px;top:180px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R126" style="position:absolute;left:1323px;top:180px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R127" style="position:absolute;left:1347px;top:180px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R128" style="position:absolute;left:1371px;top:180px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R129" style="position:absolute;left:1395px;top:180px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R130" style="position:absolute;left:1203px;top:204px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R131" style="position:absolute;left:1227px;top:204px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R132" style="position:absolute;left:1251px;top:204px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R133" style="position:absolute;left:1275px;top:204px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R134" style="position:absolute;left:1299px;top:204px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R135" style="position:absolute;left:1323px;top:204px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R136" style="position:absolute;left:1347px;top:204px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R137" style="position:absolute;left:1371px;top:204px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R138" style="position:absolute;left:1395px;top:204px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R139" style="position:absolute;left:1203px;top:228px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R140" style="position:absolute;left:1227px;top:228px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R141" style="position:absolute;left:1251px;top:228px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R142" style="position:absolute;left:1275px;top:228px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R143" style="position:absolute;left:1299px;top:228px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R144" style="position:absolute;left:1323px;top:228px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R145" style="position:absolute;left:1347px;top:228px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R146" style="position:absolute;left:1371px;top:228px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="R147" style="position:absolute;left:1395px;top:228px;width:20px;height:20px;border-radius:4px;background:#d9d1d5;opacity:0"></div>
+<div id="hl" class="b" style="left:30px;top:5px;width:700px;height:44px;opacity:0;background:transparent;align-items:flex-start;padding:0"><span style="color:#b3261e;font-size:27px">Un solo stack (ejemplo)</span></div>
+<div id="hr" class="b" style="left:795px;top:5px;width:735px;height:44px;opacity:0;background:transparent;align-items:flex-start;padding:0"><span style="color:#0c6b62;font-size:27px">Tres stacks pequeños (ejemplo)</span></div>
+<div id="lres" class="b" style="left:30px;top:395px;width:700px;height:62px;opacity:0;background:#f3c4c0;color:#b3261e;font-size:28px">terraform apply: afecta 148 recursos</div>
+<div id="ga" class="b" style="left:770px;top:262px;width:170px;height:80px;opacity:0;background:transparent;font-size:21px;padding:0">Matrícula y Pagos<small>12 recursos</small></div>
+<div id="gb" class="b" style="left:941px;top:262px;width:250px;height:80px;opacity:0;background:transparent;font-size:21px;padding:0">Reportes de notas<small>64 recursos</small></div>
+<div id="gc" class="b" style="left:1203px;top:262px;width:216px;height:80px;opacity:0;background:transparent;font-size:21px;padding:0">Aulas Virtuales<small>72 recursos</small></div>
+<div id="rres" class="b" style="left:795px;top:395px;width:735px;height:62px;opacity:0;background:#e3f2f0;color:#0c6b62;font-size:28px">terraform apply en Matrícula: afecta 12 recursos</div>
+<div id="def" class="b" style="left:30px;top:475px;width:1500px;height:66px;opacity:0;background:#910048;color:#fff;font-size:30px">Radio de impacto: el número de recursos que un solo comando de cambio puede afectar</div>
+<div id="k0" class="t" style="left:30px;top:558px;width:1500px;opacity:0;color:var(--wine-deep);font-size:31px">Cuántos recursos arriesga un comando depende de cómo se divida la infraestructura</div>
+<div id="k1" class="t" style="left:30px;top:558px;width:1500px;opacity:0;color:var(--wine-deep);font-size:31px">Todo en un solo stack: un cambio puede tocar los 148 recursos</div>
+<div id="k2" class="t" style="left:30px;top:558px;width:1500px;opacity:0;color:var(--wine-deep);font-size:31px">Se divide en stacks pequeños, uno por sistema</div>
+<div id="k3" class="t" style="left:30px;top:558px;width:1500px;opacity:0;color:var(--teal);font-size:31px">Un cambio en Matrícula solo toca los 12 recursos de Matrícula</div>
+<div id="q0" class="t" style="left:30px;top:645px;width:1500px;opacity:0;color:var(--amber);font-size:30px">Pregunta: ¿Cuántos recursos puede tocar un comando?</div>
+<div id="q1" class="t" style="left:30px;top:645px;width:1500px;opacity:0;color:var(--amber);font-size:30px">Pregunta: ¿Qué pasa si ese comando sale mal?</div>
+<div id="q2" class="t" style="left:30px;top:645px;width:1500px;opacity:0;color:var(--amber);font-size:30px">Pregunta: ¿Cómo se podría dividir?</div>
+<div id="q3" class="t" style="left:30px;top:645px;width:1500px;opacity:0;color:var(--amber);font-size:30px">Pregunta: ¿Qué sistemas quedan a salvo?</div>
+</div>
+<script>
+const N = 3;
+const st = document.getElementById("st");
+function fit() { const k = Math.min(innerWidth / 1560, innerHeight / 720); st.style.transform = "scale(" + k + ")"; }
+fit(); addEventListener("resize", fit);
+const $ = (s) => document.querySelector(s);
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const ease = (t) => { t = clamp(t, 0, 1); return t * t * (3 - 2 * t); };
+const win = (s, a, b) => ease((s - a) / (b - a));
+const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+const mix = (a, b, t) => { const x = hex(a), y = hex(b); return "rgb(" + x.map((v, i) => Math.round(v + (y[i] - v) * t)).join(",") + ")"; };
+function lit(el, base, color, t, fg0, fg1) { el.style.background = mix(base, color, t); el.style.color = mix(fg0 || "#1f1a1d", fg1 || "#ffffff", t); }
+function put(el, x, y, a) { el.style.transform = "translate(" + x + "px," + y + "px)"; el.style.opacity = String(a); }
+function route(k, pts) { for (let i = 0; i < pts.length - 1; i++) { if (k <= pts[i + 1][0]) { const t = ease((k - pts[i][0]) / (pts[i + 1][0] - pts[i][0])); return [pts[i][1] + (pts[i + 1][1] - pts[i][1]) * t, pts[i][2] + (pts[i + 1][2] - pts[i][2]) * t]; } } const l = pts[pts.length - 1]; return [l[1], l[2]]; }
+
+function caps(s, n, pref) { for (let k = 0; k <= n; k++) { const a = win(s, k - 0.5, k) * (k < n ? 1 - win(s, k, k + 0.5) : 1); const el = $("#" + pref + k); if (el) put(el, 0, 0, clamp(a, 0, 1)); } }
+function show(el, a, dy) { put(el, 0, (1 - a) * (dy === undefined ? 24 : dy), a); }
+function so(id, a) { $("#" + id).setAttribute("opacity", String(a)); }
+
+let u = 0, target = 0, frame = 0, timer = 0, last = 0;
+function draw() { 
+const s = u * N;
+show($("#hl"), win(s, 0, 0.4), 8);
+for (let i = 0; i < 148; i++) { const e = $("#L" + i); show(e, win(s, i * 0.0025, 0.4 + i * 0.0025), 0); e.style.background = mix("#d9d1d5", "#e8a920", win(s, 0.6, 1)); }
+show($("#lres"), win(s, 0.7, 1), 10);
+show($("#hr"), win(s, 1, 1.4), 8);
+for (let i = 0; i < 148; i++) { const e = $("#R" + i); show(e, win(s, 1 + i * 0.0025, 1.4 + i * 0.0025), 0); e.style.background = i < 12 ? mix("#d9d1d5", "#e8a920", win(s, 2, 2.5)) : "#d9d1d5"; }
+show($("#ga"), win(s, 1.3, 1.8), 8); show($("#gb"), win(s, 1.3, 1.8), 8); show($("#gc"), win(s, 1.3, 1.8), 8);
+show($("#rres"), win(s, 2.3, 2.7), 10);
+show($("#def"), win(s, 2.6, 3), 10);
+caps(s, 3, "k"); caps(s, 3, "q");
+ }
+function loop() {
+  clearTimeout(timer); cancelAnimationFrame(frame);
+  const now = performance.now();
+  const dt = last ? Math.min((now - last) / 1000, 1) : 1 / 60; last = now;
+  const speed = 1 / (N * 1.6);
+  u = target > u ? Math.min(target, u + dt * speed) : Math.max(target, u - dt * speed * 2);
+  draw();
+  if (u !== target) { frame = requestAnimationFrame(loop); timer = setTimeout(loop, 80); } else { frame = 0; timer = 0; last = 0; }
+}
+const run = () => { if (!frame && !timer) { last = 0; loop(); } };
+const go = (v) => { target = clamp(v, 0, 1); run(); };
+window.__fig = { set(v) { u = target = clamp(v, 0, 1); draw(); }, go, get u() { return u; } };
+addEventListener("message", (e) => { const m = e.data; if (!m || m.type !== "fig") return; if (m.mode === "set") window.__fig.set(Number(m.value)); else go(Number(m.value)); });
+if (window.parent !== window) {
+  const KEYMAP = { ArrowRight: "ArrowRight", PageDown: "ArrowRight", " ": "ArrowRight", Enter: "ArrowRight", ArrowLeft: "ArrowLeft", PageUp: "ArrowLeft", Backspace: "ArrowLeft" };
+  addEventListener("keydown", (e) => { const k = KEYMAP[e.key]; if (!k) return; e.preventDefault(); e.stopImmediatePropagation(); parent.postMessage({ type: "deck-key", key: k }, "*"); }, true);
+} else {
+  addEventListener("click", () => go(target >= 1 ? 0 : Math.min(1, Math.round(target * N + 1) / N)));
+}
+draw();
+</script></body></html>
