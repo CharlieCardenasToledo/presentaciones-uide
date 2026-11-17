@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Ejercicio guiado de ancho efectivo</title>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Qué columna mide la precisión</title>
 <style>
 :root{--wine:#910048;--wine-deep:#6d0036;--gold:#e8a920;--teal:#0c6b62;--amber:#7a5200;--ink:#1f1a1d;--muted:#5a5257;--tint:#f6f1f3;--red:#b3261e}
 *{box-sizing:border-box}
@@ -31,24 +31,22 @@ html,body{margin:0;height:100%;background:transparent;font-family:system-ui,"Seg
 <div id="c2_2" class="b" style="left:330px;top:216px;width:202px;height:56px;opacity:0;background:#f6f1f3;color:var(--ink);font-size:28px;font-family:ui-monospace,Consolas,monospace;opacity:1">960</div>
 <div id="c2_3" class="b" style="left:330px;top:280px;width:202px;height:56px;opacity:0;background:#f6f1f3;color:var(--ink);font-size:28px;font-family:ui-monospace,Consolas,monospace;opacity:1">560</div>
 <div id="c2_4" class="b" style="left:330px;top:344px;width:202px;height:56px;opacity:0;background:#f6f1f3;color:var(--ink);font-size:28px;font-family:ui-monospace,Consolas,monospace;opacity:1">960</div>
-<div id="h3" class="b" style="left:540px;top:20px;width:242px;height:60px;opacity:0;background:var(--wine);color:#fff;font-size:24px;font-family:ui-monospace,Consolas,monospace;opacity:1">desviacion_px</div>
-<div id="c3_0" class="b" style="left:540px;top:88px;width:242px;height:56px;opacity:0;background:#fbe3ee;color:var(--wine);font-size:28px;font-family:ui-monospace,Consolas,monospace;opacity:1">−18</div>
-<div id="c3_1" class="b" style="left:540px;top:152px;width:242px;height:56px;opacity:0;background:#fbe3ee;color:var(--wine);font-size:28px;font-family:ui-monospace,Consolas,monospace;opacity:1">12</div>
-<div id="c3_2" class="b" style="left:540px;top:216px;width:242px;height:56px;opacity:0;background:#fbe3ee;color:var(--wine);font-size:28px;font-family:ui-monospace,Consolas,monospace;opacity:1">25</div>
-<div id="c3_3" class="b" style="left:540px;top:280px;width:242px;height:56px;opacity:0;background:#fbe3ee;color:var(--wine);font-size:28px;font-family:ui-monospace,Consolas,monospace;opacity:1">−9</div>
-<div id="c3_4" class="b" style="left:540px;top:344px;width:242px;height:56px;opacity:0;background:#fbe3ee;color:var(--wine);font-size:28px;font-family:ui-monospace,Consolas,monospace;opacity:1">−10</div>
-<div id="s1" class="b" style="left:800px;top:20px;width:730px;height:110px;opacity:0;text-align:left;align-items:flex-start;justify-content:center;padding:14px 24px;background:#e3f2f0;color:var(--teal);font-size:26px;font-family:ui-monospace,Consolas,monospace">media = 0,0 px; suma de cuadrados = 1274<br>SDx = √(1274 / 4) = 17,85 px</div>
-<div id="s2" class="b" style="left:800px;top:142px;width:730px;height:110px;opacity:0;text-align:left;align-items:flex-start;justify-content:center;padding:14px 24px;background:#e3f2f0;color:var(--teal);font-size:26px;font-family:ui-monospace,Consolas,monospace">We = 4,133 × 17,85 = 73,8 px<br>IDe = log2(400 / 73,8 + 1) = 2,68 bits</div>
-<div id="s3" class="b" style="left:800px;top:264px;width:730px;height:110px;opacity:0;text-align:left;align-items:flex-start;justify-content:center;padding:14px 24px;background:#cfe9e5;color:var(--teal);font-size:26px;font-family:ui-monospace,Consolas,monospace">Con un tiempo medio de 690 ms:<br>TP = 2,68 / 0,690 s = 3,89 bits/s</div>
-<div id="s4" class="b" style="left:800px;top:386px;width:730px;height:110px;opacity:0;text-align:left;align-items:flex-start;justify-content:center;padding:14px 24px;background:#f9dedc;color:var(--red);font-size:26px;font-family:ui-monospace,Consolas,monospace">Con x_clic en lugar de desviacion_px:<br>SDx = 218,4 px, We = 903 px, IDe = 0,53 bits</div>
-<div id="k0" class="t" style="left:30px;top:596px;width:1500px;opacity:0;color:var(--wine-deep);font-size:32px">Cinco clics de la condición B (A = 400 px, W = 100 px), datos de ejemplo: calculen antes de avanzar</div>
-<div id="k1" class="t" style="left:30px;top:596px;width:1500px;opacity:0;color:var(--wine-deep);font-size:32px">SDx se calcula con desviacion_px, la distancia de cada clic al centro de su barra</div>
-<div id="k2" class="t" style="left:30px;top:596px;width:1500px;opacity:0;color:var(--wine-deep);font-size:32px">El ancho efectivo y el IDe salen de esa dispersión, no del ancho dibujado</div>
-<div id="k3" class="t" style="left:30px;top:596px;width:1500px;opacity:0;color:var(--wine-deep);font-size:32px">El rendimiento junta la dificultad efectiva y el tiempo</div>
-<div id="k4" class="t" style="left:30px;top:596px;width:1500px;opacity:0;color:var(--teal);font-size:32px">Con la posición en pantalla se mezclan las dos barras y el resultado no sirve</div>
+<div id="h3" class="b" style="left:540px;top:20px;width:242px;height:60px;opacity:0;background:#e2dcdf;color:var(--ink);font-size:24px;font-family:ui-monospace,Consolas,monospace;opacity:1">desviacion_px</div>
+<div id="c3_0" class="b" style="left:540px;top:88px;width:242px;height:56px;opacity:0;background:#f6f1f3;color:var(--ink);font-size:28px;font-family:ui-monospace,Consolas,monospace;opacity:1">−18</div>
+<div id="c3_1" class="b" style="left:540px;top:152px;width:242px;height:56px;opacity:0;background:#f6f1f3;color:var(--ink);font-size:28px;font-family:ui-monospace,Consolas,monospace;opacity:1">12</div>
+<div id="c3_2" class="b" style="left:540px;top:216px;width:242px;height:56px;opacity:0;background:#f6f1f3;color:var(--ink);font-size:28px;font-family:ui-monospace,Consolas,monospace;opacity:1">25</div>
+<div id="c3_3" class="b" style="left:540px;top:280px;width:242px;height:56px;opacity:0;background:#f6f1f3;color:var(--ink);font-size:28px;font-family:ui-monospace,Consolas,monospace;opacity:1">−9</div>
+<div id="c3_4" class="b" style="left:540px;top:344px;width:242px;height:56px;opacity:0;background:#f6f1f3;color:var(--ink);font-size:28px;font-family:ui-monospace,Consolas,monospace;opacity:1">−10</div>
+<div id="s1" class="b" style="left:800px;top:20px;width:730px;height:150px;opacity:0;text-align:left;align-items:flex-start;justify-content:center;padding:14px 24px;background:#e3f2f0;color:var(--teal);font-size:26px">desviacion_px: cada clic cae a pocos píxeles del centro de su barra. La dispersión real es de unos 18 px</div>
+<div id="s2" class="b" style="left:800px;top:190px;width:730px;height:150px;opacity:0;text-align:left;align-items:flex-start;justify-content:center;padding:14px 24px;background:#f9dedc;color:var(--red);font-size:28px">x_clic: mezcla las dos barras, una en 560 y otra en 960. La dispersión parece de 218 px y el resultado no sirve</div>
+<div id="s3" class="b" style="left:800px;top:360px;width:730px;height:150px;opacity:0;text-align:left;align-items:flex-start;justify-content:center;padding:14px 24px;background:var(--wine);color:#fff;font-size:28px">En la hoja de cálculo: SDx = DESVEST de desviacion_px. La calculadora de la página 4.2 hace el resto</div>
+<div id="k0" class="t" style="left:30px;top:596px;width:1500px;opacity:0;color:var(--wine-deep);font-size:32px">Cinco clics de la condición B, datos de ejemplo: ¿qué columna dice qué tan precisos fueron?</div>
+<div id="k1" class="t" style="left:30px;top:596px;width:1500px;opacity:0;color:var(--wine-deep);font-size:32px">desviacion_px mide la distancia de cada clic al centro de su barra</div>
+<div id="k2" class="t" style="left:30px;top:596px;width:1500px;opacity:0;color:var(--wine-deep);font-size:32px">x_clic es la posición en pantalla y mezcla las dos barras</div>
+<div id="k3" class="t" style="left:30px;top:596px;width:1500px;opacity:0;color:var(--teal);font-size:32px">Solo esa cuenta se hace a mano; lo demás lo calcula la página</div>
 </div>
 <script>
-const N = 4;
+const N = 3;
 const st = document.getElementById("st");
 function fit() { const k = Math.min(innerWidth / 1560, innerHeight / 720); st.style.transform = "scale(" + k + ")"; }
 fit(); addEventListener("resize", fit);
@@ -68,8 +66,12 @@ function show(el, a, dy) { put(el, 0, (1 - a) * (dy === undefined ? 24 : dy), a)
 let u = 0, target = 0, frame = 0, timer = 0, last = 0;
 function draw() { 
 const s = u * N;
-for (let k = 1; k <= 4; k++) show($("#s" + k), win(s, k - 1, k));
-caps(s, 4, "k");
+const a1 = win(s, 0, 1), a2 = win(s, 1, 2), a3 = win(s, 2, 3);
+const col = (j, k, c) => { lit($("#h" + j), "#e2dcdf", c, k); for (let i = 0; i < 5; i++) lit($("#c" + j + "_" + i), "#f6f1f3", c, k * 0.35, "#1f1a1d", "#1f1a1d"); };
+col(3, clamp(a1 - a2 + a3, 0, 1), "#0c6b62");
+col(1, clamp(a2 - a3, 0, 1), "#b3261e");
+show($("#s1"), a1); show($("#s2"), a2); show($("#s3"), a3);
+caps(s, 3, "k");
  }
 function loop() {
   clearTimeout(timer); cancelAnimationFrame(frame);
