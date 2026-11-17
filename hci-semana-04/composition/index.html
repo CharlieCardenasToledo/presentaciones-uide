@@ -57,7 +57,7 @@
       .card.pill { align-items: center; text-align: center; padding: 30px 20px; }
       .card.pill b { width: 68px; height: 68px; border-radius: 50%; background: var(--wine); color: #fff; display: grid; place-items: center; font-size: 38px; }
       .cards.tall .card { min-height: 300px; }
-      .verdict { margin-top: auto; padding: 14px 18px; border-radius: 12px; background: #fbe3a6; color: var(--amber) !important; font-weight: 700; }
+      .verdict { font-size: 34px; margin-top: auto; padding: 14px 18px; border-radius: 12px; background: #fbe3a6; color: var(--amber) !important; font-weight: 700; }
       .verdict.good { background: #cfe9e5; color: var(--teal) !important; }
 
       table.data { border-collapse: collapse; width: 100%; background: var(--tint); border-radius: 20px; overflow: hidden; }
@@ -177,7 +177,7 @@
       "sceneId": "hipotesis",
       "startTime": 36,
       "endTime": 42.5,
-      "notes": "Con una ley, la hipótesis del caso deja de ser una opinión. Retomar las tres respuestas que pidió el analista; los bits ya se calcularon al ver la tarea de apuntar, y ahora se convierten en milisegundos. Primer avance: el botón actual mide 40 px de alto y está a 320 px del pulgar. Segundo avance: el botón nuevo duplica el alto a la misma distancia, W = 80. Tercer avance: el ID baja de 3,17 a 2,32 bits, unos 0,85 bits, y con la pendiente de 204 ms/bit que MacKenzie obtuvo para el ratón la ley predice una diferencia de unos 173 ms; esa predicción, con su dirección y su tamaño en milisegundos, es la hipótesis que el experimento puede confirmar o refutar. Aclarar que la pendiente del ratón es una referencia: con el pulgar sobre una pantalla táctil la pendiente sería otra y es justamente lo que se mediría. Fuente: MacKenzie (2013), página 4.1.",
+      "notes": "Con una ley, la hipótesis del caso deja de ser una opinión. Retomar las tres respuestas que pidió el analista; los bits ya se calcularon al ver la tarea de apuntar, y ahora se convierten en milisegundos. Primer avance: el botón actual mide 40 px de alto y está a 320 px del pulgar. Segundo avance: el botón nuevo duplica el alto a la misma distancia, W = 80. Tercer avance: el ID baja de 3,17 a 2,32 bits, unos 0,85 bits, y con la pendiente de 204 ms/bit que MacKenzie obtuvo para el ratón la ley predice una diferencia de unos 173 ms; esa predicción, con su dirección y su tamaño en milisegundos, es la hipótesis que el experimento puede confirmar o refutar. Si alguien nota que la recta de antes tenía 207,3 ms/bit: los 204 ms/bit (203,82) salen de la comparación de dispositivos, con 12 participantes y nueve condiciones, y los 207,3 solo de los tres puntos del ejemplo resuelto; las dos son del ratón y con 207,3 la predicción sería 176 ms, casi lo mismo. Aclarar que la pendiente del ratón es una referencia: con el pulgar sobre una pantalla táctil la pendiente sería otra y es justamente lo que se mediría. Fuente: MacKenzie (2013), página 4.1.",
       "fragments": [
         38,
         39,
@@ -248,92 +248,129 @@
       ]
     },
     {
-      "sceneId": "pe",
+      "sceneId": "tu-turno",
       "startTime": 77,
-      "endTime": 85.5,
-      "notes": "La práctica se hace en parejas y dura unos 70 minutos. Cada pareja escribe primero su predicción para la diferencia entre B y C y por qué. Después cada persona hace sus cuatro condiciones con el orden que le toca según el número de pareja y de participante (unos 2 minutos con la página) y descarga su archivo de datos. Con ese archivo calculan por condición el tiempo medio, el ID, el ancho efectivo, el IDe y el rendimiento, y ajustan la recta con la hoja de cálculo o con la calculadora de la página 4.2. Antes de que calculen, recordar que SDx es la desviación estándar de desviacion_px, no de la posición absoluta, y que la predicción para A = 300 y W = 60 usa el ID nominal. Para validar la herramienta, la calculadora debe dar con el ejemplo de la aplicación de taxis b = 148 ms/bit, a = 260 ms y R² = 0,997. Si alguien usa touchpad, anotarlo como variable de control. Al final, pedir en la pizarra el tiempo medio de B y C de cada persona: sirve para el bloque siguiente.",
+      "endTime": 84.5,
+      "notes": "Ejercicio guiado antes de la práctica: con cinco clics de ejemplo de la condición B, las mismas columnas que traerá su archivo. Dar dos o tres minutos para que cada pareja calcule SDx antes del primer avance. Primer avance: la media de desviacion_px es 0 y SDx = √(1274 / 4) = 17,85 px; se divide entre n − 1, como en la hoja de cálculo y en la página del experimento. Segundo avance: We = 4,133 × 17,85 = 73,8 px e IDe = log2(400 / 73,8 + 1) = 2,68 bits; el ID nominal de B es 2,32, y es normal que el IDe sea distinto porque usa la dispersión real. Tercer avance: con un tiempo medio de 690 ms, TP = 2,68 / 0,690 = 3,89 bits/s. Cuarto avance, el error típico: si se usa x_clic, la posición en pantalla, se mezclan las dos barras, SDx sale 218,4 px y el IDe cae a 0,53 bits; un IDe tan bajo es la señal de que se tomó la columna equivocada. Los clics y el tiempo son de ejemplo. Fuente: MacKenzie (2013), página 4.2 del módulo.",
       "fragments": [
         79,
         80,
         81,
         82,
-        83,
-        84
+        83
+      ]
+    },
+    {
+      "sceneId": "pe",
+      "startTime": 84.5,
+      "endTime": 93,
+      "notes": "La práctica se hace en parejas y dura unos 70 minutos. Cada pareja escribe primero su predicción para la diferencia entre B y C y por qué. Después cada persona hace sus cuatro condiciones con el orden que le toca según el número de pareja y de participante (unos 2 minutos con la página) y descarga su archivo de datos. Con ese archivo calculan por condición el tiempo medio, el ID, el ancho efectivo, el IDe y el rendimiento, y ajustan la recta con la hoja de cálculo o con la calculadora de la página 4.2. El enlace está en la página 4.2 del módulo, en el botón Abrir el microexperimento; la ventana debe medir al menos 900 px de ancho. Antes de que calculen, recordar lo del ejercicio guiado: SDx sale de desviacion_px, no de x_clic, y la predicción para A = 300 y W = 60 usa el ID nominal. Para validar la herramienta, la calculadora debe dar con el ejemplo de la aplicación de taxis b = 148 ms/bit, a = 260 ms y R² = 0,997. Si alguien usa touchpad, anotarlo como variable de control. Al final, pedir en la pizarra el tiempo medio de B y C de cada persona: sirve para el bloque siguiente.",
+      "fragments": [
+        86.5,
+        87.5,
+        88.5,
+        89.5,
+        90.5,
+        91.5
       ]
     },
     {
       "sceneId": "tamano-efecto",
-      "startTime": 85.5,
-      "endTime": 92,
+      "startTime": 93,
+      "endTime": 99.5,
       "notes": "Saber que dos condiciones difieren no dice cuánto difieren. Con los tiempos medios de B y C de la clase, repetir en la pizarra lo que muestra la figura con datos de ejemplo de ocho personas y dos botones. Primer avance: el botón pequeño tarda 837,75 ms y el grande 712,5 ms; la diferencia de medias, 125,25 ms, es el tamaño de efecto en su forma más simple. Segundo avance: al reportar un porcentaje hay que decir su base, el pequeño es 17,6 % más lento y el grande es 15,0 % más rápido, dos cifras de los mismos datos. Tercer avance: el estandarizado, d_av = 125,25 / 55,8 = 2,24, y con la corrección de Hedges g_av cerca de 2,12 (factor 0,945 con 16 observaciones). La referencia de Cohen de 0,8 para grande es arbitraria; lo que importa es la consecuencia práctica, 125 ms en cada confirmación, y que con ocho participantes el intervalo de confianza es amplio. Fuentes: MacKenzie (2013); Lakens (2013).",
       "fragments": [
-        87.5,
-        88.5,
-        89.5,
-        90.5
+        95,
+        96,
+        97,
+        98
       ]
     },
     {
       "sceneId": "variantes-d",
-      "startTime": 92,
-      "endTime": 98.5,
+      "startTime": 99.5,
+      "endTime": 106,
       "notes": "Lakens describe tres variantes de d en un diseño dentro de sujetos, según el divisor. Primer avance: d_z divide la diferencia media entre la desviación estándar de las diferencias por participante; en el ejemplo da 8,9 porque las dos mediciones están muy correlacionadas, r = 0,97, y cuando r supera 0,5 es mayor que las otras dos. Segundo avance: d_rm ajusta esa desviación con la correlación r. Tercer avance: d_av divide entre el promedio de las dos desviaciones estándar e ignora r; Lakens recomienda reportar d_rm o d_av porque d_z casi no se usa para comparar con otros estudios. En esta asignatura se reporta d_av con la corrección de Hedges, que se llama g_av, y se declara cuál se usó; las referencias de Cohen de 0,2, 0,5 y 0,8 no deben aplicarse de forma rígida. Fuente: Lakens (2013).",
       "fragments": [
-        94,
-        95,
-        96,
-        97
+        101.5,
+        102.5,
+        103.5,
+        104.5
       ]
     },
     {
       "sceneId": "validez",
-      "startTime": 98.5,
-      "endTime": 105,
+      "startTime": 106,
+      "endTime": 112.5,
       "notes": "Un resultado vale tanto como el diseño que lo produjo. Primer avance, las dos clases de validez: la interna es la medida en que el efecto observado se debe a las condiciones de prueba y no a otra cosa, y las variables de confusión la amenazan; la externa es la medida en que los resultados se generalizan a otras personas y situaciones. Segundo avance: mejorar una cuesta a la otra; una tarea muy controlada y artificial gana validez interna y pierde externa, y una muy realista hace lo contrario. Tercer avance, la respuesta de MacKenzie: varias preguntas estrechas y comprobables que, juntas, cubran lo amplio. Una pregunta comprobable es, por ejemplo, la velocidad de entrada en palabras por minuto con una técnica frente a otra tras una hora de uso, no si la técnica nueva es mejor. Preguntar a qué población se puede generalizar el resultado de su clase. Fuente: MacKenzie (2013), página 4.4.",
       "fragments": [
-        100.5,
-        101.5,
-        102.5,
-        103.5
+        108,
+        109,
+        110,
+        111
+      ]
+    },
+    {
+      "sceneId": "senal",
+      "startTime": 112.5,
+      "endTime": 119,
+      "notes": "Retoma la detección de señales de la semana 2, ahora como herramienta para leer un experimento. Preguntar antes: si en un estudio baja la cantidad de aciertos, ¿la persona ve peor o se volvió más exigente para decir que sí? Primer avance: si cayó la sensibilidad, d′, la persona distingue peor la señal del ruido, y el remedio es rediseñar la presentación. Segundo avance: si cambió el criterio, c, la persona distingue igual pero exige más evidencia para responder, y el remedio es ajustar el umbral o el entrenamiento. Tercer avance: Parasuraman y Wisdom explican que la detección de señales separa la exactitud, que es sensibilidad, del ajuste de criterio; por eso conviene medir las dos cosas antes de decidir qué cambiar. Fuente: Parasuraman y Wisdom (1985), página 4.4 del módulo.",
+      "fragments": [
+        114.5,
+        115.5,
+        116.5,
+        117.5
       ]
     },
     {
       "sceneId": "informe",
-      "startTime": 105,
-      "endTime": 114.5,
+      "startTime": 119,
+      "endTime": 128.5,
       "notes": "Ejemplo resuelto de la página 4.4: un equipo reclutó a diez compañeros de su carrera y todos escribieron 20 frases con el teclado A y después con el B; el informe dice que B fue más rápido. Antes de avanzar, preguntar qué le falta a ese informe. Revelar un problema y su remedio por avance: la pregunta no se puede comprobar, así que se reescribe en palabras por minuto; el orden fijo mezcla la práctica con el teclado, así que se contrabalancea con AB y BA, cinco personas por secuencia; las instrucciones distintas de cada integrante sesgan el procedimiento, así que se escribe un protocolo; cada teléfono distinto es una variable sin controlar, así que se fija el dispositivo; diez compañeros de la misma carrera limitan la validez externa, así que se dice para quién vale; y un informe reproducible dice quiénes participaron, con qué aparato, qué tarea, qué procedimiento, qué variables, qué diseño y en qué orden. MacKenzie sostiene que la investigación que no se puede replicar es inútil. Es la sección de validez y método reproducible de TA-1.4. Fuente: MacKenzie (2013).",
       "fragments": [
-        107,
-        108,
-        109,
-        110,
-        111,
-        112,
-        113
+        121,
+        122,
+        123,
+        124,
+        125,
+        126,
+        127
       ]
     },
     {
       "sceneId": "actividades",
-      "startTime": 114.5,
-      "endTime": 118,
+      "startTime": 128.5,
+      "endTime": 132,
       "notes": "Las consignas completas, las plantillas y las rúbricas están en Canvas. PE-1.4 se hizo en clase, en parejas, vale 2,25 puntos y cierra hoy al terminar la clase, con el archivo de datos de cada participante. TA-1.4 es individual, vale 2,25 puntos y cierra el domingo 22 de noviembre a las 23:59: una hipótesis con la ley de Fitts y su predicción en milisegundos, la diferencia entre B y C en milisegundos y en porcentaje con su base, d_av con la corrección de Hedges, al menos tres amenazas a la validez y un método reproducible, de dos a tres páginas en PDF. El archivo datos-del-curso.csv con los tiempos de B y C de todos se publica en la página de Materiales después de la sesión. Quien no pudo asistir usa los 10 clics válidos de su propio B y C y avisa que no son independientes."
     },
     {
+      "sceneId": "salida",
+      "startTime": 132,
+      "endTime": 138.5,
+      "notes": "Comprobación de salida: volver al caso del botón de confirmar y a las respuestas que anotaron al inicio. Dejar las tres preguntas del analista a la vista y pedir que cada persona las responda por escrito, en uno o dos minutos, antes de revelar nada. Luego revelar una respuesta por avance y comparar con lo que escribieron al inicio y ahora. Primer avance, cuánto: unos 173 ms menos con el botón de 80 px, porque la dificultad baja 0,85 bits. Segundo avance, comparado con qué: con el botón actual de 40 px, a la misma distancia del pulgar. Tercer avance, medido cómo: tiempo de movimiento, con un diseño dentro de sujetos y el orden contrabalanceado. Quien no logra responder la tercera tiene la TA-1.4 como oportunidad para practicarla.",
+      "fragments": [
+        134,
+        135,
+        136,
+        137
+      ]
+    },
+    {
       "sceneId": "cierre",
-      "startTime": 118,
-      "endTime": 121.5,
-      "notes": "Volver al caso del botón de confirmar y a las respuestas del inicio: ahora saben que más rápido se vuelve una hipótesis cuando dice cuánto (unos 173 ms), comparado con qué (el botón actual) y medido cómo (tiempo de movimiento con un diseño dentro de sujetos y contrabalanceado). Un resultado vale tanto como el diseño que lo produjo, y por eso el informe debe permitir que otra persona lo repita. Recordar que el archivo de datos del curso se publica en Materiales después de la sesión."
+      "startTime": 138.5,
+      "endTime": 142,
+      "notes": "Más rápido se volvió una hipótesis cuando dijo cuánto, comparado con qué y medido cómo. Un resultado vale tanto como el diseño que lo produjo, y por eso el informe debe permitir que otra persona lo repita. Recordar que el archivo de datos del curso se publica en Materiales después de la sesión."
     }
   ],
   "slideSequences": []
 }
     </script>
-    <div id="root" data-composition-id="main" data-start="0" data-duration="121.5" data-width="1920" data-height="1080">
+    <div id="root" data-composition-id="main" data-start="0" data-duration="142" data-width="1920" data-height="1080">
 
       <section id="portada" class="clip slide dark" data-start="0" data-duration="3.5" data-track-index="0" data-label="Portada" data-frags="0">
         <div class="frame" id="portada-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">01 / 19</span>
+          <span class="num">01 / 22</span>
       <p class="course" data-in="0" style="--i:0">LTI_05U_IHC · Semana 4</p>
       <h1 class="claim xl" data-in="1" style="--i:1">Más rápido no es una hipótesis hasta decir cuánto</h1>
       <p class="lead" data-in="2" style="--i:2">Leyes de Fitts y Hick-Hyman, experimentos controlados y tamaño de efecto</p>
@@ -344,7 +381,7 @@
       <section id="caso-taxi" class="clip slide" data-start="3.5" data-duration="6.5" data-track-index="0" data-label="El botón de confirmar" data-frags="3">
         <div class="frame" id="caso-taxi-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">02 / 19</span>
+          <span class="num">02 / 22</span>
       <h1 class="claim" data-in="0" style="--i:0">El botón de confirmar un viaje: ¿será más rápido uno ancho?</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/boton-taxi/boton-taxi.html?embed" title="Dos pantallas de pedir un viaje con el diseño de Uber, con las opciones UberX y Uber Go: la actual, con un botón Elegir pequeño en el borde superior, y la propuesta, con un botón negro ancho cerca del pulgar. Camila usa una mano y Andrés dos; hay 4 000 usuarios y dos semanas." loading="eager"></iframe>
         </div>
@@ -353,7 +390,7 @@
       <section id="fitts-tarea" class="clip slide" data-start="10" data-duration="6.5" data-track-index="0" data-label="Dificultad de apuntar" data-frags="3">
         <div class="frame" id="fitts-tarea-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">03 / 19</span>
+          <span class="num">03 / 22</span>
       <h1 class="claim" data-in="0" style="--i:0">Pedir un viaje es apuntar con el pulgar</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/fitts-tarea/fitts-tarea.html?embed" title="La pantalla de pedir un viaje con el pulgar abajo y el botón Elegir UberX a 320 píxeles de distancia y 40 de alto. La dificultad es 3,17 bits; con el botón del doble de alto baja a 2,32 bits, igual que si se acercara a la mitad de distancia." loading="eager"></iframe>
         </div>
@@ -362,7 +399,7 @@
       <section id="ancho-efectivo" class="clip slide" data-start="16.5" data-duration="6.5" data-track-index="0" data-label="Ancho efectivo" data-frags="3">
         <div class="frame" id="ancho-efectivo-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">04 / 19</span>
+          <span class="num">04 / 22</span>
       <h1 class="claim" data-in="0" style="--i:0">El ancho efectivo premia a quien acierta con precisión</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/ancho-efectivo/ancho-efectivo.html?embed" title="Dos personas apuntan a un objetivo de 20 px. La primera tiene clics juntos, SDx de 4,53 px, We de 18,7 px, IDe de 2,40 bits y rendimiento de 3,97 bits por segundo. La segunda dispersa más: We de 28,9 px, IDe de 1,91 y rendimiento de 3,17." loading="eager"></iframe>
         </div>
@@ -371,7 +408,7 @@
       <section id="fitts-recta" class="clip slide" data-start="23" data-duration="6.5" data-track-index="0" data-label="La recta de Fitts" data-frags="3">
         <div class="frame" id="fitts-recta-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">05 / 19</span>
+          <span class="num">05 / 22</span>
       <h1 class="claim" data-in="0" style="--i:0">Una recta convierte la dificultad en milisegundos</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/fitts-recta/fitts-recta.html?embed" title="Gráfico del tiempo de movimiento frente al IDe con los puntos 1,00 bits y 361 ms, 2,40 y 604, 3,99 y 979. La recta MT igual 137,2 más 207,3 por IDe tiene R cuadrado 0,9926; cada bit cuesta unos 207 ms y un diseño de 3,0 bits tarda 759 ms." loading="eager"></iframe>
         </div>
@@ -380,7 +417,7 @@
       <section id="comparacion" class="clip slide" data-start="29.5" data-duration="6.5" data-track-index="0" data-label="Ratón y puntero remoto" data-frags="3">
         <div class="frame" id="comparacion-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">06 / 19</span>
+          <span class="num">06 / 22</span>
       <h1 class="claim" data-in="0" style="--i:0">La recta permite comparar dispositivos sin discutir</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/comparacion-dispositivos/comparacion-dispositivos.html?embed" title="Dos rectas del tiempo frente al IDe: la del ratón, más baja, y la del RemotePoint, más alta y empinada. El rendimiento medio es 3,60 bits por segundo para el ratón y 1,46 para el RemotePoint." loading="eager"></iframe>
         </div>
@@ -389,7 +426,7 @@
       <section id="hipotesis" class="clip slide" data-start="36" data-duration="6.5" data-track-index="0" data-label="La hipótesis del botón" data-frags="3">
         <div class="frame" id="hipotesis-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">07 / 19</span>
+          <span class="num">07 / 22</span>
       <h1 class="claim" data-in="0" style="--i:0">Con la ley, la opinión se vuelve una hipótesis comprobable</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/hipotesis-boton/hipotesis-boton.html?embed" title="Dos pantallas de pedir un viaje: con el botón Elegir UberX de 40 píxeles de alto y con uno de 80, los dos a 320 píxeles del pulgar. La dificultad baja 0,85 bits y la hipótesis es que el botón ancho tarda unos 173 milisegundos menos." loading="eager"></iframe>
         </div>
@@ -398,7 +435,7 @@
       <section id="hick" class="clip slide" data-start="42.5" data-duration="5.5" data-track-index="0" data-label="Hick-Hyman" data-frags="2">
         <div class="frame" id="hick-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">08 / 19</span>
+          <span class="num">08 / 22</span>
       <h1 class="claim" data-in="0" style="--i:0">Elegir entre más opciones tarda más, pero poco más</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="2" src="figuras/hick-hyman/hick-hyman.html?embed" title="Barras del tiempo de reacción de elección: 438 ms con 2 opciones, 675 con 8 y 913 con 26 letras. Debajo, un menú de 8 opciones en un nivel, 675 ms, frente a dos niveles de 2 y 4, 986 ms." loading="eager"></iframe>
         </div>
@@ -407,7 +444,7 @@
       <section id="variables" class="clip slide" data-start="48" data-duration="8.5" data-track-index="0" data-label="Cinco clases de variables" data-frags="5">
         <div class="frame" id="variables-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">09 / 19</span>
+          <span class="num">09 / 22</span>
       <h1 class="claim" data-in="0" style="--i:0">Antes de medir, cada variable tiene su papel</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="5" src="figuras/variables-clases/variables-clases.html?embed" title="Cinco clases de variables con su ejemplo en el microexperimento de Fitts: independiente, dependiente, de control, aleatoria y de confusión." loading="eager"></iframe>
         </div>
@@ -416,7 +453,7 @@
       <section id="disenos" class="clip slide" data-start="56.5" data-duration="5.5" data-track-index="0" data-label="Dentro y entre sujetos" data-frags="2">
         <div class="frame" id="disenos-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">10 / 19</span>
+          <span class="num">10 / 22</span>
       <h1 class="claim" data-in="0" style="--i:0">Cada persona prueba todo, o cada grupo prueba una</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="2" src="figuras/dentro-entre/dentro-entre.html?embed" title="A la izquierda, un diseño dentro de sujetos: tres personas prueban las condiciones A, B y C. A la derecha, un diseño entre sujetos: tres grupos prueban una condición cada uno. Debajo, el costo de cada diseño." loading="eager"></iframe>
         </div>
@@ -425,7 +462,7 @@
       <section id="latino" class="clip slide" data-start="62" data-duration="6.5" data-track-index="0" data-label="Cuadrados latinos" data-frags="3">
         <div class="frame" id="latino-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">11 / 19</span>
+          <span class="num">11 / 22</span>
       <h1 class="claim" data-in="0" style="--i:0">El cuadrado latino balanceado reparte el orden entre personas</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/cuadrados-latinos/cuadrados-latinos.html?embed" title="Un cuadrado latino simple de 3 por 3 donde el par AB aparece dos veces y el BA ninguna, el cuadrado balanceado de 4 por 4 ABDC, BCAD, CDBA y DACB, y los doce pares ordenados de condiciones consecutivas." loading="eager"></iframe>
         </div>
@@ -434,20 +471,30 @@
       <section id="condiciones" class="clip slide" data-start="68.5" data-duration="8.5" data-track-index="0" data-label="Las cuatro condiciones" data-frags="5">
         <div class="frame" id="condiciones-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">12 / 19</span>
+          <span class="num">12 / 22</span>
       <h1 class="claim" data-in="0" style="--i:0">Cuatro condiciones, y B y C solo difieren en el ancho</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="5" src="figuras/condiciones-fitts/condiciones-fitts.html?embed" title="Las cuatro condiciones del microexperimento a escala: A con distancia 200 y ancho 100, B con 400 y 100, C con 400 y 50, y D con 800 y 50, con sus ID de 1,58, 2,32, 3,17 y 4,09 bits." loading="eager"></iframe>
         </div>
       </section>
 
-      <section id="pe" class="clip slide" data-start="77" data-duration="8.5" data-track-index="0" data-label="Práctica PE-1.4" data-frags="5">
+      <section id="tu-turno" class="clip slide" data-start="77" data-duration="7.5" data-track-index="0" data-label="Ejercicio guiado" data-frags="4">
+        <div class="frame" id="tu-turno-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">13 / 22</span>
+      <h1 class="claim" data-in="0" style="--i:0">Antes de la práctica, calculen SDx</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/sdx-ejercicio/sdx-ejercicio.html?embed" title="Cinco clics de ejemplo de la condición B con las columnas x_clic, x_centro y desviacion_px. Con desviacion_px, SDx es 17,85 px, We 73,8 px, IDe 2,68 bits y el rendimiento 3,89 bits por segundo; con x_clic, SDx sale 218,4 px y el IDe cae a 0,53 bits." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="pe" class="clip slide" data-start="84.5" data-duration="8.5" data-track-index="0" data-label="Práctica PE-1.4" data-frags="5">
         <div class="frame" id="pe-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">13 / 19</span>
+          <span class="num">14 / 22</span>
       <h1 class="claim" data-in="0" style="--i:0">Ahora, en parejas: la práctica PE-1.4</h1>
+      <p class="lead dark-ink" data-in="1" style="--i:1">Unos 70 minutos · Canvas, página 4.2 · ratón y zoom al 100 %</p>
       <div class="timeline">
         <div class="row" data-f="1"><b>1</b><strong>Predigan</strong><em>Cuánto cambia el tiempo entre B y C, y por qué</em></div>
-        <div class="row" data-f="2"><b>2</b><strong>Hagan</strong><em>Las cuatro condiciones en el orden que les toca</em></div>
+        <div class="row" data-f="2"><b>2</b><strong>Hagan</strong><em>Las cuatro condiciones en el orden de su número de pareja y participante</em></div>
         <div class="row" data-f="3"><b>3</b><strong>Descarguen</strong><em>El archivo de datos de cada participante</em></div>
         <div class="row" data-f="4"><b>4</b><strong>Calculen</strong><em>ID, We, IDe y rendimiento por condición, y la recta</em></div>
         <div class="row" data-f="5"><b>5</b><strong>Contrasten</strong><em>Con la calculadora, y predigan para A = 300 y W = 60</em></div>
@@ -455,58 +502,80 @@
         </div>
       </section>
 
-      <section id="tamano-efecto" class="clip slide" data-start="85.5" data-duration="6.5" data-track-index="0" data-label="Tamaño de efecto" data-frags="3">
+      <section id="tamano-efecto" class="clip slide" data-start="93" data-duration="6.5" data-track-index="0" data-label="Tamaño de efecto" data-frags="3">
         <div class="frame" id="tamano-efecto-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">14 / 19</span>
+          <span class="num">15 / 22</span>
       <h1 class="claim" data-in="0" style="--i:0">Cuánto cambió importa más que si cambió</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/tamano-efecto/tamano-efecto.html?embed" title="Dos botones comparados con ocho personas: 837,75 ms el pequeño y 712,5 ms el grande, diferencia de 125,25 ms, 17,6 por ciento más lento o 15,0 por ciento más rápido según la base, d_av de 2,24 y g_av de 2,12." loading="eager"></iframe>
         </div>
       </section>
 
-      <section id="variantes-d" class="clip slide" data-start="92" data-duration="6.5" data-track-index="0" data-label="Variantes de d" data-frags="3">
+      <section id="variantes-d" class="clip slide" data-start="99.5" data-duration="6.5" data-track-index="0" data-label="Variantes de d" data-frags="3">
         <div class="frame" id="variantes-d-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">15 / 19</span>
+          <span class="num">16 / 22</span>
       <h1 class="claim" data-in="0" style="--i:0">Con las mismas mediciones, d depende del divisor</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/variantes-d/variantes-d.html?embed" title="Tres variantes de d: d_z, que da 8,9 en el ejemplo; d_rm, que depende de la correlación; y d_av, que da 2,24. En la asignatura se reporta d_av con la corrección de Hedges." loading="eager"></iframe>
         </div>
       </section>
 
-      <section id="validez" class="clip slide" data-start="98.5" data-duration="6.5" data-track-index="0" data-label="Validez" data-frags="3">
+      <section id="validez" class="clip slide" data-start="106" data-duration="6.5" data-track-index="0" data-label="Validez" data-frags="3">
         <div class="frame" id="validez-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">16 / 19</span>
+          <span class="num">17 / 22</span>
       <h1 class="claim" data-in="0" style="--i:0">Controlar más da validez interna y quita externa</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/validez/validez.html?embed" title="Validez interna y externa. Una tarea muy controlada y artificial gana validez interna y pierde externa; una muy realista, al revés. El remedio es hacer varias preguntas estrechas y comprobables." loading="eager"></iframe>
         </div>
       </section>
 
-      <section id="informe" class="clip slide" data-start="105" data-duration="9.5" data-track-index="0" data-label="Un informe reproducible" data-frags="6">
+      <section id="senal" class="clip slide" data-start="112.5" data-duration="6.5" data-track-index="0" data-label="Señal y ruido" data-frags="3">
+        <div class="frame" id="senal-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">18 / 22</span>
+      <h1 class="claim" data-in="0" style="--i:0">Menos aciertos pueden tener dos causas</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/senal-ruido/senal-ruido.html?embed" title="Si en un estudio baja la tasa de detección, puede haber cambiado la sensibilidad d′, y se rediseña la presentación, o el criterio c, y se ajusta el umbral o el entrenamiento. La detección de señales separa las dos cosas." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="informe" class="clip slide" data-start="119" data-duration="9.5" data-track-index="0" data-label="Un informe reproducible" data-frags="6">
         <div class="frame" id="informe-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">17 / 19</span>
+          <span class="num">19 / 22</span>
       <h1 class="claim" data-in="0" style="--i:0">Un informe que dice B fue más rápido tiene seis problemas</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="6" src="figuras/informe-teclado/informe-teclado.html?embed" title="Seis problemas de un estudio de dos teclados con diez compañeros y su remedio: pregunta comprobable, contrabalanceo, protocolo escrito, mismo dispositivo, validez externa limitada y método reproducible." loading="eager"></iframe>
         </div>
       </section>
 
-      <section id="actividades" class="clip slide" data-start="114.5" data-duration="3.5" data-track-index="0" data-label="Actividades de la semana" data-frags="0">
+      <section id="actividades" class="clip slide" data-start="128.5" data-duration="3.5" data-track-index="0" data-label="Actividades de la semana" data-frags="0">
         <div class="frame" id="actividades-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">18 / 19</span>
+          <span class="num">20 / 22</span>
       <h1 class="claim" data-in="0" style="--i:0">Dos actividades calificadas cierran la semana</h1>
       <div class="cards two tall">
-        <div class="card" data-in="1" style="--i:1"><span class="tag">PE-1.4 · 2,25 puntos</span><strong>Microexperimento cuantitativo</strong><em>Diseño, registro, cálculo de la recta de Fitts y conclusiones</em></div>
-        <div class="card" data-in="2" style="--i:2"><span class="tag">TA-1.4 · 2,25 puntos</span><strong>Informe experimental</strong><em>Hipótesis, tamaño de efecto, validez y método reproducible</em></div>
+        <div class="card" data-in="1" style="--i:1"><span class="tag">PE-1.4 · 2,25 puntos · en parejas</span><strong>Microexperimento cuantitativo</strong><em>Diseño, registro, cálculo de la recta de Fitts y conclusiones</em><span class="verdict">Cierra hoy, al terminar la clase</span></div>
+        <div class="card" data-in="2" style="--i:2"><span class="tag">TA-1.4 · 2,25 puntos · individual</span><strong>Informe experimental</strong><em>Hipótesis, tamaño de efecto, validez y método reproducible</em><span class="verdict">Cierra el domingo 22 de noviembre, 23:59</span></div>
       </div>
         </div>
       </section>
 
-      <section id="cierre" class="clip slide dark" data-start="118" data-duration="3.5" data-track-index="0" data-label="Cierre" data-frags="0">
+      <section id="salida" class="clip slide" data-start="132" data-duration="6.5" data-track-index="0" data-label="Comprobación de salida" data-frags="3">
+        <div class="frame" id="salida-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">21 / 22</span>
+      <h1 class="claim" data-in="0" style="--i:0">Ahora respondan al analista</h1>
+      <div class="timeline">
+        <div class="row" data-in="1" style="--i:1"><b>1</b><strong>¿Cuánto?</strong><em data-f="1">Unos 173 ms menos con el botón de 80 px (0,85 bits menos)</em></div>
+        <div class="row" data-in="2" style="--i:2"><b>2</b><strong>¿Comparado con qué?</strong><em data-f="2">Con el botón actual de 40 px, a la misma distancia del pulgar</em></div>
+        <div class="row" data-in="3" style="--i:3"><b>3</b><strong>¿Medido cómo?</strong><em data-f="3">Tiempo de movimiento, dentro de sujetos y con el orden contrabalanceado</em></div>
+      </div>
+        </div>
+      </section>
+
+      <section id="cierre" class="clip slide dark" data-start="138.5" data-duration="3.5" data-track-index="0" data-label="Cierre" data-frags="0">
         <div class="frame" id="cierre-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">19 / 19</span>
+          <span class="num">22 / 22</span>
       <h1 class="claim xl" data-in="0" style="--i:0">Un resultado vale tanto como el diseño que lo produjo</h1>
       <p class="lead" data-in="1" style="--i:1">Los datos de la clase estarán en Materiales para la TA-1.4</p>
       <p class="byline" data-in="2" style="--i:2">Fuentes: MacKenzie (2013) · Lakens (2013)</p>
@@ -568,7 +637,7 @@
 
       const ENTER = 2;
       const tl = gsap.timeline({ paused: true });
-      tl.to({}, { duration: 121.5 }, 0);
+      tl.to({}, { duration: 142 }, 0);
 
       const figSyncs = [];
       const slides = Array.from(document.querySelectorAll(".slide"));

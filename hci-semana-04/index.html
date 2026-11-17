@@ -95,7 +95,7 @@
       "sceneId": "hipotesis",
       "startTime": 36,
       "endTime": 42.5,
-      "notes": "Con una ley, la hipótesis del caso deja de ser una opinión. Retomar las tres respuestas que pidió el analista; los bits ya se calcularon al ver la tarea de apuntar, y ahora se convierten en milisegundos. Primer avance: el botón actual mide 40 px de alto y está a 320 px del pulgar. Segundo avance: el botón nuevo duplica el alto a la misma distancia, W = 80. Tercer avance: el ID baja de 3,17 a 2,32 bits, unos 0,85 bits, y con la pendiente de 204 ms/bit que MacKenzie obtuvo para el ratón la ley predice una diferencia de unos 173 ms; esa predicción, con su dirección y su tamaño en milisegundos, es la hipótesis que el experimento puede confirmar o refutar. Aclarar que la pendiente del ratón es una referencia: con el pulgar sobre una pantalla táctil la pendiente sería otra y es justamente lo que se mediría. Fuente: MacKenzie (2013), página 4.1.",
+      "notes": "Con una ley, la hipótesis del caso deja de ser una opinión. Retomar las tres respuestas que pidió el analista; los bits ya se calcularon al ver la tarea de apuntar, y ahora se convierten en milisegundos. Primer avance: el botón actual mide 40 px de alto y está a 320 px del pulgar. Segundo avance: el botón nuevo duplica el alto a la misma distancia, W = 80. Tercer avance: el ID baja de 3,17 a 2,32 bits, unos 0,85 bits, y con la pendiente de 204 ms/bit que MacKenzie obtuvo para el ratón la ley predice una diferencia de unos 173 ms; esa predicción, con su dirección y su tamaño en milisegundos, es la hipótesis que el experimento puede confirmar o refutar. Si alguien nota que la recta de antes tenía 207,3 ms/bit: los 204 ms/bit (203,82) salen de la comparación de dispositivos, con 12 participantes y nueve condiciones, y los 207,3 solo de los tres puntos del ejemplo resuelto; las dos son del ratón y con 207,3 la predicción sería 176 ms, casi lo mismo. Aclarar que la pendiente del ratón es una referencia: con el pulgar sobre una pantalla táctil la pendiente sería otra y es justamente lo que se mediría. Fuente: MacKenzie (2013), página 4.1.",
       "fragments": [
         38,
         39,
@@ -166,81 +166,118 @@
       ]
     },
     {
-      "sceneId": "pe",
+      "sceneId": "tu-turno",
       "startTime": 77,
-      "endTime": 85.5,
-      "notes": "La práctica se hace en parejas y dura unos 70 minutos. Cada pareja escribe primero su predicción para la diferencia entre B y C y por qué. Después cada persona hace sus cuatro condiciones con el orden que le toca según el número de pareja y de participante (unos 2 minutos con la página) y descarga su archivo de datos. Con ese archivo calculan por condición el tiempo medio, el ID, el ancho efectivo, el IDe y el rendimiento, y ajustan la recta con la hoja de cálculo o con la calculadora de la página 4.2. Antes de que calculen, recordar que SDx es la desviación estándar de desviacion_px, no de la posición absoluta, y que la predicción para A = 300 y W = 60 usa el ID nominal. Para validar la herramienta, la calculadora debe dar con el ejemplo de la aplicación de taxis b = 148 ms/bit, a = 260 ms y R² = 0,997. Si alguien usa touchpad, anotarlo como variable de control. Al final, pedir en la pizarra el tiempo medio de B y C de cada persona: sirve para el bloque siguiente.",
+      "endTime": 84.5,
+      "notes": "Ejercicio guiado antes de la práctica: con cinco clics de ejemplo de la condición B, las mismas columnas que traerá su archivo. Dar dos o tres minutos para que cada pareja calcule SDx antes del primer avance. Primer avance: la media de desviacion_px es 0 y SDx = √(1274 / 4) = 17,85 px; se divide entre n − 1, como en la hoja de cálculo y en la página del experimento. Segundo avance: We = 4,133 × 17,85 = 73,8 px e IDe = log2(400 / 73,8 + 1) = 2,68 bits; el ID nominal de B es 2,32, y es normal que el IDe sea distinto porque usa la dispersión real. Tercer avance: con un tiempo medio de 690 ms, TP = 2,68 / 0,690 = 3,89 bits/s. Cuarto avance, el error típico: si se usa x_clic, la posición en pantalla, se mezclan las dos barras, SDx sale 218,4 px y el IDe cae a 0,53 bits; un IDe tan bajo es la señal de que se tomó la columna equivocada. Los clics y el tiempo son de ejemplo. Fuente: MacKenzie (2013), página 4.2 del módulo.",
       "fragments": [
         79,
         80,
         81,
         82,
-        83,
-        84
+        83
+      ]
+    },
+    {
+      "sceneId": "pe",
+      "startTime": 84.5,
+      "endTime": 93,
+      "notes": "La práctica se hace en parejas y dura unos 70 minutos. Cada pareja escribe primero su predicción para la diferencia entre B y C y por qué. Después cada persona hace sus cuatro condiciones con el orden que le toca según el número de pareja y de participante (unos 2 minutos con la página) y descarga su archivo de datos. Con ese archivo calculan por condición el tiempo medio, el ID, el ancho efectivo, el IDe y el rendimiento, y ajustan la recta con la hoja de cálculo o con la calculadora de la página 4.2. El enlace está en la página 4.2 del módulo, en el botón Abrir el microexperimento; la ventana debe medir al menos 900 px de ancho. Antes de que calculen, recordar lo del ejercicio guiado: SDx sale de desviacion_px, no de x_clic, y la predicción para A = 300 y W = 60 usa el ID nominal. Para validar la herramienta, la calculadora debe dar con el ejemplo de la aplicación de taxis b = 148 ms/bit, a = 260 ms y R² = 0,997. Si alguien usa touchpad, anotarlo como variable de control. Al final, pedir en la pizarra el tiempo medio de B y C de cada persona: sirve para el bloque siguiente.",
+      "fragments": [
+        86.5,
+        87.5,
+        88.5,
+        89.5,
+        90.5,
+        91.5
       ]
     },
     {
       "sceneId": "tamano-efecto",
-      "startTime": 85.5,
-      "endTime": 92,
+      "startTime": 93,
+      "endTime": 99.5,
       "notes": "Saber que dos condiciones difieren no dice cuánto difieren. Con los tiempos medios de B y C de la clase, repetir en la pizarra lo que muestra la figura con datos de ejemplo de ocho personas y dos botones. Primer avance: el botón pequeño tarda 837,75 ms y el grande 712,5 ms; la diferencia de medias, 125,25 ms, es el tamaño de efecto en su forma más simple. Segundo avance: al reportar un porcentaje hay que decir su base, el pequeño es 17,6 % más lento y el grande es 15,0 % más rápido, dos cifras de los mismos datos. Tercer avance: el estandarizado, d_av = 125,25 / 55,8 = 2,24, y con la corrección de Hedges g_av cerca de 2,12 (factor 0,945 con 16 observaciones). La referencia de Cohen de 0,8 para grande es arbitraria; lo que importa es la consecuencia práctica, 125 ms en cada confirmación, y que con ocho participantes el intervalo de confianza es amplio. Fuentes: MacKenzie (2013); Lakens (2013).",
       "fragments": [
-        87.5,
-        88.5,
-        89.5,
-        90.5
+        95,
+        96,
+        97,
+        98
       ]
     },
     {
       "sceneId": "variantes-d",
-      "startTime": 92,
-      "endTime": 98.5,
+      "startTime": 99.5,
+      "endTime": 106,
       "notes": "Lakens describe tres variantes de d en un diseño dentro de sujetos, según el divisor. Primer avance: d_z divide la diferencia media entre la desviación estándar de las diferencias por participante; en el ejemplo da 8,9 porque las dos mediciones están muy correlacionadas, r = 0,97, y cuando r supera 0,5 es mayor que las otras dos. Segundo avance: d_rm ajusta esa desviación con la correlación r. Tercer avance: d_av divide entre el promedio de las dos desviaciones estándar e ignora r; Lakens recomienda reportar d_rm o d_av porque d_z casi no se usa para comparar con otros estudios. En esta asignatura se reporta d_av con la corrección de Hedges, que se llama g_av, y se declara cuál se usó; las referencias de Cohen de 0,2, 0,5 y 0,8 no deben aplicarse de forma rígida. Fuente: Lakens (2013).",
       "fragments": [
-        94,
-        95,
-        96,
-        97
+        101.5,
+        102.5,
+        103.5,
+        104.5
       ]
     },
     {
       "sceneId": "validez",
-      "startTime": 98.5,
-      "endTime": 105,
+      "startTime": 106,
+      "endTime": 112.5,
       "notes": "Un resultado vale tanto como el diseño que lo produjo. Primer avance, las dos clases de validez: la interna es la medida en que el efecto observado se debe a las condiciones de prueba y no a otra cosa, y las variables de confusión la amenazan; la externa es la medida en que los resultados se generalizan a otras personas y situaciones. Segundo avance: mejorar una cuesta a la otra; una tarea muy controlada y artificial gana validez interna y pierde externa, y una muy realista hace lo contrario. Tercer avance, la respuesta de MacKenzie: varias preguntas estrechas y comprobables que, juntas, cubran lo amplio. Una pregunta comprobable es, por ejemplo, la velocidad de entrada en palabras por minuto con una técnica frente a otra tras una hora de uso, no si la técnica nueva es mejor. Preguntar a qué población se puede generalizar el resultado de su clase. Fuente: MacKenzie (2013), página 4.4.",
       "fragments": [
-        100.5,
-        101.5,
-        102.5,
-        103.5
+        108,
+        109,
+        110,
+        111
+      ]
+    },
+    {
+      "sceneId": "senal",
+      "startTime": 112.5,
+      "endTime": 119,
+      "notes": "Retoma la detección de señales de la semana 2, ahora como herramienta para leer un experimento. Preguntar antes: si en un estudio baja la cantidad de aciertos, ¿la persona ve peor o se volvió más exigente para decir que sí? Primer avance: si cayó la sensibilidad, d′, la persona distingue peor la señal del ruido, y el remedio es rediseñar la presentación. Segundo avance: si cambió el criterio, c, la persona distingue igual pero exige más evidencia para responder, y el remedio es ajustar el umbral o el entrenamiento. Tercer avance: Parasuraman y Wisdom explican que la detección de señales separa la exactitud, que es sensibilidad, del ajuste de criterio; por eso conviene medir las dos cosas antes de decidir qué cambiar. Fuente: Parasuraman y Wisdom (1985), página 4.4 del módulo.",
+      "fragments": [
+        114.5,
+        115.5,
+        116.5,
+        117.5
       ]
     },
     {
       "sceneId": "informe",
-      "startTime": 105,
-      "endTime": 114.5,
+      "startTime": 119,
+      "endTime": 128.5,
       "notes": "Ejemplo resuelto de la página 4.4: un equipo reclutó a diez compañeros de su carrera y todos escribieron 20 frases con el teclado A y después con el B; el informe dice que B fue más rápido. Antes de avanzar, preguntar qué le falta a ese informe. Revelar un problema y su remedio por avance: la pregunta no se puede comprobar, así que se reescribe en palabras por minuto; el orden fijo mezcla la práctica con el teclado, así que se contrabalancea con AB y BA, cinco personas por secuencia; las instrucciones distintas de cada integrante sesgan el procedimiento, así que se escribe un protocolo; cada teléfono distinto es una variable sin controlar, así que se fija el dispositivo; diez compañeros de la misma carrera limitan la validez externa, así que se dice para quién vale; y un informe reproducible dice quiénes participaron, con qué aparato, qué tarea, qué procedimiento, qué variables, qué diseño y en qué orden. MacKenzie sostiene que la investigación que no se puede replicar es inútil. Es la sección de validez y método reproducible de TA-1.4. Fuente: MacKenzie (2013).",
       "fragments": [
-        107,
-        108,
-        109,
-        110,
-        111,
-        112,
-        113
+        121,
+        122,
+        123,
+        124,
+        125,
+        126,
+        127
       ]
     },
     {
       "sceneId": "actividades",
-      "startTime": 114.5,
-      "endTime": 118,
+      "startTime": 128.5,
+      "endTime": 132,
       "notes": "Las consignas completas, las plantillas y las rúbricas están en Canvas. PE-1.4 se hizo en clase, en parejas, vale 2,25 puntos y cierra hoy al terminar la clase, con el archivo de datos de cada participante. TA-1.4 es individual, vale 2,25 puntos y cierra el domingo 22 de noviembre a las 23:59: una hipótesis con la ley de Fitts y su predicción en milisegundos, la diferencia entre B y C en milisegundos y en porcentaje con su base, d_av con la corrección de Hedges, al menos tres amenazas a la validez y un método reproducible, de dos a tres páginas en PDF. El archivo datos-del-curso.csv con los tiempos de B y C de todos se publica en la página de Materiales después de la sesión. Quien no pudo asistir usa los 10 clics válidos de su propio B y C y avisa que no son independientes."
     },
     {
+      "sceneId": "salida",
+      "startTime": 132,
+      "endTime": 138.5,
+      "notes": "Comprobación de salida: volver al caso del botón de confirmar y a las respuestas que anotaron al inicio. Dejar las tres preguntas del analista a la vista y pedir que cada persona las responda por escrito, en uno o dos minutos, antes de revelar nada. Luego revelar una respuesta por avance y comparar con lo que escribieron al inicio y ahora. Primer avance, cuánto: unos 173 ms menos con el botón de 80 px, porque la dificultad baja 0,85 bits. Segundo avance, comparado con qué: con el botón actual de 40 px, a la misma distancia del pulgar. Tercer avance, medido cómo: tiempo de movimiento, con un diseño dentro de sujetos y el orden contrabalanceado. Quien no logra responder la tercera tiene la TA-1.4 como oportunidad para practicarla.",
+      "fragments": [
+        134,
+        135,
+        136,
+        137
+      ]
+    },
+    {
       "sceneId": "cierre",
-      "startTime": 118,
-      "endTime": 121.5,
-      "notes": "Volver al caso del botón de confirmar y a las respuestas del inicio: ahora saben que más rápido se vuelve una hipótesis cuando dice cuánto (unos 173 ms), comparado con qué (el botón actual) y medido cómo (tiempo de movimiento con un diseño dentro de sujetos y contrabalanceado). Un resultado vale tanto como el diseño que lo produjo, y por eso el informe debe permitir que otra persona lo repita. Recordar que el archivo de datos del curso se publica en Materiales después de la sesión."
+      "startTime": 138.5,
+      "endTime": 142,
+      "notes": "Más rápido se volvió una hipótesis cuando dijo cuánto, comparado con qué y medido cómo. Un resultado vale tanto como el diseño que lo produjo, y por eso el informe debe permitir que otra persona lo repita. Recordar que el archivo de datos del curso se publica en Materiales después de la sesión."
     }
   ],
   "slideSequences": []
