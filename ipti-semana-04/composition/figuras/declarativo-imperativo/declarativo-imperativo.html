@@ -30,7 +30,7 @@ code.m{font-family:ui-monospace,Consolas,monospace;font-size:20px;background:#1f
 <div id="hl" class="b" style="left:30px;top:5px;width:735px;height:44px;opacity:0;background:transparent;align-items:flex-start;padding:0"><span style="color:#910048;font-size:27px">Terraform · declarativo (HCL)</span></div>
 <div id="hr" class="b" style="left:795px;top:5px;width:735px;height:44px;opacity:0;background:transparent;align-items:flex-start;padding:0"><span style="color:#910048;font-size:27px">Pulumi · imperativo-programable (Python)</span></div>
 <div id="cl" class="cod" style="left:30px;top:55px;width:735px;height:190px;font-size:22px;"><span class="k">resource</span> <span class="s">"aws_instance"</span> <span class="s">"matricula"</span> {
-  count         = <span class="n">3</span>
+  count         = <span id="h3a" class="n">3</span>
   instance_type = <span class="s">"m5.large"</span>
 }</div>
 <div id="cr" class="cod" style="left:795px;top:55px;width:735px;height:190px;font-size:22px;"><span class="k">for</span> i <span class="k">in</span> range(<span class="n">3</span>):
@@ -38,18 +38,23 @@ code.m{font-family:ui-monospace,Consolas,monospace;font-size:20px;background:#1f
         <span class="s">f"matricula-{i}"</span>,
         instance_type=<span class="s">"m5.large"</span>)</div>
 <div id="r1" class="cod" style="left:30px;top:258px;width:735px;height:90px;font-size:20px;"><span class="c">$</span> terraform apply
-<span class="s">Plan: 3 to add, 0 to change, 0 to destroy.</span></div>
+<span class="s">Plan: <span id="h3b">3</span> to add, 0 to change, 0 to destroy.</span></div>
 <div id="r2" class="cod" style="left:30px;top:358px;width:735px;height:90px;font-size:20px;"><span class="c">$</span> terraform apply  <span class="c"># segunda corrida, sin tocar el código</span>
 <span class="s">No changes. Infrastructure matches the configuration.</span></div>
-<div id="ri" class="b" style="left:795px;top:258px;width:735px;height:190px;opacity:0;background:#fcefc9;color:#7a5200;font-size:29px;text-align:left;align-items:flex-start;padding:20px 28px">Una secuencia de instrucciones: el bucle crea una instancia por vuelta, y con un if podría crear más o menos según la zona</div>
+<div id="cx" class="cod" style="left:795px;top:258px;width:735px;height:120px;font-size:21px;"><span class="n">i = 0</span>  →  aws.ec2.Instance(<span class="s">"matricula-0"</span>, ...)
+<span class="n">i = 1</span>  →  aws.ec2.Instance(<span class="s">"matricula-1"</span>, ...)
+<span class="n">i = 2</span>  →  aws.ec2.Instance(<span class="s">"matricula-2"</span>, ...)</div>
+<div id="ri" class="b" style="left:795px;top:392px;width:735px;height:56px;opacity:0;background:#fcefc9;color:#7a5200;font-size:27px">Con un if, la cantidad podría cambiar según la zona</div>
 <div id="k0" class="t" style="left:30px;top:470px;width:1500px;opacity:0;color:var(--wine-deep);font-size:31px">Dos maneras de pedir tres servidores iguales</div>
 <div id="k1" class="t" style="left:30px;top:470px;width:1500px;opacity:0;color:var(--wine-deep);font-size:31px">Declarativo: se escribe el estado final deseado y la primera corrida lo crea</div>
 <div id="k2" class="t" style="left:30px;top:470px;width:1500px;opacity:0;color:var(--wine-deep);font-size:31px">La segunda corrida no hace nada: la herramienta ya vio que coincide</div>
-<div id="k3" class="t" style="left:30px;top:470px;width:1500px;opacity:0;color:var(--teal);font-size:31px">Imperativo-programable: se escribe la secuencia de pasos, con bucles y condicionales</div>
+<div id="k3" class="t" style="left:30px;top:470px;width:1500px;opacity:0;color:var(--wine-deep);font-size:31px">Imperativo: con i = 0, 1 y 2 el bucle crea matricula-0, matricula-1 y matricula-2</div>
+<div id="k4" class="t" style="left:30px;top:470px;width:1500px;opacity:0;color:var(--teal);font-size:31px">Y con un if podría crear más o menos según la zona</div>
 <div id="q0" class="t" style="left:30px;top:575px;width:1500px;opacity:0;color:var(--amber);font-size:30px">Pregunta: ¿Qué diferencia hay entre decir cómo y decir qué?</div>
-<div id="q1" class="t" style="left:30px;top:575px;width:1500px;opacity:0;color:var(--amber);font-size:30px">Pregunta: ¿Qué hace la herramienta con el estado final?</div>
+<div id="q1" class="t" style="left:30px;top:575px;width:1500px;opacity:0;color:var(--amber);font-size:30px">Pregunta: ¿Cuántas instancias dice el plan, y de dónde sale el número?</div>
 <div id="q2" class="t" style="left:30px;top:575px;width:1500px;opacity:0;color:var(--amber);font-size:30px">Pregunta: ¿Qué pasa si se ejecuta dos veces el mismo archivo?</div>
-<div id="q3" class="t" style="left:30px;top:575px;width:1500px;opacity:0;color:var(--amber);font-size:30px">Pregunta: ¿Cuándo hace falta un bucle?</div>
+<div id="q3" class="t" style="left:30px;top:575px;width:1500px;opacity:0;color:var(--amber);font-size:30px">Pregunta: ¿Qué nombre tendrá la segunda instancia?</div>
+<div id="q4" class="t" style="left:30px;top:575px;width:1500px;opacity:0;color:var(--amber);font-size:30px">Pregunta: ¿Cuándo hace falta un bucle?</div>
 </div>
 <script>
 const N = 4;
@@ -75,8 +80,10 @@ function draw() {
 const s = u * N;
 show($("#hl"), win(s, 0, 0.5), 8); show($("#hr"), win(s, 0, 0.5), 8);
 show($("#cl"), win(s, 0, 0.8), 16); show($("#cr"), win(s, 0.1, 0.9), 16);
-show($("#r1"), win(s, 1, 1.8), 14); show($("#r2"), win(s, 2, 2.8), 14);
-show($("#ri"), win(s, 3, 3.8), 14);
+const t1 = win(s, 0.3, 1);
+for (const [id, fg] of [["h3a", "#f6c1d9"], ["h3b", "#7fd6c8"]]) { const e = $("#" + id); e.style.background = mix("#1f1a1d", "#e8a920", t1); e.style.color = mix(fg, "#1f1a1d", t1); e.style.borderRadius = "4px"; }
+show($("#r1"), win(s, 0.3, 1), 14); show($("#r2"), win(s, 1.3, 2), 14);
+show($("#cx"), win(s, 2.3, 3), 14); show($("#ri"), win(s, 3.3, 4), 14);
 caps(s, 4, "k"); caps(s, 4, "q");
  }
 function loop() {

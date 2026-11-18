@@ -163,153 +163,169 @@
       ]
     },
     {
-      "sceneId": "declarativo",
+      "sceneId": "bloque",
       "startTime": 30.5,
-      "endTime": 38,
-      "notes": "Morris distingue dos paradigmas de lenguaje. El declarativo especifica el estado final deseado, sin detallar los pasos; la herramienta compara ese estado contra el estado real y calcula la diferencia. Por eso, al ejecutar dos veces el mismo archivo de Terraform, la primera corrida crea los recursos y la segunda, sin cambios en el código, informa que no hay nada que hacer. El imperativo-programable especifica una secuencia de instrucciones en un lenguaje de propósito general, con bucles y condicionales, para construir los recursos paso a paso. Terraform usa HCL, un lenguaje declarativo. Pulumi usa TypeScript, Python, Go u otros. Esta lámina es el modelo del fragmento declarativo que pide la PE-S4. Fuente: Morris (2021).",
+      "endTime": 39,
+      "notes": "Esta lámina enseña a leer, y después a escribir, el bloque que pide la PE-S4. Un bloque de Terraform tiene siempre las mismas piezas. Primer avance: resource, la palabra que dice que se va a declarar un recurso. Segundo avance: el tipo, entre comillas; aquí aws_instance, una máquina virtual del proveedor. Tercer avance: el nombre, que lo elige quien escribe el archivo; aquí matricula. Cuarto avance: los atributos, dentro de las llaves, que dicen cómo debe quedar el recurso: cuántas copias y de qué tamaño. Quinto avance: count = 12 pide doce máquinas iguales y por eso aparecen doce cuadros. En la práctica cambian el tipo, el nombre y los atributos por los de su caso, y el fragmento puede ser pseudocódigo: no necesita que Terraform lo ejecute, pero sí que declare el estado final y no los pasos. Antes de cada avance, pedir que adivinen qué hace esa parte. Fuente: Morris (2021).",
       "fragments": [
         32.5,
         33.5,
         34.5,
         35.5,
-        36.5
+        36.5,
+        37.5
+      ]
+    },
+    {
+      "sceneId": "declarativo",
+      "startTime": 39,
+      "endTime": 46.5,
+      "notes": "Morris distingue dos paradigmas de lenguaje. El declarativo especifica el estado final deseado, sin detallar los pasos; la herramienta compara ese estado contra el estado real y calcula la diferencia. Por eso, al ejecutar dos veces el mismo archivo de Terraform, la primera corrida crea los recursos y la segunda, sin cambios en el código, informa que no hay nada que hacer. El imperativo-programable especifica una secuencia de instrucciones en un lenguaje de propósito general, con bucles y condicionales, para construir los recursos paso a paso. Terraform usa HCL, un lenguaje declarativo. Pulumi usa TypeScript, Python, Go u otros. Esta lámina es el modelo del fragmento declarativo que pide la PE-S4. Para ver de dónde sale cada número: en la primera corrida el plan dice 3 to add porque el código dice count = 3, y ambos 3 se resaltan juntos. En la parte de Pulumi, el bucle se desenvuelve: con i = 0 crea matricula-0, con i = 1 matricula-1 y con i = 2 matricula-2. Fuente: Morris (2021).",
+      "fragments": [
+        41,
+        42,
+        43,
+        44,
+        45
       ]
     },
     {
       "sceneId": "herramienta",
-      "startTime": 38,
-      "endTime": 45.5,
-      "notes": "La tabla compara las dos herramientas en los tres criterios que pide la PE-S4: lenguaje, lógica dinámica y caso de uso ideal. Terraform representa el paradigma declarativo: su lenguaje HCL es un DSL pensado para describir recursos de forma directa. Pulumi representa el imperativo-programable: sustituye el DSL por lenguajes de propósito general, lo que permite aprovechar autocompletado, refactorización y pruebas unitarias. Para el caso de Matrícula y Pagos, el clúster de inscripción es una topología relativamente estática que se repite cada semestre con pocos parámetros variables: un módulo declarativo de Terraform resulta más apropiado que una librería completa de Pulumi. Insistir en que la elección se justifica con el nivel de lógica dinámica del escenario, no con la popularidad de la herramienta. Fuente: Morris (2021).",
+      "startTime": 46.5,
+      "endTime": 54,
+      "notes": "La tabla compara las dos herramientas en los tres criterios que pide la PE-S4: lenguaje, lógica dinámica y caso de uso ideal. Terraform representa el paradigma declarativo: su lenguaje HCL es un DSL pensado para describir recursos de forma directa. Pulumi representa el imperativo-programable: sustituye el DSL por lenguajes de propósito general, lo que permite aprovechar autocompletado, refactorización y pruebas unitarias. Para el caso de Matrícula y Pagos, el clúster de inscripción es una topología relativamente estática que se repite cada semestre con pocos parámetros variables: un módulo declarativo de Terraform resulta más apropiado que una librería completa de Pulumi. Insistir en que la elección se justifica con el nivel de lógica dinámica del escenario, no con la popularidad de la herramienta. En el último avance una barra va de poca a mucha lógica variable y Matrícula y Pagos queda en el lado de Terraform. Fuente: Morris (2021).",
       "fragments": [
-        40,
-        41,
-        42,
-        43,
-        44
+        48.5,
+        49.5,
+        50.5,
+        51.5,
+        52.5
       ]
     },
     {
       "sceneId": "separar",
-      "startTime": 45.5,
-      "endTime": 52,
-      "notes": "Morris recomienda no forzar toda la lógica dentro de un único paradigma: usar sintaxis declarativa para los recursos finales que se despliegan, y reservar el lenguaje imperativo para construir las librerías o abstracciones que generan esa configuración declarativa. Ejemplo: un equipo necesita crear una subred distinta por cada zona de disponibilidad de una región de nube, un número que varía según el proveedor y no se conoce de antemano. Ese tipo de lógica no debería forzarse dentro de un DSL declarativo. Se resuelve con un programa que cuenta las zonas y arma la lista, y el resultado es una declaración clara de cada subred. Esta lámina es el modelo de la separación declarativo e imperativo que piden en la PE-S4. Fuente: Morris (2021).",
+      "startTime": 54,
+      "endTime": 62.5,
+      "notes": "Morris recomienda no forzar toda la lógica dentro de un único paradigma: usar sintaxis declarativa para los recursos finales que se despliegan, y reservar el lenguaje imperativo para construir las librerías o abstracciones que generan esa configuración declarativa. Ejemplo: un equipo necesita crear una subred distinta por cada zona de disponibilidad de una región de nube, un número que varía según el proveedor y no se conoce de antemano. Ese tipo de lógica se vuelve más difícil de leer si se fuerza dentro de un lenguaje declarativo. Se resuelve con un programa que cuenta las zonas y arma la lista, y el resultado es una declaración clara de cada subred. En la lámina se sigue el programa con números: primer avance, el programa cuenta las zonas y la lista tiene tres; segundo, tercero y cuarto avance, una vuelta cada uno, con n = 1, 2 y 3 y la zona que le toca, y a la derecha aparece la subred declarada con su rango 10.0.n.0/24; quinto avance, si mañana la región tiene cuatro zonas el mismo programa genera una cuarta subred y la regla de Morris cierra la idea. Esta lámina es el modelo de la separación declarativo e imperativo que piden en la PE-S4. Fuente: Morris (2021).",
       "fragments": [
-        47.5,
-        48.5,
-        49.5,
-        50.5
+        56,
+        57,
+        58,
+        59,
+        60,
+        61
       ]
     },
     {
       "sceneId": "pe",
-      "startTime": 52,
-      "endTime": 59.5,
-      "notes": "La práctica es individual y se entrega completada al final de la clase. Tiempo sugerido: unos 40 minutos. Cada estudiante elige uno de tres casos de la plantilla (tienda en línea en el Black Friday, venta de entradas de un concierto o pedidos el día de una final), distintos del de Matrícula y Pagos, y con él hace lo mismo que se vio en clase: rotula las cuatro capas en una tabla, compara Terraform y Pulumi en los tres criterios y justifica la elección, escribe un fragmento declarativo del estado deseado de un recurso en pseudocódigo tipo HCL, y separa qué lógica sería declarativa y cuál necesitaría condicionales dinámicos. Recorrer el aula y revisar que el fragmento declare el estado final y no una secuencia de pasos.",
+      "startTime": 62.5,
+      "endTime": 70,
+      "notes": "La práctica es individual y se entrega completada al final de la clase. Tiempo sugerido: unos 40 minutos. Cada estudiante elige uno de tres casos de la plantilla (tienda en línea en el Black Friday, venta de entradas de un concierto o pedidos el día de una final), distintos del de Matrícula y Pagos, y con él hace lo mismo que se vio en clase: rotula las cuatro capas en una tabla, compara Terraform y Pulumi en los tres criterios y justifica la elección, escribe un fragmento declarativo del estado deseado de un recurso en pseudocódigo tipo HCL, y separa qué lógica sería declarativa y cuál necesitaría condicionales dinámicos. Recorrer el aula y revisar que el fragmento declare el estado final y no una secuencia de pasos. En la lámina cada avance muestra una parte: los tres casos, las tareas 1 y 2, el esqueleto del bloque junto al ejemplo de Matrícula y Pagos, y la separación entre lo que se declara y lo que necesitaría un bucle o un condicional. El fragmento puede ser pseudocódigo: lo que se revisa es que diga cómo debe quedar el recurso, con su tipo, su nombre y sus atributos.",
       "fragments": [
-        54,
-        55,
-        56,
-        57,
-        58
+        64.5,
+        65.5,
+        66.5,
+        67.5,
+        68.5
       ]
     },
     {
       "sceneId": "principios",
-      "startTime": 59.5,
-      "endTime": 67,
+      "startTime": 70,
+      "endTime": 77.5,
       "notes": "Segundo bloque, después de la práctica. Separar el código declarativo del imperativo resuelve cómo se escribe la infraestructura; queda pendiente cómo se gobierna una vez que existe y debe cambiar, fallar o desaparecer sin intervención manual. Morris propone principios de diseño. Primero, asumir que los sistemas no son confiables: un servidor virtual, un disco o la red pueden fallar en cualquier momento, y el sistema debe seguir funcionando a pesar de eso. Segundo, hacer todo reproducible: cualquier servidor debe poder reconstruirse desde cero a partir del código. Tercero, crear cosas desechables: los recursos deben poder agregarse, eliminarse o reemplazarse sin fricción. Cuarto, minimizar la variación: mantener idénticas las piezas parecidas. Son los cuatro principios de la rúbrica de la TA-S4, que se aplican a un servidor real de la UIDE. Fuente: Morris (2021).",
       "fragments": [
-        61.5,
-        62.5,
-        63.5,
-        64.5,
-        65.5
+        72,
+        73,
+        74,
+        75,
+        76
       ]
     },
     {
       "sceneId": "copo",
-      "startTime": 67,
-      "endTime": 73.5,
+      "startTime": 77.5,
+      "endTime": 84,
       "notes": "El antipatrón opuesto a la reproducibilidad es el sistema copo de nieve: un servidor acumulado de parches manuales que nadie puede reproducir de forma idéntica si falla. La bitácora de la izquierda es un ejemplo inventado pero habitual: un parche a mano, un puerto abierto a mano, una variable cambiada sin nota, y la frase no tocar, funciona. A la derecha, el mismo servidor se reconstruye desde el repositorio. Morris resume la actitud con la distinción entre mascotas y ganado: una mascota tiene nombre propio, se cuida y se cura; el ganado se numera y se reemplaza. En un clúster de doce máquinas conviene tratar los servidores como ganado. Fuente: Morris (2021).",
       "fragments": [
-        69,
-        70,
-        71,
-        72
+        79.5,
+        80.5,
+        81.5,
+        82.5
       ]
     },
     {
       "sceneId": "inmutable",
-      "startTime": 73.5,
-      "endTime": 80,
+      "startTime": 84,
+      "endTime": 90.5,
       "notes": "Cuando dos entornos que deberían ser idénticos divergen con el tiempo por parches manuales o ejecuciones inconsistentes, ocurre la deriva de configuración. La infraestructura inmutable evita el problema de raíz: en lugar de modificar un servidor en ejecución, se crea una instancia nueva con la configuración actualizada, se prueba y se sustituye la antigua, que se destruye por completo. Es el principio de minimizar la variación convertido en propiedad del proceso y ya no en disciplina humana. La técnica blue-green aplica la misma idea: se crea una instancia paralela del stack, se conmuta el tráfico hacia ella y la anterior se destruye solo después de confirmar que la nueva funciona. Los valores de la tabla son un ejemplo. Fuente: Morris (2021).",
       "fragments": [
-        75.5,
-        76.5,
-        77.5,
-        78.5
+        86,
+        87,
+        88,
+        89
       ]
     },
     {
       "sceneId": "ciclo",
-      "startTime": 80,
-      "endTime": 87.5,
+      "startTime": 90.5,
+      "endTime": 98,
       "notes": "Los principios se traducen en un ciclo de vida de tres fases. En el aprovisionamiento, la herramienta de gestión de stacks lee el código y traduce las declaraciones en llamadas a la API del proveedor para instanciar los recursos. En la gestión de cambios, el equipo reaplica el código de forma periódica para eliminar la deriva; si un cambio es demasiado riesgoso para aplicarse en el lugar, usa blue-green. En el desmantelamiento, los recursos se destruyen de forma limpia; los stacks de prueba efímeros se instancian para una ejecución del pipeline y se destruyen de inmediato, lo que evita recursos huérfanos y reduce el costo. Es el contenido de la segunda parte de la rúbrica de la TA-S4: tres fases y la técnica asociada a cada una. Fuente: Morris (2021).",
       "fragments": [
-        82,
-        83,
-        84,
-        85,
-        86
+        92.5,
+        93.5,
+        94.5,
+        95.5,
+        96.5
       ]
     },
     {
       "sceneId": "radio",
-      "startTime": 87.5,
-      "endTime": 94,
+      "startTime": 98,
+      "endTime": 104.5,
       "notes": "Dividir la infraestructura en stacks pequeños acota el radio de impacto, el número de recursos que un solo comando de cambio puede afectar. Es la tercera práctica núcleo vista otra vez: piezas pequeñas que cambian de forma independiente. Con un solo stack, un cambio mal aplicado puede tocar todo. Con un stack por sistema, un cambio en Matrícula solo toca los recursos de Matrícula y deja a salvo Reportes y Aulas Virtuales. Antes de aprobar un cambio, el ingeniero debe poder responder dos preguntas: cuál es el radio de impacto del comando que va a ejecutar y si el recurso resultante puede reconstruirse desde cero si falla. Si la segunda respuesta es que no, el sistema ya es un copo de nieve aunque todavía no haya fallado. Las cantidades de recursos son un ejemplo. Fuente: Morris (2021).",
       "fragments": [
-        89.5,
-        90.5,
-        91.5,
-        92.5
+        100,
+        101,
+        102,
+        103
       ]
     },
     {
       "sceneId": "matricula",
-      "startTime": 94,
-      "endTime": 101.5,
+      "startTime": 104.5,
+      "endTime": 112,
       "notes": "Se resuelve el caso del inicio con los conceptos de la semana. El equipo de TI no reserva hardware físico adicional: declara cuántas instancias virtuales necesita el clúster de Matrícula y Pagos y el proveedor las aprovisiona en minutos. La configuración vive en un repositorio versionado y no en la memoria de quien la hizo el semestre anterior. Como el clúster es una topología estática que se repite cada semestre con pocos parámetros, un módulo declarativo de Terraform es más apropiado que una librería de Pulumi. El mismo código que crea el clúster para los catorce días de inscripción lo destruye al cierre, siguiendo el patrón de stack efímero, y es un stack independiente: una falla durante la matrícula no se propaga a Reportes ni a Aulas Virtuales. El cálculo es un ejemplo con 12 instancias y dos periodos al año: 12 por 24 por 365 son 105 120 horas contra 12 por 24 por 28, 8 064 horas. Fuente: Morris (2021).",
       "fragments": [
-        96,
-        97,
-        98,
-        99,
-        100
+        106.5,
+        107.5,
+        108.5,
+        109.5,
+        110.5
       ]
     },
     {
       "sceneId": "actividades",
-      "startTime": 101.5,
-      "endTime": 105,
+      "startTime": 112,
+      "endTime": 115.5,
       "notes": "Las consignas completas, las plantillas y las rúbricas están en Canvas. La PE-S4 se hizo en clase, de forma individual. La TA-S4 es una bitácora individual que se entrega en PDF: aplica los cuatro principios a un servidor real de la UIDE, documenta las tres fases del ciclo de vida con su técnica, compara infraestructura inmutable y mutable con el antipatrón que evita la inmutable, y argumenta cuándo convendría infraestructura efímera en un sistema de la UIDE, con una cita en APA 7. Recordar las fechas de entrega de Canvas."
     },
     {
       "sceneId": "cierre",
-      "startTime": 105,
-      "endTime": 108.5,
+      "startTime": 115.5,
+      "endTime": 119,
       "notes": "Volver a las respuestas del inicio. Con el vocabulario de la semana: la UIDE no compra capacidad para el pico ni pide servidores a mano; declara en un repositorio el clúster de Matrícula y Pagos, lo crea al abrir la inscripción, lo gestiona con cambios pequeños y lo destruye al cerrar. El mismo código documenta de forma verificable cuánta capacidad se usó en cada periodo y permite reconstruirla exacta el semestre siguiente. La pregunta de ingeniería antes de aprobar un cambio es doble: cuál es su radio de impacto y si el recurso puede reconstruirse desde cero."
     }
   ],
   "slideSequences": []
 }
     </script>
-    <div id="root" data-composition-id="main" data-start="0" data-duration="108.5" data-width="1920" data-height="1080">
+    <div id="root" data-composition-id="main" data-start="0" data-duration="119" data-width="1920" data-height="1080">
 
       <section id="portada" class="clip slide dark" data-start="0" data-duration="3.5" data-track-index="0" data-label="Portada" data-frags="0">
         <div class="frame" id="portada-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">01 / 17</span>
+          <span class="num">01 / 18</span>
       <p class="course" data-in="0" style="--i:0">PP_08_IPTI · Semana 4</p>
       <h1 class="claim xl" data-in="1" style="--i:1">Del ticket al código: servidores que se crean y se destruyen con un comando</h1>
       <p class="lead" data-in="2" style="--i:2">Integración de hardware y software, infraestructura como código y ciclo de vida</p>
@@ -320,7 +336,7 @@
       <section id="caso" class="clip slide" data-start="3.5" data-duration="6.5" data-track-index="0" data-label="El pico de matrícula" data-frags="3">
         <div class="frame" id="caso-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">02 / 17</span>
+          <span class="num">02 / 18</span>
       <h1 class="claim" data-in="0" style="--i:0">Dos semanas de pico, el resto del año sobra</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/caso-pico/caso-pico.html?embed" title="Gráfica de demanda semanal de Matrícula y Pagos: dos picos cortos y el resto del año con poca demanda; una capacidad fija dimensionada para el pico deja casi todo el año ocioso." loading="eager"></iframe>
         </div>
@@ -329,7 +345,7 @@
       <section id="eras" class="clip slide" data-start="10" data-duration="6.5" data-track-index="0" data-label="Era del Hierro y Era de la Nube" data-frags="3">
         <div class="frame" id="eras-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">03 / 17</span>
+          <span class="num">03 / 18</span>
       <h1 class="claim" data-in="0" style="--i:0">El servidor ya no se instala: se pide</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/eras-ticket/eras-ticket.html?embed" title="Comparación entre abrir un ticket y esperar nueve días a que un técnico instale el servidor, y ejecutar un comando que crea doce instancias en cuarenta y un segundos." loading="eager"></iframe>
         </div>
@@ -338,7 +354,7 @@
       <section id="capas" class="clip slide" data-start="16.5" data-duration="7.5" data-track-index="0" data-label="Cuatro capas" data-frags="4">
         <div class="frame" id="capas-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">04 / 17</span>
+          <span class="num">04 / 18</span>
       <h1 class="claim" data-in="0" style="--i:0">Cuatro capas, cada una con su interfaz</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/capas/capas.html?embed" title="Cuatro capas de abajo hacia arriba: hardware físico, hipervisor, recursos cloud pedidos por API e infraestructura como código, cada una con un ejemplo real." loading="eager"></iframe>
         </div>
@@ -347,111 +363,115 @@
       <section id="iac" class="clip slide" data-start="24" data-duration="6.5" data-track-index="0" data-label="Tres prácticas de IaC" data-frags="3">
         <div class="frame" id="iac-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">05 / 17</span>
+          <span class="num">05 / 18</span>
       <h1 class="claim" data-in="0" style="--i:0">Los servidores se tratan como software</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/tres-practicas/tres-practicas.html?embed" title="Tres tarjetas: definir todo como código con un historial de git, probar y entregar de forma continua con validate y plan, y piezas pequeñas con un árbol de carpetas independientes." loading="eager"></iframe>
         </div>
       </section>
 
-      <section id="declarativo" class="clip slide" data-start="30.5" data-duration="7.5" data-track-index="0" data-label="Declarativo e imperativo" data-frags="4">
+      <section id="bloque" class="clip slide" data-start="30.5" data-duration="8.5" data-track-index="0" data-label="Las partes de un bloque" data-frags="5">
+        <div class="frame" id="bloque-frame">
+          <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
+          <span class="num">06 / 18</span>
+      <h1 class="claim" data-in="0" style="--i:0">Un bloque de Terraform se lee en cuatro partes</h1>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="5" src="figuras/bloque-hcl/bloque-hcl.html?embed" title="Un bloque de Terraform con cuatro partes resaltadas en colores: la palabra resource, el tipo aws_instance, el nombre matricula y los atributos count igual a 12 e instance_type. Al final aparecen doce cuadros, uno por cada máquina que pide count igual a 12." loading="eager"></iframe>
+        </div>
+      </section>
+
+      <section id="declarativo" class="clip slide" data-start="39" data-duration="7.5" data-track-index="0" data-label="Declarativo e imperativo" data-frags="4">
         <div class="frame" id="declarativo-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">06 / 17</span>
+          <span class="num">07 / 18</span>
       <h1 class="claim" data-in="0" style="--i:0">Declarar el estado final o programar los pasos</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/declarativo-imperativo/declarativo-imperativo.html?embed" title="Código HCL de Terraform con count igual a 3, salida de dos corridas del mismo archivo, una que crea y otra sin cambios, y código Python de Pulumi con un bucle que crea tres instancias." loading="eager"></iframe>
         </div>
       </section>
 
-      <section id="herramienta" class="clip slide" data-start="38" data-duration="7.5" data-track-index="0" data-label="Terraform o Pulumi" data-frags="4">
+      <section id="herramienta" class="clip slide" data-start="46.5" data-duration="7.5" data-track-index="0" data-label="Terraform o Pulumi" data-frags="4">
         <div class="frame" id="herramienta-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">07 / 17</span>
+          <span class="num">08 / 18</span>
       <h1 class="claim" data-in="0" style="--i:0">La herramienta se elige según el caso</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/terraform-pulumi/terraform-pulumi.html?embed" title="Tabla que compara Terraform y Pulumi en lenguaje, lógica dinámica y caso de uso ideal, con la conclusión de que Matrícula y Pagos conviene con Terraform." loading="eager"></iframe>
         </div>
       </section>
 
-      <section id="separar" class="clip slide" data-start="45.5" data-duration="6.5" data-track-index="0" data-label="Separar lo declarativo de lo imperativo" data-frags="3">
+      <section id="separar" class="clip slide" data-start="54" data-duration="8.5" data-track-index="0" data-label="Separar lo declarativo de lo imperativo" data-frags="5">
         <div class="frame" id="separar-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">08 / 17</span>
+          <span class="num">09 / 18</span>
       <h1 class="claim" data-in="0" style="--i:0">Lo variable se programa; lo final se declara</h1>
-      <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/separar-logica/separar-logica.html?embed" title="Un programa en Python cuenta las zonas de disponibilidad y genera tres declaraciones de subred; la regla de Morris separa la lógica imperativa de lo declarativo." loading="eager"></iframe>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="5" src="figuras/separar-logica/separar-logica.html?embed" title="Un programa en Python cuenta las zonas de disponibilidad y, en cada vuelta con n igual a 1, 2 y 3, reemplaza la zona y el número por sus valores y genera una declaración de subred. Si mañana hay cuatro zonas, el mismo programa genera una cuarta." loading="eager"></iframe>
         </div>
       </section>
 
-      <section id="pe" class="clip slide" data-start="52" data-duration="7.5" data-track-index="0" data-label="Práctica PE-S4" data-frags="4">
+      <section id="pe" class="clip slide" data-start="62.5" data-duration="7.5" data-track-index="0" data-label="Práctica PE-S4" data-frags="4">
         <div class="frame" id="pe-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">09 / 17</span>
+          <span class="num">10 / 18</span>
       <h1 class="claim" data-in="0" style="--i:0">Ahora, individualmente: la práctica PE-S4</h1>
-      <div class="timeline">
-        <div class="row" data-f="1"><b>1</b><strong>Las cuatro capas</strong><em>Con los rótulos de su escenario</em></div>
-        <div class="row" data-f="2"><b>2</b><strong>Terraform o Pulumi</strong><em>Tres criterios y la elección justificada</em></div>
-        <div class="row" data-f="3"><b>3</b><strong>Fragmento declarativo</strong><em>El estado final deseado de un recurso</em></div>
-        <div class="row" data-f="4"><b>4</b><strong>Declarativo e imperativo</strong><em>Qué lógica necesitaría condicionales</em></div>
-      </div>
+      <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/practica-pe/practica-pe.html?embed" title="Primero tres casos para elegir: tienda en línea en el Black Friday, venta de entradas de un concierto y pedidos de comida el día de una final. Después las cuatro capas y la elección de herramienta, el esqueleto del bloque que deben completar junto al ejemplo de Matrícula y Pagos, y la separación entre lo que se declara y lo que necesitaría un bucle o un condicional." loading="eager"></iframe>
         </div>
       </section>
 
-      <section id="principios" class="clip slide" data-start="59.5" data-duration="7.5" data-track-index="0" data-label="Cuatro principios" data-frags="4">
+      <section id="principios" class="clip slide" data-start="70" data-duration="7.5" data-track-index="0" data-label="Cuatro principios" data-frags="4">
         <div class="frame" id="principios-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">10 / 17</span>
+          <span class="num">11 / 18</span>
       <h1 class="claim" data-in="0" style="--i:0">Cuatro principios de infraestructura dinámica</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/cuatro-principios/cuatro-principios.html?embed" title="Cuatro tarjetas con un ejemplo cada una: reemplazo automático de una máquina que no responde, terraform apply reproducible, terraform destroy desechable y tres instancias con la misma imagen." loading="eager"></iframe>
         </div>
       </section>
 
-      <section id="copo" class="clip slide" data-start="67" data-duration="6.5" data-track-index="0" data-label="Copo de nieve, mascotas y ganado" data-frags="3">
+      <section id="copo" class="clip slide" data-start="77.5" data-duration="6.5" data-track-index="0" data-label="Copo de nieve, mascotas y ganado" data-frags="3">
         <div class="frame" id="copo-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">11 / 17</span>
+          <span class="num">12 / 18</span>
       <h1 class="claim" data-in="0" style="--i:0">Un servidor imposible de reconstruir</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/copo-nieve/copo-nieve.html?embed" title="Bitácora de un servidor con parches manuales que nadie puede repetir, frente a un servidor reconstruido en seis minutos desde el repositorio; mascotas contra ganado." loading="eager"></iframe>
         </div>
       </section>
 
-      <section id="inmutable" class="clip slide" data-start="73.5" data-duration="6.5" data-track-index="0" data-label="Deriva e infraestructura inmutable" data-frags="3">
+      <section id="inmutable" class="clip slide" data-start="84" data-duration="6.5" data-track-index="0" data-label="Deriva e infraestructura inmutable" data-frags="3">
         <div class="frame" id="inmutable-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">12 / 17</span>
+          <span class="num">13 / 18</span>
       <h1 class="claim" data-in="0" style="--i:0">No se parchea: se crea uno nuevo</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/deriva-inmutable/deriva-inmutable.html?embed" title="A la izquierda dos entornos que se separan con el tiempo: versión de openssl y conexiones máximas distintas. A la derecha, una instancia nueva se prueba, recibe el tráfico y la anterior se destruye." loading="eager"></iframe>
         </div>
       </section>
 
-      <section id="ciclo" class="clip slide" data-start="80" data-duration="7.5" data-track-index="0" data-label="Ciclo de vida en tres fases" data-frags="4">
+      <section id="ciclo" class="clip slide" data-start="90.5" data-duration="7.5" data-track-index="0" data-label="Ciclo de vida en tres fases" data-frags="4">
         <div class="frame" id="ciclo-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">13 / 17</span>
+          <span class="num">14 / 18</span>
       <h1 class="claim" data-in="0" style="--i:0">Tres fases, un mismo código</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/ciclo-vida/ciclo-vida.html?embed" title="Tres columnas con la salida de terraform en cada fase: apply para aprovisionar, plan para gestionar cambios y destroy para desmantelar, con la técnica de cada una." loading="eager"></iframe>
         </div>
       </section>
 
-      <section id="radio" class="clip slide" data-start="87.5" data-duration="6.5" data-track-index="0" data-label="Radio de impacto" data-frags="3">
+      <section id="radio" class="clip slide" data-start="98" data-duration="6.5" data-track-index="0" data-label="Radio de impacto" data-frags="3">
         <div class="frame" id="radio-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">14 / 17</span>
+          <span class="num">15 / 18</span>
       <h1 class="claim" data-in="0" style="--i:0">Stacks pequeños: un comando arriesga menos</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="3" src="figuras/radio-impacto/radio-impacto.html?embed" title="Una cuadrícula de 148 recursos que un solo comando puede afectar, frente a tres stacks pequeños; un cambio en Matrícula y Pagos afecta solo 12 recursos." loading="eager"></iframe>
         </div>
       </section>
 
-      <section id="matricula" class="clip slide" data-start="94" data-duration="7.5" data-track-index="0" data-label="Matrícula y Pagos con un stack efímero" data-frags="4">
+      <section id="matricula" class="clip slide" data-start="104.5" data-duration="7.5" data-track-index="0" data-label="Matrícula y Pagos con un stack efímero" data-frags="4">
         <div class="frame" id="matricula-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">15 / 17</span>
+          <span class="num">16 / 18</span>
       <h1 class="claim" data-in="0" style="--i:0">El clúster existe solo mientras hay matrícula</h1>
       <iframe class="fig" data-in="1" style="--i:1" data-fig="4" src="figuras/matricula-efimero/matricula-efimero.html?embed" title="Línea de doce meses: capacidad fija todo el año con 105 120 horas de instancia, contra un stack efímero de dos ventanas de catorce días con 8 064 horas; los comandos apply y destroy lo abren y lo cierran." loading="eager"></iframe>
         </div>
       </section>
 
-      <section id="actividades" class="clip slide" data-start="101.5" data-duration="3.5" data-track-index="0" data-label="Actividades de la semana" data-frags="0">
+      <section id="actividades" class="clip slide" data-start="112" data-duration="3.5" data-track-index="0" data-label="Actividades de la semana" data-frags="0">
         <div class="frame" id="actividades-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">16 / 17</span>
+          <span class="num">17 / 18</span>
       <h1 class="claim" data-in="0" style="--i:0">Esta semana hay dos actividades</h1>
       <div class="cards two tall">
         <div class="card" data-in="1" style="--i:1"><span class="tag">PE-S4 · 2,25 puntos</span><strong>Integración HW/SW y propuesta IaC</strong><em>Las cuatro capas, Terraform o Pulumi, un fragmento declarativo y la separación declarativo e imperativo</em></div>
@@ -460,10 +480,10 @@
         </div>
       </section>
 
-      <section id="cierre" class="clip slide dark" data-start="105" data-duration="3.5" data-track-index="0" data-label="Cierre" data-frags="0">
+      <section id="cierre" class="clip slide dark" data-start="115.5" data-duration="3.5" data-track-index="0" data-label="Cierre" data-frags="0">
         <div class="frame" id="cierre-frame">
           <img class="logo" src="assets/logo-uide.png" alt="UIDE, Powered by Arizona State University" />
-          <span class="num">17 / 17</span>
+          <span class="num">18 / 18</span>
       <h1 class="claim xl" data-in="0" style="--i:0">Se declara, se crea, se cambia en pequeño y se destruye</h1>
       <p class="lead" data-in="1" style="--i:1">Radio de impacto y reconstrucción desde cero: las dos preguntas antes de aprobar un cambio</p>
       <p class="byline" data-in="2" style="--i:2">Fuente: Morris (2021), Infrastructure as Code</p>
@@ -525,7 +545,7 @@
 
       const ENTER = 2;
       const tl = gsap.timeline({ paused: true });
-      tl.to({}, { duration: 108.5 }, 0);
+      tl.to({}, { duration: 119 }, 0);
 
       const figSyncs = [];
       const slides = Array.from(document.querySelectorAll(".slide"));
