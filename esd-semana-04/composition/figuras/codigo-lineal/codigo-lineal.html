@@ -75,11 +75,15 @@ const tri = (s, k, n) => win(s, k - 0.5, k) * (k < n ? 1 - win(s, k, k + 0.5) : 
 const lerpArr = (arr, s) => { const t = clamp(s, 0, arr.length - 1); const i = Math.min(arr.length - 2, Math.floor(t)); const f = ease(t - i); return arr[i] + (arr[i + 1] - arr[i]) * f; };
 
 const I = [0, 0, 3, 6], CMP = [0, 1, 4, 7];
-const LINEAS = [[0], [1, 2], [1, 2], [2, 3]];
+const LINEAS = [[0], [1, 2], [1, 2], [1, 2, 3]];
+const GEN = ["def&nbsp;buscar_lineal(a,&nbsp;clave):", "&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;i&nbsp;in&nbsp;range(len(a)):", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;a[i]&nbsp;==&nbsp;clave:", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;i", "&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;-1"];
+const CONC = {"0": {"1": "&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;i&nbsp;in&nbsp;range(<span style=\"color:#910048;font-weight:800\">11</span>):"}, "1": {"1": "&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;i&nbsp;in&nbsp;range(<span style=\"color:#910048;font-weight:800\">11</span>):&nbsp;&nbsp;#&nbsp;i&nbsp;=&nbsp;<span style=\"color:#910048;font-weight:800\">0</span>", "2": "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;<span style=\"color:#910048;font-weight:800\">1231</span>&nbsp;==&nbsp;<span style=\"color:#910048;font-weight:800\">1983</span>:&nbsp;&nbsp;#&nbsp;<span style=\"color:#b3261e;font-weight:800\">False</span>"}, "2": {"1": "&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;i&nbsp;in&nbsp;range(<span style=\"color:#910048;font-weight:800\">11</span>):&nbsp;&nbsp;#&nbsp;i&nbsp;=&nbsp;<span style=\"color:#910048;font-weight:800\">3</span>", "2": "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;<span style=\"color:#910048;font-weight:800\">1834</span>&nbsp;==&nbsp;<span style=\"color:#910048;font-weight:800\">1983</span>:&nbsp;&nbsp;#&nbsp;<span style=\"color:#b3261e;font-weight:800\">False</span>"}, "3": {"1": "&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;i&nbsp;in&nbsp;range(<span style=\"color:#910048;font-weight:800\">11</span>):&nbsp;&nbsp;#&nbsp;i&nbsp;=&nbsp;<span style=\"color:#910048;font-weight:800\">6</span>", "2": "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;<span style=\"color:#910048;font-weight:800\">1983</span>&nbsp;==&nbsp;<span style=\"color:#910048;font-weight:800\">1983</span>:&nbsp;&nbsp;#&nbsp;<span style=\"color:#0c6b62;font-weight:800\">True</span>", "3": "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;<span style=\"color:#910048;font-weight:800\">6</span>"}};
+function swap(kk) { for (let i = 0; i < GEN.length; i++) { const el = $("#cl" + i); const h = (CONC[kk] && CONC[kk][i]) || GEN[i]; if (el.dataset.h !== h) { el.innerHTML = '<div style="white-space:nowrap">' + h + '</div>'; el.dataset.h = h; } } }
 
 let u = 0, target = 0, frame = 0, timer = 0, last = 0;
 function draw() { 
 const s = u * N;
+swap(Math.round(clamp(s, 0, 3)));
 const pos = lerpArr(I, s);
 for (let i = 0; i < 11; i++) {
   const e = $("#lc" + i);
