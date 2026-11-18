@@ -69,10 +69,10 @@
       ]
     },
     {
-      "sceneId": "codigo",
+      "sceneId": "codigo-lineal",
       "startTime": 24.5,
       "endTime": 31,
-      "notes": "El código es el del material de la semana. A la izquierda se resalta la línea que se ejecuta; a la derecha, la misma lista con los tres marcadores bajo, centro y alto, y lo que queda fuera del intervalo se apaga. Vuelta 1: centro = 5, a[5] = 1898 es menor que 1983, así que bajo = 6. Vuelta 2: centro = 8, a[8] = 2446 es mayor, así que alto = 7. Vuelta 3: centro = 6 y a[6] es la clave, la función devuelve 6. En Python las posiciones empiezan en 0. Antes de cada avance, pedir a la clase los valores de bajo, alto y centro de la siguiente vuelta; es lo que van a hacer en el ejercicio de trazar con la clave 1500.",
+      "notes": "Es la búsqueda lineal del material de la semana, la primera de las dos que la práctica pide escribir. Cinco líneas: un for recorre las posiciones con range(len(a)), un if compara a[i] con la clave y devuelve i si coincide, y si el for termina sin encontrarla se devuelve -1. Se traza con la misma lista y la misma clave 1983 de la diapositiva anterior. Primer avance: vuelta 1, i = 0, a[0] = 1231 no es la clave y sigue. Segundo avance: vuelta 4, i = 3; las posiciones 0 a 2 aparecen apagadas porque ya se descartaron, y eso es la invariante: antes de mirar i, la clave no está entre 0 e i - 1. Tercer avance: vuelta 7, i = 6, a[6] es la clave y la función devuelve 6, con siete comparaciones. Aparece la última línea: si el for se acaba sin hallarla, la invariante dice que no está en ninguna posición y por eso se devuelve -1. En Python las posiciones empiezan en 0. Antes de cada avance, preguntar en qué posición estará i.",
       "fragments": [
         26.5,
         27.5,
@@ -81,151 +81,212 @@
       ]
     },
     {
-      "sceneId": "invariante-idea",
+      "sceneId": "codigo",
       "startTime": 31,
-      "endTime": 34.5,
+      "endTime": 37.5,
+      "notes": "El código es el del material de la semana. A la izquierda se resalta la línea que se ejecuta; a la derecha, la misma lista con los tres marcadores bajo, centro y alto, y lo que queda fuera del intervalo se apaga. Vuelta 1: centro = 5, a[5] = 1898 es menor que 1983, así que bajo = 6. Vuelta 2: centro = 8, a[8] = 2446 es mayor, así que alto = 7. Vuelta 3: centro = 6 y a[6] es la clave, la función devuelve 6. En Python las posiciones empiezan en 0. Antes de cada avance, pedir a la clase los valores de bajo, alto y centro de la siguiente vuelta; es lo que van a hacer en el ejercicio de trazar con la clave 1500.",
+      "fragments": [
+        33,
+        34,
+        35,
+        36
+      ]
+    },
+    {
+      "sceneId": "invariante-idea",
+      "startTime": 37.5,
+      "endTime": 41,
       "notes": "La semana 2 definió la invariante como lo que debe cumplirse siempre. Para una búsqueda es una frase sobre el bucle. En la lineal: antes de mirar la posición i, la clave no está entre las posiciones 0 e i - 1. En la binaria: si la clave está en la lista, está entre bajo y alto. Joyanes señala que pensar en invariantes antes de codificar hace probable tener pocos errores."
     },
     {
       "sceneId": "invariante-1500",
-      "startTime": 34.5,
-      "endTime": 43,
+      "startTime": 41,
+      "endTime": 49.5,
       "notes": "Es el ejercicio de trazar, con una clave que no está: el 1500. Al entrar: el intervalo es toda la lista y la invariante es cierta porque la clave, si está, está en algún lugar de ella. Cada vuelta compara con el centro, descarta una mitad que no puede contener la clave y el recuadro verde se encoge: alto = 4, alto = 1, bajo = 1 y bajo = 2. Cuarta vuelta: bajo = 2 queda mayor que alto = 1 y el intervalo está vacío. Por la invariante, si la clave estuviera tendría que estar en un intervalo vacío, así que no está y la función devuelve -1. Fueron cuatro comparaciones. Antes de cada avance, preguntar qué valor tomará bajo o alto.",
       "fragments": [
-        36.5,
-        37.5,
-        38.5,
-        39.5,
-        40.5,
-        41.5
+        43,
+        44,
+        45,
+        46,
+        47,
+        48
       ]
     },
     {
       "sceneId": "bucle-infinito",
-      "startTime": 43,
-      "endTime": 50.5,
+      "startTime": 49.5,
+      "endTime": 57,
       "notes": "Es la versión con error del material de la semana. Es igual a la binaria salvo en una línea: alto = centro en lugar de alto = centro - 1. Se prueba con la lista [1, 3] y la clave 2. Primer avance: vuelta 1, centro = 0, a[0] = 1 es menor que 2, bajo = 1. Segundo avance: vuelta 2, centro = 1, a[1] = 3 es mayor, alto = centro = 1; los valores no cambiaron. Tercer avance: la vuelta 3 es idéntica a la 2 y el bucle no termina nunca. La invariante se conserva, porque la clave, si estuviera, seguiría entre bajo y alto; lo que se rompe es que el intervalo se reduzca. La comprobación con assert lo detecta con el mensaje que se ve. Cuarto avance: con alto = centro - 1, alto pasa a 0, bajo es mayor y la función devuelve -1. Una invariante no basta si el bucle no termina.",
       "fragments": [
-        45,
-        46,
-        47,
-        48,
-        49
+        51.5,
+        52.5,
+        53.5,
+        54.5,
+        55.5
+      ]
+    },
+    {
+      "sceneId": "comprobar",
+      "startTime": 57,
+      "endTime": 64.5,
+      "notes": "Es la función comprobar() del archivo de partida de PE-1.4, donde el estudiante escribe los assert. Un assert afirma que algo es cierto; si no lo es, el programa se detiene con un AssertionError y muestra la línea que falló. Con la lista a = [1, 3, 5, 7, 9, 11]. Primer avance: una clave presente. El 7 está en la posición 3, así que las dos búsquedas deben devolver 3. Segundo avance: una clave ausente. El 4 cabría entre el 3 y el 5 pero no está, así que las dos deben devolver -1. Tercer avance: los extremos, el 11 en la última posición y el 1 en la primera, porque los errores de un paso se esconden en los bordes. Cuarto avance: una versión con range(len(a) - 1) deja fuera la última posición; las comprobaciones del medio pasan y la de los extremos falla con AssertionError. Es la razón de probar presente, ausente y extremos, y no solo la clave que sí aparece. Antes de cada avance, pedir qué devuelve cada búsqueda. La invariante también puede vigilarse con assert dentro del bucle, como en el material de la semana; en la práctica basta con las comprobaciones de esta función.",
+      "fragments": [
+        59,
+        60,
+        61,
+        62,
+        63
       ]
     },
     {
       "sceneId": "micro-idea",
-      "startTime": 50.5,
-      "endTime": 54,
+      "startTime": 64.5,
+      "endTime": 68,
       "notes": "Hasta aquí el costo se predijo con Big-O. Ahora se comprueba con una medición. Un micro-benchmark mide el tiempo de una operación con un script para contrastarlo con el Big-O que se predice; en este curso el tiempo medido, en segundos, es el indicador del número de pasos. Cronometrar una sola vez no basta."
     },
     {
       "sceneId": "una-medicion",
-      "startTime": 54,
-      "endTime": 60.5,
+      "startTime": 68,
+      "endTime": 74.5,
       "notes": "Es la situación B del material de la semana. Una compañera mide la lineal una vez con n = 1 000 y otra vez con n = 1 000 000, y la segunda tarda menos. Concluye que la lineal es más rápida con listas grandes. Antes de avanzar, pedir a la clase que busque el error. Primer avance: se muestran las claves; la primera medición buscó una clave ausente, que obliga a recorrer toda la lista, y la segunda buscó el tercer elemento, que termina enseguida. Segundo avance: con la misma clave ausente en las dos, el tiempo se multiplica por 1 000 al multiplicar n por 1 000, que es lo que predice O(n). Los valores son de ejemplo, para mostrar el error de diseño; las mediciones reales las hacen ellos en PE-1.4.",
       "fragments": [
-        56,
-        57,
-        58,
-        59
-      ]
-    },
-    {
-      "sceneId": "cinco-pasos",
-      "startTime": 60.5,
-      "endTime": 69,
-      "notes": "Son los cinco pasos de la Figura 2 del material de la semana, cada uno con la línea de código que lo hace. Preparar: los datos se construyen fuera de la medición. Calentar: una corrida cuyo resultado no se usa. Repetir y cronometrar: al menos 30 veces, y en bloque cuando la operación dura menos de un microsegundo. Mediana: no se deja engañar por un valor extremo. Comparar: se repite con otro tamaño y se calcula el cociente. En Python se usa time.perf_counter, un reloj de alta resolución, y statistics.median. Antes de cada avance, preguntar qué creen que falla si se omite ese paso.",
-      "fragments": [
-        62.5,
-        63.5,
-        64.5,
-        65.5,
-        66.5,
-        67.5
-      ]
-    },
-    {
-      "sceneId": "claves",
-      "startTime": 69,
-      "endTime": 74.5,
-      "notes": "La práctica PE-1.4 mide dos claves por búsqueda: la del medio y una ausente mayor que todas. Antes de cada avance, pedir la predicción: si n se multiplica por 1 000, ¿cuánto debería crecer el tiempo? Primer avance: la lineal con la clave del medio o con la ausente recorre la mitad o toda la lista, así que el cociente esperado ronda 1 000. Segundo avance: la binaria con la clave del medio la encuentra en la primera comparación y el cociente ronda 1; con la clave ausente pasa de unas 10 comparaciones a unas 20 y el cociente ronda 2. Estos valores son la referencia para la columna Cociente que predice su Big-O de la práctica; los medidos pueden desviarse y esa desviación se explica, no se oculta.",
-      "fragments": [
+        70,
         71,
         72,
         73
       ]
     },
     {
-      "sceneId": "bloque",
+      "sceneId": "cinco-pasos",
       "startTime": 74.5,
-      "endTime": 80,
-      "notes": "Es la función medir_en_bloque del archivo de partida de la práctica, que ya viene escrita. Primer avance: cuando una operación dura muy poco, el reloj no la distingue bien; se cronometran 200 seguidas y se divide entre 200. Segundo avance: dos casos de la práctica medidos en el equipo donde se preparó la clase, con Python 3.14. Una búsqueda binaria dura unos 3 microsegundos y se mide en bloque. Una búsqueda lineal de la clave ausente con n = 1 000 000 dura unos 38 milisegundos; en bloque de 200 tardaría más de 7 segundos por repetición, así que se mide con pocas repeticiones. En el archivo de partida el estudiante decide, en una línea, cuál usar en cada caso. En otro equipo los valores cambian.",
+      "endTime": 83,
+      "notes": "Son los cinco pasos de la Figura 2 del material de la semana, cada uno con la línea de código que lo hace. Preparar: los datos se construyen fuera de la medición. Calentar: una corrida cuyo resultado no se usa. Repetir y cronometrar: al menos 30 veces, y en bloque cuando la operación dura menos de un microsegundo. Mediana: no se deja engañar por un valor extremo. Comparar: se repite con otro tamaño y se calcula el cociente. En Python se usa time.perf_counter, un reloj de alta resolución, y statistics.median. Antes de cada avance, preguntar qué creen que falla si se omite ese paso.",
       "fragments": [
         76.5,
         77.5,
-        78.5
+        78.5,
+        79.5,
+        80.5,
+        81.5
       ]
     },
     {
-      "sceneId": "cocientes",
-      "startTime": 80,
-      "endTime": 87.5,
-      "notes": "Es el ejemplo resuelto del material de la semana: copiar una lista con datos[:] para cuatro valores de n, en un equipo de ejemplo con Python 3.14. Los tiempos son 1,8; 19,6; 379,6 y 9 072,8 microsegundos. Lo que se analiza no es el valor absoluto sino cómo cambia al multiplicar n por 10. Los cocientes consecutivos son 10,9; 19,4 y 23,9; para O(n) se espera cerca de 10. Primero contra último: 5 040, y se esperaba 1 000, unas cinco veces más. No se acerca a 1 ni a 2, así que no es O(1) ni O(log n). Una hipótesis que el curso no verifica es que la lista de un millón de elementos ya no cabe en la memoria rápida del procesador. Es el formato del reporte TA-1.4. Antes de cada avance, pedir la predicción.",
+      "sceneId": "lambda",
+      "startTime": 83,
+      "endTime": 89.5,
+      "notes": "Es el error más probable al armar el bucle de la práctica. La función medir recibe una operación y la ejecuta ella misma entre inicio y fin. Primer avance: si se escribe medir(buscar_lineal(datos, clave)), Python evalúa primero el argumento, así que la búsqueda corre antes de que medir empiece, y medir recibe su resultado, por ejemplo -1, que no es una operación; al hacer operacion() falla con TypeError porque un número no se puede llamar. Segundo avance: con lambda, medir(lambda: buscar_lineal(datos, clave)), lambda guarda la instrucción sin ejecutarla y medir decide cuándo correrla. Tercer avance: la línea de tiempo de una medición. La lista se construye fuera, antes del cronómetro; después viene inicio, la operación, que es la búsqueda, y fin. Solo la búsqueda queda entre inicio y fin. En el archivo de partida esto ya está escrito dentro de medir; al estudiante le toca escribir el lambda en la línea que llama al medidor. Antes del primer avance, preguntar qué creen que pasa si se escribe sin lambda.",
       "fragments": [
-        82,
-        83,
-        84,
         85,
-        86
+        86,
+        87,
+        88
       ]
     },
     {
-      "sceneId": "grafica-escala",
-      "startTime": 87.5,
-      "endTime": 94,
-      "notes": "Es la Figura 3 del material de la semana, con los valores que calcula Joyanes: para n = 100, siete comparaciones de la binaria y cincuenta de media de la lineal; para n = 1 000 000, veinte y quinientas mil. Los dos ejes van en escala logarítmica, como plt.loglog en matplotlib. Primer avance: la lineal es una recta que sube de forma constante. Segundo avance: la binaria es una curva casi plana. Tercer avance: al final de la gráfica, 500 000 contra 20. Una escala lineal aplastaría los tamaños pequeños; por eso se usa logarítmica. Es la gráfica que piden en TA-1.4, con título, nombres de ejes con unidad y leyenda.",
+      "sceneId": "claves",
+      "startTime": 89.5,
+      "endTime": 95,
+      "notes": "La práctica PE-1.4 mide dos claves por búsqueda: la del medio y una ausente mayor que todas. Antes de cada avance, pedir la predicción: si n se multiplica por 1 000, ¿cuánto debería crecer el tiempo? Primer avance: la lineal con la clave del medio o con la ausente recorre la mitad o toda la lista, así que el cociente esperado ronda 1 000. Segundo avance: la binaria con la clave del medio, datos[(n - 1) // 2], que es justo la que revisa primero, la encuentra en la primera comparación y el cociente ronda 1 (si se usara datos[n // 2], que queda una posición a la derecha, necesitaría unas 10 a 20 comparaciones y el cociente rondaría 2); con la clave ausente pasa de unas 10 comparaciones a unas 20 y el cociente ronda 2. Estos valores son la referencia para la columna Cociente que predice su Big-O de la práctica; los medidos pueden desviarse y esa desviación se explica, no se oculta.",
       "fragments": [
-        89.5,
-        90.5,
         91.5,
-        92.5
+        92.5,
+        93.5
       ]
     },
     {
-      "sceneId": "codigo-grafica",
-      "startTime": 94,
+      "sceneId": "bloque-visual",
+      "startTime": 95,
       "endTime": 100.5,
-      "notes": "Es el script del material de la semana que dibuja la gráfica, con la copia de una lista como ejemplo. Primer avance: plt.loglog pone los dos ejes en escala logarítmica. Segundo avance: título y nombres de los ejes, con la unidad del tiempo en microsegundos. Tercer avance: la leyenda distingue las series y savefig guarda la imagen que se pega en el reporte de TA-1.4. Los tamaños y los tiempos de cada búsqueda salen de la tabla de la práctica; en matplotlib se agrega una línea plt.loglog por búsqueda. Si no tienen matplotlib instalado, se instala con pip antes de la clase.",
+      "notes": "Aquí se ve por qué existe medir_en_bloque. Primer avance: se cronometra una sola búsqueda, la binaria con la clave del medio, que dura unos 0,16 microsegundos. La lectura sale en 0,30, porque dos llamadas al reloj, una al inicio y otra al final, cuestan casi tanto como la propia búsqueda. Segundo avance: se cronometran 200 búsquedas seguidas con un solo par de llamadas al reloj y se divide el tiempo total entre 200; el costo del reloj se reparte y la lectura baja a 0,165. Antes de cada avance, preguntar cuál de las dos lecturas creen que es más fiel. Los valores son de un equipo con Python 3.14; en otro cambian, pero el patrón se repite. Se usa en bloque cuando una sola búsqueda dura menos de un microsegundo, que es la regla del archivo de partida.",
       "fragments": [
-        96,
         97,
         98,
         99
       ]
     },
     {
-      "sceneId": "ordenar",
+      "sceneId": "bloque",
       "startTime": 100.5,
-      "endTime": 107,
-      "notes": "Es la situación C del material de la semana. Un equipo busca cinco veces en una lista de un millón de elementos sin ordenar. Uno propone ordenar una vez y usar la binaria; otro, usar la lineal. Ordenar cuesta del orden de n log n, unas 20 000 000 de operaciones; cinco lineales cuestan unas 5 000 000 en el peor caso. Primer avance: la opción de ordenar. Segundo avance: la opción lineal, mucho más corta. Tercer avance: con cinco búsquedas conviene la lineal. Con las cifras del material de la semana, ordenar compensa en el peor caso desde 21 búsquedas, porque cada una cuesta unas 20 comparaciones en lugar de un millón. Antes de avanzar, pedir que tomen posición.",
+      "endTime": 106,
+      "notes": "Es la función medir_en_bloque del archivo de partida de la práctica, que ya viene escrita; se muestra completa para que se lea. Primer avance: se resaltan las líneas que cronometran. Hay un calentamiento antes, 30 repeticiones, y dentro de cada repetición un bucle de 200 operaciones entre inicio y fin; el tiempo se divide entre veces y al final se toma la mediana y se pasa a microsegundos. Segundo avance: dos casos de la práctica, medidos en un equipo con Python 3.14. La binaria con la clave del medio dura unos 0,16 microsegundos, menos de 1, y se mide en bloque. La binaria con la clave ausente dura unos 2 microsegundos y se mide con medir. Una lineal con la clave ausente y n = 1 000 000 dura unos 25 milisegundos; en un bloque de 200 tardaría unos 5 segundos por repetición, así que se mide con medir, que con 30 repeticiones son cerca de 1 segundo. La regla del archivo de partida es una sola: si una búsqueda dura menos de un microsegundo se usa medir_en_bloque, y si no, medir. El estudiante la aplica en una línea del bucle. En otro equipo los valores cambian.",
       "fragments": [
         102.5,
         103.5,
-        104.5,
-        105.5
+        104.5
+      ]
+    },
+    {
+      "sceneId": "bucle-practica",
+      "startTime": 106,
+      "endTime": 113.5,
+      "notes": "Une todo lo anterior en el bucle que arma la tabla de PE-1.4; el código está resumido del archivo de partida. Primer avance: dos claves por tamaño; la del medio, datos[(n - 1) // 2], es la primera que revisa la binaria, y la ausente es mayor que todas, el peor caso de las dos. Segundo avance: cada una de las dos búsquedas con cada clave son cuatro mediciones para un n, y la mediana de cada una se guarda en resultados; se llena la primera columna de la tabla. Tercer avance: el bucle de afuera recorre los cuatro tamaños, por lo que son 16 tiempos; la lista se construye antes de medir, en la línea 2. Cuarto avance: un cociente por fila, el tiempo de n = 1 000 000 entre el de n = 1 000, comparado con el que predice el Big-O. La línea medidor = medir es la que el estudiante cambia a medir_en_bloque según la regla; el lambda de la línea siguiente es el de la diapositiva anterior. Los valores de la tabla son de un equipo de ejemplo con Python 3.14: la lineal da cocientes de 778 y 725, cerca de los 1 000 esperados; la binaria con la clave del medio da 0,68 y con la ausente 1,25, que se leen como orden de magnitud, no como número exacto. Que no coincidan al decimal es normal: se explica, no se oculta. Antes de cada avance, pedir la predicción.",
+      "fragments": [
+        108,
+        109,
+        110,
+        111,
+        112
+      ]
+    },
+    {
+      "sceneId": "cocientes",
+      "startTime": 113.5,
+      "endTime": 121,
+      "notes": "Es el ejemplo resuelto del material de la semana: copiar una lista con datos[:] para cuatro valores de n, en un equipo de ejemplo con Python 3.14. Los tiempos son 1,8; 19,6; 379,6 y 9 072,8 microsegundos. Lo que se analiza no es el valor absoluto sino cómo cambia al multiplicar n por 10. Los cocientes consecutivos son 10,9; 19,4 y 23,9; para O(n) se espera cerca de 10. Primero contra último: 5 040, y se esperaba 1 000, unas cinco veces más. No se acerca a 1 ni a 2, así que no es O(1) ni O(log n). Una hipótesis que el curso no verifica es que la lista de un millón de elementos ya no cabe en la memoria rápida del procesador. Es el formato del reporte TA-1.4. Antes de cada avance, pedir la predicción.",
+      "fragments": [
+        115.5,
+        116.5,
+        117.5,
+        118.5,
+        119.5
+      ]
+    },
+    {
+      "sceneId": "grafica-escala",
+      "startTime": 121,
+      "endTime": 127.5,
+      "notes": "Es la Figura 3 del material de la semana, con los valores que calcula Joyanes: para n = 100, siete comparaciones de la binaria y cincuenta de media de la lineal; para n = 1 000 000, veinte y quinientas mil. Los dos ejes van en escala logarítmica, como plt.loglog en matplotlib. Primer avance: la lineal es una recta que sube de forma constante. Segundo avance: la binaria es una curva casi plana. Tercer avance: al final de la gráfica, 500 000 contra 20. Una escala lineal aplastaría los tamaños pequeños; por eso se usa logarítmica. Es la gráfica que piden en TA-1.4, con título, nombres de ejes con unidad y leyenda.",
+      "fragments": [
+        123,
+        124,
+        125,
+        126
+      ]
+    },
+    {
+      "sceneId": "codigo-grafica",
+      "startTime": 127.5,
+      "endTime": 134,
+      "notes": "Es el script del material de la semana que dibuja la gráfica, con la copia de una lista como ejemplo. Primer avance: plt.loglog pone los dos ejes en escala logarítmica. Segundo avance: título y nombres de los ejes, con la unidad del tiempo en microsegundos. Tercer avance: la leyenda distingue las series y savefig guarda la imagen que se pega en el reporte de TA-1.4. Los tamaños y los tiempos de cada búsqueda salen de la tabla de la práctica; en matplotlib se agrega una línea plt.loglog por búsqueda. Si no tienen matplotlib instalado, se instala con pip antes de la clase.",
+      "fragments": [
+        129.5,
+        130.5,
+        131.5,
+        132.5
+      ]
+    },
+    {
+      "sceneId": "ordenar",
+      "startTime": 134,
+      "endTime": 140.5,
+      "notes": "Es la situación C del material de la semana. Un equipo busca cinco veces en una lista de un millón de elementos sin ordenar. Uno propone ordenar una vez y usar la binaria; otro, usar la lineal. Ordenar cuesta del orden de n log n, unas 20 000 000 de operaciones; cinco lineales cuestan unas 5 000 000 en el peor caso. Primer avance: la opción de ordenar. Segundo avance: la opción lineal, mucho más corta. Tercer avance: con cinco búsquedas conviene la lineal. Con las cifras del material de la semana, ordenar compensa en el peor caso desde 21 búsquedas, porque cada una cuesta unas 20 comparaciones en lugar de un millón. Antes de avanzar, pedir que tomen posición.",
+      "fragments": [
+        136,
+        137,
+        138,
+        139
       ]
     },
     {
       "sceneId": "actividades",
-      "startTime": 107,
-      "endTime": 110.5,
+      "startTime": 140.5,
+      "endTime": 144,
       "notes": "PE-1.4 se arma en clase: el script con la búsqueda lineal y la binaria propias y su micro-benchmark para cuatro tamaños y tres claves, con la lista construida fuera de la medición, calentamiento, al menos 30 repeticiones y mediana en microsegundos. Si no terminan las mediciones en clase, las completan en su tiempo autónomo antes de TA-1.4, que usa esos tiempos. TA-1.4 es el reporte de una página con la gráfica en escala logarítmica y el análisis de escala. GA-1.2 es el checkpoint de invariantes. Las plantillas y las fechas están en Canvas."
     },
     {
       "sceneId": "cierre",
-      "startTime": 110.5,
-      "endTime": 114,
+      "startTime": 144,
+      "endTime": 147.5,
       "notes": "Volver a la pregunta inicial: no hacen falta un millón de pasos si la lista está ordenada, pero esa precondición hay que cumplirla y la medición hay que diseñarla. Tarea para casa: la recuperación sin apuntes del material de la semana, con ocho preguntas, y las tres situaciones para transferir."
     }
   ],
